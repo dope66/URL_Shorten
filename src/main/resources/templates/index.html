@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>URL 주려라</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>URL JRR</h1>
+
+<div class="container">
+    <span>URL을 입력해주세요:</span>
+    <form th:action="@{/urlMapping}" method="post">
+        <input type="text" id="originalUrl" name="originalUrl">
+        <button type="submit">입력</button>
+    </form>
+</div>
+</body>
+</html>

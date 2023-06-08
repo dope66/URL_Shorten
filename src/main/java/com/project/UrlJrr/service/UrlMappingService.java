@@ -20,22 +20,16 @@ public class UrlMappingService {
 
     public String generateShortUrl(String originalUrl) {
         Optional<UrlMapping> urlMappingOptional = urlMappingRepository.findByOriginalUrl(originalUrl);
-        log.error("service OptionalURL" + urlMappingOptional);
         if (urlMappingOptional.isPresent()) {
-            log.error("옵셔널URl가 존재해서  if문을 탔을 경우.");
             UrlMapping urlMapping = urlMappingOptional.get();
             return urlMapping.getShortUrl();
         } else {
-            log.error("if문을 타지 않았다.");
             String shortUrl = UrlGenerator.generateShortUrl();
-            log.error("service layer shortURL = " + shortUrl);
             UrlMapping newUrlMapping = new UrlMapping();
             newUrlMapping.setOriginalUrl(originalUrl);
-            log.error("service layer originalUrl"+originalUrl);
             newUrlMapping.setShortUrl(shortUrl);
             newUrlMapping.setCreatedDate(LocalDateTime.now());
             urlMappingRepository.save(newUrlMapping);
-            log.error("==save Success==");
             return shortUrl;
         }
     }

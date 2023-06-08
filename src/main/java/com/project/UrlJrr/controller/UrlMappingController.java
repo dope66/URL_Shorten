@@ -27,9 +27,7 @@ public class UrlMappingController {
     @PostMapping("/urlMapping")
     public String convertUrl(@ModelAttribute("urlMappingDto") UrlMappingDto urlMappingDto, Model model) {
         String originalUrl = urlMappingDto.getOriginalUrl();
-        log.error("Post Controller layer OriginalURL = "+originalUrl);
         String shortUrl = urlMappingService.generateShortUrl(originalUrl);
-        log.error("Post Controller layer shortURL = " +shortUrl);
         // 생성된 단축 URL을 모델에 추가
         model.addAttribute("shortUrl", shortUrl);
         return "resultPage";

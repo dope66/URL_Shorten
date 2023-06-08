@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Result Page</title>
+
 </head>
 <body>
 <h1> URL JRR Result</h1>
@@ -10,11 +11,13 @@
 
 <div class="container">
     <h2>단축 URL:</h2>
-    <p>Short URL: <a th:href="'http://localhost:8080/' + ${shortUrl}"
-                     th:text="${'http://localhost:8080/' + shortUrl}"></a></p>
+    <p>Short URL:
+<!--        <input type="text" id="shortUrlInput" th:value="${'http://localhost:8080/' + shortUrl}" readonly>-->
+        <input type="text" id="shortUrlInput" th:value="${serverName + '/' + shortUrl}" readonly>
+        <button onclick="copyToClipboard()">Copy</button>
+    </p>
     <div class="homeContainer">
         <a href="/">Home</a>
-
     </div>
 </div>
 </body>
@@ -22,4 +25,19 @@
 </div>
 
 </body>
+<script>
+    function copyToClipboard() {
+        const shortUrlInput = document.getElementById('shortUrlInput');
+        const urlToCopy = shortUrlInput.value;
+
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+                alert('URL가 복사 되었습니다.');
+            })
+            .catch((error) => {
+                console.error('복사에 실패 했습니다. 에러 :', error);
+            });
+
+    }
+</script>
 </html>

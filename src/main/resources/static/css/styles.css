@@ -10898,7 +10898,7 @@ video.bg-video {
   font-size: 1.2rem;
 }
 .masthead .masthead-content p strong {
-  font-weight: 1000;
+  font-weight: 700;
 }
 .masthead .masthead-content .input-group-newsletter input {
   height: auto;
@@ -10908,7 +10908,7 @@ video.bg-video {
 }
 .masthead .masthead-content .input-group-newsletter button {
   font-size: 0.85rem;
-  font-weight: 1000;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: calc(1rem + 2px);

@@ -6,14 +6,14 @@ import com.project.UrlJrr.repository.ScrapRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Connection;
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -32,14 +29,14 @@ public class ScrapingService {
     private final ScrapRepository scrapRepository;
 
     @PostConstruct
-    public void startScraping(){
+    public void startScraping() {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                try{
+                try {
                     List<Scrap> scraps = ScrapSaram();
                     processScrapResults(scraps);
-                }catch (IOException e){
+                } catch (IOException e) {
                     log.error("에러");
                 }
 
@@ -47,11 +44,10 @@ public class ScrapingService {
         };
         // crawl 주기 설정 (15분 마다)
         long delay = 0; // 딜레이 설정
-        long period =60*15*1000;
+        long period = 60 * 15 * 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, delay, period);
     }
-
 
 
     public List<Scrap> ScrapSaram() throws IOException {
@@ -60,18 +56,36 @@ public class ScrapingService {
         // 기본 url 설정
         String url = "https://www.saramin.co.kr/zf_user/search/recruit?search_area=main&search_done=y&search_optional_item=n&searchType=recently&searchword=%EA%B0%9C%EB%B0%9C%EC%9E%90&recruitPage=1&recruitSort=relation&recruitPageCount=30&inner_com_type=&company_cd=0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C9%2C10&show_applied=&quick_apply=&except_read=&ai_head_hunting=";
         String articleUrlPrefix = "https://www.saramin.co.kr";
-        // Jsoup을 이용한 연결 설정
-        Connection connection = Jsoup.connect(url)
-                .header("User-Agent", "Mozilla/5.0")
-                .timeout(10000);
 
-        Document doc = connection.get();
+
+        // Jsoup을 이용한 연결 설정 http 2.0 설정 코드
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectionSpecs(List.of(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
+                .build();
+        Document doc = null;
+        try {
+            // OkHttp를 사용하여 HTTP/2.0 통신
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                    .header("Referer", "https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=45868854&recommend_ids=eJxVj8ERAzEIA6vJHwwS4p1Crv8u4lzmbOe5s8KyEkKz6tLwV70TGhwZl%2FyHVYJhoUhjznDfyHS6PTbnrQPLqgKxkU12HU9BoYUot7bd294YO4ygHdYsv994bFVIf9i9w6Nn2WF99B44d8e518Q8ijylu%2BgDiSFAdg%3D%3D&view_type=avatar&gz=1&t_ref_scnid=805&t_ref_content=SRI_100_MAIN_AI_RCT_LOGOUT&t_ref=main&t_category=relay_view&t_content=relay_view_avatar#seq=0")
+                    .build();
+            Response response = client.newCall(request).execute();
+            String html = response.body().string();
+
+            // Jsoup을 사용하여 HTML 파싱
+            doc = Jsoup.parse(html);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
         Elements elements = doc.select("#recruit_info_list > div.content > div");
         int count = elements.size(); // div.item_recruit의 개수
         System.out.println("div.item_recruit 개수: " + count);
 
         for (Element element : elements) {
-            String articleText = element.select("div.area_job > h2 > a").text();
+            String articleText = element.select("div.area_job > h2 > a > span").text();
             String articleUrl = element.select("div.area_job > h2 > a").attr("href");
             String company = element.select("div.area_corp > strong > a").text();
             articleUrl = articleUrlPrefix + articleUrl;

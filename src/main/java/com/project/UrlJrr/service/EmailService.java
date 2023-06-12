@@ -18,7 +18,7 @@ public class EmailService {
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
 
-    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
+    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에 
     public void sendEmailsToSubscribers() throws IOException {
         System.out.println("이메일 서비스 시작");
         // 크롤링 데이터 가져오기

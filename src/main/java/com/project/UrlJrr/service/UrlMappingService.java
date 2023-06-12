@@ -1,6 +1,6 @@
 package com.project.UrlJrr.service;
 
-import com.project.UrlJrr.domain.UrlMapping;
+import com.project.UrlJrr.entity.UrlMapping;
 import com.project.UrlJrr.repository.UrlMappingRepository;
 import com.project.UrlJrr.utils.UrlGenerator;
 import lombok.RequiredArgsConstructor;

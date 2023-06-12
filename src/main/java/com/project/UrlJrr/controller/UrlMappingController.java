@@ -1,6 +1,6 @@
 package com.project.UrlJrr.controller;
 
-import com.project.UrlJrr.domain.UrlMappingDto;
+import com.project.UrlJrr.dto.UrlMappingDto;
 import com.project.UrlJrr.service.UrlMappingService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

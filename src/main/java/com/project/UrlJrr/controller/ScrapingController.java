@@ -1,6 +1,6 @@
 package com.project.UrlJrr.controller;
 
-import com.project.UrlJrr.domain.Scrap;
+import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.service.ScrapingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

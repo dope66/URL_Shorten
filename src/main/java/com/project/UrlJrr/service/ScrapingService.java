@@ -1,7 +1,7 @@
 package com.project.UrlJrr.service;
 
 
-import com.project.UrlJrr.domain.Scrap;
+import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.repository.ScrapRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -83,11 +83,27 @@ public class ScrapingService {
         Elements elements = doc.select("#recruit_info_list > div.content > div");
         int count = elements.size(); // div.item_recruit의 개수
         System.out.println("div.item_recruit 개수: " + count);
-
+        /*
+         * articleText  : 공고 제목
+         * articleUrl : 공고 링크
+         * company : 회사
+         * deadline : 공고 게시 기간
+         * location : 지역
+         * experience : 경력
+         * requirement : 학력 요구사항
+         * jobType : 정규직 여부(?)
+         * */
         for (Element element : elements) {
             String articleText = element.select("div.area_job > h2 > a > span").text();
             String articleUrl = element.select("div.area_job > h2 > a").attr("href");
             String company = element.select("div.area_corp > strong > a").text();
+            String deadline = element.select("div.area_job > div.job_date > span.date").text();
+            String location = element.select("div.job_condition > span > a").text();
+            String experience = element.select("div.job_condition > span:nth-child(2)").text();
+            String requirement = element.select("div.job_condition > span:nth-child(3)").text();
+            String jobType = element.select("div.job_condition > span:nth-child(4)").text();
+
+
             articleUrl = articleUrlPrefix + articleUrl;
 
             // articleUrl에서 rec_idx 값을 추출
@@ -122,7 +138,7 @@ public class ScrapingService {
                     }
                 }
             }
-            Scrap scrap = new Scrap(null, articleText, articleUrl, company);
+            Scrap scrap = new Scrap(null, articleText, articleUrl, company, deadline, location, experience, requirement, jobType, false);
             scraps.add(scrap);
             // 제외
             if (!isDuplicate) {
@@ -135,10 +151,7 @@ public class ScrapingService {
 
     public void processScrapResults(List<Scrap> scraps) {
         for (Scrap scrap : scraps) {
-            // 원하는 작업 수행 (예: 콘솔에 출력)
             System.out.println("aritlceText: " + scrap.getArticleText());
-            System.out.println("articleURL: " + scrap.getArticleUrl());
-            System.out.println("Company: " + scrap.getCompany());
             System.out.println("--------------------------------------");
         }
     }

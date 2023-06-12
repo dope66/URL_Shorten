@@ -1,5 +1,6 @@
-package com.project.UrlJrr.domain;
+package com.project.UrlJrr.dto;
 
+import com.project.UrlJrr.entity.UrlMapping;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

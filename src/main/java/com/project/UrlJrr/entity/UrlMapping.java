@@ -1,4 +1,4 @@
-package com.project.UrlJrr.domain;
+package com.project.UrlJrr.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

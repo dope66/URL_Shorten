@@ -14,11 +14,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+
+    private final UserService userService;
     private final JavaMailSender javaMailSender;
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
 
-    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에 
+    //    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
+    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에
     public void sendEmailsToSubscribers() throws IOException {
         System.out.println("이메일 서비스 시작");
         // 크롤링 데이터 가져오기
@@ -40,10 +43,20 @@ public class EmailService {
         subject = 이메일 제목
         text = 내용
         * */
+        // 회원가입된 사용자들의 이메일 가져오기
+        List<String> subscriberEmails = userService.getAllUserEmails();
         String to = "prince628@naver.com";
         String subject = "새로운 채용 정보 알림";
         String text = emailContent.toString();
-        sendEmail(to, subject, text);
+        // 이메일이 저장된 사용자가 있는 경우에만 발송
+        if (!subscriberEmails.isEmpty()) {
+            // 각 사용자에게 이메일 발송
+            for (String email : subscriberEmails) {
+                sendEmail(email, subject, text);
+            }
+        } else {
+            System.out.println("이메일이 저장된 사용자가 없습니다.");
+        }
         // 이메일을 발송한 scrap들의 sent 값을 true로 변경하여 중복 발송 방지
         for (Scrap scrap : sentScraps) {
             scrap.setSent(true);

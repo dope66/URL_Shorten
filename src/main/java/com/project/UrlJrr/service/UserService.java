@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +32,16 @@ public class UserService {
             validatorResult.put(fieldName, errorMessage);
         }
         return validatorResult;
+    }
+    public List<String> getAllUserEmails() {
+        List<User> users = userRepository.findAll();
+        List<String> userEmails = new ArrayList<>();
+
+        for (User user : users) {
+            userEmails.add(user.getEmail());
+        }
+
+        return userEmails;
     }
 
 

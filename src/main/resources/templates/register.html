@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            var validatorResult = /*[[${validatorResult}]]*/ {};
+
+            if (validatorResult.username) {
+                $('#username-error').text(validatorResult.username);
+                $('#username').addClass('is-invalid');
+                $('#username-error').show();
+            }
+
+            if (validatorResult.password) {
+                $('#password-error').text(validatorResult.password);
+                $('#password').addClass('is-invalid');
+                $('#password-error').show();
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div th:if="${errorMessage}" class="alert alert-danger error-message" role="alert">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <form th:action="@{/user/registerProc}" th:object="${userDto}" method="post">
+
+        <div class="form-group">
+            <label for="username">User ID:</label>
+            <input type="text" id="username" name="username" class="form-control">
+            <div id="username-error" class="error-message" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control">
+            <div id="password-error" class="error-message" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">email:</label>
+            <input type="email" id="email" name="email" class="form-control">
+            <div id="email-error" class="error-message" style="display: none;"></div>
+        </div>
+
+
+        <button type="submit">가입</button>
+    </form>
+</div>
+</body>
+
+</html>

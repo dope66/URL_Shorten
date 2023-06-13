@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/user/loginProc}" method="post" th:object="${userDto}">
+        <div class="form-group">
+            <label for="username">User ID:</label>
+            <input type="text" id="username" name="username" class="form-control">
+            <div id="username-error" class="error-message" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control">
+            <div id="password-error" class="error-message" style="display: none;"></div>
+        </div>
+        <button type="submit">로그인</button>
+    </form>
+</div>
+</body>
+</html>

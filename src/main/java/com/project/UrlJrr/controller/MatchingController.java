@@ -27,8 +27,11 @@ public class MatchingController {
     public String matchingPage(@PathVariable("scrapId") Long scrapId, Model model){
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
+        System.out.println("matching controller user"+username);
         Optional<Scrap> scrapOptional = scrapRepository.findById(scrapId);
+        System.out.println("scrapOptional "+scrapOptional);
         Scrap scrap = scrapOptional.orElseThrow(() -> new IllegalArgumentException("Invalid Scrap ID: " + scrapId));
+
         int matchingScore = matchingService.calculateMatchingScore(user, scrapId);
         model.addAttribute("user",user);
         model.addAttribute("matchingScore", matchingScore);

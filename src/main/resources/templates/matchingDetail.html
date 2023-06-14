@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>매칭 상세 정보</title>
+</head>
+<body>
+<h1>매칭 상세 정보</h1>
+<p>회원 정보:</p>
+<p>회원 이름: <span th:text="${user.username}"></span></p>
+<p>회원 이름: <span th:text="${user.email}"></span></p>
+<p>회원 스킬 스택: <span th:text="${user.skillStack}"></span></p>
+
+<p>크롤링된 정보:</p>
+<p>공고 제목: <span th:text="${scrap.articleText}"></span></p>
+<p>공고 스킬 스택: <span th:text="${scrap.skillStack}"></span></p>
+
+<p>매칭 점수: <span th:text="${matchingScore}"></span></p>
+<!-- 추가적인 공고 정보 표시 -->
+</body>
+</html>

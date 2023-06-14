@@ -17,10 +17,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -96,6 +93,13 @@ public class ScrapingService {
         for (Element element : elements) {
             String articleText = element.select("div.area_job > h2 > a > span").text();
             String articleUrl = element.select("div.area_job > h2 > a").attr("href");
+            Elements skillStackElements = element.select("div.job_sector > a");
+            StringJoiner skillStackJoiner = new StringJoiner(", ");
+            for (Element skillStackElement : skillStackElements) {
+                String skillStack = skillStackElement.text();
+                skillStackJoiner.add(skillStack);
+            }
+            String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
             String deadline = element.select("div.area_job > div.job_date > span.date").text();
             String location = element.select("div.job_condition > span > a").text();
@@ -138,7 +142,7 @@ public class ScrapingService {
                     }
                 }
             }
-            Scrap scrap = new Scrap(null, articleText, articleUrl, company, deadline, location, experience, requirement, jobType, false);
+            Scrap scrap = new Scrap(null, articleText, articleUrl,skillStack,company, deadline, location, experience, requirement, jobType, false);
             scraps.add(scrap);
             // 제외
             if (!isDuplicate) {
@@ -155,7 +159,5 @@ public class ScrapingService {
             System.out.println("--------------------------------------");
         }
     }
-
-
 }
 

@@ -20,6 +20,8 @@ public class EmailService {
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
 
+    private final UrlMappingService urlMappingService;
+
     //    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
     @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에
     public void sendEmailsToSubscribers() throws IOException {
@@ -33,6 +35,9 @@ public class EmailService {
         // 이메일 본문 쓰기
         StringBuilder emailContent = new StringBuilder();
         for (Scrap scrap : sentScraps) {
+            String shortUrl = urlMappingService.generateShortUrl(scrap.getArticleUrl());
+            System.out.println(shortUrl);
+
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
                     .append("URL: ").append(scrap.getArticleUrl()).append("\n\n");
@@ -45,7 +50,6 @@ public class EmailService {
         * */
         // 회원가입된 사용자들의 이메일 가져오기
         List<String> subscriberEmails = userService.getAllUserEmails();
-        String to = "prince628@naver.com";
         String subject = "새로운 채용 정보 알림";
         String text = emailContent.toString();
         // 이메일이 저장된 사용자가 있는 경우에만 발송

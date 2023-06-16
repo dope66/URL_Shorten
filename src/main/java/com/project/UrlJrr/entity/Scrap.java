@@ -29,7 +29,7 @@ public class Scrap {
     private boolean sent;
 
     @Builder
-    public Scrap(Long id, String articleText, String articleUrl,String skillStack, String company, String deadline, String location, String experience, String requirement, String jobType,boolean sent) {
+    public Scrap(Long id, String articleText, String articleUrl, String skillStack, String company, String deadline, String location, String experience, String requirement, String jobType, boolean sent) {
         this.id = id;
         this.articleText = articleText;
         this.articleUrl = articleUrl;

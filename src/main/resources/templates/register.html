@@ -5,10 +5,11 @@
     <title>Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/skillStack.js"></script>
 
     <script th:inline="javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             var validatorResult = /*[[${validatorResult}]]*/ {};
 
             if (validatorResult.username) {
@@ -24,6 +25,7 @@
             }
         });
     </script>
+
 </head>
 <body>
 <div class="container">
@@ -44,15 +46,41 @@
             <div id="password-error" class="error-message" style="display: none;"></div>
         </div>
         <div class="form-group">
-            <label for="password">email:</label>
+            <label for="email">email:</label>
             <input type="email" id="email" name="email" class="form-control">
             <div id="email-error" class="error-message" style="display: none;"></div>
         </div>
+        <div class="form-group">
+            <input type="radio" id="experience1" name="experience" value="신입">신입
+            <input type="radio" id="experience2" name="experience" value="경력">경력
 
+        </div>
+        <div class="form-group">
+            <div>
+                <label for="skill-input">SkillStack 추가:</label>
+                <input type="text" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
+                       autocomplete="off">
+                <datalist id="skill-list-datalist">
+                    <!-- 기술스택 자동완성을 위한 옵션들 -->
+                </datalist>
+            </div>
+            <div class="selected-skills-container">
+                <h2>선택된 SkillStack:</h2>
+                <ul id="selected-skills-list"></ul>
+            </div>
+        </div>
+
+        <!-- 기술 스택 선택 시 추가/삭제 버튼 및 hidden input 추가 -->
+        <div class="form-group">
+            <label>기술 스택:</label>
+            <ul id="selected-skills"></ul>
+            <input type="hidden" id="selected-skills-input" name="skillStack">
+            <button type="button" id="add-skill-btn">추가</button>
+            <button type="button" id="remove-skill-btn">삭제</button>
+        </div>
 
         <button type="submit">가입</button>
     </form>
 </div>
 </body>
-
 </html>

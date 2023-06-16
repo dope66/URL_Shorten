@@ -21,10 +21,9 @@ public class EmailService {
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
 
-
     private final UrlMappingService urlMappingService;
     // serverName 값 가져오기
-    @Value("${server.name}") //http://prince.pigworld.dev
+    @Value("${server.name}") //https://prince.pigworld.dev
     private String serverName;
 
 //    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용

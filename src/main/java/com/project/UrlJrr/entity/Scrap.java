@@ -4,7 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -27,9 +34,12 @@ public class Scrap {
     private String requirement;
     private String jobType;
     private boolean sent;
+    private String createDate;
 
     @Builder
-    public Scrap(Long id, String articleText, String articleUrl, String skillStack, String company, String deadline, String location, String experience, String requirement, String jobType, boolean sent) {
+    public Scrap(Long id, String articleText, String articleUrl, String skillStack,
+                 String company, String deadline, String location, String experience, String requirement,
+                 String jobType, boolean sent, String createDate) {
         this.id = id;
         this.articleText = articleText;
         this.articleUrl = articleUrl;
@@ -40,7 +50,8 @@ public class Scrap {
         this.experience = experience;
         this.requirement = requirement;
         this.jobType = jobType;
-        this.sent = false; // 기본값 설정
+        this.sent = sent;
+        this.createDate = createDate;
     }
 
 

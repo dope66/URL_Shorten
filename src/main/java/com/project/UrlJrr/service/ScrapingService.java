@@ -15,8 +15,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -142,7 +146,22 @@ public class ScrapingService {
                     }
                 }
             }
-            Scrap scrap = new Scrap(null, articleText, articleUrl, skillStack, company, deadline, location, experience, requirement, jobType, false);
+
+
+            Scrap scrap = Scrap.builder()
+                    .articleText(articleText)
+                    .articleUrl(articleUrl)
+                    .skillStack(skillStack)
+                    .company(company)
+                    .deadline(deadline)
+                    .location(location)
+                    .experience(experience)
+                    .requirement(requirement)
+                    .jobType(jobType)
+                    .sent(false)
+                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))))
+                    .build();
+
             scraps.add(scrap);
             // 제외
             if (!isDuplicate) {
@@ -152,6 +171,8 @@ public class ScrapingService {
 
         return scraps;
     }
+
+
 
 }
 

@@ -1,8 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
     <title>매칭 상세 정보</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap.js"></script>
+
+
 </head>
+
 <script th:inline="javascript">
     // 5초 후에 자동으로 URL을 변경하는 함수
     function redirectToArticle() {
@@ -11,7 +23,7 @@
 
         // 카운트 다운 표시 및 URL 자동 변경
         function showCountdown() {
-            countElement.innerHTML = count;
+            countElement.innerHTML = count + "";
             if (count === 0) {
                 window.location.href = /*[[${articleUrl}]]*/ "";  // scrapId에 해당하는 articleUrl로 이동
             } else {
@@ -29,7 +41,7 @@
 
 
 <body>
-<div class="container">
+<div class="container ">
     <h1>매칭 상세 정보</h1>
     <div class="user-status">
         <h2>회원 정보</h2>
@@ -49,5 +61,8 @@
     <br>
 
 </div>
+
+<script src="/js/scripts.js"></script>
+
 </body>
 </html>

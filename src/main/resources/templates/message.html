@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <title>매칭 상세 정보</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap.js"></script>
 </head>
 <body>
 <div>
     <form action="/send_email" method="post" th:object="${email}">
-        <input type="text"  id="to" name="to" placeholder="To" required/><br/>
-        <input type="text" id="subject" name="subject" placeholder="Subject" required/><br/>
-        <textarea rows="5" id="message" name="message"placeholder="Message" required></textarea><br/>
+        <input id="to" name="to" placeholder="To" required type="text"/><br/>
+        <input id="subject" name="subject" placeholder="Subject" required type="text"/><br/>
+        <textarea id="message" name="message" placeholder="Message" required rows="5"></textarea><br/>
         <input type="submit" value="Send Email"/>
     </form>
 </div>
 
 
-</form>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<!--    <div th:replace="/layout/footer"></div>-->
 </body>
 </html>

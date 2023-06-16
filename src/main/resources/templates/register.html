@@ -1,65 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
     <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/js/skillStack.js"></script>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap.js"></script>
 
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            var validatorResult = /*[[${validatorResult}]]*/ {};
-
-            if (validatorResult.username) {
-                $('#username-error').text(validatorResult.username);
-                $('#username').addClass('is-invalid');
-                $('#username-error').show();
-            }
-
-            if (validatorResult.password) {
-                $('#password-error').text(validatorResult.password);
-                $('#password').addClass('is-invalid');
-                $('#password-error').show();
-            }
-        });
-    </script>
 
 </head>
 <body>
+<script src="/js/skillStack.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        var validatorResult = /*[[${validatorResult}]]*/ {};
+
+        if (validatorResult.username) {
+            $('#username-error').text(validatorResult.username);
+            $('#username').addClass('is-invalid');
+            $('#username-error').show();
+        }
+
+        if (validatorResult.password) {
+            $('#password-error').text(validatorResult.password);
+            $('#password').addClass('is-invalid');
+            $('#password-error').show();
+        }
+    });
+</script>
 <div class="container">
-    <div th:if="${errorMessage}" class="alert alert-danger error-message" role="alert">
+    <div class="alert alert-danger error-message" role="alert" th:if="${errorMessage}">
         <span th:text="${errorMessage}"></span>
     </div>
 
-    <form th:action="@{/user/registerProc}" th:object="${userDto}" method="post">
+    <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
 
         <div class="form-group">
             <label for="username">User ID:</label>
-            <input type="text" id="username" name="username" class="form-control">
-            <div id="username-error" class="error-message" style="display: none;"></div>
+            <input class="form-control" id="username" name="username" type="text">
+            <div class="error-message" id="username-error" style="display: none;"></div>
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-control">
-            <div id="password-error" class="error-message" style="display: none;"></div>
+            <input class="form-control" id="password" name="password" type="password">
+            <div class="error-message" id="password-error" style="display: none;"></div>
         </div>
         <div class="form-group">
             <label for="email">email:</label>
-            <input type="email" id="email" name="email" class="form-control">
-            <div id="email-error" class="error-message" style="display: none;"></div>
+            <input class="form-control" id="email" name="email" type="email">
+            <div class="error-message" id="email-error" style="display: none;"></div>
         </div>
         <div class="form-group">
-            <input type="radio" id="experience1" name="experience" value="신입">신입
-            <input type="radio" id="experience2" name="experience" value="경력">경력
+            <input id="experience1" name="experience" type="radio" value="신입"><label for="experience1">신입</label>
+            <input id="experience2" name="experience" type="radio" value="경력"><label for="experience2">경력</label>
 
         </div>
         <div class="form-group">
             <div>
                 <label for="skill-input">SkillStack 추가:</label>
-                <input type="text" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
-                       autocomplete="off">
+                <input autocomplete="off" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
+                       type="text">
                 <datalist id="skill-list-datalist">
                     <!-- 기술스택 자동완성을 위한 옵션들 -->
                 </datalist>
@@ -74,13 +79,14 @@
         <div class="form-group">
             <label>기술 스택:</label>
             <ul id="selected-skills"></ul>
-            <input type="hidden" id="selected-skills-input" name="skillStack">
-            <button type="button" id="add-skill-btn">추가</button>
-            <button type="button" id="remove-skill-btn">삭제</button>
+            <input id="selected-skills-input" name="skillStack" type="hidden">
+            <button id="add-skill-btn" type="button">추가</button>
+            <button id="remove-skill-btn" type="button">삭제</button>
         </div>
 
         <button type="submit">가입</button>
     </form>
 </div>
+
 </body>
 </html>

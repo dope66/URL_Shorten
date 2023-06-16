@@ -15,15 +15,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class ScrapingController {
-    @Autowired
-    private final ScrapingService scrapingService;
-
-    @GetMapping("/crawl")
-    public String crawl(Model model) throws IOException {
-            List<Scrap> scraps = scrapingService.ScrapSaram();
-            model.addAttribute("scraps", scraps);
-
-        return "crawl";
-    }
+// 현재 사용하지 않고 있음
 
 }

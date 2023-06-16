@@ -3,7 +3,6 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.ScrapRepository;
-import com.project.UrlJrr.repository.UserRepository;
 import com.project.UrlJrr.skillenum.Field;
 import com.project.UrlJrr.skillenum.JobType;
 import com.project.UrlJrr.skillenum.TechStack;
@@ -16,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MatchingService {
     private final ScrapRepository scrapRepository;
-    private final UserRepository userRepository;
 
     public int calculateMatchingScore(User user, Long scrapId) {
         Scrap scrap = getScrapById(scrapId);
@@ -28,7 +26,12 @@ public class MatchingService {
         }
     }
 
+    /*
+    userSkillStack 을 ScrapSkillStack 에 하나씩 비교하면서
+    점수를 올리는 형식
+    매칭 점수 변경이 필요함.
 
+    * */
     public int calculateScore(String userSkillStack, String scrapSkillStack) {
         int totalScore = 0;
 
@@ -48,7 +51,9 @@ public class MatchingService {
         return totalScore;
     }
 
-
+    /*
+    Jobtype enum의 이름과 비교
+    * */
     public int getScoreFromJobType(String skill) {
         JobType[] jobTypes = JobType.values();
         for (JobType jobType : jobTypes) {
@@ -59,6 +64,9 @@ public class MatchingService {
         return 0;
     }
 
+    /*
+    Field enum의 이름과 비교
+    * */
     public int getScoreFromField(String skill) {
         Field[] fields = Field.values();
         for (Field field : fields) {
@@ -69,6 +77,9 @@ public class MatchingService {
         return 0;
     }
 
+    /*
+    TechStack enum의 이름과 비교
+    * */
     public int getScoreFromTechStack(String skill) {
         TechStack[] techStacks = TechStack.values();
         for (TechStack techStack : techStacks) {

@@ -3,18 +3,51 @@
 <head>
     <title>매칭 상세 정보</title>
 </head>
+<script th:inline="javascript">
+    // 5초 후에 자동으로 URL을 변경하는 함수
+    function redirectToArticle() {
+        var count = 10;
+        var countElement = document.getElementById('countdown');  // 카운트 다운
+
+        // 카운트 다운 표시 및 URL 자동 변경
+        function showCountdown() {
+            countElement.innerHTML = count;
+            if (count === 0) {
+                window.location.href = /*[[${articleUrl}]]*/ "";  // scrapId에 해당하는 articleUrl로 이동
+            } else {
+                count--;
+                setTimeout(showCountdown, 1000);  // 1초마다 showCountdown 함수 호출
+            }
+        }
+
+        setTimeout(showCountdown, 1000);  // 초기 1초 대기 후에 showCountdown 함수 호출
+    }
+
+    // 페이지가 로드되면 자동으로 redirectToArticle 함수 호출
+    window.onload = redirectToArticle;
+</script>
+
+
 <body>
-<h1>매칭 상세 정보</h1>
-<p>회원 정보:</p>
-<p>회원 이름: <span th:text="${user.username}"></span></p>
-<p>회원 이름: <span th:text="${user.email}"></span></p>
-<p>회원 스킬 스택: <span th:text="${user.skillStack}"></span></p>
+<div class="container">
+    <h1>매칭 상세 정보</h1>
+    <div class="user-status">
+        <h2>회원 정보</h2>
+        <p>회원 이름: <span th:text="${user.username}"></span></p>
+        <p>회원 경력: <span th:text="${user.experience}"></span></p>
+        <p>회원 스킬 스택: <span th:text="${user.skillStack}"></span></p>
+    </div>
+    <div class="scrap-status">
+        <h2>공고 정보</h2>
+        <p>공고 제목: <span th:text="${scrap.articleText}"></span></p>
+        <p>공고 스킬 스택: <span th:text="${scrap.skillStack}"></span></p>
+        <p>공고 경력 : <span th:text="${scrap.experience}"></span></p>
+        <p>매칭 점수: <span th:text="${matchingScore}"></span></p>
+    </div>
+    <!-- 추가적인 공고 정보 표시 -->
+    <h2>이동까지 남은 시간: <span id="countdown"></span>초</h2>
+    <br>
 
-<p>크롤링된 정보:</p>
-<p>공고 제목: <span th:text="${scrap.articleText}"></span></p>
-<p>공고 스킬 스택: <span th:text="${scrap.skillStack}"></span></p>
-
-<p>매칭 점수: <span th:text="${matchingScore}"></span></p>
-<!-- 추가적인 공고 정보 표시 -->
+</div>
 </body>
 </html>

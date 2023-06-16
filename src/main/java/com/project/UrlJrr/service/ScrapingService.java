@@ -32,14 +32,14 @@ public class ScrapingService {
             public void run() {
                 try {
                     List<Scrap> scraps = ScrapSaram();
-                    processScrapResults(scraps);
+
                 } catch (IOException e) {
                     log.error("에러");
                 }
 
             }
         };
-        // crawl 주기 설정 (15분 마다)
+        // crawling 주기 설정 (15분 마다)
         long delay = 0; // 딜레이 설정
         long period = 60 * 15 * 1000;
         Timer timer = new Timer();
@@ -142,7 +142,7 @@ public class ScrapingService {
                     }
                 }
             }
-            Scrap scrap = new Scrap(null, articleText, articleUrl,skillStack,company, deadline, location, experience, requirement, jobType, false);
+            Scrap scrap = new Scrap(null, articleText, articleUrl, skillStack, company, deadline, location, experience, requirement, jobType, false);
             scraps.add(scrap);
             // 제외
             if (!isDuplicate) {
@@ -153,11 +153,5 @@ public class ScrapingService {
         return scraps;
     }
 
-    public void processScrapResults(List<Scrap> scraps) {
-        for (Scrap scrap : scraps) {
-            System.out.println("aritlceText: " + scrap.getArticleText());
-            System.out.println("--------------------------------------");
-        }
-    }
 }
 

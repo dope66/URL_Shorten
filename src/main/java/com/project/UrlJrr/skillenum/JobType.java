@@ -25,7 +25,7 @@ public enum JobType {
 
     public String getSkillName() {
         if (skill == null) {
-            return name(); // 기존의 이름을 반환합니다.
+            return name();
         }
         return skill;
     }

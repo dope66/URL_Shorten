@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
     <title>Crawl Results</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap.js"></script>
 </head>
+
+
 <body>
 <h1>Crawl Results</h1>
 <table>
@@ -18,11 +26,12 @@
     <tr th:each="scrap : ${scraps}">
         <td th:text="${scrap.articleText}"></td>
         <td>
-            <a th:href="${scrap.articleUrl}" target="_blank"> 홈페이지로 가기</a>
+            <a target="_blank" th:href="${scrap.articleUrl}"> 홈페이지로 가기</a>
         </td>
         <td th:text="${scrap.company}"></td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

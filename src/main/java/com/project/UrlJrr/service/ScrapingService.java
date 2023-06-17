@@ -15,12 +15,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -35,14 +36,14 @@ public class ScrapingService {
             public void run() {
                 try {
                     List<Scrap> scraps = ScrapSaram();
-                    processScrapResults(scraps);
+
                 } catch (IOException e) {
                     log.error("에러");
                 }
 
             }
         };
-        // crawl 주기 설정 (15분 마다)
+        // crawling 주기 설정 (15분 마다)
         long delay = 0; // 딜레이 설정
         long period = 60 * 15 * 1000;
         Timer timer = new Timer();
@@ -96,6 +97,13 @@ public class ScrapingService {
         for (Element element : elements) {
             String articleText = element.select("div.area_job > h2 > a > span").text();
             String articleUrl = element.select("div.area_job > h2 > a").attr("href");
+            Elements skillStackElements = element.select("div.job_sector > a");
+            StringJoiner skillStackJoiner = new StringJoiner(", ");
+            for (Element skillStackElement : skillStackElements) {
+                String skillStack = skillStackElement.text();
+                skillStackJoiner.add(skillStack);
+            }
+            String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
             String deadline = element.select("div.area_job > div.job_date > span.date").text();
             String location = element.select("div.job_condition > span > a").text();
@@ -138,7 +146,22 @@ public class ScrapingService {
                     }
                 }
             }
-            Scrap scrap = new Scrap(null, articleText, articleUrl, company, deadline, location, experience, requirement, jobType, false);
+
+
+            Scrap scrap = Scrap.builder()
+                    .articleText(articleText)
+                    .articleUrl(articleUrl)
+                    .skillStack(skillStack)
+                    .company(company)
+                    .deadline(deadline)
+                    .location(location)
+                    .experience(experience)
+                    .requirement(requirement)
+                    .jobType(jobType)
+                    .sent(false)
+                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))))
+                    .build();
+
             scraps.add(scrap);
             // 제외
             if (!isDuplicate) {
@@ -149,12 +172,6 @@ public class ScrapingService {
         return scraps;
     }
 
-    public void processScrapResults(List<Scrap> scraps) {
-        for (Scrap scrap : scraps) {
-            System.out.println("aritlceText: " + scrap.getArticleText());
-            System.out.println("--------------------------------------");
-        }
-    }
 
 
 }

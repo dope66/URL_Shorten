@@ -1,10 +1,9 @@
 package com.project.UrlJrr.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -19,5 +18,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-
+    private String skillStack;  // 기술 스택
+    private String experience;  // 경력 여부
+    private String requirement;  // 학력
 }

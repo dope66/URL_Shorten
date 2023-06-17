@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
     <title>Result Page</title>
+    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/static/js/bootstrap.js"></script>
+
 
 </head>
+
 <body>
 <h1> URL JRR Result</h1>
 
@@ -12,19 +22,15 @@
 <div class="container">
     <h2>단축 URL:</h2>
     <p>Short URL:
-<!--        <input type="text" id="shortUrlInput" th:value="${'http://localhost:8080/' + shortUrl}" readonly>-->
-        <input type="text" id="shortUrlInput" th:value="${serverName + '/' + shortUrl}" readonly>
+        <!--        <input type="text" id="shortUrlInput" th:value="${'http://localhost:8080/' + shortUrl}" readonly>-->
+        <input id="shortUrlInput" readonly th:value="${serverName + '/' + shortUrl}" type="text">
         <button onclick="copyToClipboard()">Copy</button>
     </p>
     <div class="homeContainer">
         <a href="/">Home</a>
     </div>
 </div>
-</body>
-</html>
-</div>
 
-</body>
 <script>
     function copyToClipboard() {
         const shortUrlInput = document.getElementById('shortUrlInput');
@@ -40,4 +46,6 @@
 
     }
 </script>
+
+</body>
 </html>

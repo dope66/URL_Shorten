@@ -4,6 +4,9 @@ import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -43,7 +46,15 @@ public class UserService {
 
         return userEmails;
     }
-
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.orElse(null);
+    }
+    public String getUsername() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        return authentication.getName();
+    }
 
 
 }

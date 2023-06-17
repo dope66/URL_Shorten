@@ -9,15 +9,20 @@
     <title>Register</title>
     <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script src="/static/js/bootstrap.js"></script>
+    <script src="/js/skillStack.js"></script>
+
 
 
 </head>
 <body>
-<script src="/js/skillStack.js"></script>
+
 
 <script th:inline="javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         var validatorResult = /*[[${validatorResult}]]*/ {};
 
         if (validatorResult.username) {
@@ -33,6 +38,7 @@
         }
     });
 </script>
+
 <div class="container">
     <div class="alert alert-danger error-message" role="alert" th:if="${errorMessage}">
         <span th:text="${errorMessage}"></span>
@@ -87,6 +93,8 @@
         <button type="submit">가입</button>
     </form>
 </div>
+
+
 
 </body>
 </html>

@@ -32,13 +32,21 @@ public class MatchingController {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
         Optional<Scrap> scrapOptional = scrapRepository.findById(scrapId);
-        Scrap scrap = scrapOptional.orElseThrow(() -> new IllegalArgumentException("Invalid Scrap ID: " + scrapId));
-        int matchingScore = matchingService.calculateMatchingScore(user, scrapId);
-        model.addAttribute("articleUrl", scrap.getArticleUrl());
-        model.addAttribute("user",user);
-        model.addAttribute("matchingScore", matchingScore);
-        model.addAttribute("scrap",scrap);
-        return "matchingDetail";
+        if(scrapOptional.isPresent()){
+            Scrap scrap = scrapOptional.orElseThrow(() -> new IllegalArgumentException("Invalid Scrap ID: " + scrapId));
+            int matchingScore = matchingService.calculateMatchingScore(user, scrapId);
+            model.addAttribute("articleUrl", scrap.getArticleUrl());
+            model.addAttribute("user",user);
+            model.addAttribute("matchingScore", matchingScore);
+            model.addAttribute("scrap",scrap);
+            return "matchingDetail";
+        }else{
+            model.addAttribute("errorMessage");
+            return "deleteScrap";
+        }
+
+
+
 
     }
 }

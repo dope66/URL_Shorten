@@ -16,9 +16,13 @@
 </head>
 
 <script th:inline="javascript">
+    var timer;
+    var redirectToArticle;
+    var count;
+
     // 5초 후에 자동으로 URL을 변경하는 함수
     function redirectToArticle() {
-        var count = 10;
+        count = 10;
         var countElement = document.getElementById('countdown');  // 카운트 다운
 
         // 카운트 다운 표시 및 URL 자동 변경
@@ -28,15 +32,41 @@
                 window.location.href = /*[[${articleUrl}]]*/ "";  // scrapId에 해당하는 articleUrl로 이동
             } else {
                 count--;
-                setTimeout(showCountdown, 1000);  // 1초마다 showCountdown 함수 호출
+                timer = setTimeout(showCountdown, 1000);  // 1초마다 showCountdown 함수 호출
             }
         }
 
-        setTimeout(showCountdown, 1000);  // 초기 1초 대기 후에 showCountdown 함수 호출
+        timer = setTimeout(showCountdown, 1000);  // 초기 1초 대기 후에 showCountdown 함수 호출
     }
 
     // 페이지가 로드되면 자동으로 redirectToArticle 함수 호출
     window.onload = redirectToArticle;
+
+    // 리다이렉트 정지
+    function stopRedirect() {
+        clearTimeout(timer);  // 타이머 취소
+        count = Math.max(count, 0);  // 음수로 카운트가 되지 않도록 보정
+        document.getElementById('countdown').innerHTML = count + "";  // 현재 카운트 표시
+        // document.getElementById('hidden-btn').style.display = 'none';  // hidden-btn 감추기
+        document.getElementById('redirect-articleUrl').style.display = 'inline';  // redirect-articleUrl 보이기
+
+    }
+    // articleUrl로 이동
+    function redirectToArticleUrl() {
+        window.location.href = /*[[${articleUrl}]]*/ "";
+    }
+</script>
+<script>
+    $(function () {
+        $('#hidden-btn').click(function () {
+            stopRedirect();
+        });
+
+        $('#redirect-articleUrl').click(function () {
+            redirectToArticleUrl();
+        });
+    });
+
 </script>
 <link href="/css/loading.css" rel="stylesheet">
 
@@ -110,8 +140,8 @@
 
                 </div>
                 <h5 class="text-center">이동까지 남은 시간: <span id="countdown"></span>초</h5>
-
-
+                <button id="hidden-btn" onclick="stopRedirect()">정지</button>
+                    <button id="redirect-articleUrl" onclick="redirectToArticleUrl()" style="display: none">공고로 이동</button>
             </div>
         </div>
     </div>

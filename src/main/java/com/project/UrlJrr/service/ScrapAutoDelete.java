@@ -18,7 +18,7 @@ public class ScrapAutoDelete {
     private final ScrapRepository scrapRepository;
 
 
-    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
+    @Scheduled(initialDelay = 60000, fixedRate = 300000) // 1분 초기 지연 시간과, 5분마다 반복한다.
     public void deleteExpiredScraps() {
         System.out.println("----------------------");
         System.out.println("DB 삭제 실행");
@@ -28,6 +28,12 @@ public class ScrapAutoDelete {
         LocalDateTime deadlineDateTime =null;
         for (Scrap scrap : scraps) {
             String deadline = scrap.getDeadline();
+            if (deadline == null) {
+                // 근데 이런 경우는 없을텐데 ... 다시 확인 해봐야할듯?
+                System.out.println("deadline is null Scrap id : "+scrap.getId());
+                continue; // deadline이 null인 경우 건너뛰기
+
+            }
             System.out.println("==============");
             System.out.println("크롤링 된 scrap deadline :   " + deadline);
 

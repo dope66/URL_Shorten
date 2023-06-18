@@ -14,9 +14,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -171,6 +171,11 @@ public class ScrapingService {
 
         return scraps;
     }
+
+    public Page<Scrap> showListScrap(Pageable pageable) {
+        return scrapRepository.findAllByOrderByidDesc(pageable);
+    }
+
 
 
 

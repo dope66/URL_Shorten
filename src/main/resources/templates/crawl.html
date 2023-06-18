@@ -10,28 +10,38 @@
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
     <script src="/static/js/bootstrap.js"></script>
 </head>
-
-
 <body>
 <h1>Crawl Results</h1>
 <table>
     <thead>
     <tr>
+        <th>#</th>
         <th>Article Text</th>
         <th>Article URL</th>
-        <th>company</th>
+        <th>Company</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="scrap : ${scraps}">
+        <td th:text="${scrap.id}"></td>
         <td th:text="${scrap.articleText}"></td>
         <td>
-            <a target="_blank" th:href="${scrap.articleUrl}"> 홈페이지로 가기</a>
+            <a target="_blank" th:href="${scrap.articleUrl}">홈페이지로 가기</a>
         </td>
         <td th:text="${scrap.company}"></td>
     </tr>
     </tbody>
 </table>
+<!-- 이전 페이지 링크 -->
+<a th:href="@{/crawling/list(page=${currentPage - 1})}" th:if="${currentPage > 1}">이전 페이지</a>
 
+
+<!-- 페이지 번호 표시 -->
+<span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+    <a th:href="@{/crawling/list(page=${pageNumber})}" th:text="${pageNumber}"></a>
+</span>
+
+<!-- 다음 페이지 링크 -->
+<a th:href="@{/crawling/list(page=${currentPage + 1})}" th:if="${currentPage < totalPages - 1}">다음 페이지</a>
 </body>
 </html>

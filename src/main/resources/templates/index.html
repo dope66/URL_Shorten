@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+
     <meta charset="UTF-8">
     <title>prince web</title>
 </head>
@@ -8,11 +11,25 @@
 링크 모음
 <div class="container">
     <a href="/user/register">register</a> <br>
-    <a href="/user/login">login</a><br>
-    <a href="/user/logout">logout</a><br>
+    <div th:if="${username}==anonymousUser">
+        <a href="/user/login">login</a><br>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <div th:if="${username}!=anonymousUser">
+            <a href="/user/logout">logout</a><br>
+        </div>
+    </div>
     <a href="/Short">shortUrl</a><br>
     <a href="/crawling/list">crawling</a><br>
+    <a href="/admin/page">ADMIN</a><br>
 </div>
 
+
+<!-- 인증된 사용자인 경우에만 유저 이름 표시 -->
+<div sec:authorize="isAuthenticated()">
+    <div th:if="${username}!=anonymousUser">
+    유저 이름: <span th:text="${username}"></span>
+    </div>
+</div>
 </body>
 </html>

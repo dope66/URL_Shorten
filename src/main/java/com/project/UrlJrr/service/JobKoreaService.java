@@ -47,14 +47,15 @@ public class JobKoreaService {
         List<Scrap> scraps = new ArrayList<>();
 
         // 기본 url 설정
-        String url = "https://www.jobkorea.co.kr/Search/?stext=%EA%B0%9C%EB%B0%9C%EC%9E%90&tabType=recruit&Page_No=1";
-        String articleUrlPrefix = "https://www.jobkorea.co.kr/";
+        String url = "https://www.jobkorea.co.kr/Search/?stext=%EA%B0%9C%EB%B0%9C%EC%9E%90&tabType=recruit&Page_No=1&focusTab=&focusGno=42102768";
+        String articleUrlPrefix = "https://www.jobkorea.co.kr";
         // Jsoup을 이용한 연결 설정 http 2.0 설정 코드
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectionSpecs(List.of(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
                 .build();
         Document doc = null;
         try {
+            System.out.println("잡코리아 연결 시도");
             // OkHttp를 사용하여 HTTP/2.0 통신
             Request request = new Request.Builder()
                     .url(url)
@@ -67,12 +68,12 @@ public class JobKoreaService {
             // Jsoup을 사용하여 HTML 파싱
             doc = Jsoup.parse(html);
         } catch (Exception e) {
+            System.out.println("잡코리아 연결 실패 ");
             e.printStackTrace();
 
         }
 
-        Elements elements = doc.select("#content > div > div > div.cnt-list-wrap > div >" +
-                " div.recruit-info > div.lists > div > div.list-default > ul > li");
+        Elements elements = doc.select(" div.recruit-info > div.lists > div > div.list-default > ul> li");
         int count = elements.size();
         System.out.println("JObKorea 갯수 : " + count);
         /*
@@ -86,8 +87,8 @@ public class JobKoreaService {
          * jobType : 정규직 여부(?)
          * */
         for (Element element : elements) {
-            String articleText = element.select("div.post-list-info > a.title dev_view on ").text();
-            String articleUrl = element.select("div.post-list-info > a").attr("href");
+            String articleText = element.select("div.post > div.post-list-info > a ").attr("title");
+            String articleUrl = element.select("div.post > div.post-list-info > a").attr("href");
             Elements skillStackElements = element.select("div.post-list-info > p.etc");
             StringJoiner skillStackJoiner = new StringJoiner(", ");
             for (Element skillStackElement : skillStackElements) {
@@ -95,9 +96,9 @@ public class JobKoreaService {
                 skillStackJoiner.add(skillStack);
             }
             String skillStack = skillStackJoiner.toString();
-            String company = element.select("div.post-list-corp > a.name dev_view ").text();
+            String company = element.select("div.post > div.post-list-corp > a").attr("title");
             String deadline = element.select("div.post-list-info > p.option > span.date").text();
-            String location = element.select("div.post-list-info > p.option > span.loc long").text();
+            String location = element.select("div.post-list-info > p.option > span.loc.long").text();
             String experience = element.select("div.post-list-info > p.option > span.exp").text();
             String requirement = element.select("div.post-list-info > p.option > span.edu").text();
             String jobType = element.select("div.post-list-info > p.option > span:nth-child(3)").text();
@@ -107,19 +108,18 @@ public class JobKoreaService {
             String urlKey = element.select("li.list-post").attr("data-gno");
             System.out.println("JOb korea urlKey " + urlKey);
 
+
             boolean isDuplicate = false;
             List<Scrap> existingScraps = scrapRepository.findAll();
             for (Scrap existingScrap : existingScraps) {
                 String existingArticleUrl = existingScrap.getArticleUrl();
-                int existingStartUrlKey = existingArticleUrl.indexOf("data-gno");
-                if (existingStartUrlKey == -1) {
-                    int existingEndUrlKey = existingArticleUrl.indexOf("?", existingStartUrlKey);
-                    if (existingEndUrlKey != -1) {
-                        String existingUrlKey = existingArticleUrl.substring(existingStartUrlKey + 8, existingEndUrlKey);
-                        if (existingUrlKey.equals(urlKey)) {
-                            isDuplicate = true;
-                            break;
-                        }
+                int existingStartUrlKey = existingArticleUrl.indexOf("GI_Read/") + 8;
+                int existingEndUrlKey = existingArticleUrl.indexOf("?", existingStartUrlKey);
+                if (existingStartUrlKey != -1 && existingEndUrlKey != -1) {
+                    String existingUrlKey = existingArticleUrl.substring(existingStartUrlKey, existingEndUrlKey);
+                    if (existingUrlKey.equals(urlKey)) {
+                        isDuplicate = true;
+                        break;
                     }
                 }
             }

@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests -> {
                     authorizeRequests.requestMatchers("/user/page").authenticated();
                     authorizeRequests.requestMatchers("/matching/**").authenticated();
+                    authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
                     authorizeRequests.anyRequest().permitAll();
                 }))
@@ -70,8 +71,6 @@ public class SecurityConfig {
                             .permitAll();
 
                 })
-
-
                 .build();
 
     }

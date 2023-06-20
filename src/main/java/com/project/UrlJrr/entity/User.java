@@ -21,4 +21,5 @@ public class User {
     private String skillStack;  // 기술 스택
     private String experience;  // 경력 여부
     private String requirement;  // 학력
+    private String roles;
 }

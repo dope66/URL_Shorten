@@ -99,11 +99,7 @@
           justify-content-center
           align-items-center
         "
-            style="
-          background: url("../../assets/images/background/login-register.jpg)
-    no-repeat center center;
-    background-size: cover;
-    "
+            style="background: url('/assets/images/background/login-register.jpg')    no-repeat center center;    background-size: cover;   "
     >
     <div class="auth-box p-4 bg-white rounded">
         <div id="loginform">
@@ -116,20 +112,20 @@
                     <form class="form-control" method="post" th:action="@{/user/loginProc}" th:object="${userDto}">
                         <div class="form-group mb-3">
                             <div class="">
-                                <input
+                                <label for="username"></label><input
                                         class="form-control"
                                         type="text"
                                         required=""
                                         placeholder="아이디"
                                         id="username" name="username"
-                                />
+                                >
 
 
                             </div>
                         </div>
                         <div class="form-group mb-4">
                             <div class="">
-                                <input
+                                <label for="password"></label><input
                                         class="form-control"
                                         type="password"
                                         required="" id="password" name="password"
@@ -146,7 +142,7 @@
                                             href="javascript:void(0)"
                                             id="to-recover"
                                             class="link font-weight-medium"
-                                    ><i class="fa fa-lock me-1"></i> Forgot pwd?</a
+                                    ><i class="fa fa-lock me-1"></i> 비밀번호 찾기</a
                                     >
                                 </div>
                             </div>
@@ -191,9 +187,9 @@
                         <div class="form-group mb-0 mt-4">
                             <div class="col-sm-12 justify-content-center d-flex">
                                 <p>
-                                    Don't have an account?
+                                    계정이 없으신가요?
                                     <a
-                                            href="authentication-register1.html"
+                                            href="/user/register"
                                             class="text-info font-weight-medium ms-1"
                                     >Sign Up</a
                                     >
@@ -206,23 +202,25 @@
         </div>
         <div id="recoverform">
             <div class="logo">
-                <h3 class="font-weight-medium mb-3">Recover Password</h3>
+                <h3 class="font-weight-medium mb-3">비밀번호 찾기</h3>
                 <span class="text-muted"
-                >Enter your Email and instructions will be sent to you!</span
+                >이메일 주소를 입력하여 비밀번호를 찾으세요!</span
                 >
             </div>
             <div class="row mt-3 form-material">
                 <!-- Form -->
-                <form class="col-12" action="index.html">
+                <form class="col-12" action="/">
                     <!-- email -->
                     <div class="form-group row">
                         <div class="col-12">
-                            <input
-                                    class="form-control"
-                                    type="email"
-                                    required=""
-                                    placeholder="Username"
-                            />
+                            <label>
+                                <input
+                                        class="form-control"
+                                        type="email"
+                                        required=""
+                                        placeholder="Username"
+                                />
+                            </label>
                         </div>
                     </div>
                     <!-- pwd -->
@@ -233,7 +231,7 @@
                                     type="submit"
                                     name="action"
                             >
-                                Reset
+                                초기화
                             </button>
                         </div>
                     </div>
@@ -249,9 +247,9 @@
 <!-- -------------------------------------------------------------- -->
 <!-- All Required js -->
 <!-- -------------------------------------------------------------- -->
-<script src="../../dist/libs/jquery/dist/jquery.min.js"></script>
+<script src="/dist/libs/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
-<script src="../../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- -------------------------------------------------------------- -->
 <!-- This page plugin js -->
 <!-- -------------------------------------------------------------- -->

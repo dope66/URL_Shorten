@@ -2,24 +2,42 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-    <meta content="" name="description"/>
-    <meta content="" name="author"/>
-    <title>Register</title>
-    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
-    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+            name="keywords"
+            content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, material pro admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, material design, material dashboard bootstrap 5 dashboard template"
+    />
+    <meta
+            name="description"
+            content="Material Pro is powerful and clean admin dashboard template"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <script src="/static/js/bootstrap.js"></script>
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Material Pro Template by WrapPixel</title>
+    <link
+            rel="canonical"
+            href="https://www.wrappixel.com/templates/materialpro/"
+    />
+    <!-- Favicon icon -->
+    <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/assets/images/favicon.png"
+    />
     <script src="/js/skillStack.js"></script>
-
-
-
+    <!-- Custom CSS -->
+    <link href="/dist/css/style.min.css" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-
 
 <script th:inline="javascript">
     $(document).ready(function() {
@@ -38,63 +56,203 @@
         }
     });
 </script>
-
-<div class="container">
+<body>
+<div class="main-wrapper">
+    <!-- -------------------------------------------------------------- -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- -------------------------------------------------------------- -->
+    <div class="preloader">
+        <svg
+                class="tea lds-ripple"
+                width="37"
+                height="48"
+                viewbox="0 0 37 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                    d="M27.0819 17H3.02508C1.91076 17 1.01376 17.9059 1.0485 19.0197C1.15761 22.5177 1.49703 29.7374 2.5 34C4.07125 40.6778 7.18553 44.8868 8.44856 46.3845C8.79051 46.79 9.29799 47 9.82843 47H20.0218C20.639 47 21.2193 46.7159 21.5659 46.2052C22.6765 44.5687 25.2312 40.4282 27.5 34C28.9757 29.8188 29.084 22.4043 29.0441 18.9156C29.0319 17.8436 28.1539 17 27.0819 17Z"
+                    stroke="#1e88e5"
+                    stroke-width="2"
+            ></path>
+            <path
+                    d="M29 23.5C29 23.5 34.5 20.5 35.5 25.4999C36.0986 28.4926 34.2033 31.5383 32 32.8713C29.4555 34.4108 28 34 28 34"
+                    stroke="#1e88e5"
+                    stroke-width="2"
+            ></path>
+            <path
+                    id="teabag"
+                    fill="#1e88e5"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
+            ></path>
+            <path
+                    id="steamL"
+                    d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke="#1e88e5"
+            ></path>
+            <path
+                    id="steamR"
+                    d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13"
+                    stroke="#1e88e5"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+            ></path>
+        </svg>
+    </div>
+    <!-- -------------------------------------------------------------- -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- Login box.scss -->
+    <!-- -------------------------------------------------------------- -->
     <div class="alert alert-danger error-message" role="alert" th:if="${errorMessage}">
         <span th:text="${errorMessage}"></span>
     </div>
 
-    <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
+    <div
+            class="
+          auth-wrapper
+          d-flex
+          no-block
+          justify-content-center
+          align-items-center
+        "            style="/assets/images/big/auth-bg.jpg) no-repeat center center;    "    >
 
-        <div class="form-group">
-            <label for="username">User ID:</label>
-            <input class="form-control" id="username" name="username" type="text">
-            <div class="error-message" id="username-error" style="display: none;"></div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input class="form-control" id="password" name="password" type="password">
-            <div class="error-message" id="password-error" style="display: none;"></div>
-        </div>
-        <div class="form-group">
-            <label for="email">email:</label>
-            <input class="form-control" id="email" name="email" type="email">
-            <div class="error-message" id="email-error" style="display: none;"></div>
-        </div>
-        <div class="form-group">
-            <input id="experience1" name="experience" type="radio" value="신입"><label for="experience1">신입</label>
-            <input id="experience2" name="experience" type="radio" value="경력"><label for="experience2">경력</label>
 
-        </div>
-        <div class="form-group">
-            <div>
-                <label for="skill-input">SkillStack 추가:</label>
-                <input autocomplete="off" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
-                       type="text">
-                <datalist id="skill-list-datalist">
-                    <!-- 기술스택 자동완성을 위한 옵션들 -->
-                </datalist>
+
+    <div class="auth-box p-4 bg-white rounded">
+        <div>
+            <div class="logo text-center">
+              <span class="db"
+              ><img src="/assets/images/logo-icon.png" alt="logo"
+              /></span>
+                <h5 class="font-weight-medium mb-3 mt-1">Sign Up to Admin</h5>
             </div>
-            <div class="selected-skills-container">
-                <h2>선택된 SkillStack:</h2>
-                <ul id="selected-skills-list"></ul>
+            <!-- Form -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
+                        <div class="form-floating mb-3">
+                            <input
+                                    type="text"
+                                    class="form-control form-input-bg"
+                                    id="username" name="username"
+                                    placeholder="john deo"
+                                    required
+                            />
+                            <label for="username">아이디</label>
+                            <div class="invalid-feedback">아이디를 입력해 주세요</div>
+                            <div class="error-message" id="username-error" style="display: none;"></div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input
+                                    type="password"
+                                    class="form-control form-input-bg"
+                                    id="password"
+                                    placeholder="*****"
+                                    required
+                            />
+                            <label for="password">비밀번호</label>
+                            <div class="invalid-feedback">비밀번호를 입력해 주세요</div>
+                            <div class="error-message" id="password-error" style="display: none;"></div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input
+                                    type="email"
+                                    class="form-control form-input-bg"
+                                    id="email"  name="email"
+                                    placeholder="john@gmail.com"
+                                    required
+                            />
+                            <label for="email">이메일</label>
+                            <div class="invalid-feedback">이메일을 입력해 주세요</div>
+                            <div class="error-message" id="email-error" style="display: none;"></div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col mb-3">
+                            <input name="experience" type="radio" id="experience1" class="
+                          with-gap
+                          material-inputs material-inputs
+                          radio-col-blue
+                        ">
+                            <label for="experience1">신입</label>
+                        </div>
+                        <div class="col mb-3">
+                            <input  type="radio" id="experience2" name="experience"  class="
+                          with-gap
+                          material-inputs material-inputs
+                          radio-col-blue
+                        ">
+                            <label for="experience2">경력</label>
+                        </div>
+                        </div>
+
+
+
+
+               <div class="form-group">
+
+               </div>
+                            <div>
+                                <label for="skill-input">SkillStack 추가:</label>
+
+
+                                <div class="input-group mb-3">
+                                <input class="form-control" autocomplete="off" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
+                                       type="text">
+                                    <button id="add-skill-btn"  class="btn btn-light-info text-info font-weight-medium" type="button">추가</button>
+                                    <button id="remove-skill-btn" class="btn btn-light-danger text-danger" type="button">삭제</button>
+
+
+                                </div>
+                                <ul id="selected-skills"></ul>
+
+
+                                <input id="selected-skills-input" name="skillStack" type="hidden">
+                                <datalist id="skill-list-datalist">
+                                    <!-- 기술스택 자동완성을 위한 옵션들 -->
+                                </datalist>
+                            </div>
+
+                            <div class="selected-skills-container">
+                                <h5 class="font-weight-medium mb-3 mt-1">선택된 SkillStack:</h5>
+                                <ul id="selected-skills-list"></ul>
+                            </div>
+
+                        <div class="d-flex align-items-stretch">
+                            <button type="submit" class="btn btn-info d-block w-100">
+                                회원가입
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <!-- 기술 스택 선택 시 추가/삭제 버튼 및 hidden input 추가 -->
-        <div class="form-group">
-            <label>기술 스택:</label>
-            <ul id="selected-skills"></ul>
-            <input id="selected-skills-input" name="skillStack" type="hidden">
-            <button id="add-skill-btn" type="button">추가</button>
-            <button id="remove-skill-btn" type="button">삭제</button>
-        </div>
-
-        <button type="submit">가입</button>
-    </form>
+    </div>
 </div>
-
-
-
+<!-- -------------------------------------------------------------- -->
+<!-- Login box.scss -->
+<!-- -------------------------------------------------------------- -->
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- All Required js -->
+<!-- -------------------------------------------------------------- -->
+<script src="/libs/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- -------------------------------------------------------------- -->
+<!-- This page plugin js -->
+<!-- -------------------------------------------------------------- -->
+<!--Custom JavaScript -->
+<script type="text/javascript">
+    $(".preloader").fadeOut();
+</script>
 </body>
 </html>

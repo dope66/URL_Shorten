@@ -23,7 +23,7 @@ public class Scrap {
     private String articleText;
     private String articleUrl;
 
-    @Column(length = 500)
+    @Column(length = 1000)
     private String skillStack;
 
     private String company;

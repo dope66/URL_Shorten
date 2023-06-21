@@ -22,10 +22,12 @@ import java.io.IOException;
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomAuthenticationFailureHandler authenticationFailureHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
@@ -52,17 +54,19 @@ public class SecurityConfig {
                                         }
                                     }
                             )
-                            .failureHandler(
-                                    new AuthenticationFailureHandler() {
-                                        @Override
-                                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                                            System.out.println("exception: " + exception.getMessage());
-                                            response.sendRedirect("/user/login");
-                                        }
-                                    }
-                            )
+                            .failureHandler(authenticationFailureHandler)
+
+//                                    new AuthenticationFailureHandler() {
+//                                        @Override
+//                                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+//                                            System.out.println("exception: " + exception.getMessage());
+//                                            response.sendRedirect("/user/login");
+//                                        }
+//                                    }
+//                            )
 
                             .permitAll();
+
 
                 })
                 .logout((logout) -> {

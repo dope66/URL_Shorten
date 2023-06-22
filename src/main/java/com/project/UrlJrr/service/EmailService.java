@@ -17,7 +17,7 @@ import java.util.List;
 public class EmailService {
 
     private final UserService userService;
-    private final ThreadLocal<JavaMailSender> javaMailSender = new ThreadLocal<JavaMailSender>();
+    private final JavaMailSender javaMailSender;
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
 
@@ -84,6 +84,6 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        javaMailSender.get().send(message);
+        javaMailSender.send(message);
     }
 }

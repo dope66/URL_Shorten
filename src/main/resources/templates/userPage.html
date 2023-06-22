@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보</title>
+</head>
+<body>
+회원 정보창 시험
+<!-- userPage.html -->
+<div th:if="${user != null}">
+    <p>Username: <span th:text="${user.getUsername()}"></span></p>
+    <!-- 다른 user 속성에 대한 표시 또는 작업 수행 -->
+</div>
+<div th:unless="${user != null}">
+    <p>User 정보를 찾을 수 없습니다.</p>
+</div>
+<div>
+    <span><a href="/user/changePassword">비밀번호 변경</a></span>
+</div>
+</body>
+</html>

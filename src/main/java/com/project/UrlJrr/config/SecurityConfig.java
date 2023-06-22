@@ -32,10 +32,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests -> {
-                    authorizeRequests.requestMatchers("/user/page").authenticated();
                     authorizeRequests.requestMatchers("/matching/**").authenticated();
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
+                    authorizeRequests.requestMatchers("/user/login").permitAll();
+                    authorizeRequests.requestMatchers("/user/**").authenticated();
                     authorizeRequests.anyRequest().permitAll();
                 }))
                 .formLogin((formLogin) -> {
@@ -56,14 +57,6 @@ public class SecurityConfig {
                             )
                             .failureHandler(authenticationFailureHandler)
 
-//                                    new AuthenticationFailureHandler() {
-//                                        @Override
-//                                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-//                                            System.out.println("exception: " + exception.getMessage());
-//                                            response.sendRedirect("/user/login");
-//                                        }
-//                                    }
-//                            )
 
                             .permitAll();
 

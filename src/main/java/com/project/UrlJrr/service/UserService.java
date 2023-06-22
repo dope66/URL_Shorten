@@ -20,14 +20,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public User register(UserDto userDto){
+    public User register(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
-        if(existingUser.isPresent()){
-            throw  new IllegalStateException("이미 가입된 아이디 입니다.");
+        if (existingUser.isPresent()) {
+            throw new IllegalStateException("이미 가입된 아이디 입니다.");
         }
         return userRepository.save(userDto.toEntity(passwordEncoder));
     }
-    public Map<String,String> validatedHandling(Errors errors){
+
+    public Map<String, String> validatedHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
         for (FieldError error : errors.getFieldErrors()) {
             String fieldName = error.getField();
@@ -36,6 +37,7 @@ public class UserService {
         }
         return validatorResult;
     }
+
     public List<String> getAllUserEmails() {
         List<User> users = userRepository.findAll();
         List<String> userEmails = new ArrayList<>();
@@ -46,14 +48,41 @@ public class UserService {
 
         return userEmails;
     }
+
     public User getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        return userOptional.orElse(null);
+        return userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
+
+    // 현재 로그인한 사용자의 이름을 가지고오기위한것.
     public String getUsername() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         return authentication.getName();
+    }
+
+    public String changePassword(String currentPassword, String newPassword, String confirmPassword) {
+        String username =getUsername();
+        User user = getUserByUsername(username);
+        //        현재 비밀번호 확인 하기
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return "error : 현재 비밀번호가 올바르지 않습니다.";
+        }
+//       새로운 비밀번호 정규식 검증
+        if(!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")){
+            return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
+        }
+//      비밀번호 일치 여부
+        if (!newPassword.equals(confirmPassword)) {
+            return "error: 새로운 비밀번호가 일치하지 않습니다.";
+
+        }
+//        비밀번호 업데이트
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return "비밀번호가 성공적으로 변경되었습니다.";
+
     }
 
 

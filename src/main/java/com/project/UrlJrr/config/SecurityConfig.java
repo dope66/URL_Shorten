@@ -36,6 +36,7 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
                     authorizeRequests.requestMatchers("/user/login").permitAll();
+                    authorizeRequests.requestMatchers("/user/findPassword").permitAll();
                     authorizeRequests.requestMatchers("/user/**").authenticated();
                     authorizeRequests.anyRequest().permitAll();
                 }))

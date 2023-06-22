@@ -75,7 +75,6 @@ public class UserController {
     }
 
 
-
     @PostMapping("/changePassword")
     public String changePasswordProc(
             @RequestParam("currentPassword") String currentPassword,
@@ -90,10 +89,27 @@ public class UserController {
         } else {
             model.addAttribute("success", resultMessage);
             model.addAttribute("redirect", true); // 변경 성공 시 리다이렉트 여부 추가
-            return  "changePassword";
+            return "changePassword";
         }
 
 
+    }
+
+    @GetMapping("/findPassword")
+    public String findPassword() {
+
+        return "findPassword";
+
+    }
+
+    @PostMapping("/findPassword")
+    public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username) {
+        if (userService.userEamilCheck(email, username)) {
+            userService.resetPasswordAndSendEmail(email, username);
+            return "redirect:/";
+        } else {
+            return "redirect:/user/findpassword";
+        }
     }
 
 

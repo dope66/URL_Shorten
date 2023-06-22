@@ -4,6 +4,8 @@ import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,7 @@ import java.util.*;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JavaMailSender javaMailSender;
 
     public User register(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
@@ -62,14 +65,14 @@ public class UserService {
     }
 
     public String changePassword(String currentPassword, String newPassword, String confirmPassword) {
-        String username =getUsername();
+        String username = getUsername();
         User user = getUserByUsername(username);
         //        현재 비밀번호 확인 하기
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return "error : 현재 비밀번호가 올바르지 않습니다.";
         }
 //       새로운 비밀번호 정규식 검증
-        if(!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")){
+        if (!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")) {
             return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
         }
 //      비밀번호 일치 여부
@@ -85,5 +88,49 @@ public class UserService {
 
     }
 
+
+    public boolean userEamilCheck(String email, String username) {
+        Optional<User> user = userRepository.findByEmailAndUsername(email, username);
+
+        if (user != null && user.get().getUsername().equals(username)) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
+    public void resetPasswordAndSendEmail(String email, String username) {
+        // db에서 찾고 없으면 메세지
+        User user = userRepository.findByEmailAndUsername(email, username).orElseThrow(() -> new RuntimeException("User not found"));
+        String temporaryPassword = generateTemporaryPassword();
+        String hashedPassword = passwordEncoder.encode(temporaryPassword);
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+        sendTemporaryPasswordEmail(email, temporaryPassword);
+
+    }
+
+    public void sendTemporaryPasswordEmail(String recipientEmail, String temporaryPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(recipientEmail);
+        message.setSubject("임시 비밀번호 보내 드립니다.");
+        message.setText("임시 비밀 번호 입니다.: " + temporaryPassword);
+        javaMailSender.send(message);
+    }
+
+    private String generateTemporaryPassword() {
+//       임시 비번 생성로직 구현해야됨
+        char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+        String temporaryPassword = "";
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            temporaryPassword += charSet[idx];
+        }
+        return temporaryPassword;
+    }
 
 }

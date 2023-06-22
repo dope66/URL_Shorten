@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta
             name="keywords"
             content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, material pro admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, material design, material dashboard bootstrap 5 dashboard template"
@@ -13,7 +13,7 @@
             name="description"
             content="Material Pro is powerful and clean admin dashboard template"
     />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="noindex,nofollow"/>
     <title>Material Pro Template by WrapPixel</title>
     <link
             rel="canonical"
@@ -27,7 +27,7 @@
             href="/assets/images/favicon.png"
     />
     <!-- Custom CSS -->
-    <link href="/dist/css/style.min.css" rel="stylesheet" />
+    <link href="/dist/css/style.min.css" rel="stylesheet"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -103,18 +103,18 @@
         "
             style="background: url('/assets/images/background/login-register.jpg')    no-repeat center center;    background-size: cover;   "
     >
-    <div class="auth-box p-4 bg-white rounded">
-        <div id="loginform">
-            <div class="logo">
-                <h3 class="box-title mb-3">Sign In</h3>
-            </div>
-            <!-- Form -->
-            <div class="row">
-                <div class="col-12">
-                    <form class="form-control" method="post" th:action="@{/user/loginProc}" th:object="${userDto}">
-                        <div class="form-group mb-3">
-                            <div class="">
-                                <label for="username"></label><input
+        <div class="auth-box p-4 bg-white rounded">
+            <div id="loginform">
+                <div class="logo">
+                    <h3 class="box-title mb-3">Sign In</h3>
+                </div>
+                <!-- Form -->
+                <div class="row">
+                    <div class="col-12">
+                        <form class="form-control" method="post" th:action="@{/user/loginProc}" th:object="${userDto}">
+                            <div class="form-group mb-3">
+                                <div class="">
+                                    <label for="username"></label><input
                                         class="form-control"
                                         type="text"
                                         required=""
@@ -124,134 +124,134 @@
                                 >
 
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group mb-4">
-                            <div class="">
-                                <label for="password"></label><input
+                            <div class="form-group mb-4">
+                                <div class="">
+                                    <label for="password"></label><input
                                         class="form-control"
                                         type="password"
                                         required="" id="password" name="password"
                                         placeholder="비밀번호"
 
                                 />
-                            </div>
-                        </div>
-<!--                         오류 메시지가 존재하는 경우에만 표시 -->
-                        <div th:if="${param.error}">
-                            <p><span th:text="${param.error}"></span></p>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="d-flex">
-
-                                <div class="ms-auto">
-                                    <a
-                                            href="javascript:void(0)"
-                                            id="to-recover"
-                                            class="link font-weight-medium"
-                                    ><i class="fa fa-lock me-1"></i> 비밀번호 찾기</a
-                                    >
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group text-center mt-4 mb-3">
-                            <div class="col-xs-12">
-                                <button
-                                        class="
+                            <!--                         오류 메시지가 존재하는 경우에만 표시 -->
+                            <div th:if="${param.error}">
+                                <p><span th:text="${param.error}"></span></p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="d-flex">
+
+                                    <div class="ms-auto">
+                                        <a
+                                                href="/user/findPassword"
+                                                id="to-recover"
+                                                class="link font-weight-medium"
+                                        ><i class="fa fa-lock me-1"></i> 비밀번호 찾기</a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center mt-4 mb-3">
+                                <div class="col-xs-12">
+                                    <button
+                                            class="
                           btn btn-info
                           d-block
                           w-100
                           waves-effect waves-light
                         "
-                                        type="submit"
-                                >
-                                    로그인
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
-                                <div class="social mb-3">
-                                    <a
-                                            href="javascript:void(0)"
-                                            class="btn btn-facebook"
-                                            data-bs-toggle="tooltip"
-                                            title="Login with Facebook"
+                                            type="submit"
                                     >
-                                        <i aria-hidden="true" class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a
-                                            href="javascript:void(0)"
-                                            class="btn btn-googleplus"
-                                            data-bs-toggle="tooltip"
-                                            title="Login with Google"
-                                    >
-                                        <i aria-hidden="true" class="fab fa-google"></i>
-                                    </a>
+                                        로그인
+                                    </button>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
+                                    <div class="social mb-3">
+                                        <a
+                                                href="javascript:void(0)"
+                                                class="btn btn-facebook"
+                                                data-bs-toggle="tooltip"
+                                                title="Login with Facebook"
+                                        >
+                                            <i aria-hidden="true" class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a
+                                                href="javascript:void(0)"
+                                                class="btn btn-googleplus"
+                                                data-bs-toggle="tooltip"
+                                                title="Login with Google"
+                                        >
+                                            <i aria-hidden="true" class="fab fa-google"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0 mt-4">
+                                <div class="col-sm-12 justify-content-center d-flex">
+                                    <p>
+                                        계정이 없으신가요?
+                                        <a
+                                                href="/user/register"
+                                                class="text-info font-weight-medium ms-1"
+                                        >Sign Up</a
+                                        >
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="recoverform">
+                <div class="logo">
+                    <h3 class="font-weight-medium mb-3">비밀번호 찾기</h3>
+                    <span class="text-muted"
+                    >이메일 주소를 입력하여 비밀번호를 찾으세요!</span
+                    >
+                </div>
+                <div class="row mt-3 form-material">
+                    <!-- Form -->
+                    <form class="col-12" action="/">
+                        <!-- email -->
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label>
+                                    <input
+                                            class="form-control"
+                                            type="email"
+                                            required=""
+                                            placeholder="Username"
+                                    />
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-group mb-0 mt-4">
-                            <div class="col-sm-12 justify-content-center d-flex">
-                                <p>
-                                    계정이 없으신가요?
-                                    <a
-                                            href="/user/register"
-                                            class="text-info font-weight-medium ms-1"
-                                    >Sign Up</a
-                                    >
-                                </p>
+                        <!-- pwd -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button
+                                        class="btn d-block w-100 btn-primary text-uppercase"
+                                        type="submit"
+                                        name="action"
+                                >
+                                    초기화
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div id="recoverform">
-            <div class="logo">
-                <h3 class="font-weight-medium mb-3">비밀번호 찾기</h3>
-                <span class="text-muted"
-                >이메일 주소를 입력하여 비밀번호를 찾으세요!</span
-                >
-            </div>
-            <div class="row mt-3 form-material">
-                <!-- Form -->
-                <form class="col-12" action="/">
-                    <!-- email -->
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <label>
-                                <input
-                                        class="form-control"
-                                        type="email"
-                                        required=""
-                                        placeholder="Username"
-                                />
-                            </label>
-                        </div>
-                    </div>
-                    <!-- pwd -->
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <button
-                                    class="btn d-block w-100 btn-primary text-uppercase"
-                                    type="submit"
-                                    name="action"
-                            >
-                                초기화
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
-</div>
-<!-- -------------------------------------------------------------- -->
-<!-- Login box.scss -->
-<!-- -------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- Login box.scss -->
+    <!-- -------------------------------------------------------------- -->
 </div>
 <!-- -------------------------------------------------------------- -->
 <!-- All Required js -->

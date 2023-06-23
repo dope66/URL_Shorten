@@ -18,27 +18,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class ScrapingController {
     private final ScrapingService scrapingService;
+
     @GetMapping("/crawling/list")
     public String crawling(Scrap scrap, @RequestParam(defaultValue = "1") int page,
                            @RequestParam(defaultValue = "10") int size,
-                            HttpServletRequest request, Model model,
+                           HttpServletRequest request, Model model,
                            String articleText, String company) {
 
         Page<Scrap> scrapPage = null;
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        if(articleText ==null){
+        if (articleText == null) {
             // 본래 리스트 출력 ;
             scrapPage = scrapingService.showListScrap(pageable);
 
 
-        }else{
-            scrapPage = scrapingService.ScrapSearchList(articleText,company,pageable);
+        } else {
+            scrapPage = scrapingService.ScrapSearchList(articleText, company, pageable);
         }
         model.addAttribute("scraps", scrapPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", scrapPage.getTotalPages());
 
         return "pages/matching/crawl";
+    }
+
+    @GetMapping("/crawling/apply")
+    public String crawlingApply() {
+        return "pages/matching/apply";
     }
 
 }

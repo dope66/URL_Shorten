@@ -20,7 +20,7 @@ public class UrlMappingController {
 
     @GetMapping("")
     public String home(UrlMappingDto urlMappingDto) {
-        return "urlShort";
+        return "pages/urlShort/urlShort";
     }
 
     @PostMapping("/urlMapping")

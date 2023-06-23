@@ -50,6 +50,9 @@
                                 <a class="btn btn-info" href="/user/login">로그인</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
+                                <a th:if="${username}!=anonymousUser" class="btn btn-info" href="/user/modify">회원정보</a>
+                            </li>
+                            <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
                                 <a th:if="${username}!=anonymousUser" class="btn btn-info" href="/user/logout">로그아웃</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">

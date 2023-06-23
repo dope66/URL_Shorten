@@ -36,6 +36,23 @@ public class UserService {
         return userRepository.save(userDto.toEntity(passwordEncoder));
     }
 
+    public  User update(UserDto userDto){
+        // 이메일 중복 체크
+        Optional<User> existingEmail = userRepository.findByEmail(userDto.getEmail());
+        if (existingEmail.isPresent()) {
+            throw new IllegalStateException("존재하지 이메일 입니다.");
+        }
+
+        // 수정 및 저장하기
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
+        if(user.isPresent()){
+            user.get().setEmail(userDto.getEmail());
+            user.get().setPassword(passwordEncoder.encode(userDto.getPassword()));
+            return userRepository.save(user.get());
+        }
+        throw new IllegalStateException("존재하지 않는 아이디 입니다..");
+    }
+
     public Map<String, String> validatedHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
         for (FieldError error : errors.getFieldErrors()) {

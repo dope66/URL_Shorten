@@ -55,17 +55,41 @@ public class UserController {
 
     }
 
+
+
+
+
     @GetMapping("/login")
     public String login() {
         return "pages/user/login";
     }
 
-    @GetMapping("/page")
+    @GetMapping("/modify")
     public String userPage(@AuthenticationPrincipal Model model) {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
         return "pages/user/userPage";
+    }
+
+    @PostMapping("/modify")
+    public String modifySave(@Validated UserDto userDto, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("userDto", userDto);
+            Map<String, String> validatorResult = userService.validatedHandling(errors);
+            model.addAttribute("validatorResult", validatorResult);
+           return "pages/user/userPage";
+        }
+        try {
+            userService.update(userDto);
+            model.addAttribute("successMessage", "회원 가입이 성공적으로 완료되었습니다.");
+            return "redirect:/";
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("userDto", userDto);
+            model.addAttribute("showErrorMessage", true);
+            return "pages/user/userPage";
+        }
     }
 
     @GetMapping("/changePassword")

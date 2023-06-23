@@ -61,7 +61,7 @@ public class UserService {
 
     public boolean checkPassword(String newPassword){
         //return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
-        return !newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}");
+        return newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}");
     }
 
     public Map<String, String> validatedHandling(Errors errors) {

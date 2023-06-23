@@ -83,7 +83,7 @@ public class UserController {
         }
         try {
             userService.update(userDto);
-            model.addAttribute("successMessage", "회원 가입이 성공적으로 완료되었습니다.");
+            model.addAttribute("successMessage", "회원 수정이 성공적으로 완료되었습니다.");
             return "redirect:/";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());

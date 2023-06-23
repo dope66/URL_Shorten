@@ -54,7 +54,8 @@ public class UserService {
             user.get().setExperience(userDto.getExperience());
             user.get().setPassword(passwordEncoder.encode(userDto.getPassword()));
             user.get().setSkillStack(userDto.getSkillStack());
-            return userRepository.save(user.get());
+            userRepository.save(user.get());
+            return user.get();
         }
         throw new IllegalStateException("존재하지 않는 아이디 입니다..");
     }

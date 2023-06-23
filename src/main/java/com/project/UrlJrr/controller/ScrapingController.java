@@ -38,7 +38,7 @@ public class ScrapingController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", scrapPage.getTotalPages());
 
-        return "crawl";
+        return "pages/matching/crawl";
     }
 
 }

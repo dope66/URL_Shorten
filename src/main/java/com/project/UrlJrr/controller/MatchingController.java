@@ -7,7 +7,6 @@ import com.project.UrlJrr.service.AuthService;
 import com.project.UrlJrr.service.MatchingService;
 import com.project.UrlJrr.service.ScrapingService;
 import com.project.UrlJrr.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -39,10 +37,10 @@ public class MatchingController {
             model.addAttribute("user",user);
             model.addAttribute("matchingScore", matchingScore);
             model.addAttribute("scrap",scrap);
-            return "matchingDetail";
+            return "pages/matching/matchingDetail";
         }else{
             model.addAttribute("errorMessage");
-            return "deleteScrap";
+            return "pages/matching/deleteScrap";
         }
 
 

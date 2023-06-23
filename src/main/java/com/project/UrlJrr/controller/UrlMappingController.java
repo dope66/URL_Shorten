@@ -31,7 +31,7 @@ public class UrlMappingController {
         String shortUrl = urlMappingService.generateShortUrl(originalUrl);
         // 생성된 단축 URL을 모델에 추가
         model.addAttribute("shortUrl", shortUrl);
-        return "resultPage";
+        return "pages/matching/resultPage";
     }
     @GetMapping("/{shortUrl}")
     public String redirectOriginalUrl(@PathVariable String shortUrl){
@@ -40,7 +40,7 @@ public class UrlMappingController {
             return "redirect:"+originalUrl;
         }else{
             // 유효하지 않은 단축 url
-            return "invalidUrlPage";
+            return "pages/matching/resultPage";
         }
 
     }

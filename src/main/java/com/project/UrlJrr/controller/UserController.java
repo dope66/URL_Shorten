@@ -29,7 +29,7 @@ public class UserController {
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("userDto", new UserDto());
-        return "register";
+        return "pages/user/register";
     }
 
     @PostMapping("/registerProc")
@@ -38,7 +38,7 @@ public class UserController {
             model.addAttribute("userDto", userDto);
             Map<String, String> validatorResult = userService.validatedHandling(errors);
             model.addAttribute("validatorResult", validatorResult);
-            return "register";
+            return "pages/user/register";
         }
         try {
             User newUser = userService.register(userDto);
@@ -49,7 +49,7 @@ public class UserController {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("userDto", userDto);
             model.addAttribute("showErrorMessage", true);
-            return "register";
+            return "pages/user/register";
         }
 
 
@@ -65,13 +65,13 @@ public class UserController {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
-        return "userPage";
+        return "pages/user/userPage";
     }
 
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
 
-        return "changePassword";
+        return "pages/user/changePassword";
     }
 
 
@@ -85,11 +85,11 @@ public class UserController {
 
         if (resultMessage.startsWith("error:")) {
             model.addAttribute("error", resultMessage.substring(6));
-            return "changePassword";
+            return "pages/user/changePassword";
         } else {
             model.addAttribute("success", resultMessage);
             model.addAttribute("redirect", true); // 변경 성공 시 리다이렉트 여부 추가
-            return "changePassword";
+            return "pages/user/changePassword";
         }
 
 
@@ -98,7 +98,7 @@ public class UserController {
     @GetMapping("/findPassword")
     public String findPassword() {
 
-        return "findPassword";
+        return "pages/user/findPassword";
 
     }
 
@@ -110,7 +110,7 @@ public class UserController {
             return "redirect:/";
         } else {
             model.addAttribute("errorMessage",result);
-            return "findPassword";
+            return "pages/user/findPassword";
         }
     }
 

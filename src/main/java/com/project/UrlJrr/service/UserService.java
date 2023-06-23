@@ -28,6 +28,11 @@ public class UserService {
         if (existingUser.isPresent()) {
             throw new IllegalStateException("이미 가입된 아이디 입니다.");
         }
+        Optional<User> existingEmail = userRepository.findByEmail(userDto.getEmail());
+        if (existingEmail.isPresent()) {
+            throw new IllegalStateException("이미 가입된 이메일 주소입니다.");
+        }
+
         return userRepository.save(userDto.toEntity(passwordEncoder));
     }
 

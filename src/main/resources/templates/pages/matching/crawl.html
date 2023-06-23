@@ -139,18 +139,6 @@
                                 </td>
                             </tr>
                             </tbody>
-                            <tfoot>
-                            <tr>
-
-
-                                <th>#</th>
-                                <th>공고 제목</th>
-                                <th>매칭 정보</th>
-                                <th>회사</th>
-                                <th>발송 여부</th>
-
-                            </tr>
-                            </tfoot>
                         </table>
 
 
@@ -162,7 +150,8 @@
                             <a aria-controls="zero_config" aria-role="link" class="paginate_button previous"
                                data-dt-idx="previous"
                                id="zero_config_previous"
-                               tabindex="0" th:href="@{/crawling/list(page=${currentPage - 1})}" th:if="${currentPage > 1}">Previous</a>
+                               tabindex="0" th:href="@{/crawling/list(page=${currentPage - 1})}"
+                               th:if="${currentPage > 1}">Previous</a>
                             <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
 
 

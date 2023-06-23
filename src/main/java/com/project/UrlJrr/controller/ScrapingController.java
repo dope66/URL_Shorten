@@ -47,4 +47,9 @@ public class ScrapingController {
         return "pages/matching/apply";
     }
 
+    @GetMapping("/crawling/detail")
+    public String crawlingDetail() {
+        return "pages/matching/detail";
+    }
+
 }

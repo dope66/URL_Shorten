@@ -106,12 +106,18 @@
 
 
                                 <td class="fw-bold link" th:text="${scrap.id}"></td>
-                                <td th:text="${scrap.articleText}"></td>
+                                <td th:text="${scrap.articleText}">
+
+                                    <a class="font-weight-medium link"
+                              
+                                       th:href="/crawling/detail">
+                                    </a>
+                                </td>
                                 <td>
                                     <a class="font-weight-medium link"
                                        target="_blank"
                                        th:href="'/matching/'+${scrap.id}">바로가기
-                                    </a> >
+                                    </a>
                                 </td>
                                 <td th:text="${scrap.company}"></td>
 

@@ -74,8 +74,13 @@ public class UserController {
     }
 
     @PostMapping("/modify")
-    public String modifySave(@Validated UserDto userDto,   Model model) {
-
+    public String modifySave(@Validated UserDto userDto, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("userDto", userDto);
+            Map<String, String> validatorResult = userService.validatedHandling(errors);
+            model.addAttribute("validatorResult", validatorResult);
+           return "pages/user/userPage";
+        }
         try {
             userService.update(userDto);
             model.addAttribute("successMessage", "회원 수정이 성공적으로 완료되었습니다.");

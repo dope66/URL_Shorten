@@ -18,7 +18,7 @@ public class UrlMappingController {
     @Autowired
     private final UrlMappingService urlMappingService;
 
-    @GetMapping("")
+    @GetMapping("/main")
     public String home(UrlMappingDto urlMappingDto) {
         return "pages/urlShort/urlShort";
     }

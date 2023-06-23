@@ -85,10 +85,11 @@
                         <!-- Column -->
                     </div>
                     <div class="table-responsive mt-4">
-                        <div class="dataTables_filter" id="zero_config_filter"><label>Search:<input aria-controls="zero_config"
-                                                                                                    class=""
-                                                                                                    placeholder=""
-                                                                                                    type="search"></label>
+                        <div class="dataTables_filter" id="zero_config_filter"><label>Search:<input
+                                aria-controls="zero_config"
+                                class=""
+                                placeholder=""
+                                type="search"></label>
                         </div>
                         <table
                                 class="table table-bordered no-wrap fs-3"
@@ -159,21 +160,24 @@
                         <!-- 다음 페이지 링크 -->
 
 
-                        <div class="p-3 mt-4">
+                        <div class=" dataTables_paginate paging_simple_numbers p-3 mt-4">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item">
-                                        <a th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                        <a class="paginate_button previous"
+                                           th:href="@{/crawling/list(page=${currentPage - 1})}"
                                            th:if="${currentPage > 1}">이전 페이지</a>
                                     </li>
                                     <li class="page-item">
                                              <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                            <a th:href="@{/crawling/list(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                            <a class="paginate_button" th:href="@{/crawling/list(page=${pageNumber})}"
+                               th:text="${pageNumber}"></a>
                         </span>
                                     </li>
 
                                     <li class="page-item">
-                                        <a th:href="@{/crawling/list(page=${currentPage + 1})}"
+                                        <a class="paginate_button next"
+                                           th:href="@{/crawling/list(page=${currentPage + 1})}"
                                            th:if="${currentPage < totalPages - 1}">다음 페이지</a>
                                     </li>
                                 </ul>

@@ -89,14 +89,17 @@ public class UserService {
     }
 
 
-    public boolean userEamilCheck(String email, String username) {
-        Optional<User> user = userRepository.findByEmailAndUsername(email, username);
-
-        if (user != null && user.get().getUsername().equals(username)) {
-            return true;
-        } else {
-            return false;
+    public String userEamilCheck(String email, String username) {
+        if(email.isEmpty() || username.isEmpty()){
+            return "빈칸을 채워주세요 ";
         }
+
+        Optional<User> user = userRepository.findByEmailAndUsername(email, username);
+        if(!user.isPresent()){
+            return "등록되지않은 사용자 입니다.";
+        }
+        return "";
+
 
 
     }

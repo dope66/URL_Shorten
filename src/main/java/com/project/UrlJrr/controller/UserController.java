@@ -103,12 +103,14 @@ public class UserController {
     }
 
     @PostMapping("/findPassword")
-    public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username) {
-        if (userService.userEamilCheck(email, username)) {
+    public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username,Model model) {
+        String result  = userService.userEamilCheck(email,username);
+        if (result.isEmpty()) {
             userService.resetPasswordAndSendEmail(email, username);
             return "redirect:/";
         } else {
-            return "redirect:/user/findpassword";
+            model.addAttribute("errorMessage",result);
+            return "findPassword";
         }
     }
 

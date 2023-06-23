@@ -89,7 +89,7 @@
                         <div class="row">
                             <div class="col"></div>
                             <div class="col"></div>
-                            <form class="col-4 py-2 px-3 align-self-end">
+                            <form class="col-3 py-2 px-3 align-self-end">
                                 <div class="input-group col-2">
                                     <input aria-label="Text input with checkbox" class="form-control" type="text">
                                     <button class="btn btn-light-info text-info font-weight-medium" type="button">검색
@@ -100,15 +100,14 @@
                         </div>
                         <table
                                 class="table table-bordered no-wrap fs-3"
-                                id="zero_config"
-                        >
+                                id="zero_config">
                             <thead>
                             <tr>
                                 <th>#</th>
                                 <th>공고 제목</th>
                                 <th>매칭 정보</th>
                                 <th>회사</th>
-                                <th>발송 여부</th>
+                                <th>상태</th>
 
                             </tr>
                             </thead>
@@ -129,7 +128,7 @@
                                 <td>
                                     <a class="font-weight-medium link"
                                        target="_blank"
-                                       th:href="'/matching/'+${scrap.id}">바로가기
+                                       th:href="/matching/'+${scrap.id}">바로가기
                                     </a>
                                 </td>
                                 <td th:text="${scrap.company}"></td>

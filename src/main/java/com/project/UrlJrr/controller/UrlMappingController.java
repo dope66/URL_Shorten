@@ -24,23 +24,24 @@ public class UrlMappingController {
     }
 
     @PostMapping("/urlMapping")
-    public String convertUrl(@ModelAttribute("urlMappingDto") UrlMappingDto urlMappingDto, HttpServletRequest request,Model model) {
-        String serverName =request.getServerName();
-        model.addAttribute("serverName",serverName);
+    public String convertUrl(@ModelAttribute("urlMappingDto") UrlMappingDto urlMappingDto, HttpServletRequest request, Model model) {
+        String serverName = request.getServerName();
+        model.addAttribute("serverName", serverName);
         String originalUrl = urlMappingDto.getOriginalUrl();
         String shortUrl = urlMappingService.generateShortUrl(originalUrl);
         // 생성된 단축 URL을 모델에 추가
         model.addAttribute("shortUrl", shortUrl);
-        return "pages/matching/resultPage";
+        return "pages/urlShort/resultPage";
     }
+
     @GetMapping("/{shortUrl}")
-    public String redirectOriginalUrl(@PathVariable String shortUrl){
+    public String redirectOriginalUrl(@PathVariable String shortUrl) {
         String originalUrl = urlMappingService.getOriginalUrl(shortUrl);
-        if(originalUrl!=null){
-            return "redirect:"+originalUrl;
-        }else{
+        if (originalUrl != null) {
+            return "redirect:" + originalUrl;
+        } else {
             // 유효하지 않은 단축 url
-            return "pages/matching/resultPage";
+            return "pages/urlShort/resultPage";
         }
 
     }

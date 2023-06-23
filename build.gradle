@@ -28,6 +28,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
 
+
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+
 }
 
 tasks.named('test') {

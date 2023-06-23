@@ -1,53 +1,182 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!-- Default Layout Import-->
+<html lang="en"
+      layout:decorate="~{common/layouts/defaultLayout}"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-    <meta content="" name="description"/>
-    <meta content="" name="author"/>
-    <title>Crawl Results</title>
-    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
-    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
-    <script src="/static/js/bootstrap.js"></script>
+    <title>테스트 페이지 </title>
+
 </head>
-<body>
-<h1>Crawl Results</h1>
-<table>
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Article Text</th>
-        <th>매칭 정보</th>
-        <th>Company</th>
-        <th>발송 여부</th>
 
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="scrap : ${scraps}">
-        <td th:text="${scrap.id}"></td>
-        <td th:text="${scrap.articleText}"></td>
-        <td>
-            <a target="_blank" th:href="'/matching/'+${scrap.id}">매칭 정보</a>
-        </td>
-        <td th:text="${scrap.company}"></td>
-        <td th:text="${scrap.sent ? '발송' : '미발송'}"></td>
+<!-- -------------------------------------------------------------- -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- -------------------------------------------------------------- -->
+<div class="row page-titles">
+    <div class="col-md-5 col-12 align-self-center">
+        <h3 class="text-themecolor mb-0">Crawl Results</h3>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0)">Main</a>
+            </li>
+            <li class="breadcrumb-item active">Crawl Results</li>
+        </ol>
+    </div>
+    <div class="col-md-7 col-12 align-self-center d-none d-md-block">
+        <div class="d-flex mt-2 justify-content-end">
+
+        </div>
+    </div>
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- -------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------- -->
+<!-- Container fluid  -->
+<!-- -------------------------------------------------------------- -->
+<div class="container-fluid">
+    <!-- -------------------------------------------------------------- -->
+    <!-- Start Page Content -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- basic table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">내용</h4>
+                    <div class="row mt-4">
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-primary text-center">
+                                    <h1 class="fw-light text-primary">2,064</h1>
+                                    <h6 class="text-primary">수집한 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-warning text-center">
+                                    <h1 class="fw-light text-warning">1,738</h1>
+                                    <h6 class="text-warning">발송대기 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-success text-center">
+                                    <h1 class="fw-light text-success">1100</h1>
+                                    <h6 class="text-success">진행중 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-danger text-center">
+                                    <h1 class="fw-light text-danger">964</h1>
+                                    <h6 class="text-danger">마감된 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table
+                                class="table table-bordered no-wrap fs-3"
+                                id="zero_config"
+                        >
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>공고 제목</th>
+                                <th>매칭 정보</th>
+                                <th>회사</th>
+                                <th>발송 여부</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
 
 
-
-    </tr>
-    </tbody>
-</table>
-<!-- 이전 페이지 링크 -->
-<a th:href="@{/crawling/list(page=${currentPage - 1})}" th:if="${currentPage > 1}">이전 페이지</a>
+                            <tr th:each="scrap : ${scraps}">
 
 
-<!-- 페이지 번호 표시 -->
-<span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-    <a th:href="@{/crawling/list(page=${pageNumber})}" th:text="${pageNumber}"></a>
-</span>
+                                <td class="fw-bold link" th:text="${scrap.id}"></td>
+                                <td th:text="${scrap.articleText}"></td>
+                                <td>
+                                    <a class="font-weight-medium link"
+                                       target="_blank"
+                                       th:href="'/matching/'+${scrap.id}">바로가기
+                                    </a> >
+                                </td>
+                                <td th:text="${scrap.company}"></td>
 
-<!-- 다음 페이지 링크 -->
-<a th:href="@{/crawling/list(page=${currentPage + 1})}" th:if="${currentPage < totalPages - 1}">다음 페이지</a>
-</body>
+                                <td>
+                                    <span
+                                            class="
+                                badge
+                                bg-light-warning
+                                text-warning
+                                font-weight-medium
+                              "
+                                    >발송 대기</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+
+
+                                <th>#</th>
+                                <th>공고 제목</th>
+                                <th>매칭 정보</th>
+                                <th>회사</th>
+                                <th>발송 여부</th>
+
+                            </tr>
+                            </tfoot>
+                        </table>
+
+
+                        <!-- 페이지 번호 표시 -->
+
+
+                        <!-- 다음 페이지 링크 -->
+
+
+                        <div class="p-3 mt-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                           th:if="${currentPage > 1}">이전 페이지</a>
+                                    </li>
+                                    <li class="page-item">
+                                             <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                            <a th:href="@{/crawling/list(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                        </span>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a th:href="@{/crawling/list(page=${currentPage + 1})}"
+                                           th:if="${currentPage < totalPages - 1}">다음 페이지</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- End Container fluid  -->
+<!-- -------------------------------------------------------------- -->
+
 </html>
+

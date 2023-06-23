@@ -148,24 +148,29 @@
 
 
                         <!-- 다음 페이지 링크 -->
-                        <div class="btn-group">
-                            <button class="btn btn-light-primary text-primary font-weight-medium" th:href="@{/crawling/list(page=${currentPage - 1})}"
-                                    th:if="${currentPage > 1}"
-                                    type="button">Previous
-                            </button>
+                        <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+                            <div class="btn-group">
+                                <button class="btn btn-light-primary text-primary font-weight-medium"
+                                        th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                        th:if="${currentPage > 1}"
+                                        type="button">Previous
+                                </button>
 
 
-                            <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                                  <button class="btn btn-light-primary text-primary font-weight-medium" th:href="@{/crawling/list(page=${pageNumber})}"
+                                <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                                  <button class="btn btn-light-primary text-primary font-weight-medium"
+                                          th:href="@{/crawling/list(page=${pageNumber})}"
                                           th:text="${pageNumber}"
                                           type="button"></button>
                             </span>
 
-                            <button class="btn btn-light-primary text-primary font-weight-medium" th:href="@{/crawling/list(page=${currentPage + 1})}"
-                                    th:if="${currentPage < totalPages - 1}"
-                                    type="button">Next
-                            </button>
+                                <button class="btn btn-light-primary text-primary font-weight-medium"
+                                        th:href="@{/crawling/list(page=${currentPage + 1})}"
+                                        th:if="${currentPage < totalPages - 1}"
+                                        type="button">Next
+                                </button>
 
+                            </div>
                         </div>
 
                     </div>

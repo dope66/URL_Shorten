@@ -85,7 +85,7 @@
                         <!-- Column -->
                     </div>
                     <div class="table-responsive mt-4">
-                        <form>
+                        <form class="col py-2 px-3 bg-light border align-self-end">
                             <div class="input-group col-2">
                                 <input aria-label="Text input with checkbox" class="form-control" type="text">
                                 <button class="btn btn-light-info text-info font-weight-medium" type="button">검색
@@ -148,32 +148,33 @@
 
 
                         <!-- 다음 페이지 링크 -->
-                        <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                            <div class="btn-group">
-                                <button class="btn btn-light-primary text-primary font-weight-medium"
-                                        th:href="@{/crawling/list(page=${currentPage - 1})}"
-                                        th:if="${currentPage > 1}"
-                                        type="button"><a th:href="@{/crawling/list(page=${currentPage - 1})}"
-                                                         th:if="${currentPage > 1}">Previous</a>
-                                </button>
+                        <div class="col py-2 px-3 bg-light border align-self-center">
+                            <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+                                <div class="btn-group">
+                                    <button class="btn btn-light-primary text-primary font-weight-medium"
+                                            th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                            th:if="${currentPage > 1}"
+                                            type="button"><a th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                                             th:if="${currentPage > 1}">Previous</a>
+                                    </button>
 
 
-                                <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                                    <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
                                   <button class="btn btn-light-primary text-primary font-weight-medium"
 
                                           type="button"><a th:href="@{/crawling/list(page=${pageNumber})}"
                                                            th:text="${pageNumber}"></a></button>
                             </span>
 
-                                <button class="btn btn-light-primary text-primary font-weight-medium"
+                                    <button class="btn btn-light-primary text-primary font-weight-medium"
 
-                                        type="button"><a th:href="@{/crawling/list(page=${currentPage + 1})}"
-                                                         th:if="${currentPage < totalPages - 1}">Next</a>
-                                </button>
+                                            type="button"><a th:href="@{/crawling/list(page=${currentPage + 1})}"
+                                                             th:if="${currentPage < totalPages - 1}">Next</a>
+                                    </button>
 
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

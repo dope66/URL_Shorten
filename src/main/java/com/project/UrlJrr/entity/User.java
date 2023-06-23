@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Builder
 @NoArgsConstructor
+@ToString
 @AllArgsConstructor
 public class User {
     @Id

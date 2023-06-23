@@ -69,6 +69,7 @@ public class UserController {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
+        System.out.println(user.toString());
         return "pages/user/userPage";
     }
 

@@ -16,4 +16,8 @@ public interface ScrapRepository extends JpaRepository<Scrap,Long>{
     @Query("SELECT s FROM Scrap s ORDER BY s.id DESC")
     Page<Scrap> findAllByOrderByidDesc(Pageable pageable);
 
+    Page<Scrap> findByArticleTextContainingAndCompanyContaining (String articleText,String company,Pageable pageable);
+
+
+
 }

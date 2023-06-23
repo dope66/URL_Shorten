@@ -176,7 +176,12 @@ public class ScrapingService {
         return scrapRepository.findAllByOrderByidDesc(pageable);
     }
 
+    public Page<Scrap> ScrapSearchList(String articleText,String company, Pageable pageable){
 
+
+        return scrapRepository.findByArticleTextContainingAndCompanyContaining (articleText,company,pageable);
+
+    }
 
 
 }

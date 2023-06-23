@@ -159,17 +159,17 @@
 
                         <!-- 다음 페이지 링크 -->
                         <div class="dataTables_paginate paging_simple_numbers" id="zero_config_paginate">
-                            <a aria-controls="zero_config" aria-role="link" class="paginate_button previous"  th:href="@{/crawling/list(page=${currentPage - 1})}"
-                               th:if="${currentPage > 1}"
-                               data-dt-idx="previous" id="zero_config_previous" tabindex="0">Previous</a>
+                            <a aria-controls="zero_config" aria-role="link" class="paginate_button previous"
+                               data-dt-idx="previous"
+                               id="zero_config_previous"
+                               tabindex="0" th:href="@{/crawling/list(page=${currentPage - 1})}" th:if="${currentPage > 1}">Previous</a>
                             <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
 
 
-                                 <a aria-controls="zero_config" class="paginate_button" th:href="@{/crawling/list(page=${pageNumber})}"
+                                 <a aria-controls="zero_config" class="paginate_button"
+                                    th:href="@{/crawling/list(page=${pageNumber})}"
                                     th:text="${pageNumber}"></a>
                             </span>
-
-
 
 
                             <a aria-controls="zero_config"
@@ -178,23 +178,10 @@
                                class="paginate_button next disabled"
                                data-dt-idx="next"
                                id="zero_config_next"
-                               tabindex="-1"  th:href="@{/crawling/list(page=${currentPage + 1})}"
+                               tabindex="-1" th:href="@{/crawling/list(page=${currentPage + 1})}"
                                th:if="${currentPage < totalPages - 1}">Next</a>
                         </div>
 
-                        <div class=" dataTables_paginate paging_simple_numbers p-3 mt-4">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="paginate_button previous"
-                                           th:href="@{/crawling/list(page=${currentPage - 1})}"
-                                           th:if="${currentPage > 1}">이전 페이지</a>
-                                    </li>
-                                    <li class="page-item">
-
-                                    </li>
-
-                        </div>
                     </div>
                 </div>
             </div>

@@ -153,21 +153,22 @@
                                 <button class="btn btn-light-primary text-primary font-weight-medium"
                                         th:href="@{/crawling/list(page=${currentPage - 1})}"
                                         th:if="${currentPage > 1}"
-                                        type="button">Previous
+                                        type="button"><a th:href="@{/crawling/list(page=${currentPage - 1})}"
+                                                         th:if="${currentPage > 1}">Previous</a>
                                 </button>
 
 
                                 <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
                                   <button class="btn btn-light-primary text-primary font-weight-medium"
-                                          th:href="@{/crawling/list(page=${pageNumber})}"
-                                          th:text="${pageNumber}"
-                                          type="button"></button>
+
+                                          type="button"><a th:href="@{/crawling/list(page=${pageNumber})}"
+                                                           th:text="${pageNumber}"></a></button>
                             </span>
 
                                 <button class="btn btn-light-primary text-primary font-weight-medium"
-                                        th:href="@{/crawling/list(page=${currentPage + 1})}"
-                                        th:if="${currentPage < totalPages - 1}"
-                                        type="button">Next
+
+                                        type="button"><a th:href="@{/crawling/list(page=${currentPage + 1})}"
+                                                         th:if="${currentPage < totalPages - 1}">Next</a>
                                 </button>
 
                             </div>

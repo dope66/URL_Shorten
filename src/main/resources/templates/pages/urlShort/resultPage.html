@@ -1,36 +1,23 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-
+<html lang="ko">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
-    <title>Result Page</title>
-    <link href="/assets/favicon.ico" rel="icon" type="image/x-icon"/>
-    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
-    <script src="/static/js/bootstrap.js"></script>
-
-
+    <title>Url-Shorts</title>
+    <link href="/static/urlshort/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <!-- Font Awesome icons (free version)-->
+    <script crossorigin="anonymous" src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap"
+          rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/urlshort/css/styles.css" rel="stylesheet"/>
 </head>
-
-<body>
-<h1> URL JRR Result</h1>
-
-
-<div class="container">
-    <h2>단축 URL:</h2>
-    <p>Short URL:
-        <!--        <input type="text" id="shortUrlInput" th:value="${'http://localhost:8080/' + shortUrl}" readonly>-->
-        <input id="shortUrlInput" readonly th:value="${serverName + '/' + shortUrl}" type="text">
-        <button onclick="copyToClipboard()">Copy</button>
-    </p>
-    <div class="homeContainer">
-        <a href="/Short">Home</a>
-    </div>
-</div>
-
 <script>
     function copyToClipboard() {
         const shortUrlInput = document.getElementById('shortUrlInput');
@@ -46,6 +33,60 @@
 
     }
 </script>
+<body>
+<!--    <div th:replace="/layout/header"></div>-->
+<!-- Background Video-->
+<video autoplay="autoplay" class="bg-video" loop="loop" muted="muted" playsinline="playsinline">
+    <source src="/static/urlshort/assets/mp4/bg.mp4" type="video/mp4"/>
+</video>
+<!-- Masthead-->
+<div class="masthead">
+    <div class="masthead-content text-white">
+        <div class="row container-fluid px-4 ">
 
+            <div class="col-12">
+
+            </div>
+
+            <h1 class="col-12 fst-italic lh-1 mb-4">Url-Shorts 결과</h1>
+            <p class="col-12  mb-5">버튼을 눌러 단축된 URL을 사용하세요!</p>
+
+
+
+
+
+
+            <form action="/Short/urlMapping" class="col-12  btn btn-secondary" method="post">
+                <div class="row input-group-newsletter">
+
+                    <div class="col"><input id="shortUrlInput" aria-label="URL을 입력해 주세요" class="form-control" name="shortUrlInput"
+                                            placeholder="URL을 입력해 주세요"  readonly th:value="${serverName + '/' + shortUrl}" type="text"></div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary " id="submitButton" onclick="copyToClipboard()">복사</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="social-icons">
+    <div class="d-flex flex-row flex-lg-column justify-content-center align-items-center h-100 mt-3 mt-lg-0">
+        <a class="btn btn-dark m-3" href="#!"><i class="fab fa-twitter"></i></a>
+        <a class="btn btn-dark m-3" href="#!"><i class="fab fa-facebook-f"></i></a>
+        <a class="btn btn-dark m-3" href="#!"><i class="fab fa-instagram"></i></a>
+    </div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/static/urlshort/js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<!--    <div th:replace="/layout/footer"></div>-->
 </body>
+
 </html>

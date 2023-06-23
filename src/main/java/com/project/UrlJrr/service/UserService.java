@@ -38,20 +38,30 @@ public class UserService {
 
     public  User update(UserDto userDto){
         // 이메일 중복 체크
-        Optional<User> existingEmail = userRepository.findByEmail(userDto.getEmail());
-        if (existingEmail.isPresent()) {
-            throw new IllegalStateException("존재하지 이메일 입니다.");
-        }
+//        Optional<User> existingEmail = userRepository.findByEmail(userDto.getEmail());
+//        if (existingEmail.isPresent() && ) {
+//            throw new IllegalStateException("존재하는 이메일 입니다.");
+//        }
 
+        // 비밀번호 체크
+        if(!checkPassword(userDto.getPassword()))
+            throw new IllegalStateException("비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.");
+        
         // 수정 및 저장하기
         Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if(user.isPresent()){
-            user.get().setEmail(userDto.getEmail());
+            // 신입/경력, 비밀번호, 스킬스택 변경 후 원본에 저장
+            user.get().setExperience(userDto.getExperience());
             user.get().setPassword(passwordEncoder.encode(userDto.getPassword()));
             user.get().setSkillStack(userDto.getSkillStack());
             return userRepository.save(user.get());
         }
         throw new IllegalStateException("존재하지 않는 아이디 입니다..");
+    }
+
+    public boolean checkPassword(String newPassword){
+        //return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
+        return !newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}");
     }
 
     public Map<String, String> validatedHandling(Errors errors) {

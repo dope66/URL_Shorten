@@ -2,10 +2,10 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta
             name="keywords"
             content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, material pro admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, material design, material dashboard bootstrap 5 dashboard template"
@@ -15,7 +15,7 @@
             content="Material Pro is powerful and clean admin dashboard template"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="noindex,nofollow"/>
     <title>Material Pro Template by WrapPixel</title>
     <link
             rel="canonical"
@@ -30,7 +30,7 @@
     />
     <script src="/static/js/skillStack.js"></script>
     <!-- Custom CSS -->
-    <link href="/static/dist/css/style.min.css" rel="stylesheet" />
+    <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -40,7 +40,7 @@
 </head>
 
 <script th:inline="javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         var validatorResult = /*[[${validatorResult}]]*/ {};
 
         if (validatorResult.username) {
@@ -124,93 +124,95 @@
           no-block
           justify-content-center
           align-items-center
-        "            style="/assets/images/big/auth-bg.jpg) no-repeat center center;    "    >
+        " style="/assets/images/big/auth-bg.jpg) no-repeat center center;    ">
 
 
-
-    <div class="auth-box p-4 bg-white rounded">
-        <div>
-            <div class="logo text-center">
+        <div class="auth-box p-4 bg-white rounded">
+            <div>
+                <div class="logo text-center">
               <span class="db"
               ><img src="/assets/images/logo-icon.png" alt="logo"
               /></span>
-                <h5 class="font-weight-medium mb-3 mt-1">Sign Up to Admin</h5>
-            </div>
-            <!-- Form -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
-                        <div class="form-floating mb-3">
-                            <input
-                                    type="text"
-                                    class="form-control form-input-bg"
-                                    id="username" name="username"
-                                    placeholder="john deo"
-                                    required
-                            />
-                            <label for="username">아이디</label>
-                            <div class="invalid-feedback">아이디를 입력해 주세요</div>
-                            <div class="error-message" id="username-error" style="display: none;"></div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input
-                                    type="password"
-                                    class="form-control form-input-bg"
-                                    id="password" name="password"
-                                    placeholder="*****"
-                                    required
-                            />
-                            <label for="password">비밀번호</label>
-                            <div class="invalid-feedback">비밀번호를 입력해 주세요</div>
-                            <div class="error-message" id="password-error" style="display: none;"></div>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input
-                                    type="email"
-                                    class="form-control form-input-bg"
-                                    id="email"  name="email"
-                                    placeholder="john@gmail.com"
-                                    required
-                            />
-                            <label for="email">이메일</label>
-                            <div class="invalid-feedback">이메일을 입력해 주세요</div>
-                            <div class="error-message" id="email-error" style="display: none;"></div>
-                        </div>
+                    <h5 class="font-weight-medium mb-3 mt-1">Sign Up to Admin</h5>
+                </div>
+                <!-- Form -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
+                            <div class="form-floating mb-3">
+                                <input
+                                        type="text"
+                                        class="form-control form-input-bg"
+                                        id="username" name="username"
+                                        placeholder="john deo"
+                                        required
+                                />
+                                <label for="username">아이디</label>
+                                <div class="invalid-feedback">아이디를 입력해 주세요</div>
+                                <div class="error-message" id="username-error" style="display: none;"></div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input
+                                        type="password"
+                                        class="form-control form-input-bg"
+                                        id="password" name="password"
+                                        placeholder="*****"
+                                        required
+                                />
+                                <label for="password">비밀번호</label>
+                                <div class="invalid-feedback">비밀번호를 입력해 주세요</div>
+                                <div class="error-message" id="password-error" style="display: none;"></div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input
+                                        type="email"
+                                        class="form-control form-input-bg"
+                                        id="email" name="email"
+                                        placeholder="john@gmail.com"
+                                        required
+                                />
+                                <label for="email">이메일</label>
+                                <div class="invalid-feedback">이메일을 입력해 주세요</div>
+                                <div class="error-message" id="email-error" style="display: none;"></div>
+                            </div>
 
-                        <div class="row">
-                        <div class="col mb-3">
-                            <input name="experience" type="radio" id="experience1" class="
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <input name="experience" type="radio" value="신입" id="experience1" class="
                           with-gap
                           material-inputs material-inputs
                           radio-col-blue
                         ">
-                            <label for="experience1">신입</label>
-                        </div>
-                        <div class="col mb-3">
-                            <input  type="radio" id="experience2" name="experience"  class="
+                                    <label for="experience1">신입</label>
+                                </div>
+                                <div class="col mb-3">
+                                    <input type="radio" id="experience2" value="경력" name="experience" class="
                           with-gap
                           material-inputs material-inputs
                           radio-col-blue
                         ">
-                            <label for="experience2">경력</label>
-                        </div>
-                        </div>
+                                    <label for="experience2">경력</label>
+                                </div>
+                            </div>
 
 
+                            <div class="form-group">
 
-
-               <div class="form-group">
-
-               </div>
+                            </div>
                             <div>
                                 <label for="skill-input">SkillStack 추가:</label>
 
 
                                 <div class="input-group mb-3">
-                                <input class="form-control" autocomplete="off" id="skill-input" list="skill-list-datalist" placeholder="스킬을 입력하세요"
-                                       type="text">
-                                    <button id="add-skill-btn"  class="btn btn-light-info text-info font-weight-medium" type="button">추가</button>
-                                    <button id="remove-skill-btn" class="btn btn-light-danger text-danger" type="button">삭제</button>
+                                    <input class="form-control" autocomplete="off" id="skill-input"
+                                           list="skill-list-datalist" placeholder="스킬을 입력하세요"
+                                           type="text">
+                                    <button id="add-skill-btn" class="btn btn-light-info text-info font-weight-medium"
+                                            type="button">추가
+                                    </button>
+                                    <button id="remove-skill-btn" class="btn btn-light-danger text-danger"
+                                            type="button">삭제
+                                    </button>
 
 
                                 </div>
@@ -228,20 +230,20 @@
                                 <ul id="selected-skills-list"></ul>
                             </div>
 
-                        <div class="d-flex align-items-stretch">
-                            <button type="submit" class="btn btn-info d-block w-100">
-                                회원가입
-                            </button>
-                        </div>
-                    </form>
+                            <div class="d-flex align-items-stretch">
+                                <button type="submit" class="btn btn-info d-block w-100">
+                                    회원가입
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- -------------------------------------------------------------- -->
-<!-- Login box.scss -->
-<!-- -------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- Login box.scss -->
+    <!-- -------------------------------------------------------------- -->
 </div>
 <!-- -------------------------------------------------------------- -->
 <!-- All Required js -->

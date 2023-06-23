@@ -85,6 +85,11 @@
                         <!-- Column -->
                     </div>
                     <div class="table-responsive mt-4">
+                        <div class="dataTables_filter" id="zero_config_filter"><label>Search:<input aria-controls="zero_config"
+                                                                                                    class=""
+                                                                                                    placeholder=""
+                                                                                                    type="search"></label>
+                        </div>
                         <table
                                 class="table table-bordered no-wrap fs-3"
                                 id="zero_config"
@@ -109,7 +114,7 @@
                                 <td th:text="${scrap.articleText}">
 
                                     <a class="font-weight-medium link"
-                              
+
                                        th:href="/crawling/detail">
                                     </a>
                                 </td>

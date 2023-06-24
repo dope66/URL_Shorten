@@ -177,8 +177,6 @@ public class ScrapingService {
     }
 
     public Page<Scrap> ScrapSearchList(String search, Pageable pageable){
-
-
         return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
 
     }

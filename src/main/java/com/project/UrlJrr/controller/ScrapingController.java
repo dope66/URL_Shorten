@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,18 +26,17 @@ public class ScrapingController {
                            HttpServletRequest request, Model model,
                            @RequestParam(required = false) String search) {
 
-        Page<Scrap> scrapPage = null;
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        if (search == null) {
-            // 본래 리스트 출력 ;
-            scrapPage = scrapingService.showListScrap(pageable);
-
-        } else {
+        Page<Scrap> scrapPage;
+        Pageable pageable = PageRequest.of(page - 1, size);
+        if (StringUtils.hasText(search)) {
             scrapPage = scrapingService.ScrapSearchList(search, pageable);
+        } else {
+            scrapPage = scrapingService.showListScrap(pageable);
         }
         model.addAttribute("scraps", scrapPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", scrapPage.getTotalPages());
+        model.addAttribute("search", search);
 
         return "pages/matching/crawl";
     }

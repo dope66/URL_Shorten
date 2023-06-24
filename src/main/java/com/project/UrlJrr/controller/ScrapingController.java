@@ -23,17 +23,16 @@ public class ScrapingController {
     public String crawling(Scrap scrap, @RequestParam(defaultValue = "1") int page,
                            @RequestParam(defaultValue = "10") int size,
                            HttpServletRequest request, Model model,
-                           String articleText, String company) {
+                           @RequestParam(required = false) String search) {
 
         Page<Scrap> scrapPage = null;
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        if (articleText == null) {
+        if (search == null) {
             // 본래 리스트 출력 ;
             scrapPage = scrapingService.showListScrap(pageable);
 
-
         } else {
-            scrapPage = scrapingService.ScrapSearchList(articleText, company, pageable);
+            scrapPage = scrapingService.ScrapSearchList(search, pageable);
         }
         model.addAttribute("scraps", scrapPage.getContent());
         model.addAttribute("currentPage", page);

@@ -76,19 +76,18 @@ public class UserController {
     @PostMapping("/modify")
     public String modifySave(@Validated UserDto userDto, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            model.addAttribute("userDto", userDto);
+            model.addAttribute("user", userDto);
             Map<String, String> validatorResult = userService.validatedHandling(errors);
-            model.addAttribute("validatorResult", validatorResult);
+            model.addAttribute("resultMessage", validatorResult);
            return "pages/user/userPage";
         }
         try {
             userService.update(userDto);
-            model.addAttribute("successMessage", "회원 수정이 성공적으로 완료되었습니다.");
-            return "redirect:/";
+            model.addAttribute("resultMessage", "회원 수정이 성공적으로 완료되었습니다.");
+            return "pages/index";
         } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("userDto", userDto);
-            model.addAttribute("showErrorMessage", true);
+            model.addAttribute("user", userDto);
+            model.addAttribute("resultMessage", e.getMessage());
             return "pages/user/userPage";
         }
     }

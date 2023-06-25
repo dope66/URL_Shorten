@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Material Pro Dashboard Template by WrapPixel</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/images/favicon.png" />
+    <link href="/static/assets/images/favicon.png" rel="icon" sizes="16x16" type="image/png"/>
 
 
     <!-- <link href="../package/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="dist/css/style.css"> -->
-    <link href="/static/dist/css/style_main.css" rel="stylesheet" />
+    <link href="/static/dist/css/style_main.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -32,12 +32,13 @@
 
                     <!-- Logo will be here -->
                     <a class="navbar-brand" href="index.html">
-                        <img src="/static/assets/images/logo-icon.png" alt="logo" /></a>
+                        <img alt="logo" src="/static/assets/images/logo-icon.png"/></a>
 
                     <!--Toggle button-->
-                    <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                            aria-label="Toggle navigation">
+                    <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+                            class="navbar-toggler navbar-toggler-right" data-bs-target="#navbarNavDropdown"
+                            data-bs-toggle="collapse"
+                            type="button">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -50,10 +51,10 @@
                                 <a class="btn btn-info" href="/user/login">로그인</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a th:if="${username}!=anonymousUser" class="btn btn-info" href="/user/modify">회원정보</a>
+                                <a class="btn btn-info" href="/user/modify" th:if="${username}!=anonymousUser">회원정보</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a th:if="${username}!=anonymousUser" class="btn btn-info" href="/user/logout">로그아웃</a>
+                                <a class="btn btn-info" href="/user/logout" th:if="${username}!=anonymousUser">로그아웃</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
                                 <a class="btn btn-info" href="/user/register">회원가입</a>
@@ -63,7 +64,6 @@
                     </div>
 
                 </nav>
-
 
 
             </div>
@@ -88,15 +88,16 @@
                                 <span class="fw-normal">관리자 페이지 - 각종 기능을 관리자 화면에서 제어</span>
                             </p>
                             <div class="mt-2 d-flex flex-wrap gap-2 gap-xl-4 justify-content-center justify-content-lg-start">
-                                <a href="https://github.com/dope66" class="text-nowrap btn btn-lg btn-info mb-2">Github</a>
-                                <a href="https://velog.io/@devjuneh_66"
-                                   class="text-nowrap btn btn-lg px-9 btn-success mb-2">Blog</a>
+                                <a class="text-nowrap btn btn-lg btn-info mb-2"
+                                   href="https://github.com/dope66">Github</a>
+                                <a class="text-nowrap btn btn-lg px-9 btn-success mb-2"
+                                   href="https://velog.io/@devjuneh_66">Blog</a>
                             </div>
                         </div>
 
                         <div class="col-lg-7">
                             <div class="hero-banner">
-                                <img src="/static/assets/images/banner.jpg" alt="">
+                                <img alt="" src="/static/assets/images/banner.jpg">
 
                             </div>
                         </div>
@@ -111,14 +112,12 @@
             <div class="container-fluid">
 
 
-
                 <div class="row px-3  pb-10 justify-content-center">
                     <div class="col-sm-6 col-md-4 mt-7">
                         <div class="image-box">
-                            <img src="/static/assets/images/material-demo1.jpg" alt="demo1" class="image w-100" />
-                            <div class="image-overlay">
-                                <a class="btn rounded-pill btn-info" href="/Short/main" target="_blank">이동하기</a>
-                            </div>
+                            <a href="/Short/main" target="_blank">
+                                <img alt="demo1" class="image w-100" src="/static/assets/images/material-demo1.jpg"/>
+                            </a>
                         </div>
                         <h5 class="text-center my-4 fw-normal">shrotUrl</h5>
                     </div>
@@ -126,11 +125,10 @@
 
                     <div class="col-sm-6 col-md-4 mt-7">
                         <div class="image-box">
-                            <img src="/static/assets/images/material-demo2.jpg" alt="demo2" class="image w-100" />
-                            <div class="image-overlay">
-                                <a class="btn rounded-pill btn-info" href="/crawling/list"
-                                   target="_blank">이동하기</a>
-                            </div>
+                            <a href="/crawling/list"
+                               target="_blank">
+                                <img alt="demo2" class="image w-100" src="/static/assets/images/material-demo2.jpg"/>
+                            </a>
                         </div>
                         <h5 class="text-center my-4 fw-normal">채용공고 크롤링</h5>
                     </div>
@@ -138,11 +136,10 @@
 
                     <div class="col-sm-6 col-md-4 mt-7">
                         <div class="image-box">
-                            <img src="/static/assets/images/material-demo3.jpg" alt="demo3" class="image w-100" />
-                            <div class="image-overlay">
-                                <a class="btn rounded-pill btn-info" href="/admin/page"
-                                   target="_blank">이동하기</a>
-                            </div>
+                            <a href="/admin/page"
+                               target="_blank">
+                                <img alt="demo3" class="image w-100" src="/static/assets/images/material-demo3.jpg"/>
+                            </a>
                         </div>
                         <h5 class="text-center my-4 fw-normal">관리자 페이지</h5>
                     </div>

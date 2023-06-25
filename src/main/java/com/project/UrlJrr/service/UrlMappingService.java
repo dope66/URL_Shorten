@@ -1,17 +1,15 @@
 package com.project.UrlJrr.service;
 
 import com.project.UrlJrr.entity.UrlMapping;
+import com.project.UrlJrr.myutils.UrlGenerator;
 import com.project.UrlJrr.repository.UrlMappingRepository;
-import com.project.UrlJrr.utils.UrlGenerator;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UrlMappingService {
 

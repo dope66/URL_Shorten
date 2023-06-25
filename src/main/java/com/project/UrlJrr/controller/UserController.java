@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("userDto", new UserDto());
+//        model.addAttribute("userDto", new UserDto());
         return "pages/user/register";
     }
 
@@ -56,9 +56,6 @@ public class UserController {
     }
 
 
-
-
-
     @GetMapping("/login")
     public String login() {
         return "pages/user/login";
@@ -71,25 +68,6 @@ public class UserController {
         model.addAttribute("user", user);
         System.out.println(user.toString());
         return "pages/user/userPage";
-    }
-
-    @PostMapping("/modify")
-    public String modifySave(@Validated UserDto userDto, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            model.addAttribute("user", userDto);
-            Map<String, String> validatorResult = userService.validatedHandling(errors);
-            model.addAttribute("resultMessage", validatorResult);
-           return "pages/user/userPage";
-        }
-        try {
-            userService.update(userDto);
-            model.addAttribute("resultMessage", "회원 수정이 성공적으로 완료되었습니다.");
-            return "pages/index";
-        } catch (IllegalStateException e) {
-            model.addAttribute("user", userDto);
-            model.addAttribute("resultMessage", e.getMessage());
-            return "pages/user/userPage";
-        }
     }
 
     @GetMapping("/changePassword")
@@ -127,16 +105,16 @@ public class UserController {
     }
 
     @PostMapping("/findPassword")
-    public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username,Model model) {
-        String result  = userService.userEamilCheck(email,username);
+    public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username, Model model) {
+        String result = userService.userEamilCheck(email, username);
         if (result.isEmpty()) {
             userService.resetPasswordAndSendEmail(email, username);
             return "redirect:/";
         } else {
-            model.addAttribute("errorMessage",result);
+            model.addAttribute("errorMessage", result);
             return "pages/user/findPassword";
         }
+
+
     }
-
-
 }

@@ -120,12 +120,8 @@
 
 
                                 <td class="fw-bold link" th:text="${scrap.id}"></td>
-                                <td th:text="${scrap.articleText}">
-
-                                    <a class="font-weight-medium link"
-
-                                       th:href="/crawling/detail">
-                                    </a>
+                                <td th:text="${scrap.articleText.length() > 30 ? scrap.articleText.substring(0, 30) + '...' : scrap.articleText}">
+                                    >
                                 </td>
                                 <td>
                                     <a class="font-weight-medium link"
@@ -159,28 +155,31 @@
                             <div class="col py-2 px-3  align-self-center">
                                 <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
                                     <div class="btn-group">
-                                        <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
-                                                th:if="${currentPage > 1}"
-                                                type="button">
-                                            <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
-                                               th:if="${currentPage > 1}">Previous</a>
-                                        </button>
+
+                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
+                                           th:if="${currentPage > 1}">
+                                            <button class="btn btn-light-primary text-primary font-weight-medium"
+                                                    th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
+                                                    th:if="${currentPage > 1}"
+                                                    type="button">Previous
+                                            </button>
+                                        </a>
+
 
                                         <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                    <button class="btn btn-light-primary text-primary font-weight-medium"
-                            type="button">
-                        <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
-                           th:text="${pageNumber}"></a>
-                    </button>
-                </span>
 
-                                        <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                th:if="${currentPage < totalPages - 1}"
-                                                type="button">
-                                            <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
-                                               th:if="${currentPage < totalPages - 1}">Next</a>
-                                        </button>
+                        <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
+                        > <button class="btn btn-light-primary text-primary font-weight-medium"
+                                  type="button" th:text="${pageNumber}"></button></a>
+
+                </span>
+                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
+                                           th:if="${currentPage < totalPages - 1}">
+                                            <button class="btn btn-light-primary text-primary font-weight-medium"
+                                                    th:if="${currentPage < totalPages - 1}"
+                                                    type="button">Next
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

@@ -3,34 +3,40 @@
 
 <head>
     <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta
-            name="keywords"
             content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, material pro admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, material design, material dashboard bootstrap 5 dashboard template"
+            name="keywords"
     />
     <meta
-            name="description"
             content="Material Pro is powerful and clean admin dashboard template"
+            name="description"
     />
-    <meta name="robots" content="noindex,nofollow"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta content="noindex,nofollow" name="robots"/>
     <title>Material Pro Template by WrapPixel</title>
     <link
-            rel="canonical"
             href="https://www.wrappixel.com/templates/materialpro/"
+            rel="canonical"
     />
     <!-- Favicon icon -->
     <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
             href="/static/assets/images/favicon.png"
+            rel="icon"
+            sizes="16x16"
+            type="image/png"
     />
     <script src="/static/js/skillStack.js"></script>
     <!-- Custom CSS -->
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <script th:inline="javascript">
@@ -60,10 +66,10 @@
     <div class="preloader">
         <svg
                 class="tea lds-ripple"
-                width="37"
+                fill="none"
                 height="48"
                 viewbox="0 0 37 48"
-                fill="none"
+                width="37"
                 xmlns="http://www.w3.org/2000/svg"
         >
             <path
@@ -77,27 +83,27 @@
                     stroke-width="2"
             ></path>
             <path
-                    id="teabag"
-                    fill="#1e88e5"
-                    fill-rule="evenodd"
                     clip-rule="evenodd"
                     d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
+                    fill="#1e88e5"
+                    fill-rule="evenodd"
+                    id="teabag"
             ></path>
             <path
-                    id="steamL"
                     d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12"
-                    stroke-width="2"
+                    id="steamL"
+                    stroke="#1e88e5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke="#1e88e5"
+                    stroke-width="2"
             ></path>
             <path
-                    id="steamR"
                     d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13"
+                    id="steamR"
                     stroke="#1e88e5"
-                    stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
+                    stroke-width="2"
             ></path>
         </svg>
     </div>
@@ -126,7 +132,7 @@
             <div>
                 <div class="logo text-center">
               <span class="db"
-              ><img src="/assets/images/logo-icon.png" alt="logo"
+              ><img alt="logo" src="/assets/images/logo-icon.png"
               /></span>
                     <h5 class="font-weight-medium mb-3 mt-1">Sign Up to Admin</h5>
                 </div>
@@ -136,11 +142,11 @@
                         <form method="post" th:action="@{/user/registerProc}" th:object="${userDto}">
                             <div class="form-floating mb-3">
                                 <input
-                                        type="text"
                                         class="form-control form-input-bg"
-                                        id="username" name="username"
-                                        placeholder="john deo"
+                                        id="username"
+                                        name="username" placeholder="john deo"
                                         required
+                                        type="text"
                                 />
                                 <label for="username">아이디</label>
                                 <div class="invalid-feedback">아이디를 입력해 주세요</div>
@@ -148,11 +154,11 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <input
-                                        type="password"
                                         class="form-control form-input-bg"
-                                        id="password" name="password"
-                                        placeholder="*****"
+                                        id="password"
+                                        name="password" placeholder="*****"
                                         required
+                                        type="password"
                                 />
                                 <label for="password">비밀번호</label>
                                 <div class="invalid-feedback">비밀번호를 입력해 주세요</div>
@@ -160,11 +166,11 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <input
-                                        type="email"
                                         class="form-control form-input-bg"
-                                        id="email" name="email"
-                                        placeholder="john@gmail.com"
+                                        id="email"
+                                        name="email" placeholder="john@gmail.com"
                                         required
+                                        type="email"
                                 />
                                 <label for="email">이메일</label>
                                 <div class="invalid-feedback">이메일을 입력해 주세요</div>
@@ -172,19 +178,19 @@
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
-                                    <input name="experience" type="radio" checked value="신입" id="experience1" class="
+                                    <input checked class="
                           with-gap
                           material-inputs material-inputs
                           radio-col-blue
-                        ">
+                        " id="experience1" name="experience" type="radio" value="신입">
                                     <label for="experience1">신입</label>
                                 </div>
                                 <div class="col mb-3">
-                                    <input type="radio" id="experience2" value="경력" name="experience" class="
+                                    <input class="
                           with-gap
                           material-inputs material-inputs
                           radio-col-blue
-                        "> <label for="experience2">경력</label>
+                        " id="experience2" name="experience" type="radio" value="경력"> <label for="experience2">경력</label>
                                 </div>
                             </div>
 
@@ -197,14 +203,14 @@
 
 
                                 <div class="input-group mb-3">
-                                    <input class="form-control" autocomplete="off" id="skill-input"
+                                    <input autocomplete="off" class="form-control" id="skill-input"
                                            list="skill-list-datalist" placeholder="스킬을 입력하세요"
                                            type="text">
-                                    <button id="add-skill-btn"
-                                            class="btn btn-light-info text-info font-weight-medium"
+                                    <button class="btn btn-light-info text-info font-weight-medium"
+                                            id="add-skill-btn"
                                             type="button">추가
                                     </button>
-                                    <button id="remove-skill-btn" class="btn btn-light-danger text-danger"
+                                    <button class="btn btn-light-danger text-danger" id="remove-skill-btn"
                                             type="button">삭제
                                     </button>
 
@@ -225,7 +231,7 @@
                             </div>
 
                             <div class="d-flex align-items-stretch">
-                                <button type="submit" class="btn btn-info d-block w-100">
+                                <button class="btn btn-info d-block w-100" type="submit">
                                     회원가입
                                 </button>
                             </div>

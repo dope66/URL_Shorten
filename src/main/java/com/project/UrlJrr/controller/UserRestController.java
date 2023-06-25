@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -24,7 +21,7 @@ public class UserRestController {
 
     @PostMapping("/modify")
 
-    public String modifySave(@Validated UserDto userDto, Errors errors, Model model) {
+    public String modifySave(@Validated @RequestBody UserDto userDto, Errors errors, Model model) {
         if (errors.hasErrors())
             return "nk1";
 

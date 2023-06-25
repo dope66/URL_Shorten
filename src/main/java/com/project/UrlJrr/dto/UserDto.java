@@ -19,7 +19,7 @@ public class UserDto {
     private String experience;
     private String email;
 
-    private String roles = "USER";
+    private String roles ="USER";
 
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()

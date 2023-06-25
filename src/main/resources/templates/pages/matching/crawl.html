@@ -9,7 +9,7 @@
     <title>테스트 페이지 </title>
 
 </head>
-
+<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
 <!-- -------------------------------------------------------------- -->
 <!-- Bread crumb and right sidebar toggle -->
 <!-- -------------------------------------------------------------- -->
@@ -90,9 +90,10 @@
                         <div class="row">
                             <div class="col"></div>
                             <div class="col"></div>
-                            <form class="col-4 py-2 px-3 align-self-end" action="/crawling/list" method="get">
+                            <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
                                 <div class="input-group col-2">
-                                    <input aria-label="Text input with checkbox" class="form-control" type="text" name="search">
+                                    <input aria-label="Text input with checkbox" class="form-control" name="search"
+                                           type="text">
                                     <button class="btn btn-light-info text-info font-weight-medium" type="button">검색
                                     </button>
                                 </div>
@@ -176,8 +177,8 @@
                 </span>
 
                                         <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                type="button"
-                                                th:if="${currentPage < totalPages - 1}">
+                                                th:if="${currentPage < totalPages - 1}"
+                                                type="button">
                                             <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
                                                th:if="${currentPage < totalPages - 1}">Next</a>
                                         </button>
@@ -186,9 +187,6 @@
                             </div>
                             <div class="col"></div>
                         </div>
-
-
-
 
 
                     </div>

@@ -257,7 +257,8 @@
         data.password = $('#password').val();
         data.skillStack = $('#skillStack').val();
         data.experience = $('#experience').val();
-        data.email = $('#email').val();
+        data.email = $('#email').val()
+        data.roles = "USER";
 
         var jsonStr = JSON.stringify(data);
 
@@ -267,11 +268,11 @@
             data: jsonStr,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-        
+
                 if (data === 'ok') {
                     Swal.fire(
                         "회원수정 완료",
-                        "확인 또는 3초후 메인 페이지로 돌아 갑니다!",
+                        "3초후 메인 페이지로 돌아 갑니다!",
                         "success"
                     );
                     setTimeout(function () {

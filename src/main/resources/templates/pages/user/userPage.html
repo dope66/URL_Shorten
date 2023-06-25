@@ -258,6 +258,7 @@
         data.skillStack = $('#skillStack').val();
         data.experience = $('#experience').val();
         data.email = $('#email').val();
+        data.roles = "USER";
 
         var jsonStr = JSON.stringify(data);
 
@@ -267,7 +268,7 @@
             data: jsonStr,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-        
+
                 if (data === 'ok') {
                     Swal.fire(
                         "회원수정 완료",

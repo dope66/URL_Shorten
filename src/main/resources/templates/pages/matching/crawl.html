@@ -161,42 +161,6 @@
                             </tbody>
                         </table>
 
-
-
-<!--                        <div class="row">-->
-<!--                            <div class="col"></div>-->
-<!--                            <div class="col py-2 px-3 align-self-center">-->
-<!--                                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">-->
-<!--                                    <div class="btn-group">-->
-<!--                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
-<!--                                           th:if="${currentPage > 1}">-->
-<!--                                            <button class="btn btn-light-primary text-primary font-weight-medium"-->
-<!--                                                    th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
-<!--                                                    th:if="${currentPage > 1}"-->
-<!--                                                    type="button">Previous-->
-<!--                                            </button>-->
-<!--                                        </a>-->
-
-<!--                                        <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">-->
-<!--                    <a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
-<!--                       class="btn btn-light-primary text-primary font-weight-medium"-->
-<!--                       th:classappend="${pageNumber == currentPage} ? 'active'">-->
-<!--                        <span th:text="${pageNumber}"></span>-->
-<!--                    </a>-->
-<!--                </span>-->
-
-<!--                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
-<!--                                           th:if="${currentPage < totalPages}">-->
-<!--                                            <button class="btn btn-light-primary text-primary font-weight-medium"-->
-<!--                                                    th:if="${currentPage < totalPages}"-->
-<!--                                                    type="button">Next-->
-<!--                                            </button>-->
-<!--                                        </a>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col"></div>-->
-<!--                        </div>-->
                         <!-- 페이지 번호 표시 -->
                         <div class="row">
                             <div class="col"></div>
@@ -211,13 +175,13 @@
                                         </a>
 
                                         <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-<a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
-   class="btn btn-light-primary text-primary font-weight-medium"
-   th:classappend="${pageNumber == currentPage} ? 'active'">
-    <span th:text="${pageNumber}"></span>
-</a>
+                                        <a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
+                                           class="btn btn-light-primary text-primary font-weight-medium"
+                                           th:classappend="${pageNumber == currentPage} ? 'active'">
+                                            <span th:text="${pageNumber}"></span>
+                                        </a>
 
-</span>
+                                        </span>
 
 
                                         <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"

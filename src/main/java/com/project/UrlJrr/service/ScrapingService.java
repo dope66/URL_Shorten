@@ -173,7 +173,7 @@ public class ScrapingService {
     }
 
     public Page<Scrap> showListScrap(Pageable pageable) {
-        return scrapRepository.findAllByOrderByidDesc(pageable);
+        return scrapRepository.findAll(pageable);
     }
 
     public Page<Scrap> ScrapSearchList(String search, Pageable pageable){

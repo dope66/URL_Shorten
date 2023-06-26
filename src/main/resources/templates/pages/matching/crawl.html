@@ -89,9 +89,23 @@
                         <div class="row">
                             <div class="col"></div>
                             <div class="col"></div>
+                            <!-- 정렬 기준 선택 -->
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    Sort By
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='id', sortOrder='asc')}">ID (Ascending)</a>
+                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='id', sortOrder='desc')}">ID (Descending)</a>
+                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='deadline', sortOrder='asc')}">Deadline (Ascending)</a>
+                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='deadline', sortOrder='desc')}">Deadline (Descending)</a>
+                                </ul>
+                            </div>
+
                             <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
                                 <div class="input-group col-2">
-                                    <input aria-label="Text input with checkbox" class="form-control" name="search" type="text">
+                                    <input aria-label="Text input with checkbox" class="form-control" name="search" type="text"  th:value="${search}" placeholder="검색어 입력">
                                     <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색</button>
                                 </div>
                             </form>
@@ -148,33 +162,67 @@
                         </table>
 
 
+
+<!--                        <div class="row">-->
+<!--                            <div class="col"></div>-->
+<!--                            <div class="col py-2 px-3 align-self-center">-->
+<!--                                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">-->
+<!--                                    <div class="btn-group">-->
+<!--                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
+<!--                                           th:if="${currentPage > 1}">-->
+<!--                                            <button class="btn btn-light-primary text-primary font-weight-medium"-->
+<!--                                                    th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
+<!--                                                    th:if="${currentPage > 1}"-->
+<!--                                                    type="button">Previous-->
+<!--                                            </button>-->
+<!--                                        </a>-->
+
+<!--                                        <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">-->
+<!--                    <a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
+<!--                       class="btn btn-light-primary text-primary font-weight-medium"-->
+<!--                       th:classappend="${pageNumber == currentPage} ? 'active'">-->
+<!--                        <span th:text="${pageNumber}"></span>-->
+<!--                    </a>-->
+<!--                </span>-->
+
+<!--                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"-->
+<!--                                           th:if="${currentPage < totalPages}">-->
+<!--                                            <button class="btn btn-light-primary text-primary font-weight-medium"-->
+<!--                                                    th:if="${currentPage < totalPages}"-->
+<!--                                                    type="button">Next-->
+<!--                                            </button>-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col"></div>-->
+<!--                        </div>-->
                         <!-- 페이지 번호 표시 -->
                         <div class="row">
                             <div class="col"></div>
                             <div class="col py-2 px-3 align-self-center">
                                 <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
                                     <div class="btn-group">
-                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
+                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
                                            th:if="${currentPage > 1}">
                                             <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                    th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
-                                                    th:if="${currentPage > 1}"
                                                     type="button">Previous
                                             </button>
                                         </a>
 
                                         <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                    <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
-                       class="btn btn-light-primary text-primary font-weight-medium"
-                       th:classappend="${pageNumber == currentPage} ? 'active'">
-                        <span th:text="${pageNumber}"></span>
-                    </a>
+<a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
+   class="btn btn-light-primary text-primary font-weight-medium"
+   th:classappend="${pageNumber == currentPage} ? 'active'">
+    <span th:text="${pageNumber}"></span>
+</a>
+
+</span>
                 </span>
 
-                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
+                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
                                            th:if="${currentPage < totalPages}">
                                             <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                    th:if="${currentPage < totalPages}"
                                                     type="button">Next
                                             </button>
                                         </a>
@@ -183,8 +231,6 @@
                             </div>
                             <div class="col"></div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -195,5 +241,29 @@
 <!-- End Container fluid  -->
 <!-- -------------------------------------------------------------- -->
 
+<script>
+    function loadPage(pageNumber, sortField, sortOrder) {
+        var search = ""; // 필요한 경우 검색어도 함께 전달할 수 있음
+
+        $.ajax({
+            url: "/crawling/list",
+            type: "GET",
+            data: {
+                page: pageNumber,
+                search: search,
+                sortField: sortField,
+                sortOrder: sortOrder
+            },
+            success: function (data) {
+                // 받은 데이터를 사용하여 페이지 내용을 업데이트하는 로직 작성
+            },
+            error: function (xhr, status, error) {
+                // 오류 처리 로직 작성
+            }
+        });
+    }
+
+
+</script>
 </html>
 

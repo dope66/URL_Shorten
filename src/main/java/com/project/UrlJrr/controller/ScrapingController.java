@@ -33,6 +33,12 @@ public class ScrapingController {
         } else {
             scrapPage = scrapingService.showListScrap(pageable);
         }
+        int totalPages = scrapPage.getTotalPages();
+        int startPage = Math.max(1, page - ((page - 1) % 10));
+        int endPage = Math.min(startPage + 9, totalPages);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("scraps", scrapPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", scrapPage.getTotalPages());
@@ -40,15 +46,14 @@ public class ScrapingController {
 
         return "pages/matching/crawl";
     }
+        @GetMapping("/crawling/apply")
+        public String crawlingApply(){
+            return "pages/matching/apply";
+        }
 
-    @GetMapping("/crawling/apply")
-    public String crawlingApply() {
-        return "pages/matching/apply";
+        @GetMapping("/crawling/detail")
+        public String crawlingDetail(){
+            return "pages/matching/detail";
+        }
+
     }
-
-    @GetMapping("/crawling/detail")
-    public String crawlingDetail() {
-        return "pages/matching/detail";
-    }
-
-}

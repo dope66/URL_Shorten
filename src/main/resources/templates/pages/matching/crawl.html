@@ -166,7 +166,7 @@
                                         </a>
 
 
-                                        <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                                        <span th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
 
                         <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
                         > <button class="btn btn-light-primary text-primary font-weight-medium"
@@ -174,9 +174,9 @@
 
                 </span>
                                         <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
-                                           th:if="${currentPage < totalPages - 1}">
+                                           th:if="${currentPage < totalPages }">
                                             <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                    th:if="${currentPage < totalPages - 1}"
+                                                    th:if="${currentPage < totalPages}"
                                                     type="button">Next
                                             </button>
                                         </a>
@@ -196,6 +196,23 @@
 <!-- -------------------------------------------------------------- -->
 <!-- End Container fluid  -->
 <!-- -------------------------------------------------------------- -->
+<script>
+    function loadPage(pageNumber, search) {
+        var url = "/crawling/list?page=" + pageNumber + "&search=" + encodeURIComponent(search);
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(response) {
+                // Ajax 요청이 성공하면 페이지를 업데이트합니다.
+                $("#pageContent").html(response);
+            },
+            error: function() {
+                // 오류 처리를 수행합니다.
+            }
+        });
+    }
+</script>
 
 </html>
 

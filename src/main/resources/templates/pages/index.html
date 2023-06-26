@@ -50,22 +50,18 @@
                             <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
                                 <a class="btn btn-info" href="/user/login">로그인</a>
                             </li>
+                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
+                                <a class="btn btn-info" href="/user/register">회원가입</a>
+                            </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
                                 <a class="btn btn-info" href="/user/modify" th:if="${username}!=anonymousUser">회원정보</a>
                             </li>
                             <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
                                 <a class="btn btn-info" href="/user/logout" th:if="${username}!=anonymousUser">로그아웃</a>
                             </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
-                                <a class="btn btn-info" href="/user/register">회원가입</a>
-                            </li>
                         </ul>
-
                     </div>
-
                 </nav>
-
-
             </div>
         </div>
     </header>

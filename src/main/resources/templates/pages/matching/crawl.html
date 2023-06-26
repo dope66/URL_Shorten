@@ -143,9 +143,7 @@
 
                             <tr th:each="scrap : ${scraps}">
                                 <td class="fw-bold link text-center" th:text="${scrap.id}"></td>
-                                <td th:text="${scrap.articleText.length() > 20 ? scrap.articleText.substring(0, 20) + '...' : scrap.articleText}">
-                                    >
-                                </td>
+                                <td th:text="${scrap.articleText.length() > 30 ? scrap.articleText.substring(0, 30) + '...' : scrap.articleText}"></td>
                                 <td class="text-center">
                                     <a class="font-weight-medium link"
                                        target="_blank"

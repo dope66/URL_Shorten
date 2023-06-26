@@ -96,10 +96,10 @@
                                     Sort By
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='id', sortOrder='asc')}">ID (Ascending)</a>
-                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='id', sortOrder='desc')}">ID (Descending)</a>
-                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='deadline', sortOrder='asc')}">Deadline (Ascending)</a>
-                                    <a class="dropdown-item" href="#" th:href="@{/crawling/list(sortField='deadline', sortOrder='desc')}">Deadline (Descending)</a>
+                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID (오름차순)</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID (내림차순)</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">Deadline (오름차순)</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">Deadline (내림차순)</a></li>
                                 </ul>
                             </div>
 
@@ -123,7 +123,7 @@
                                 <th>매칭 정보</th>
                                 <th>회사</th>
                                 <th>발송 여부</th>
-                                <th>마감 기간 <button onclick="sortByDeadline('deadline')">정렬하기</button></th>
+                                <th>마감 기간</th>
 
                             </tr>
                             </thead>
@@ -218,7 +218,7 @@
 </a>
 
 </span>
-                </span>
+
 
                                         <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
                                            th:if="${currentPage < totalPages}">
@@ -241,29 +241,6 @@
 <!-- End Container fluid  -->
 <!-- -------------------------------------------------------------- -->
 
-<script>
-    function loadPage(pageNumber, sortField, sortOrder) {
-        var search = ""; // 필요한 경우 검색어도 함께 전달할 수 있음
 
-        $.ajax({
-            url: "/crawling/list",
-            type: "GET",
-            data: {
-                page: pageNumber,
-                search: search,
-                sortField: sortField,
-                sortOrder: sortOrder
-            },
-            success: function (data) {
-                // 받은 데이터를 사용하여 페이지 내용을 업데이트하는 로직 작성
-            },
-            error: function (xhr, status, error) {
-                // 오류 처리 로직 작성
-            }
-        });
-    }
-
-
-</script>
 </html>
 

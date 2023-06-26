@@ -5,6 +5,7 @@
       layout:fragment="Content"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
+<script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
 <head>
     <title>테스트 페이지 </title>
 
@@ -44,7 +45,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">내용</h4>
-                    <div class="row mt-4">
+                    <div class="row mt-4 text-center">
                         <!-- Column -->
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-hover">
@@ -87,33 +88,43 @@
                     <div class="table-responsive mt-4 mb-4 ">
 
                         <div class="row">
-                            <div class="col"></div>
-                            <div class="col"></div>
                             <!-- 정렬 기준 선택 -->
                             <div class="dropdown">
-                                <button class="btn btn-light dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                <button aria-expanded="false" class="btn btn-light dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        id="sortDropdown"
+                                        type="button">
                                     Sort By
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID (오름차순)</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID (내림차순)</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">Deadline (오름차순)</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">Deadline (내림차순)</a></li>
+                                <ul aria-labelledby="sortDropdown" class="dropdown-menu">
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID
+                                        (오름차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID
+                                        (내림차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">Deadline
+                                        (오름차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">Deadline
+                                        (내림차순)</a></li>
                                 </ul>
                             </div>
 
                             <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
                                 <div class="input-group col-2">
-                                    <input aria-label="Text input with checkbox" class="form-control" name="search" type="text"  th:value="${search}" placeholder="검색어 입력">
-                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색</button>
+                                    <input aria-label="Text input with checkbox" class="form-control" name="search"
+                                           placeholder="검색어 입력" th:value="${search}" type="text">
+                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색
+                                    </button>
                                 </div>
                             </form>
 
 
                         </div>
                         <table class="table table-bordered no-wrap fs-3" id="zero_config">
-                            <thead>
+                            <thead class="text-center">
 
                             <tr>
                                 <th>#
@@ -131,13 +142,11 @@
 
 
                             <tr th:each="scrap : ${scraps}">
-
-
-                                <td class="fw-bold link" th:text="${scrap.id}"></td>
+                                <td class="fw-bold link text-center" th:text="${scrap.id}"></td>
                                 <td th:text="${scrap.articleText.length() > 20 ? scrap.articleText.substring(0, 20) + '...' : scrap.articleText}">
                                     >
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <a class="font-weight-medium link"
                                        target="_blank"
                                        th:href="'/matching/'+${scrap.id}">바로가기
@@ -145,7 +154,7 @@
                                 </td>
                                 <td th:text="${scrap.company}"></td>
 
-                                <td>
+                                <td class="text-center">
                                     <span
                                             class="
                                 badge
@@ -175,9 +184,9 @@
                                         </a>
 
                                         <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-                                        <a th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
-                                           class="btn btn-light-primary text-primary font-weight-medium"
-                                           th:classappend="${pageNumber == currentPage} ? 'active'">
+                                        <a class="btn btn-light-primary text-primary font-weight-medium"
+                                           th:classappend="${pageNumber == currentPage} ? 'active'"
+                                           th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}">
                                             <span th:text="${pageNumber}"></span>
                                         </a>
 

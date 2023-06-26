@@ -91,36 +91,36 @@
                             <div class="col"></div>
                             <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
                                 <div class="input-group col-2">
-                                    <input aria-label="Text input with checkbox" class="form-control" name="search"
-                                           type="text">
-                                    <button class="btn btn-light-info text-info font-weight-medium" type="button">검색
-                                    </button>
+                                    <input aria-label="Text input with checkbox" class="form-control" name="search" type="text">
+                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색</button>
                                 </div>
                             </form>
 
+
                         </div>
-                        <table
-                                class="table table-bordered no-wrap fs-3"
-                                id="zero_config"
-                        >
+                        <table class="table table-bordered no-wrap fs-3" id="zero_config">
                             <thead>
+
                             <tr>
-                                <th>#</th>
+                                <th>#
+
+                                </th>
                                 <th>공고 제목</th>
                                 <th>매칭 정보</th>
                                 <th>회사</th>
                                 <th>발송 여부</th>
+                                <th>마감 기간 <button onclick="sortByDeadline('deadline')">정렬하기</button></th>
 
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="table-body">
 
 
                             <tr th:each="scrap : ${scraps}">
 
 
                                 <td class="fw-bold link" th:text="${scrap.id}"></td>
-                                <td th:text="${scrap.articleText.length() > 30 ? scrap.articleText.substring(0, 30) + '...' : scrap.articleText}">
+                                <td th:text="${scrap.articleText.length() > 20 ? scrap.articleText.substring(0, 20) + '...' : scrap.articleText}">
                                     >
                                 </td>
                                 <td>
@@ -141,21 +141,19 @@
                               "
                                     >발송 대기</span>
                                 </td>
+                                <td th:text="${scrap.deadline}">
+                                </td>
                             </tr>
                             </tbody>
                         </table>
 
 
                         <!-- 페이지 번호 표시 -->
-
-
-                        <!-- 다음 페이지 링크 -->
                         <div class="row">
                             <div class="col"></div>
-                            <div class="col py-2 px-3  align-self-center">
+                            <div class="col py-2 px-3 align-self-center">
                                 <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
                                     <div class="btn-group">
-
                                         <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search})}"
                                            th:if="${currentPage > 1}">
                                             <button class="btn btn-light-primary text-primary font-weight-medium"
@@ -165,16 +163,16 @@
                                             </button>
                                         </a>
 
-
-                                        <span th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
-
-                        <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
-                        > <button class="btn btn-light-primary text-primary font-weight-medium"
-                                  type="button" th:text="${pageNumber}"></button></a>
-
+                                        <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/crawling/list(page=${pageNumber}, search=${search})}"
+                       class="btn btn-light-primary text-primary font-weight-medium"
+                       th:classappend="${pageNumber == currentPage} ? 'active'">
+                        <span th:text="${pageNumber}"></span>
+                    </a>
                 </span>
+
                                         <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search})}"
-                                           th:if="${currentPage < totalPages }">
+                                           th:if="${currentPage < totalPages}">
                                             <button class="btn btn-light-primary text-primary font-weight-medium"
                                                     th:if="${currentPage < totalPages}"
                                                     type="button">Next
@@ -196,23 +194,6 @@
 <!-- -------------------------------------------------------------- -->
 <!-- End Container fluid  -->
 <!-- -------------------------------------------------------------- -->
-<script>
-    function loadPage(pageNumber, search) {
-        var url = "/crawling/list?page=" + pageNumber + "&search=" + encodeURIComponent(search);
-
-        $.ajax({
-            type: "GET",
-            url: url,
-            success: function(response) {
-                // Ajax 요청이 성공하면 페이지를 업데이트합니다.
-                $("#pageContent").html(response);
-            },
-            error: function() {
-                // 오류 처리를 수행합니다.
-            }
-        });
-    }
-</script>
 
 </html>
 

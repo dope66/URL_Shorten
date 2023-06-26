@@ -180,7 +180,9 @@ public class ScrapingService {
         return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
 
     }
-
+    public Page<Scrap> ScrapDeadlineAscList(Pageable pageable){
+        return scrapRepository.findAllByOrderByDeadlineAsc(pageable);
+    }
 
 }
 

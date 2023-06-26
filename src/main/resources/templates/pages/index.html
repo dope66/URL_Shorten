@@ -47,18 +47,22 @@
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav ms-auto stylish-nav">
 
-                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
-                                <a class="btn btn-info" href="/user/login">로그인</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
-                                <a class="btn btn-info" href="/user/register">회원가입</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a class="btn btn-info" href="/user/modify" th:if="${username}!=anonymousUser">회원정보</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a class="btn btn-info" href="/user/logout" th:if="${username}!=anonymousUser">로그아웃</a>
-                            </li>
+                            <th:block th:if="${username}==anonymousUser">
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/login">로그인</a>
+                                </li>
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/register">회원가입</a>
+                                </li>
+                            </th:block>
+                            <th:block sec:authorize="isAuthenticated()" th:if="${username}!=anonymousUser">
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/modify">회원정보</a>
+                                </li>
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/logout">로그아웃</a>
+                                </li>
+                            </th:block>
                         </ul>
                     </div>
                 </nav>

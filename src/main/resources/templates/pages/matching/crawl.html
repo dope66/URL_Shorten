@@ -94,7 +94,7 @@
                                         data-bs-toggle="dropdown"
                                         id="sortDropdown"
                                         type="button">
-                                    Sort By
+                                    정렬하기
                                 </button>
                                 <ul aria-labelledby="sortDropdown" class="dropdown-menu">
                                     <li><a class="dropdown-item"
@@ -104,10 +104,10 @@
                                            th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID
                                         (내림차순)</a></li>
                                     <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">Deadline
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">마감기간
                                         (오름차순)</a></li>
                                     <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">Deadline
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">마감기간
                                         (내림차순)</a></li>
                                 </ul>
                             </div>

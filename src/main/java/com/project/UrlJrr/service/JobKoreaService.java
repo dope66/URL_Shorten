@@ -15,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -97,7 +98,27 @@ public class JobKoreaService {
             }
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.post > div.post-list-corp > a").attr("title");
-            String deadline = element.select("div.post-list-info > p.option > span.date").text();
+            String deadlineText = element.select("div.post-list-info > p.option > span.date").text();
+            String deadline = null;
+            if (deadlineText.equals("상시채용")) {
+                // "상시채용"은 특정 날짜로 변환할 수 없으므로 원하는 값으로 설정
+                deadline = "상시채용";
+            } else {
+                //  날짜를 변환
+                String[] parts = deadlineText.split("[(/]");  // "/" 또는 "("을 기준으로 문자열 분리
+                String month = parts[0].replace("~", "");  // 월 정보 추출
+                String day = parts[1].replace(")", "");  // 일 정보 추출
+
+                // 현재 연도를 가져오는 로직
+                int currentYear = LocalDate.now().getYear();
+
+                // 날짜 문자열 생성
+                String dateString = currentYear + "-" + month + "-" + day;
+
+                // 생성된 날짜 문자열을 원하는 형식으로 변환
+                LocalDate deadlineDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                deadline = deadlineDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
             String location = element.select("div.post-list-info > p.option > span.loc.long").text();
             String experience = element.select("div.post-list-info > p.option > span.exp").text();
             String requirement = element.select("div.post-list-info > p.option > span.edu").text();
@@ -134,7 +155,7 @@ public class JobKoreaService {
                     .requirement(requirement)
                     .jobType(jobType)
                     .sent(false)
-                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))))
+                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                     .build();
             scraps.add(scrap);
 

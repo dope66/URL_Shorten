@@ -19,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -55,7 +57,7 @@ public class ScrapingService {
         List<Scrap> scraps = new ArrayList<>();
 
         // 기본 url 설정
-        String url = "https://www.saramin.co.kr/zf_user/search/recruit?search_area=main&search_done=y&search_optional_item=n&searchType=recently&searchword=%EA%B0%9C%EB%B0%9C%EC%9E%90&recruitPage=1&recruitSort=relation&recruitPageCount=40&inner_com_type=&company_cd=0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C9%2C10&show_applied=&quick_apply=&except_read=&ai_head_hunting=";
+        String url = "https://www.saramin.co.kr/zf_user/search/recruit?search_area=main&search_done=y&search_optional_item=n&searchType=recently&searchword=%EA%B0%9C%EB%B0%9C%EC%9E%90&recruitPage=1&recruitSort=relation&recruitPageCount=100&inner_com_type=&company_cd=0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C9%2C10&show_applied=&quick_apply=&except_read=&ai_head_hunting=";
         String articleUrlPrefix = "https://www.saramin.co.kr";
 
 
@@ -105,7 +107,31 @@ public class ScrapingService {
             }
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
-            String deadline = element.select("div.area_job > div.job_date > span.date").text();
+            String deadlineText = element.select("div.area_job > div.job_date > span.date").text();
+            String deadline = null;
+            if (deadlineText.equals("상시채용") || deadlineText.equals("채용시")) {
+                deadline = deadlineText;  // 날짜 형식 변환 없이 그대로 사용
+            }  else if (deadlineText.equals("오늘마감")) {
+                deadline = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } else if (deadlineText.equals("내일마감")) {
+                deadline = LocalDateTime.now().toLocalDate().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } else {
+                // 날짜를 변환
+                String[] parts = deadlineText.split("[(/]"); // "/" 또는 "("을 기준으로 문자열 분리
+                String month = parts[0].replace("~", "").trim(); // 월 정보 추출 후 공백 제거
+                String day = parts[1].replace(")", "").trim(); // 일 정보 추출 후 공백 제거
+
+
+                // 현재 연도를 가져오는 로직
+                int currentYear = LocalDate.now().getYear();
+                // 날짜 문자열 생성
+                String dateString = currentYear + "-" + month + "-" + day;
+                // 생성된 날짜 문자열을 원하는 형식으로 변환
+                LocalDate deadlineDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                deadline = deadlineDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+
+
             String location = element.select("div.job_condition > span > a").text();
             String experience = element.select("div.job_condition > span:nth-child(2)").text();
             String requirement = element.select("div.job_condition > span:nth-child(3)").text();
@@ -159,7 +185,7 @@ public class ScrapingService {
                     .requirement(requirement)
                     .jobType(jobType)
                     .sent(false)
-                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))))
+                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                     .build();
 
             scraps.add(scrap);

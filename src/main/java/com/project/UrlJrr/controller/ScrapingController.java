@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class ScrapingController {
     private final ScrapingService scrapingService;
-
+// 컨트롤러 변경점 추가
     @GetMapping("/crawling/list")
     public String crawling(
             @RequestParam(required = false, defaultValue = "1") int page,

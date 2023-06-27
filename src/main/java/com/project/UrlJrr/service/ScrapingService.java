@@ -107,6 +107,7 @@ public class ScrapingService {
             }
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
+            //deadline 설정 추가
             String deadlineText = element.select("div.area_job > div.job_date > span.date").text();
             String deadline = null;
             if (deadlineText.equals("상시채용") || deadlineText.equals("채용시")) {

@@ -98,6 +98,7 @@ public class JobKoreaService {
             }
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.post > div.post-list-corp > a").attr("title");
+            //deadline 설정 추가
             String deadlineText = element.select("div.post-list-info > p.option > span.date").text();
             String deadline = null;
             if (deadlineText.equals("상시채용")) {

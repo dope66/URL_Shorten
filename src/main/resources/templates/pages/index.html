@@ -47,25 +47,25 @@
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav ms-auto stylish-nav">
 
-                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
-                                <a class="btn btn-info" href="/user/login">로그인</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a class="btn btn-info" href="/user/modify" th:if="${username}!=anonymousUser">회원정보</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" sec:authorize="isAuthenticated()">
-                                <a class="btn btn-info" href="/user/logout" th:if="${username}!=anonymousUser">로그아웃</a>
-                            </li>
-                            <li class="nav-item ms-3 mt-2 mt-md-0" th:if="${username}==anonymousUser">
-                                <a class="btn btn-info" href="/user/register">회원가입</a>
-                            </li>
+                            <th:block th:if="${username}==anonymousUser">
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/login">로그인</a>
+                                </li>
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/register">회원가입</a>
+                                </li>
+                            </th:block>
+                            <th:block sec:authorize="isAuthenticated()" th:if="${username}!=anonymousUser">
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/modify">회원정보</a>
+                                </li>
+                                <li class="nav-item ms-3 mt-2 mt-md-0">
+                                    <a class="btn btn-info" href="/user/logout">로그아웃</a>
+                                </li>
+                            </th:block>
                         </ul>
-
                     </div>
-
                 </nav>
-
-
             </div>
         </div>
     </header>
@@ -83,9 +83,10 @@
                                 <span class="text-info">dope66</span>에서 찾아요!
                             </h2>
                             <p class="subtext my-6">
-                                <span class="fw-normal">shortUrl - 긴 URL을 짧게 변환 </span><br>
-                                <span class="fw-normal">채용공고 크롤링 - 나와 공고의 궁합을 한눈에!</span><br>
-                                <span class="fw-normal">관리자 페이지 - 각종 기능을 관리자 화면에서 제어</span>
+                                <span class="fw-normal"><i class="fa fa-check text-info"></i>✅ Url-Shorts - 긴 URL을 짧게 변환 </span><br>
+                                <span class="fw-normal"><i class="fa fa-check text-info"></i>✅ 채용공고 크롤링 - 나와 공고의 궁합을 한눈에!</span><br>
+                                <span class="fw-normal"><i class="fa fa-check text-info"></i>✅ 관리자 페이지 - 각종 기능을 관리자 화면에서 제어</span>
+
                             </p>
                             <div class="mt-2 d-flex flex-wrap gap-2 gap-xl-4 justify-content-center justify-content-lg-start">
                                 <a class="text-nowrap btn btn-lg btn-info mb-2"

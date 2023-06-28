@@ -1,9 +1,12 @@
 package com.project.UrlJrr.service;
 
 import com.project.UrlJrr.dto.UserDto;
+import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
@@ -121,8 +124,13 @@ public class UserService {
         return "비밀번호가 성공적으로 변경되었습니다.";
 
     }
+    public List<User> showListUser() {
+        return userRepository.findAll();
+    }
 
-
+    public void deleteUser(Long userId){
+        userRepository.deleteById(userId);
+    }
     public String userEamilCheck(String email, String username) {
         if(email.isEmpty() || username.isEmpty()){
             return "빈칸을 채워주세요 ";
@@ -137,6 +145,7 @@ public class UserService {
 
 
     }
+
 
     public void resetPasswordAndSendEmail(String email, String username) {
         // db에서 찾고 없으면 메세지
@@ -169,5 +178,6 @@ public class UserService {
         }
         return temporaryPassword;
     }
+
 
 }

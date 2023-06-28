@@ -5,7 +5,7 @@ public enum JobType {
     보안관제(1), 보안컨설팅(1), 앱개발(1), 웹개발(1), 웹마스터(1),
     유지보수(1), 정보보안(1), 퍼블리셔(1), 프론트엔드(1), CISO(1), CPO(1),
     DBA(1), FAE(1), GM_게임운영(1), ICT컨설팅(1), IT컨설팅(1), QA_테스터(1),
-    SE_시스템엔지니어(1), SI개발(1, "SI개발"), SQA(1);
+    SE_시스템엔지니어(1,"SE(시스템엔지니어)"), SI개발(1, "SI개발"), SQA(1);
 
     private final int score;
     private final String skill;

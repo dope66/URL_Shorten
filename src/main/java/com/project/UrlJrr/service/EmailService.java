@@ -3,16 +3,23 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class EmailService {
 
@@ -20,14 +27,50 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
-
     private final UrlMappingService urlMappingService;
-    // serverName 값 가져오기
+    private final TaskScheduler taskScheduler;
+
     @Value("${server.name}") //https://prince.pigworld.dev
     private String serverName;
 
-//    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
-    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에
+    private String emailSchedule = "0 0 15 * * ?";
+
+
+
+    private ScheduledFuture<?> scheduledTask;
+
+    public void configureTasks() {
+        if (scheduledTask != null) {
+            scheduledTask.cancel(true);
+        }
+
+        Runnable task = () -> {
+            try {
+                sendEmailsToSubscribers();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        Trigger trigger = new CronTrigger(emailSchedule);
+        scheduledTask = taskScheduler.schedule(task, trigger);
+    }
+    // 스케줄링 변경 메서드
+    public void updateEmailSchedule(String newSchedule) {
+        emailSchedule = newSchedule;
+        System.out.println("변견된 스캐줄 : " + newSchedule);
+        configureTasks();
+
+        // 이후에 스케줄링이 자동으로 업데이트됩니다.
+    }
+    public String getEmailSchedule() {
+        return emailSchedule;
+    }
+
+
+    //    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
+//    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에
+    @Scheduled(cron = "#{emailService.getEmailSchedule()}")
     public void sendEmailsToSubscribers() throws IOException {
         System.out.println("이메일 서비스 시작");
         // 크롤링 데이터 가져오기
@@ -86,4 +129,6 @@ public class EmailService {
         message.setText(text);
         javaMailSender.send(message);
     }
+
+
 }

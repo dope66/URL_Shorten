@@ -25,12 +25,9 @@ public class ScrapAutoDelete {
         System.out.println("DB 삭제 실행");
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<Scrap> scraps = scrapRepository.findAll();
-        System.out.println("currentDateTime 형식 확인 " + currentDateTime);
         LocalDateTime deadlineDateTime = null;
         for (Scrap scrap : scraps) {
             String deadline = scrap.getDeadline();
-            System.out.println("==============");
-            System.out.println("크롤링 된 scrap deadline :   " + deadline);
             Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
             Matcher matcher = pattern.matcher(deadline);
             if (deadline.equals("채용시") || deadline.equals("상시채용")) {

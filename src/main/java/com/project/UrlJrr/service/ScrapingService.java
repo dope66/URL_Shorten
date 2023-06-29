@@ -212,15 +212,6 @@ public class ScrapingService {
     public List<Scrap> scrapList(){
         return scrapRepository.findAll();
     }
-    public Long getMaxScrapId(){
-        Optional<Scrap> maxScrapOptional = scrapRepository.findById(Long.MAX_VALUE);
-        if (maxScrapOptional.isPresent()) {
-            Scrap maxScrap = maxScrapOptional.get();
-            return maxScrap.getId();
-        }
-        // 만약 scrap이 없을 경우 처리할 로직 추가
-        return null;
-    }
 
 
 }

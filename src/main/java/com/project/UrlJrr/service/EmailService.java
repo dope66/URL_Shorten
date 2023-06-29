@@ -33,7 +33,7 @@ public class EmailService {
     @Value("${server.name}") //https://prince.pigworld.dev
     private String serverName;
 
-    private String emailSchedule = "0 0 15 * * ?";
+    private String emailSchedule = "0 5 18 * * ?";
 
 
 

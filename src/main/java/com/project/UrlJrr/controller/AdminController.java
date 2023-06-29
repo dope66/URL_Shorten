@@ -51,10 +51,11 @@ public class AdminController {
 
     @PostMapping("/updateEmailSchedule")
     public String updateEmailSchedule(@RequestParam("period") String period,
-                                      @RequestParam("hour") int hour) {
+                                      @RequestParam("hour") int hour,
+                                      @RequestParam("minute") int minute) {
         //초기화
         String newSchedule = "";
-        newSchedule = CronUtils.convertToCronFormat(period + " " + hour + "시 0분");
+        newSchedule = CronUtils.convertToCronFormat(period + " " + hour + "시 "+minute+"분");
 
         // EmailService의 스케줄링 정보 업데이트 메서드 호출
         emailService.updateEmailSchedule(newSchedule);

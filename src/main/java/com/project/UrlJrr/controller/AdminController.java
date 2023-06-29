@@ -4,6 +4,7 @@ import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.service.EmailService;
 import com.project.UrlJrr.service.UserService;
+import com.project.UrlJrr.utils.CronUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +23,15 @@ public class AdminController {
     private final UserService userService;
     private final EmailService emailService;
 
+
     @GetMapping("/page")
-    public String adminPage() {
+    public String adminPage(Model model) {
+        List<User> users = userService.showListUser();
+        String schedule = emailService.getEmailSchedule();
+        String readableSchedule = CronUtils.convertToReadableFormat(schedule);
+        System.out.println("schedule이 크론표현식이 아닌가?"+schedule);
+        model.addAttribute("schedule", readableSchedule);
+        model.addAttribute("users",users);
         return "pages/user/adminPage";
     }
 
@@ -46,14 +54,17 @@ public class AdminController {
                                       @RequestParam("hour") int hour) {
         //초기화
         String newSchedule = "";
-        if (period.equals("am")) {
-            newSchedule = "0 0 " + hour + " * * ?";
-        } else if (period.equals("pm")) {
-            newSchedule = "0 0 " + (hour + 12) + " * * ?";
-        }
+
+//        if (period.equals("am")) {
+//            newSchedule = "0 0 " + hour + " * * ?";
+//        } else if (period.equals("pm")) {
+//            newSchedule = "0 0 " + (hour + 12) + " * * ?";
+//        }
+        newSchedule = CronUtils.convertToCronFormat(period + " " + hour + "시 0분");
+
         // EmailService의 스케줄링 정보 업데이트 메서드 호출
         emailService.updateEmailSchedule(newSchedule);
-        return "pages/user/adminPage";
+        return "pages/index";
 
     }
 

@@ -16,10 +16,11 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.username}">
             <td th:text="${user.email}"></td>
-            <td>
+            <td >
                 <form method="post" action="/admin/deleteUser">
                     <input type="hidden" name="userId" th:value="${user.id}" />
-                    <button type="submit">삭제</button>
+                    <button th:if="${user.roles}==USER" type="submit">삭제</button>
+                    <span th:if="${user.roles}!=USER" th:text="운영자"></span>
                 </form>
             </td>
         </tr>

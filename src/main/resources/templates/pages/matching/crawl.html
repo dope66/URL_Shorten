@@ -153,7 +153,8 @@
                                 <td th:text="${scrap.company}"></td>
 
                                 <td class="text-center">
-                                    <span class="badge bg-light-warning text-warning font-weight-medium">발송 대기</span>
+                                    <span th:if=="${scrap.sent}==false" class="badge bg-light-warning text-warning font-weight-medium">발송 대기</span>
+                                    <span th:if=="${scrap.sent}==true" class="badge bg-light-primary text-warning font-weight-medium">발송 완료</span>
                                 </td>
                                 <td th:text="${scrap.deadline}">
                                 </td>

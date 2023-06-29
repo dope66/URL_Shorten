@@ -54,12 +54,6 @@ public class AdminController {
                                       @RequestParam("hour") int hour) {
         //초기화
         String newSchedule = "";
-
-//        if (period.equals("am")) {
-//            newSchedule = "0 0 " + hour + " * * ?";
-//        } else if (period.equals("pm")) {
-//            newSchedule = "0 0 " + (hour + 12) + " * * ?";
-//        }
         newSchedule = CronUtils.convertToCronFormat(period + " " + hour + "시 0분");
 
         // EmailService의 스케줄링 정보 업데이트 메서드 호출

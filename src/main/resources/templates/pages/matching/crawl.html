@@ -50,7 +50,7 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-hover">
                                 <div class="p-2 rounded bg-light-primary text-center">
-                                    <h1 class="fw-light text-primary">2,064</h1>
+                                    <h1 class="fw-light text-primary" th:text="${maxId}"></h1>
                                     <h6 class="text-primary">수집한 공고</h6>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-hover">
                                 <div class="p-2 rounded bg-light-warning text-center">
-                                    <h1 class="fw-light text-warning">1,738</h1>
+                                    <h1 class="fw-light text-warning" th:text="${unsentCount}"></h1>
                                     <h6 class="text-warning">발송대기 공고</h6>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-hover">
                                 <div class="p-2 rounded bg-light-success text-center">
-                                    <h1 class="fw-light text-success">1100</h1>
+                                    <h1 class="fw-light text-success" th:text="${allScraps.size()}"></h1>
                                     <h6 class="text-success">진행중 공고</h6>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                         <div class="col-md-6 col-lg-3 col-xlg-3">
                             <div class="card card-hover">
                                 <div class="p-2 rounded bg-light-danger text-center">
-                                    <h1 class="fw-light text-danger">964</h1>
+                                    <h1 class="fw-light text-danger" th:text="${deleteCount}"></h1>
                                     <h6 class="text-danger">마감된 공고</h6>
                                 </div>
                             </div>

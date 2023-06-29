@@ -207,9 +207,21 @@ public class ScrapingService {
         return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
 
     }
-    public Page<Scrap> ScrapDeadlineAscList(Pageable pageable){
-        return scrapRepository.findAllByOrderByDeadlineAsc(pageable);
+
+
+    public List<Scrap> scrapList(){
+        return scrapRepository.findAll();
     }
+    public Long getMaxScrapId(){
+        Optional<Scrap> maxScrapOptional = scrapRepository.findById(Long.MAX_VALUE);
+        if (maxScrapOptional.isPresent()) {
+            Scrap maxScrap = maxScrapOptional.get();
+            return maxScrap.getId();
+        }
+        // 만약 scrap이 없을 경우 처리할 로직 추가
+        return null;
+    }
+
 
 }
 

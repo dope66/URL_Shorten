@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +31,20 @@ public class ScrapingController {
             @RequestParam(required = false, defaultValue = "id") String sortField,
             @RequestParam(required = false, defaultValue = "desc") String sortOrder,
             Model model) {
-
+        List<Scrap> allScraps =scrapingService.scrapList();
+        int unsentCount = 0;
+        long maxId =0;
+        int deletedCount=0;
+        for(Scrap scrap : allScraps){
+            if(!scrap.isSent()){
+                unsentCount++;
+            }
+            if(scrap.getId()>maxId){
+                maxId=scrap.getId();
+            }
+        }
+        int scrapTableSize = allScraps.size();
+        deletedCount = (int) (maxId - scrapTableSize);
         Page<Scrap> scrapPage;
         Pageable pageable;
         Sort sort = Sort.by(sortField);
@@ -62,6 +77,14 @@ public class ScrapingController {
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("groupStart", groupStart);
         model.addAttribute("groupEnd", groupEnd);
+        model.addAttribute("maxId", maxId);
+        model.addAttribute("deleteCount",deletedCount);
+        model.addAttribute("unsentCount",unsentCount);
+        model.addAttribute("allScraps",allScraps);
+
+
+
+
 
         return "pages/matching/crawl";
     }

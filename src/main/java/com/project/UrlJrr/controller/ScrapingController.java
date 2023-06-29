@@ -50,11 +50,18 @@ public class ScrapingController {
             model.addAttribute("scraps", scrapPage.getContent());
 
         }
+        // 페이지 단위 조절
+        int totalPages = scrapPage.getTotalPages();
+        int groupSize = 10;
+        int groupStart = (page - 1) / groupSize * groupSize + 1;
+        int groupEnd = Math.min(groupStart + groupSize - 1, totalPages);
         model.addAttribute("search", search);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", scrapPage.getTotalPages());
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortOrder", sortOrder);
+        model.addAttribute("groupStart", groupStart);
+        model.addAttribute("groupEnd", groupEnd);
 
         return "pages/matching/crawl";
     }

@@ -174,7 +174,7 @@
                                             </button>
                                         </a>
 
-                                        <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                                        <span th:each="pageNumber : ${#numbers.sequence(groupStart, groupEnd)}">
                                         <a class="btn btn-light-primary text-primary font-weight-medium"
                                            th:classappend="${pageNumber == currentPage} ? 'active'"
                                            th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}">

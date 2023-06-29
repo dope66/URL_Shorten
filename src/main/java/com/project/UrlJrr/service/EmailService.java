@@ -15,6 +15,8 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
@@ -101,7 +103,7 @@ public class EmailService {
         * */
         // 회원가입된 사용자들의 이메일 가져오기
         List<String> subscriberEmails = userService.getAllUserEmails();
-        String subject = "새로운 채용 정보 알림";
+        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) +"채용 정보 알림";
         String text = emailContent.toString();
         // 이메일이 저장된 사용자가 있는 경우에만 발송
         if (!subscriberEmails.isEmpty()) {

@@ -3,6 +3,14 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +39,11 @@ public class ScrapAutoDelete {
             Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
             Matcher matcher = pattern.matcher(deadline);
             if (deadline.equals("채용시") || deadline.equals("상시채용")) {
-                // "채용시" 또는 "상시채용"은 자동 삭제하지 않음
+                // 사람인 일시
+
                 continue;
             } else {
-                //                날짜 형식인 경우
+                //           날짜 형식인 경우
                 if (matcher.matches()) {
                     int year = Integer.parseInt(deadline.substring(0, 4));
                     int month = Integer.parseInt(deadline.substring(5, 7));
@@ -53,4 +62,9 @@ public class ScrapAutoDelete {
             }
         }
     }
+
+    private boolean containsKeyword(String articleUrl, String keyword) {
+        return articleUrl.contains(keyword);
+    }
+
 }

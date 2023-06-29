@@ -108,28 +108,29 @@ public class ScrapingService {
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
             //deadline 설정 추가
-            String deadlineText = element.select("div.area_job > div.job_date > span.date").text();
+            String deadlineText = element.select("div.area_job > div.job_date > span:nth-child(1)").text();
             String deadline = null;
-            if (deadlineText.equals("상시채용") || deadlineText.equals("채용시")) {
-                deadline = deadlineText;  // 날짜 형식 변환 없이 그대로 사용
-            }  else if (deadlineText.equals("오늘마감")) {
-                deadline = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } else if (deadlineText.equals("내일마감")) {
-                deadline = LocalDateTime.now().toLocalDate().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } else {
-                // 날짜를 변환
-                String[] parts = deadlineText.split("[(/]"); // "/" 또는 "("을 기준으로 문자열 분리
-                String month = parts[0].replace("~", "").trim(); // 월 정보 추출 후 공백 제거
-                String day = parts[1].replace(")", "").trim(); // 일 정보 추출 후 공백 제거
+            switch (deadlineText) {
+                case "상시채용", "채용시" -> deadline = deadlineText;  // 날짜 형식 변환 없이 그대로 사용
+                case "오늘마감" -> deadline = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                case "내일마감" ->
+                        deadline = LocalDateTime.now().toLocalDate().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                default -> {
+                    // 날짜를 변환
+                    if (!deadlineText.endsWith("시마감")) {
+                        String[] parts = deadlineText.split("[(/]"); // "/" 또는 "("을 기준으로 문자열 분리
+                        String month = parts[0].replace("~", "").trim(); // 월 정보 추출 후 공백 제거
+                        String day = parts[1].replace(")", "").trim(); // 일 정보 추출 후 공백 제거
 
-
-                // 현재 연도를 가져오는 로직
-                int currentYear = LocalDate.now().getYear();
-                // 날짜 문자열 생성
-                String dateString = currentYear + "-" + month + "-" + day;
-                // 생성된 날짜 문자열을 원하는 형식으로 변환
-                LocalDate deadlineDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                deadline = deadlineDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        // 현재 연도를 가져오는 로직
+                        int currentYear = LocalDate.now().getYear();
+                        // 날짜 문자열 생성
+                        String dateString = currentYear + "-" + month + "-" + day;
+                        // 생성된 날짜 문자열을 원하는 형식으로 변환
+                        LocalDate deadlineDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        deadline = deadlineDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    }
+                }
             }
 
 

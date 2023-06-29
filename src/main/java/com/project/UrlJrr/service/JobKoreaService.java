@@ -128,7 +128,6 @@ public class JobKoreaService {
             articleUrl = articleUrlPrefix + articleUrl;
 
             String urlKey = element.select("li.list-post").attr("data-gno");
-            System.out.println("JOb korea urlKey " + urlKey);
 
 
             boolean isDuplicate = false;

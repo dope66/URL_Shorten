@@ -32,7 +32,7 @@ public class UserDto {
                 .skillStack(skillStack)
                 .experience(experience)
                 .email(email)
-                .roles(roles)
+                .roles("USER")
                 .build();
     }
 

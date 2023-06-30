@@ -3,9 +3,7 @@ package com.project.UrlJrr.dto;
 import com.project.UrlJrr.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Setter
@@ -22,8 +20,7 @@ public class UserDto {
     private String experience;
     private String email;
 
-    @Builder.Default
-    private String roles = "USER";
+    private String roles ;
 
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()

@@ -191,9 +191,9 @@ public class ScrapingService {
                     .build();
 
             scraps.add(scrap);
-            // 제외
             if (!isDuplicate) {
                 scrapRepository.save(scrap);
+                System.out.println("get Id " +scrap.getId());
             }
         }
 

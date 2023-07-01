@@ -255,8 +255,9 @@
 <script>
     $(".preloader").fadeOut();
 </script>
-<script>
+<script th:inline="javascript">
     var intervalId; // 애니메이션 간격을 저장할 변수
+
     function animateProgressBar(duration) {
         const progressBar = document.getElementById('progress-bar');
         const startValue = parseInt(progressBar.getAttribute('aria-valuemin'));
@@ -271,11 +272,17 @@
 
             if (currentValue >= endValue) {
                 clearInterval(intervalId);
+                redirectToArticleUrl(); // Animation complete, redirect to the desired URL
             }
         }, 1); // Update every 250 milliseconds
     }
 
-    animateProgressBar(10); // Start animation with a duration of 10 seconds
+    animateProgressBar(10);
+
+    function redirectToArticleUrl() {
+        var articleUrl = /*[[${scrap.articleUrl}]]*/ ""; // Get the value of scrap.articleUrl from Thymeleaf
+        window.location.href = articleUrl; // Redirect to the desired URL
+    }
 
     function stopProgressBar() {
         clearInterval(intervalId); // 애니메이션 간격을 지우고 애니메이션 멈춤

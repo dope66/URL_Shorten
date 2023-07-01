@@ -576,7 +576,7 @@
                             <th>이메일</th>
                             <th>경력</th>
                             <th>권한</th>
-                            <th>변경</th>
+                            <th>삭제</th>
                             </thead>
                             <tbody>
                             <!-- row -->
@@ -614,6 +614,12 @@
                                     <form action="/admin/deleteUser" method="post">
                                         <input name="userId" th:value="${user.id}" type="hidden"/>
                                         <div class="action-btn" th:if="${user.roles}==USER" type="submit">
+
+                                            <i class="feather-sm fill-white mdi mdi-delete"
+
+                                            ></i>
+                                        </div>
+                                        <div class="action-btn" th:if="${user.roles}!=USER" type="submit">
 
                                             <i class="feather-sm fill-white mdi mdi-alert-octagram"
 

@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String username;
@@ -29,7 +31,7 @@ public class UserDto {
                 .skillStack(skillStack)
                 .experience(experience)
                 .email(email)
-                .roles("USER")
+                .roles(roles)
                 .build();
     }
 

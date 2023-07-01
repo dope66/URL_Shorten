@@ -196,7 +196,7 @@
                                 </div>
                             </div>
 
-
+                            <input type="hidden" th:value="USER" name="roles" id="roles">
                             <div class="form-group">
 
                             </div>
@@ -268,12 +268,16 @@
     function clickButton() {
 
         var data = {};
-        data.username = $('#username').val();
-        data.password = $('#password1').val();
-        data.password2 = $('#password2').val();
-        data.skillStack = $('#skillStack').val();
-        data.experience = $('#experience').val();
-        data.email = $('#email').val();
+        data.username = $("#username").val();
+        data.password = $("#password1").val();
+        data.password2 = $("#password2").val();
+        data.skillStack = $("#selected-skills-input").val();
+        // data.experience = $("#experience").val();
+
+        var selectedExperienceId = $('input[name="experience"]:checked').attr('id');
+        var selectedExperienceValue = $('label[for="' + selectedExperienceId + '"]').text();
+        data.experience = selectedExperienceValue;
+        data.email = $("#email").val();
 
 
         var jsonStr = JSON.stringify(data);

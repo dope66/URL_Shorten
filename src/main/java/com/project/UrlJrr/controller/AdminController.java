@@ -27,6 +27,7 @@ public class AdminController {
         List<User> users = userService.showListUser();
         String schedule = emailService.getEmailSchedule();
         String readableSchedule = CronUtils.convertToReadableFormat(schedule);
+        model.addAttribute("myname", userService.getUsername());
         System.out.println("schedule이 크론표현식이 아닌가?" + schedule);
         model.addAttribute("schedule", readableSchedule);
         model.addAttribute("users", users);

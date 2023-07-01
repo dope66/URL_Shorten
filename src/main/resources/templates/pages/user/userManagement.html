@@ -177,9 +177,8 @@
         <!-- Sidebar scroll-->
         <div class="scroll-sidebar">
             <!-- User profile -->
-            <div
-                    class="user-profile position-relative"
-                    style="
+            <div class="user-profile position-relative"
+                 style="
               background: url(/static/assets/images/background/user-info.jpg)
                 no-repeat;
             "
@@ -207,7 +206,7 @@
                             data-bs-toggle="dropdown"
                             href="#"
                             id="dropdownMenuLink"
-                            th:text="${user.username}"
+                            th:text="${myname}"
                     ></a
                     >
                     <div
@@ -572,7 +571,7 @@
                 <div class="card card-body">
                     <div class="table-responsive">
                         <table class="table search-table v-middle">
-                            <thead class="header-item">
+                            <thead class="header-item  text-center">
                             <th>이름</th>
                             <th>이메일</th>
                             <th>경력</th>
@@ -582,14 +581,14 @@
                             <tbody>
                             <!-- row -->
 
-                            <tr class="search-items" th:each="user : ${users}">
+                            <tr class="text-center search-items" th:each="user : ${users}">
                                 <td>
                                     <div class="d-flex align-items-center">
 
                                         <div class="ms-3">
                                             <div class="user-meta-info">
                                                 <h6 class="user-name mb-0 font-weight-medium"
-                                                    th:text="${user.getUsername()}">
+                                                    th:text="${user.username}">
 
                                                 </h6>
                                             </div>
@@ -616,8 +615,8 @@
                                         <input name="userId" th:value="${user.id}" type="hidden"/>
                                         <div class="action-btn" th:if="${user.roles}==USER" type="submit">
 
-                                            <i class="feather-sm fill-white"
-                                               data-feather="trash-2"
+                                            <i class="feather-sm fill-white mdi mdi-alert-octagram"
+
                                             ></i>
                                         </div>
                                     </form>

@@ -7,6 +7,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
 <head>
+    <meta content="https://www.devjune.com/static/assets/images/logo-light-text.png" property="og:image">
     <title>테스트 페이지 </title>
 
 </head>
@@ -153,8 +154,10 @@
                                 <td th:text="${scrap.company}"></td>
 
                                 <td class="text-center">
-                                    <span th:if=="${scrap.sent}==false" class="badge bg-light-warning text-warning font-weight-medium">발송 대기</span>
-                                    <span th:if=="${scrap.sent}==true" class="badge bg-light-primary text-warning font-weight-medium">발송 완료</span>
+                                    <span class="badge bg-light-warning text-warning font-weight-medium"
+                                          th:if=="${scrap.sent}==false">발송 대기</span>
+                                    <span class="badge bg-light-primary text-warning font-weight-medium"
+                                          th:if=="${scrap.sent}==true">발송 완료</span>
                                 </td>
                                 <td th:text="${scrap.deadline}">
                                 </td>

@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-    <meta content="" name="description"/>
-    <meta content="" name="author"/>
+  
     <title>Url-Shorts</title>
     <link href="/static/urlshort/assets/favicon.ico" rel="icon" type="image/x-icon"/>
     <!-- Font Awesome icons (free version)-->
@@ -18,6 +17,20 @@
           rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/static/urlshort/css/styles.css" rel="stylesheet"/>
+    <meta
+            content="김현우 포트폴리오"
+            name="keywords"
+    />
+    <meta
+            content="김현우 포트폴리오"
+            name="description"
+    />
+    <meta content="noindex,nofollow" name="robots"/>
+    <title>김현우 포트폴리오</title>
+    <link
+            href="https://prince.pigworld.dev/"
+            rel="canonical"
+    />
 </head>
 <body>
 <!--    <div th:replace="/layout/header"></div>-->
@@ -38,7 +51,8 @@
             <p class="col-12  mb-5">복잡한 URL 전달은 그만 저희가 그 불편함을 해소 하겠습니다!</p>
             <form action="/Short/urlMapping" class="col-12  btn btn-secondary" method="post">
                 <div class="row input-group-newsletter">
-                    <div class="col"><input aria-label="URL을 입력해 주세요" class="form-control" id="originalUrl" name="originalUrl"
+                    <div class="col"><input aria-label="URL을 입력해 주세요" class="form-control" id="originalUrl"
+                                            name="originalUrl"
                                             placeholder="URL을 입력해 주세요" type="text"></div>
                     <div class="col-auto">
                         <button class="btn btn-primary " id="submitButton" type="submit">입력</button>

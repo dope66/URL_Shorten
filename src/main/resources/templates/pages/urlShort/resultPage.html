@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
-    <meta content="" name="description"/>
-    <meta content="" name="author"/>
+
+
     <title>Url-Shorts</title>
     <link href="/static/urlshort/assets/favicon.ico" rel="icon" type="image/x-icon"/>
     <!-- Font Awesome icons (free version)-->
@@ -18,6 +18,20 @@
           rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/static/urlshort/css/styles.css" rel="stylesheet"/>
+    <meta
+            content="김현우 포트폴리오"
+            name="keywords"
+    />
+    <meta
+            content="김현우 포트폴리오"
+            name="description"
+    />
+    <meta content="noindex,nofollow" name="robots"/>
+    <title>김현우 포트폴리오</title>
+    <link
+            href="https://prince.pigworld.dev/"
+            rel="canonical"
+    />
 </head>
 <script>
     function copyToClipboard() {
@@ -53,18 +67,16 @@
             <p class="col-12  mb-5">버튼을 눌러 단축된 URL을 사용하세요!</p>
 
 
+            <div class="row input-group-newsletter">
 
-
-
-
-                <div class="row input-group-newsletter">
-
-                    <div class="col"><input id="shortUrlInput" aria-label="URL을 입력해 주세요" class="form-control" name="shortUrlInput"
-                                            placeholder="URL을 입력해 주세요"  readonly th:value="${serverName}+'/Short/'+${shortUrl}" type="text"></div>
-                    <div class="col-auto">
-                        <button class="btn btn-primary " id="submitButton" onclick="copyToClipboard()">복사</button>
-                    </div>
+                <div class="col"><input aria-label="URL을 입력해 주세요" class="form-control" id="shortUrlInput"
+                                        name="shortUrlInput"
+                                        placeholder="URL을 입력해 주세요" readonly
+                                        th:value="${serverName}+'/Short/'+${shortUrl}" type="text"></div>
+                <div class="col-auto">
+                    <button class="btn btn-primary " id="submitButton" onclick="copyToClipboard()">복사</button>
                 </div>
+            </div>
 
         </div>
     </div>

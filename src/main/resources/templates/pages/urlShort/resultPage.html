@@ -57,16 +57,15 @@
 
 
 
-            <form action="/Short/urlMapping" class="col-12  btn btn-secondary" method="post">
                 <div class="row input-group-newsletter">
 
                     <div class="col"><input id="shortUrlInput" aria-label="URL을 입력해 주세요" class="form-control" name="shortUrlInput"
-                                            placeholder="URL을 입력해 주세요"  readonly th:value="${serverName + '/' + shortUrl}" type="text"></div>
+                                            placeholder="URL을 입력해 주세요"  readonly th:value="${serverName}+'/Short/'+${shortUrl}" type="text"></div>
                     <div class="col-auto">
                         <button class="btn btn-primary " id="submitButton" onclick="copyToClipboard()">복사</button>
                     </div>
                 </div>
-            </form>
+
         </div>
     </div>
 </div>

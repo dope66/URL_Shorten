@@ -573,22 +573,6 @@
                     <div class="table-responsive">
                         <table class="table search-table v-middle">
                             <thead class="header-item">
-                            <th>
-                                <div class="n-chk align-self-center text-center">
-                                    <div class="form-check">
-                                        <input
-                                                class="form-check-input secondary"
-                                                id="contact-check-all"
-                                                type="checkbox"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="contact-check-all"
-                                        ></label>
-                                        <span class="new-control-indicator"></span>
-                                    </div>
-                                </div>
-                            </th>
                             <th>이름</th>
                             <th>이메일</th>
                             <th>경력</th>
@@ -598,65 +582,46 @@
                             <tbody>
                             <!-- row -->
 
-                            <td>
-                                <div class="n-chk align-self-center text-center">
-                                    <div class="form-check">
-                                        <input
-                                                class="form-check-input contact-chkbox primary"
-                                                id="checkbox1"
-                                                type="checkbox"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="checkbox1"
-                                        ></label>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
+                            <tr class="search-items" th:each="user : ${users}">
+                                <td>
+                                    <div class="d-flex align-items-center">
 
-                                    <div class="ms-3">
-                                        <div class="user-meta-info">
-                                            <h6 class="user-name mb-0 font-weight-medium"
-                                                th:text="${user.id}">
+                                        <div class="ms-3">
+                                            <div class="user-meta-info">
+                                                <h6 class="user-name mb-0 font-weight-medium"
+                                                    th:text="${user.username}">
 
-                                            </h6>
+                                                </h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                         <span class="usr-email-addr" th:text="${user.email}"
                         ></span
                         >
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                         <span class="usr-location" th:text="${user.experience}"
                         ></span
                         >
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                         <span class="usr-ph-no" th:if="${user.roles}!=USER" th:text="운영자"
                         ></span
                         >
-                            </td>
-                            <td>
-                                <form action="/admin/deleteUser" method="post">
-                                    <input name="userId" th:value="${user.id}" type="hidden"/>
-                                    <div class="action-btn" th:if="${user.roles}==USER" type="submit">
+                                </td>
+                                <td>
+                                    <form action="/admin/deleteUser" method="post">
+                                        <input name="userId" th:value="${user.id}" type="hidden"/>
+                                        <div class="action-btn" th:if="${user.roles}==USER" type="submit">
 
-                                        <a
-                                                class="text-dark delete ms-2"
-                                                href="javascript:void(0)"
-                                        ><i
-                                                class="feather-sm fill-white"
-                                                data-feather="trash-2"
-                                        ></i
-                                        ></a>
-                                    </div>
-                                </form>
-                            </td>
+                                            <i class="feather-sm fill-white"
+                                               data-feather="trash-2"
+                                            ></i>
+                                        </div>
+                                    </form>
+                                </td>
                             </tr>
                             <!-- /.row -->
                             </tbody>

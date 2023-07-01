@@ -58,7 +58,7 @@ public class AdminController {
 
         // EmailService의 스케줄링 정보 업데이트 메서드 호출
         emailService.updateEmailSchedule(newSchedule);
-        return "pages/index";
+        return "pages/user/adminPage";
 
     }
 

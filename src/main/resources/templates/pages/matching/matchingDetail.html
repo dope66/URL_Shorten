@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html dir="ltr">
 <head>
     <meta charset="utf-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
@@ -131,26 +131,86 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="card" id="loginform">
                         <div class="card-body">
-                            <h2>나와의 궁합정보</h2>
+                            <h2>나의 정보</h2>
+                            <p class="text-muted fs-4">
+                                나의 정보를 수정 하고 싶으신 가요?
+                                <a href="/user/modify"
+                                >정보확인</a
+                                >
+                            </p>
+                            <form class="form-control-line mt-4">
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success">이름</label>
+                                    <input class="form-control form-control-success" id="success"
+                                           th:value="${user.username}" type="text">
+                                </div>
+                                <br>
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success2">경력</label>
+                                    <input class="form-control form-control-success" id="success2"
+                                           th:value="${user.experience}" type="text">
+                                </div>
+                                <br>
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success3">스킬 스택</label>
+                                    <input class="form-control form-control-success" id="success3"
+                                           th:value="${user.skillStack}" type="text">
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="card" id="loginform2">
+                        <div class="card-body">
+                            <h2>공고 정보</h2>
                             <p class="text-muted fs-4">
                                 다른 내용을 보고 싶으신 가요?
                                 <a href="/crawling/list"
                                 >공고조회</a
                                 >
                             </p>
+                            <form class="form-control-line mt-4">
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success11">제목</label>
+                                    <input class="form-control form-control-success" id="success11"
+                                           th:value="${scrap.articleText}" type="text">
+                                </div>
+                                <br>
 
-                            <hr>
-                            <p>이름: <span th:text="${user.username}"></span></p>
-                            <p>경력: <span th:text="${user.experience}"></span></p>
-                            <p>스킬 스택: <span th:text="${user.skillStack}"></span></p>
-                            <hr>
-                            <p>제목: <span th:text="${scrap.articleText}"></span></p>
-                            <p>경력 : <span th:text="${scrap.experience}"></span></p>
-                            <p>스킬 스택: <span th:text="${scrap.skillStack}"></span></p>
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success22">경력</label>
+                                    <input class="form-control form-control-success" id="success22"
+                                           th:value="${scrap.experience}" type="text">
+                                </div>
+                                <br>
+                                <div class="form-group has-success">
+                                    <label class="form-control-label" for="success33">스킬 스택</label>
+                                    <input class="form-control form-control-success" id="success33"
+                                           th:value="${scrap.skillStack}" type="text">
+                                </div>
+                                <br>
+                                <div class="form-group has-danger">
+                                    <label class="form-control-label" for="success44">매칭 점수</label>
+                                    <input class="form-control form-control-success" id="success44"
+                                           th:value="${matchingGrade}" type="text">
+                                </div>
 
-                            <hr>
-                            <p>매칭 점수<span th:text="${matchingGrade}"></span></p>
-                            <hr>
+
+                            </form>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="progress mt-4">
                                 <div aria-valuemax="100" aria-valuemin="0"
                                      aria-valuenow="0"
@@ -166,7 +226,7 @@
                                    type="button">
                                         <span aria-hidden="true" class="spinner-grow spinner-grow-sm"
                                               role="status"></span>
-                                    Loading...
+                                    공고로 이동 중...
                                 </a>
                                 <button class="btn btn-warning" onclick="stopProgressBar()"
                                         type="button">
@@ -174,12 +234,13 @@
                                 </button>
 
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
     <!-- -------------------------------------------------------------- -->
     <!-- Login box.scss -->

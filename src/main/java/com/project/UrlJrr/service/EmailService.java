@@ -1,6 +1,8 @@
 package com.project.UrlJrr.service;
 
+import com.project.UrlJrr.entity.Email;
 import com.project.UrlJrr.entity.Scrap;
+import com.project.UrlJrr.repository.EmailRepository;
 import com.project.UrlJrr.repository.ScrapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +12,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -31,6 +33,8 @@ public class EmailService {
     private final ScrapRepository scrapRepository;
     private final UrlMappingService urlMappingService;
     private final TaskScheduler taskScheduler;
+    private final EmailRepository emailRepository;
+
 
     @Value("${server.name}") //https://prince.pigworld.dev
     private String serverName;
@@ -103,7 +107,7 @@ public class EmailService {
         * */
         // 회원가입된 사용자들의 이메일 가져오기
         List<String> subscriberEmails = userService.getAllUserEmails();
-        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) +"채용 정보 알림";
+        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) +"채용 정보 알림 "+sentScraps.size()+" 개의 공고";
         String text = emailContent.toString();
         // 이메일이 저장된 사용자가 있는 경우에만 발송
         if (!subscriberEmails.isEmpty()) {
@@ -111,6 +115,13 @@ public class EmailService {
             for (String email : subscriberEmails) {
                 sendEmail(email, subject, text);
             }
+            Email email = Email.builder()
+                    .recipient(subscriberEmails.toString())
+                    .subject(subject)
+                    .sendEmailTime(LocalDateTime.now())
+                    .build();
+            emailRepository.save(email);
+
             System.out.println("이메일을 성공적으로 보냈습니다.");
             // 이메일을 발송한 scrap들의 sent 값을 true로 변경하여 중복 발송 방지
             for (Scrap scrap : sentScraps) {
@@ -121,6 +132,8 @@ public class EmailService {
         } else {
             System.out.println("저장된 이메일이 없습니다.");
         }
+
+
         System.out.println("이메일 서비스 실행 종료");
     }
 
@@ -130,7 +143,10 @@ public class EmailService {
         message.setSubject(subject);
         message.setText(text);
         javaMailSender.send(message);
-    }
 
+    }
+    public List<Email> emailList(){
+        return emailRepository.findAll();
+    }
 
 }

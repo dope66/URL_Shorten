@@ -1,5 +1,6 @@
 package com.project.UrlJrr.controller;
 
+import com.project.UrlJrr.entity.Email;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.service.EmailService;
 import com.project.UrlJrr.service.UserService;
@@ -61,6 +62,14 @@ public class AdminController {
         emailService.updateEmailSchedule(newSchedule);
         return "pages/user/adminPage";
 
+    }
+
+
+    @GetMapping("/emailLogPage")
+    public String emailLogPage (Model model){
+        List<Email> emailList =emailService.emailList();
+        model.addAttribute("emails",emailList);
+        return "/pages/user/adminEmailLogPage";
     }
 
 

@@ -108,10 +108,16 @@ public class ScrapingService {
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
             //deadline 설정 추가
-            String deadlineText = element.select("div.area_job > div.job_date > span:nth-child(1)").text();
+//            String deadlineText = element.select("div.area_job > div.job_date > span").text();
+            String deadlineText;
+            if (element.select("div.area_job > div.job_date > span > span").size() > 0) {
+                deadlineText = element.select("div.area_job > div.job_date > span > span").text();
+            } else {
+                deadlineText = element.select("div.area_job > div.job_date > span").text();
+            }
             String deadline = null;
             switch (deadlineText) {
-                case "상시채용", "채용시" -> deadline = deadlineText;  // 날짜 형식 변환 없이 그대로 사용
+                case "상시채용", "채용시","진행예정"-> deadline = deadlineText; // 날짜 형식 변환 없이 그대로 사용
                 case "오늘마감" -> deadline = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 case "내일마감" ->
                         deadline = LocalDateTime.now().toLocalDate().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

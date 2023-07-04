@@ -1,16 +1,24 @@
 package com.project.UrlJrr.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
+import java.time.LocalDateTime;
+
+@Builder
+@Entity
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Email {
-    private String to;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String recipient;
     private String subject;
-    private String message;
-
-
+    private LocalDateTime sendEmailTime;
 }

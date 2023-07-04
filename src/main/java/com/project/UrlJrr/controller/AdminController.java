@@ -69,7 +69,7 @@ public class AdminController {
     public String emailLogPage (Model model){
         List<Email> emailList =emailService.emailList();
         model.addAttribute("emails",emailList);
-        return "/pages/user/adminEmailLogPage";
+        return "pages/user/adminEmailLogPage";
     }
 
 

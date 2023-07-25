@@ -36,7 +36,7 @@ public class EmailService {
     private final EmailRepository emailRepository;
 
 
-    @Value("${server.name}") //https://prince.pigworld.dev
+    @Value("${server.name}")
     private String serverName;
 
     private String emailSchedule = "0 5 18 * * ?";
@@ -94,7 +94,6 @@ public class EmailService {
         StringBuilder emailContent = new StringBuilder();
 
         for (Scrap scrap : sentScraps) {
-//            final String serverName= "http://localhost:8080";확인용
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
                     .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");

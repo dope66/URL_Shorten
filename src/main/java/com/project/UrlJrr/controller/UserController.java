@@ -69,7 +69,11 @@ public class UserController {
         System.out.println(user.toString());
         return "pages/user/userPage";
     }
-
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("userId") Long userId){
+        userService.deleteUser(userId);
+        return "pages/user/register";
+    }
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
 

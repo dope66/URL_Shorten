@@ -104,8 +104,8 @@ public class EmailService {
         subject = 이메일 제목
         text = 내용
         * */
-        // 회원가입된 사용자들의 이메일 가져오기
-        List<String> subscriberEmails = userService.getAllUserEmails();
+        // 구독되어있는 사용자들의 이메일 가져오기
+        List<String> subscriberEmails = userService.getSubScribeEmail();
         String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) +"채용 정보 알림 "+sentScraps.size()+" 개의 공고";
         String text = emailContent.toString();
         // 이메일이 저장된 사용자가 있는 경우에만 발송

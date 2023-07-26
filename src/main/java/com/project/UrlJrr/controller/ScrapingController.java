@@ -1,8 +1,10 @@
 package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.entity.Scrap;
+import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.ScrapRepository;
 import com.project.UrlJrr.service.ScrapingService;
+import com.project.UrlJrr.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScrapingController {
     private final ScrapingService scrapingService;
+    private final UserService userService;
 // 컨트롤러 변경점 추가
     @GetMapping("/crawling/list")
     public String crawling(
@@ -91,7 +95,10 @@ public class ScrapingController {
 
 
     @GetMapping("/crawling/apply")
-    public String crawlingApply() {
+    public String crawlingApply(Model model) {
+        String username = userService.getUsername();
+        User user = userService.getUserByUsername(username);
+        model.addAttribute("user",user);
         return "pages/matching/apply";
     }
 
@@ -99,6 +106,12 @@ public class ScrapingController {
     public String crawlingDetail() {
         return "pages/matching/detail";
     }
+    @PostMapping("/crawling/subScribe")
+    public String subScribe(){
+        userService.subScribeChange();
+        return "redirect:/crawling/apply";
+    }
+
 
     @Bean
     public PageableHandlerMethodArgumentResolverCustomizer customize() {
@@ -107,4 +120,6 @@ public class ScrapingController {
             p.setMaxPageSize(10);       // 한 페이지에 10개씩 출력
         };
     }
+
+
 }

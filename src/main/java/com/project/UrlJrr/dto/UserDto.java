@@ -21,7 +21,7 @@ public class UserDto {
     private String skillStack;
     private String experience;
     private String email;
-
+    private boolean subScribe=false;
     private String roles ;
 
     public User toEntity(PasswordEncoder passwordEncoder) {
@@ -31,6 +31,7 @@ public class UserDto {
                 .skillStack(skillStack)
                 .experience(experience)
                 .email(email)
+                .subScribe(subScribe)
                 .roles(roles)
                 .build();
     }

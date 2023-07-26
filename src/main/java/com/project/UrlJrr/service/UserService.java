@@ -77,7 +77,7 @@ public class UserService {
         }
         return validatorResult;
     }
-
+    //모든 이메일
     public List<String> getAllUserEmails() {
         List<User> users = userRepository.findAll();
         List<String> userEmails = new ArrayList<>();
@@ -88,7 +88,21 @@ public class UserService {
 
         return userEmails;
     }
-
+    // 구독한 이메일
+    public List<String> getSubScribeEmail(){
+        List<User> users = userRepository.findBySubScribe(true);
+        List<String> userEmails = new ArrayList<>();
+        for (User user : users) {
+            userEmails.add(user.getEmail());
+        }
+        return userEmails;
+    }
+    public void subScribeChange(){
+        String username = getUsername();
+        User user = getUserByUsername(username);
+        user.setSubScribe(!user.isSubScribe());
+        userRepository.save(user);
+    }
     public User getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         return userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
@@ -141,9 +155,6 @@ public class UserService {
             return "등록되지않은 사용자 입니다.";
         }
         return "";
-
-
-
     }
 
 

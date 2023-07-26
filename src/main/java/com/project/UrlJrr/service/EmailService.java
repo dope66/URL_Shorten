@@ -31,7 +31,6 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
-    private final UrlMappingService urlMappingService;
     private final TaskScheduler taskScheduler;
     private final EmailRepository emailRepository;
 
@@ -39,8 +38,7 @@ public class EmailService {
     @Value("${server.name}")
     private String serverName;
 
-    private String emailSchedule = "0 5 18 * * ?";
-
+    private String emailSchedule = "0 0 18 * * ?";
 
 
     private ScheduledFuture<?> scheduledTask;
@@ -61,6 +59,7 @@ public class EmailService {
         Trigger trigger = new CronTrigger(emailSchedule);
         scheduledTask = taskScheduler.schedule(task, trigger);
     }
+
     // 스케줄링 변경 메서드
     public void updateEmailSchedule(String newSchedule) {
         emailSchedule = newSchedule;
@@ -69,6 +68,7 @@ public class EmailService {
 
         // 이후에 스케줄링이 자동으로 업데이트됩니다.
     }
+
     public String getEmailSchedule() {
         return emailSchedule;
     }
@@ -106,7 +106,7 @@ public class EmailService {
         * */
         // 구독되어있는 사용자들의 이메일 가져오기
         List<String> subscriberEmails = userService.getSubScribeEmail();
-        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) +"채용 정보 알림 "+sentScraps.size()+" 개의 공고";
+        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 " + sentScraps.size() + " 개의 공고";
         String text = emailContent.toString();
         // 이메일이 저장된 사용자가 있는 경우에만 발송
         if (!subscriberEmails.isEmpty()) {
@@ -144,7 +144,8 @@ public class EmailService {
         javaMailSender.send(message);
 
     }
-    public List<Email> emailList(){
+
+    public List<Email> emailList() {
         return emailRepository.findAll();
     }
 

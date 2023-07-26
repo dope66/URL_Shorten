@@ -45,7 +45,7 @@
                     <strong>회원님은 </strong> 현재 구독중 이십니다.
                 </p>
             </div>
-            <div th:if="${user.isSubScribe()}==false">
+            <div th:if="${user.isSubScribe()}!=true">
                 <p class="alert alert-danger" role="alert">
                     <strong>회원님은 </strong> 현재 구독 중이 아니십니다.
                 </p>
@@ -59,13 +59,12 @@
                             구독 해주셔서 감사합니다.
                         </h5>
                     </div>
-                    <div th:if="${user.isSubScribe()}==false">
+                    <div th:if="${user.isSubScribe()}!=true">
                         <h5 class="card-subtitle mb-3 pb-3 border-bottom">
                             구독 하시면 최신 취업 공고를 받아 보실 수 있습니다.
                         </h5>
                     </div>
                     <form method="post" action="/crawling/subScribe">
-                        <input type="hidden">
                         <div class="d-md-flex align-items-center">
                             <div class="mt-3 mt-md-0 ms-auto">
                                 <button class=" btn btn-primary font-weight-medium rounded-pill px-4" type="submit">
@@ -100,17 +99,4 @@
 <!-- End Container fluid  -->
 <!-- -------------------------------------------------------------- -->
 
-<!--                        <div class="form-floating mb-3">-->
-<!--                            <input class="form-control border border-primary" placeholder="Email" type="email">-->
-<!--                            <label>-->
-<!--                                <svg class="feather feather-mail feather-sm text-primary fill-white me-2" fill="none"-->
-<!--                                     height="24" stroke="currentColor"-->
-<!--                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"-->
-<!--                                     width="24"-->
-<!--                                     xmlns="http://www.w3.org/2000/svg">-->
-<!--                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>-->
-<!--                                    <polyline points="22,6 12,13 2,6"></polyline>-->
-<!--                                </svg>-->
-<!--                                <span class="border-start border-primary ps-3">이메일 주소를 입력해주세요</span></label>-->
-<!--                        </div>-->
 </html>

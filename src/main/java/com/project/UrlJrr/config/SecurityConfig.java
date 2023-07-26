@@ -33,6 +33,7 @@ public class SecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests -> {
                     authorizeRequests.requestMatchers("/matching/**").authenticated();
+                    authorizeRequests.requestMatchers("/crawling/apply").authenticated();
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
                     authorizeRequests.requestMatchers("/user/registerProc").permitAll();

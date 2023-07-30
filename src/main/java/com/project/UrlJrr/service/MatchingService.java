@@ -24,13 +24,13 @@ public class MatchingService {
             int experienceScore = calculateExperienceScore(user.getExperience(), scrap.getExperience());
             int sumScore = score + experienceScore;
 
-            if (sumScore <= 7) {
+            if (sumScore <= 5) {
                 grade = "D";
-            } else if (sumScore <= 9) {
+            } else if (sumScore <= 7) {
                 grade = "C";
-            } else if (sumScore <= 12) {
+            } else if (sumScore <= 10) {
                 grade = "B";
-            } else if (sumScore <= 14) {
+            } else if (sumScore <= 12) {
                 grade = "A";
             } else {
                 grade = "S";

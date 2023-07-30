@@ -215,13 +215,10 @@
                                             id="add-skill-btn"
                                             type="button">추가
                                     </button>
-                                    <button class="btn btn-light-danger text-danger" id="remove-skill-btn"
-                                            type="button">삭제
-                                    </button>
-
-
                                 </div>
-                                <ul id="selected-skills"></ul>
+                                <ul id="selected-skills">
+
+                                </ul>
 
 
                                 <input id="selected-skills-input" name="skillStack" type="hidden">
@@ -239,15 +236,17 @@
                                 <button class="btn btn-info d-block w-100" onclick="clickButton();">
                                     수정완료
                                 </button>
+
                             </div>
-                            <div class="d-flex align-items-stretch">
+                            <div>
                                 <form action="/user/deleteUser" method="post">
                                     <input name="userId" th:value="${user.getId()}" type="hidden">
-                                    <button class="btn btn-info d-block w-100">
+                                    <button class="btn btn-danger d-block w-100">
                                         회원 탈퇴
                                     </button>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -274,6 +273,65 @@
 
 <script src="/static/dist/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
 <script src="/static/dist/js/pages/forms/sweetalert2/sweet-alert.init.js"></script>
+
+<!-- JavaScript에서 스킬 스택들을 초기화하는 코드가 있어야 합니다. -->
+<script>
+    // 서버로부터 가져온 기존의 기술 스택 데이터를 파싱하여 배열로 변환하는 함수
+    function parseSkillStack(skillStack) {
+        return skillStack.split(",");
+    }
+
+    // 기존 기술 스택들을 페이지 로드 시에 보여주기 위해 초기화하는 함수
+    function initSkills() {
+        // AJAX를 통해 서버에서 데이터를 가져옵니다.
+        $.ajax({
+            type: "GET",
+            url: "/user/userSkillStack", // 서버에서 데이터를 가져올 엔드포인트 설정
+            dataType: "json",
+            success: function (data) {
+                var skillList = document.getElementById("selected-skills");
+                var skills = parseSkillStack(data.userSkillStack);
+
+                // 기존 기술 스택들을 동적으로 생성하여 추가합니다.
+                skills.forEach(function (skill) {
+                    addSkill(skillList, skill);
+                });
+            },
+            error: function () {
+                alert("서버에서 데이터를 가져오는데 실패했습니다.");
+            }
+        });
+    }
+
+    // 기술스택을 동적으로 추가하는 함수
+    function addSkill(skillList, skill) {
+        var li = document.createElement("li");
+        li.innerText = skill;
+
+        var deleteButton = document.createElement("button");
+        deleteButton.innerText = "삭제";
+        deleteButton.className = "btn btn-light-danger text-danger btn-sm";
+        deleteButton.addEventListener("click", function () {
+            removeSkill(skillList, li);
+        });
+
+        li.appendChild(deleteButton);
+        skillList.appendChild(li);
+    }
+
+    // 기술스택을 동적으로 삭제하는 함수
+    function removeSkill(skillList, skillItem) {
+        skillList.removeChild(skillItem);
+
+    }
+
+    // 페이지 로드 시에 기존 기술스택들을 초기화합니다.
+    document.addEventListener("DOMContentLoaded", function () {
+        initSkills();
+    });
+</script>
+
+
 <script>
 
     function clickButton() {
@@ -317,6 +375,7 @@
     }
 
 </script>
+
 
 <!--<script th:inline="javascript">-->
 <!--    $(document).ready(function () {-->

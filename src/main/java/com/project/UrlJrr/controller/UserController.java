@@ -3,18 +3,19 @@ package com.project.UrlJrr.controller;
 import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -65,15 +66,23 @@ public class UserController {
     public String userPage(@AuthenticationPrincipal Model model) {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
+        String userSkillStack = user.getSkillStack();
         model.addAttribute("user", user);
+        model.addAttribute("userSkillStack", userSkillStack);
         System.out.println(user.toString());
         return "pages/user/userPage";
     }
+
     @PostMapping("/deleteUser")
-    public String deleteUser(@RequestParam("userId") Long userId){
+    public String deleteUser(@RequestParam("userId") Long userId, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteUser(userId);
-        return "pages/user/register";
+        // 로그아웃 처리를 위해 SecurityContextLogoutHandler를 사용하여 세션 무효화
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, null);
+        // 회원 삭제 후에는 다시 로그인 페이지 등으로 리다이렉트하도록 합니다.
+        return "redirect:/"; // 로그인 페이지 경로로 변경해주세요.
     }
+
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
 
@@ -122,6 +131,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/userSkillStack")
+    @ResponseBody
+    public Map<String, Object> getUserSkillStack(Model model) {
+        Map<String, Object> response = new HashMap<>();
+        String username = userService.getUsername();
+        User user = userService.getUserByUsername(username);
+        String userSkillStack = user.getSkillStack();
+        response.put("userSkillStack", userSkillStack);
+        return response;
+    }
 
 
 }

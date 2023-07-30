@@ -55,7 +55,7 @@ public class MatchingService {
 
         if (userExperience != null && userExperience.equals(scrapTranslatedExperience)) {
             // 매칭되는 경우
-            return 10;
+            return 5;
         } else {
             // 경력이 매칭되지 않는 경우
             return 0;

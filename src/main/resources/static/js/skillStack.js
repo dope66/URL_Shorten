@@ -51,7 +51,7 @@ $(document).ready(function () {
     $('#add-skill-btn').click(function () {
         var skill = $('#skill-input').val();
         if (skill !== '') {
-            $('#selected-skills-list').append('<li>' + skill + '</li>');
+            $('#selected-skills-list').append('<li>' + skill + ' <button class="btn btn-light-danger text-danger btn-sm" onclick="removeSkill(this.parentNode)">삭제</button></li>');
             $('#skill-input').val('');
 
             // 선택된 기술 스택을 UserDto 객체에 설정
@@ -67,4 +67,16 @@ $(document).ready(function () {
         var skillItem = $(this).parent(); // li 요소 선택
         removeSkill($('#selected-skills-list'), skillItem);
     });
+    function removeSkill(list, skillItem) {
+        // 기술 항목을 목록에서 제거
+        skillItem.remove();
+
+        // 제거 후 선택된 기술 스택을 업데이트하여 입력 필드에 저장
+        var skillStack = [];
+        list.find('li').each(function () {
+            skillStack.push($(this).text());
+        });
+        $('#selected-skills-input').val(skillStack.join(','));
+    }
+
 });

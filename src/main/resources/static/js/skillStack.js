@@ -63,7 +63,8 @@ $(document).ready(function () {
         }
     });
     // SkillStack 제거 버튼 클릭 시
-    $(document).on('click', '#selected-skills li', function () {
-        $(this).remove();
+    $(document).on('click', '#selected-skills-list li button', function () {
+        var skillItem = $(this).parent(); // li 요소 선택
+        removeSkill($('#selected-skills-list'), skillItem);
     });
 });

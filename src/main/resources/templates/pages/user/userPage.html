@@ -216,9 +216,12 @@
                                             type="button">추가
                                     </button>
                                 </div>
-                                <ul id="selected-skills">
+                                <div class="selected-skills-container">
 
-                                </ul>
+                                    <ul id="selected-skills-list">
+
+                                    </ul>
+                                </div>
 
 
                                 <input id="selected-skills-input" name="skillStack" type="hidden">
@@ -227,10 +230,7 @@
                                 </datalist>
                             </div>
 
-                            <div class="selected-skills-container">
 
-                                <ul id="selected-skills-list"></ul>
-                            </div>
 
                             <div class="d-flex align-items-stretch">
                                 <button class="btn btn-info d-block w-100" onclick="clickButton();">
@@ -274,7 +274,6 @@
 <script src="/static/dist/libs/sweetalert2/dist/sweetalert2.all.min.js"></script>
 <script src="/static/dist/js/pages/forms/sweetalert2/sweet-alert.init.js"></script>
 
-<!-- JavaScript에서 스킬 스택들을 초기화하는 코드가 있어야 합니다. -->
 <script>
     // 서버로부터 가져온 기존의 기술 스택 데이터를 파싱하여 배열로 변환하는 함수
     function parseSkillStack(skillStack) {
@@ -283,13 +282,12 @@
 
     // 기존 기술 스택들을 페이지 로드 시에 보여주기 위해 초기화하는 함수
     function initSkills() {
-        // AJAX를 통해 서버에서 데이터를 가져옵니다.
         $.ajax({
             type: "GET",
             url: "/user/userSkillStack", // 서버에서 데이터를 가져올 엔드포인트 설정
             dataType: "json",
             success: function (data) {
-                var skillList = document.getElementById("selected-skills");
+                var skillList = document.getElementById("selected-skills-list");
                 var skills = parseSkillStack(data.userSkillStack);
 
                 // 기존 기술 스택들을 동적으로 생성하여 추가합니다.
@@ -340,7 +338,21 @@
         data.username = $("#username").val();
         data.password = $("#password1").val();
         data.password2 = $("#password2").val();
-        data.skillStack = $("#selected-skills-input").val();
+        // data.skillStack = $("#selected-skills-input").val();
+        var skillList = document.querySelectorAll("#selected-skills-list li");
+        var skillStackArray = [];
+        skillList.forEach(function (skillItem) {
+            var skillText = skillItem.innerText.replace("삭제", "").trim();
+            skillStackArray.push(skillText);
+        });
+        // 추가한 기술 스택 수집
+        var newSkillList = document.querySelectorAll(".new-skill");
+        newSkillList.forEach(function (newSkillItem) {
+            skillStackArray.push(newSkillItem.innerText);
+        });
+
+        data.skillStack = skillStackArray.join(",");
+
         // data.experience = $("#experience").val();
 
         var selectedExperienceId = $('input[name="experience"]:checked').attr('id');

@@ -122,12 +122,12 @@ public class UserController {
         String result = userService.userEamilCheck(email, username);
         if (result.isEmpty()) {
             userService.resetPasswordAndSendEmail(email, username);
-            return "redirect:/";
+            model.addAttribute("successMessage", "이메일을 성공적으로 보냈습니다! 이메일을 확인해주세요.");
         } else {
             model.addAttribute("errorMessage", result);
-            return "pages/user/findPassword";
-        }
 
+        }
+        return "pages/user/findPassword";
 
     }
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<!--Thymeleaf, ConfigFragment 선언-->
+<html lang="en"
+      th:fragment="ConfigFragment"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--Common Head-->
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0"
+          name="viewport"/>
+    <title></title>
+
+    <script th:inline="javascript" th:src="@{/static/dist/libs/jquery/dist/jquery.min.js}"
+            type="text/javascript"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script th:inline="javascript" th:src="@{/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"
+            type="text/javascript"></script>
+    <!-- apps -->
+    <script th:inline="javascript" th:src="@{/static/dist/js/app.min.js}" type="text/javascript"></script>
+    <script th:inline="javascript" th:src="@{/static/dist/js/app.init.horizontal.js}" type="text/javascript"></script>
+    <script th:inline="javascript" th:src="@{/static/dist/js/app-style-switcher.js}" type="text/javascript"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script th:inline="javascript" th:src="@{/static/dist/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.js}"
+            type="text/javascript"></script>
+    <script th:inline="javascript" th:src="@{/static/dist/libs/jquery-sparkline/jquery.sparkline.min.js}"
+            type="text/javascript"></script>
+    <!--Wave Effects -->
+    <script th:inline="javascript" th:src="@{/static/dist/js/waves.js}" type="text/javascript"></script>
+    <!--Menu sidebar -->
+    <script th:inline="javascript" th:src="@{/static/dist/js/sidebarmenu.js}" type="text/javascript"></script>
+    <!--Custom JavaScript -->
+    <script th:inline="javascript" th:src="@{/static/dist/js/feather.min.js}" type="text/javascript"></script>
+    <script th:inline="javascript" th:src="@{/static/dist/js/custom.min.js}" type="text/javascript"></script>
+    <!--This page JavaScript -->
+    <script th:inline="javascript" th:src="@{/static/dist/libs/apexcharts/dist/apexcharts.min.js}"
+            type="text/javascript"></script>
+    <!-- Chart JS -->
+    <script th:inline="javascript" th:src="@{/static/dist/js/pages/dashboards/dashboard1.js}"
+            type="text/javascript"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/static/dist/css/style.min.css}">
+
+</head>
+</html>

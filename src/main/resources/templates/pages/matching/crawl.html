@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      layout:decorate="~{common/layouts/defaultLayout}"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+<head>
+    <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">
+    <title>테스트 페이지 </title>
+
+</head>
+<!-- -------------------------------------------------------------- -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- -------------------------------------------------------------- -->
+<div class="row page-titles">
+    <div class="col-md-5 col-12 align-self-center">
+        <h3 class="text-themecolor mb-0">Crawl Results</h3>
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0)">Main</a>
+            </li>
+            <li class="breadcrumb-item active">Crawl Results</li>
+        </ol>
+    </div>
+    <div class="col-md-7 col-12 align-self-center d-none d-md-block">
+        <div class="d-flex mt-2 justify-content-end">
+
+        </div>
+    </div>
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- -------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------- -->
+<!-- Container fluid  -->
+<!-- -------------------------------------------------------------- -->
+<div class="container-fluid">
+    <!-- -------------------------------------------------------------- -->
+    <!-- Start Page Content -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- basic table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">내용</h4>
+                    <div class="row mt-4 text-center">
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-primary text-center">
+                                    <h1 class="fw-light text-primary" th:text="${maxId}"></h1>
+                                    <h6 class="text-primary">수집한 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-warning text-center">
+                                    <h1 class="fw-light text-warning" th:text="${unsentCount}"></h1>
+                                    <h6 class="text-warning">발송대기 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-success text-center">
+                                    <h1 class="fw-light text-success" th:text="${allScraps.size()}"></h1>
+                                    <h6 class="text-success">진행중 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-3 col-xlg-3">
+                            <div class="card card-hover">
+                                <div class="p-2 rounded bg-light-danger text-center">
+                                    <h1 class="fw-light text-danger" th:text="${deleteCount}"></h1>
+                                    <h6 class="text-danger">마감된 공고</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                    </div>
+
+                    <div class="table-responsive mt-4 mb-4 ">
+
+                        <div class="row">
+                            <!-- 정렬 기준 선택 -->
+                            <div class="dropdown">
+                                <button aria-expanded="false" class="btn btn-light dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        id="sortDropdown"
+                                        type="button">
+                                    정렬하기
+                                </button>
+                                <ul aria-labelledby="sortDropdown" class="dropdown-menu">
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID
+                                        (오름차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID
+                                        (내림차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">마감기간
+                                        (오름차순)</a></li>
+                                    <li><a class="dropdown-item"
+                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">마감기간
+                                        (내림차순)</a></li>
+                                </ul>
+                            </div>
+
+                            <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
+                                <div class="input-group col-2">
+                                    <input aria-label="Text input with checkbox" class="form-control" name="search"
+                                           placeholder="검색어 입력" th:value="${search}" type="text">
+                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색
+                                    </button>
+                                </div>
+                            </form>
+
+
+                        </div>
+                        <table class="table table-bordered no-wrap fs-3" id="zero_config">
+                            <thead class="text-center">
+
+                            <tr>
+                                <th>#
+
+                                </th>
+                                <th>공고 제목</th>
+                                <th>매칭 정보</th>
+                                <th>회사</th>
+                                <th>발송 여부</th>
+                                <th>마감 기간</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="table-body">
+
+
+                            <tr th:each="scrap : ${scraps}">
+                                <td class="fw-bold link text-center" th:text="${scrap.id}"></td>
+                                <td th:text="${scrap.articleText.length() > 30 ? scrap.articleText.substring(0, 30) + '...' : scrap.articleText}"></td>
+                                <td class="text-center">
+                                    <a class="font-weight-medium link"
+                                       target="_blank"
+                                       th:href="'/matching/'+${scrap.id}">바로가기
+                                    </a>
+                                </td>
+                                <td th:text="${scrap.company}"></td>
+
+                                <td class="text-center">
+                                    <span class="badge bg-light-warning text-warning font-weight-medium"
+                                          th:if=="${scrap.sent}==false">발송 대기</span>
+                                    <span class="badge bg-light-primary text-warning font-weight-medium"
+                                          th:if=="${scrap.sent}==true">발송 완료</span>
+                                </td>
+                                <td th:text="${scrap.deadline}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이지 번호 표시 -->
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col py-2 px-3 align-self-center">
+                                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+                                    <div class="btn-group">
+                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
+                                           th:if="${currentPage > 1}">
+                                            <button class="btn btn-light-primary text-primary font-weight-medium"
+                                                    type="button">Previous
+                                            </button>
+                                        </a>
+
+                                        <span th:each="pageNumber : ${#numbers.sequence(groupStart, groupEnd)}">
+                                        <a class="btn btn-light-primary text-primary font-weight-medium"
+                                           th:classappend="${pageNumber == currentPage} ? 'active'"
+                                           th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}">
+                                            <span th:text="${pageNumber}"></span>
+                                        </a>
+
+                                        </span>
+
+
+                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
+                                           th:if="${currentPage < totalPages}">
+                                            <button class="btn btn-light-primary text-primary font-weight-medium"
+                                                    type="button">Next
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- End Container fluid  -->
+<!-- -------------------------------------------------------------- -->
+
+
+</html>

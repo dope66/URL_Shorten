@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 선언 / headerFragment 임을 선언-->
+<html lang="en"
+      th:fragment="HeaderFragment"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- -------------------------------------------------------------- -->
+<!-- Topbar header - style you can find in pages.scss -->
+<!-- -------------------------------------------------------------- -->
+<header class="topbar">
+    <nav class="navbar top-navbar navbar-expand-lg navbar-dark">
+        <div class="navbar-header">
+            <!-- This is for the sidebar toggle which is visible on mobile only -->
+            <a
+                    class="nav-toggler waves-effect waves-light d-block d-lg-none"
+                    href="javascript:void(0)"
+            ><i class="ti-menu ti-close"></i
+            ></a>
+            <!-- -------------------------------------------------------------- -->
+            <!-- Logo -->
+            <!-- -------------------------------------------------------------- -->
+            <a class="navbar-brand" href="/">
+                <!-- Logo icon -->
+                <b class="logo-icon">
+                    <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                    <!-- Dark Logo icon -->
+                    <img
+                            alt="homepage"
+                            class="dark-logo"
+                            src="/static/assets/images/logo-icon.png"
+                    />
+                    <!-- Light Logo icon -->
+                    <img
+                            alt="homepage"
+                            class="light-logo"
+                            src="/static/assets/images/logo-light-icon.png"
+                    />
+                </b>
+                <!--End Logo icon -->
+                <!-- Logo text -->
+                <span class="logo-text">
+                <!-- dark Logo text -->
+                <img
+                        alt="homepage"
+                        class="dark-logo"
+                        src="/static/assets/images/logo-text.png"
+                />
+                    <!-- Light Logo text -->
+                <img
+                        alt="homepage"
+                        class="light-logo"
+                        src="/static/assets/images/logo-light-text.png"
+                />
+              </span>
+            </a>
+            <!-- -------------------------------------------------------------- -->
+            <!-- End Logo -->
+            <!-- -------------------------------------------------------------- -->
+
+        </div>
+        <!-- -------------------------------------------------------------- -->
+        <!-- End Logo -->
+        <!-- -------------------------------------------------------------- -->
+        <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <!-- -------------------------------------------------------------- -->
+            <!-- toggle and nav items -->
+            <!-- -------------------------------------------------------------- -->
+
+        </div>
+    </nav>
+</header>
+<!-- -------------------------------------------------------------- -->
+<!-- End Topbar header -->
+<!-- -------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------- -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- -------------------------------------------------------------- -->
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <!-- User Profile-->
+
+                <li class="nav-small-cap">
+                    <i class="mdi mdi-dots-horizontal"></i>
+                    <span class="hide-menu">채용공고 메일링</span>
+
+                <li class="sidebar-item ">
+                    <a
+                            aria-expanded="false"
+                            class="sidebar-link waves-effect waves-dark"
+                            href="/crawling/apply"
+                    ><i class="mdi mdi-account-edit"></i
+                    ><span class="hide-menu">구독/해제</span></a
+                    >
+                </li>
+                <li class="sidebar-item ">
+                    <a
+                            aria-expanded="false"
+                            class="sidebar-link  waves-effect waves-dark"
+                            href="/crawling/list"
+                    ><i class="mdi mdi-search-web"></i
+                    ><span class="hide-menu">정보 조회</span></a
+                    >
+                </li>
+
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!-- -------------------------------------------------------------- -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- -------------------------------------------------------------- -->
+</html>

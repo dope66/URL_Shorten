@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta
+            content="김현우 포트폴리오"
+            name="keywords"
+    />
+    <meta
+            content="김현우 포트폴리오"
+            name="description"
+    />
+    <meta content="noindex,nofollow" name="robots"/>
+    <title>김현우 포트폴리오</title>
+    <link
+            href="https://www.devjune.com/"
+            rel="canonical"
+    />
+    <!-- Favicon icon -->
+    <link
+            href="/static/assets/images/favicon.png"
+            rel="icon"
+            sizes="16x16"
+            type="image/png"
+    />
+    <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">
+    <!-- This page plugin CSS -->
+    <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- -------------------------------------------------------------- -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- -------------------------------------------------------------- -->
+<div class="preloader">
+    <svg
+            class="tea lds-ripple"
+            fill="none"
+            height="48"
+            viewbox="0 0 37 48"
+            width="37"
+            xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+                d="M27.0819 17H3.02508C1.91076 17 1.01376 17.9059 1.0485 19.0197C1.15761 22.5177 1.49703 29.7374 2.5 34C4.07125 40.6778 7.18553 44.8868 8.44856 46.3845C8.79051 46.79 9.29799 47 9.82843 47H20.0218C20.639 47 21.2193 46.7159 21.5659 46.2052C22.6765 44.5687 25.2312 40.4282 27.5 34C28.9757 29.8188 29.084 22.4043 29.0441 18.9156C29.0319 17.8436 28.1539 17 27.0819 17Z"
+                stroke="#1e88e5"
+                stroke-width="2"
+        ></path>
+        <path
+                d="M29 23.5C29 23.5 34.5 20.5 35.5 25.4999C36.0986 28.4926 34.2033 31.5383 32 32.8713C29.4555 34.4108 28 34 28 34"
+                stroke="#1e88e5"
+                stroke-width="2"
+        ></path>
+        <path
+                clip-rule="evenodd"
+                d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
+                fill="#1e88e5"
+                fill-rule="evenodd"
+                id="teabag"
+        ></path>
+        <path
+                d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12"
+                id="steamL"
+                stroke="#1e88e5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+        ></path>
+        <path
+                d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13"
+                id="steamR"
+                stroke="#1e88e5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+        ></path>
+    </svg>
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- -------------------------------------------------------------- -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <div class="navbar-header">
+                <!-- This is for the sidebar toggle which is visible on mobile only -->
+                <a
+                        class="nav-toggler waves-effect waves-light d-block d-md-none"
+                        href="javascript:void(0)"
+                ><i class="ti-menu ti-close"></i
+                ></a>
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <a class="navbar-brand" href="/">
+                    <!-- Logo icon -->
+                    <b class="logo-icon">
+                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                        <!-- Dark Logo icon -->
+                        <img
+                                alt="homepage"
+                                class="dark-logo"
+                                src="/static/assets/images/logo-icon.png"
+                        />
+                        <!-- Light Logo icon -->
+                        <img
+                                alt="homepage"
+                                class="light-logo"
+                                src="/static/assets/images/logo-light-icon.png"
+                        />
+                    </b>
+                    <!--End Logo icon -->
+                    <!-- Logo text -->
+                    <span class="logo-text">
+                <!-- dark Logo text -->
+                <img
+                        alt="homepage"
+                        class="dark-logo"
+                        src="/static/assets/images/logo-text.png"
+                />
+                        <!-- Light Logo text -->
+                <img
+                        alt="homepage"
+                        class="light-logo"
+                        src="/static/assets/images/logo-light-text.png"
+                />
+              </span>
+                </a>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Toggle which is visible on mobile only -->
+                <!-- ============================================================== -->
+                <a
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                        class="topbartoggler d-block d-md-none waves-effect waves-light"
+                        data-bs-target="#navbarSupportedContent"
+                        data-bs-toggle="collapse"
+                        href="javascript:void(0)"
+                ><i class="ti-more"></i
+                ></a>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <!-- ============================================================== -->
+                <!-- toggle and nav items -->
+                <!-- ============================================================== -->
+
+            </div>
+        </nav>
+    </header>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- User profile -->
+            <div class="user-profile position-relative"
+                 style="
+              background: url(/static/assets/images/background/user-info.jpg)
+                no-repeat;
+            "
+            >
+                <!-- User profile image -->
+                <div class="profile-img">
+                    <img
+                            alt="user"
+                            class="w-100"
+                            src="/static/assets/images/users/profile.png"
+                    />
+                </div>
+                <!-- User profile text-->
+                <div class="profile-text pt-1 dropdown">
+                    <a
+                            aria-expanded="false"
+                            class="
+                  dropdown-toggle
+                  u-dropdown
+                  w-100
+                  text-white
+                  d-block
+                  position-relative
+                "
+                            data-bs-toggle="dropdown"
+                            href="#"
+                            id="dropdownMenuLink"
+                            th:text="${myname}"
+                    ></a
+                    >
+                    <div
+                            aria-labelledby="dropdownMenuLink"
+                            class="dropdown-menu animated flipInY"
+                    >
+
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/user/modify"
+                        ><i
+                                class="feather-sm text-warning me-1 ms-1"
+                                data-feather="settings"
+                        ></i>
+                            계정설정</a
+                        >
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/user/logout"
+                        ><i
+                                class="feather-sm text-danger me-1 ms-1"
+                                data-feather="log-out"
+                        ></i>
+                            로그아웃</a
+                        >
+                        <div class="dropdown-divider"></div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End User profile text-->
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">devJune 사이트</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/admin/userManagement"
+                        ><i class="mdi mdi-account-box"></i
+                        ><span class="hide-menu">회원관리</span></a
+                        >
+                    </li>
+                    <hr>
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">채용공고 크롤링</span>
+                    </li>
+
+
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/admin/page"
+                        ><i class="mdi mdi-timer"></i
+                        ><span class="hide-menu">스케줄 관리</span></a
+                        >
+                    </li>
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/admin/emailLogPage"
+                        ><i class="mdi mdi-file-document"></i
+                        ><span class="hide-menu">발송로그(개발중)</span></a
+                        >
+                    </li>
+                    <hr>
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">관리자</span>
+                    </li>
+
+
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="#"
+                        ><i class="mdi mdi-file-document"></i
+                        ><span class="hide-menu">감사로그(개발중)</span></a
+                        >
+                    </li>
+
+                    <hr>
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">사이트 링크</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/"
+                        ><i class="mdi mdi-home-outline"></i
+                        ><span class="hide-menu">devJune</span></a
+                        >
+                    </li>
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/crawling/list"
+                        ><i class="mdi mdi-shopping"></i
+                        ><span class="hide-menu">채용공고 크롤링</span></a
+                        >
+                    </li>
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="/Short/main"
+                        ><i class="mdi mdi-share-variant"></i
+                        ><span class="hide-menu">Url-Shorts</span></a
+                        >
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="https://velog.io/@devjuneh_66"
+                        ><i class="mdi mdi-blogger"></i
+                        ><span class="hide-menu">블로그</span></a
+                        >
+                    </li>
+                    <li class="sidebar-item">
+                        <a
+                                aria-expanded="false"
+                                class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="https://github.com/dope66"
+                        ><i class="mdi mdi-github-circle"></i
+                        ><span class="hide-menu">Github</span></a
+                        >
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+        <!-- Bottom points-->
+        <!-- End Bottom points-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- -------------------------------------------------------------- -->
+    <!-- Page wrapper  -->
+    <!-- -------------------------------------------------------------- -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 col-12 align-self-center">
+                <h3 class="text-themecolor mb-0">관리자</h3>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/admin/userManagement">devJune 사이트</a>
+                    </li>
+                    <li class="breadcrumb-item active">회원관리</li>
+                </ol>
+            </div>
+            <div class="col-md-7 col-12 align-self-center d-none d-md-block">
+                <div class="d-flex mt-2 justify-content-end">
+
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- -------------------------------------------------------------- -->
+        <!-- Container fluid  -->
+        <!-- -------------------------------------------------------------- -->
+        <div class="container-fluid">
+            <!-- -------------------------------------------------------------- -->
+            <!-- Start Page Content -->
+            <!-- -------------------------------------------------------------- -->
+            <div class="widget-content searchable-container list">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-xl-2">
+                            <form>
+                                <input
+                                        class="form-control product-search"
+                                        id="input-search"
+                                        placeholder="회원 찾기(개발중)"
+                                        type="text"
+                                />
+                            </form>
+                        </div>
+                        <div
+                                class="
+                    col-md-8 col-xl-10
+                    text-end
+                    d-flex
+                    justify-content-md-end justify-content-center
+                    mt-3 mt-md-0
+                  "
+                        >
+                            <div class="action-btn show-btn" style="display: none">
+                                <a
+                                        class="
+                        delete-multiple
+                        btn-light-danger btn
+                        me-2
+                        text-danger
+                        d-flex
+                        align-items-center
+                        font-weight-medium
+                      "
+                                        href="javascript:void(0)"
+                                >
+                                    <i
+                                            class="feather-sm fill-white me-1"
+                                            data-feather="trash-2"
+                                    ></i>
+                                    Delete All Row</a
+                                >
+                            </div>
+                            <a
+                                    class="btn btn-info"
+                                    href="javascript:void(0)"
+                                    id="btn-add-contact"
+                            >
+                                <i class="feather-sm fill-white me-1" data-feather="users">
+                                </i>
+                                회원추가(개발중)</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div
+                        aria-hidden="true"
+                        aria-labelledby="addContactModalTitle"
+                        class="modal fade"
+                        id="addContactModal"
+                        role="dialog"
+                        tabindex="-1"
+                >
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex align-items-center">
+                                <h5 class="modal-title">Contact</h5>
+                                <button
+                                        aria-label="Close"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        type="button"
+                                ></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="add-contact-box">
+                                    <div class="add-contact-content">
+                                        <form id="addContactModalTitle">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 contact-name">
+                                                        <input
+                                                                class="form-control"
+                                                                id="c-name"
+                                                                placeholder="Name"
+                                                                type="text"
+                                                        />
+                                                        <span
+                                                                class="validation-text text-danger"
+                                                        ></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 contact-email">
+                                                        <input
+                                                                class="form-control"
+                                                                id="c-email"
+                                                                placeholder="Email"
+                                                                type="text"
+                                                        />
+                                                        <span
+                                                                class="validation-text text-danger"
+                                                        ></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 contact-occupation">
+                                                        <input
+                                                                class="form-control"
+                                                                id="c-occupation"
+                                                                placeholder="Occupation"
+                                                                type="text"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 contact-phone">
+                                                        <input
+                                                                class="form-control"
+                                                                id="c-phone"
+                                                                placeholder="Phone"
+                                                                type="text"
+                                                        />
+                                                        <span
+                                                                class="validation-text text-danger"
+                                                        ></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-3 contact-location">
+                                                        <input
+                                                                class="form-control"
+                                                                id="c-location"
+                                                                placeholder="Location"
+                                                                type="text"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button
+                                        class="btn btn-success rounded-pill px-4"
+                                        id="btn-add"
+                                >
+                                    Add
+                                </button>
+                                <button
+                                        class="btn btn-success rounded-pill px-4"
+                                        id="btn-edit"
+                                >
+                                    Save
+                                </button>
+                                <button
+                                        class="btn btn-danger rounded-pill px-4"
+                                        data-bs-dismiss="modal"
+                                >
+                                    Discard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-body">
+                    <div class="table-responsive">
+                        <table class="table search-table v-middle">
+                            <thead class="header-item  text-center">
+                            <th>계정</th>
+                            <th>이메일</th>
+                            <th>경력</th>
+                            <th>권한</th>
+                            <th>삭제</th>
+                            </thead>
+                            <tbody>
+                            <!-- row -->
+
+                            <tr class="text-center search-items" th:each="user : ${users}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="ms-3">
+                                            <div class="user-meta-info">
+                                                <h6 class="text-center user-name mb-0 font-weight-medium"
+                                                    th:text="${user.username}">
+
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                        <span class="usr-email-addr" th:text="${user.email}"
+                        ></span
+                        >
+                                </td>
+                                <td>
+                        <span class="usr-location" th:text="${user.experience}"
+                        ></span
+                        >
+                                </td>
+                                <td>
+                        <span class="usr-ph-no" th:text="${user.roles}"
+                        ></span
+                        >
+                                </td>
+                                <td>
+                                    <form action="/admin/deleteUser" method="post">
+                                        <input name="userId" th:value="${user.id}" type="hidden"/>
+                                        <button class="action-btn" th:if="${user.roles}==USER" type="submit">
+
+                                            <i class="feather-sm fill-white mdi mdi-delete"
+
+                                            ></i>
+                                        </button>
+                                        <div class="action-btn" th:if="${user.roles}!=USER">
+
+                                            <i class="feather-sm mdi mdi-alert-octagram"
+
+                                            ></i>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- /.row -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <!-- End PAge Content -->
+            <!-- -------------------------------------------------------------- -->
+        </div>
+
+        <!-- -------------------------------------------------------------- -->
+        <!-- End Container fluid  -->
+        <!-- -------------------------------------------------------------- -->
+        <!-- -------------------------------------------------------------- -->
+        <!-- footer -->
+        <!-- -------------------------------------------------------------- -->
+        <footer class="footer text-center">
+            All Rights Reserved by 김현우
+        </footer>
+        <!-- -------------------------------------------------------------- -->
+        <!-- End footer -->
+        <!-- -------------------------------------------------------------- -->
+    </div>
+    <!-- -------------------------------------------------------------- -->
+    <!-- End Page wrapper  -->
+    <!-- -------------------------------------------------------------- -->
+</div>
+<!-- -------------------------------------------------------------- -->
+<!-- End Wrapper -->
+<!-- -------------------------------------------------------------- -->
+<!-- -------------------------------------------------------------- -->
+<!-- customizer Panel -->
+<!-- -------------------------------------------------------------- -->
+
+<!-- -------------------------------------------------------------- -->
+<!-- All Jquery -->
+<!-- -------------------------------------------------------------- -->
+<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- apps -->
+<script src="/static/dist/js/app.min.js"></script>
+<script src="/static/dist/js/app.init.dark.js"></script>
+<script src="/static/dist/js/app-style-switcher.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="/static/dist/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.js"></script>
+<script src="/static/dist/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+<!--Wave Effects -->
+<script src="/static/dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="/static/dist/js/sidebarmenu.js"></script>
+<!--Custom JavaScript -->
+<script src="/static/dist/js/feather.min.js"></script>
+<script src="/static/dist/js/custom.min.js"></script>
+<!--This page plugins -->
+<script src="/static/dist/js/pages/contact/contact.js"></script>
+</body>
+</html>

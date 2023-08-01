@@ -112,9 +112,10 @@
             <div>
                 <div class="logo text-center">
               <span class="db"
-              ><img alt="logo" src="/assets/images/logo-icon.png"
-              /></span>
-                    <h5 class="font-weight-medium mb-3 mt-1">회원수정하기</h5>
+              >
+                  <a href="/"><img alt="logo" src="/assets/images/logo-icon.png"
+              /></a></span>
+                    <h3 class="font-weight-medium mb-3 mt-1">회원 정보 수정하기</h3>
                 </div>
                 <!-- Form -->
                 <div class="row mt-4">
@@ -134,47 +135,6 @@
                                 <div class="invalid-feedback">아이디를 입력해 주세요</div>
                                 <div class="error-message" id="username-error" style="display: none;"></div>
                             </div>
-
-
-                            <!-- 비밀번호1 -->
-                            <div class="form-floating mb-3">
-                                <input
-                                        class="form-control form-input-bg"
-                                        id="password1"
-                                        name="password1"
-                                        value="현재 점검 중입니다."
-                                        required
-                                        type="text"
-                                        disabled
-                                />
-                                <label for="password1">비밀번호 변경</label>
-                            </div>
-<!--                            &lt;!&ndash; 비밀번호1 &ndash;&gt;-->
-<!--                            <div class="form-floating mb-3">-->
-<!--                                <input-->
-<!--                                        class="form-control form-input-bg"-->
-<!--                                        id="password1"-->
-<!--                                        name="password1" placeholder="*****"-->
-<!--                                        required-->
-<!--                                        type="password"-->
-<!--                                />-->
-
-<!--                                <label for="password1">비밀번호</label>-->
-<!--                                <div class="invalid-feedback">비밀번호를 입력해 주세요</div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; 비밀번호2 &ndash;&gt;-->
-<!--                            <div class="form-floating mb-3">-->
-<!--                                <input-->
-<!--                                        class="form-control form-input-bg"-->
-<!--                                        id="password2"-->
-<!--                                        name="password2" placeholder="*****"-->
-<!--                                        required-->
-<!--                                        type="password"-->
-<!--                                />-->
-
-<!--                                <label for="password2">비밀번호 재 입력</label>-->
-<!--                                <div class="invalid-feedback">비밀번호를 입력해 주세요</div>-->
-<!--                            </div>-->
 
                             <!-- 이메일 -->
                             <div class="form-floating mb-3">
@@ -243,22 +203,28 @@
                             </div>
 
 
-
                             <div class="d-flex align-items-stretch">
-                                <button class="btn btn-info d-block w-100" onclick="clickButton();">
+                                <button class="btn btn-light-info d-block w-100" onclick="clickButton();">
                                     수정완료
                                 </button>
 
                             </div>
-
+                            <div th:if="${user.getRoles()!=ADMIN}">
+                                <a href="/user/changePassword">
+                                    <button class="btn btn-light-secondary d-block w-100">
+                                        비밀번호 변경
+                                    </button>
+                                </a>
+                            </div>
                             <div th:if="${user.getRoles()}!=ADMIN">
                                 <form action="/user/deleteUser" method="post">
                                     <input name="userId" th:value="${user.getId()}" type="hidden">
-                                    <button class="btn btn-danger d-block w-100">
+                                    <button class="btn btn-light-danger d-block w-100">
                                         회원 탈퇴
                                     </button>
                                 </form>
                             </div>
+
 
                         </div>
                     </div>
@@ -330,7 +296,6 @@
         skillList.appendChild(li);
     }
 
-    // 기술스택을 동적으로 삭제하는 함수
     function removeSkill(skillList, skillItem) {
         skillList.removeChild(skillItem);
 

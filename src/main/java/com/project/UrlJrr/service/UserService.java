@@ -146,13 +146,14 @@ public class UserService {
         userRepository.deleteById(userId);
     }
     public String userEamilCheck(String email, String username) {
-        if(email.isEmpty() || username.isEmpty()){
+        if (email.isEmpty()) {
+            return "빈칸을 채워주세요 ";
+        } else if (username.isEmpty()) {
             return "빈칸을 채워주세요 ";
         }
-
         Optional<User> user = userRepository.findByEmailAndUsername(email, username);
         if(!user.isPresent()){
-            return "등록되지않은 사용자 입니다.";
+            return "이메일과 아이디를 확인 해주세요.";
         }
         return "";
     }
@@ -160,7 +161,8 @@ public class UserService {
 
     public void resetPasswordAndSendEmail(String email, String username) {
         // db에서 찾고 없으면 메세지
-        User user = userRepository.findByEmailAndUsername(email, username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user;
+        user = userRepository.findByEmailAndUsername(email, username).orElseThrow(() -> new RuntimeException("User not found"));
         String temporaryPassword = generateTemporaryPassword();
         String hashedPassword = passwordEncoder.encode(temporaryPassword);
         user.setPassword(hashedPassword);

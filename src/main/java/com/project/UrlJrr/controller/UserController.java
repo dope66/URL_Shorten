@@ -127,7 +127,7 @@ public class UserController {
             model.addAttribute("errorMessage", result);
 
         }
-        return "pages/user/findPassword";
+        return "pages/user/login";
 
     }
 

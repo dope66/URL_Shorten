@@ -39,32 +39,23 @@ $(function () {
     $("#btn-add").click(function () {
       var getParent = $(this).parents(".modal-content");
 
-      var $_name = getParent.find("#c-name");
+      var $_name = getParent.find("#username");
       var $_email = getParent.find("#c-email");
-      var $_occupation = getParent.find("#c-occupation");
-      var $_phone = getParent.find("#c-phone");
-      var $_location = getParent.find("#c-location");
 
       var $_getValidationField =
         document.getElementsByClassName("validation-text");
-      var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
-      var phoneReg = /^\d*\.?\d*$/;
-
       var $_nameValue = $_name.val();
       var $_emailValue = $_email.val();
-      var $_occupationValue = $_occupation.val();
-      var $_phoneValue = $_phone.val();
-      var $_locationValue = $_location.val();
 
       if ($_nameValue == "") {
-        $_getValidationField[0].innerHTML = "Name must be filled out";
+        $_getValidationField[0].innerHTML = "유저 아이디는 빈칸일수 없습니다.";
         $_getValidationField[0].style.display = "block";
       } else {
         $_getValidationField[0].style.display = "none";
       }
 
       if ($_emailValue == "") {
-        $_getValidationField[1].innerHTML = "Email Id must be filled out";
+        $_getValidationField[1].innerHTML = "이메일을 채워주세요";
         $_getValidationField[1].style.display = "block";
       } else if (reg.test($_emailValue) == false) {
         $_getValidationField[1].innerHTML = "Invalid Email";
@@ -73,47 +64,13 @@ $(function () {
         $_getValidationField[1].style.display = "none";
       }
 
-      if ($_phoneValue == "") {
-        $_getValidationField[2].innerHTML = "Invalid (Enter 10 Digits)";
-        $_getValidationField[2].style.display = "block";
-      } else if (phoneReg.test($_phoneValue) == false) {
-        $_getValidationField[2].innerHTML = "Please Enter A numeric value";
-        $_getValidationField[2].style.display = "block";
-      } else {
-        $_getValidationField[2].style.display = "none";
-      }
-
       if (
         $_nameValue == "" ||
         $_emailValue == "" ||
-        reg.test($_emailValue) == false ||
-        $_phoneValue == "" ||
-        phoneReg.test($_phoneValue) == false
+        reg.test($_emailValue) == false
       ) {
         return false;
       }
-
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, "0");
-      var mm = String(today.getMonth()); //January is 0!
-      var time = String(today.getTime());
-      var yyyy = today.getFullYear();
-      var monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      today = dd + " " + monthNames[mm] + " " + yyyy;
-      var cdate = dd + mm + time;
 
       $html =
         '<tr class="search-items">' +
@@ -139,11 +96,6 @@ $(function () {
         ">" +
         $_nameValue +
         "</h5>" +
-        '<span class="user-work text-muted" data-occupation=' +
-        $_occupationValue +
-        ">" +
-        $_occupationValue +
-        "</span>" +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -153,20 +105,6 @@ $(function () {
         $_emailValue +
         ">" +
         $_emailValue +
-        "</span>" +
-        "</td>" +
-        "<td>" +
-        '<span class="usr-location" data-location=' +
-        $_locationValue +
-        ">" +
-        $_locationValue +
-        "</span>" +
-        "</td>" +
-        "<td>" +
-        '<span class="usr-ph-no" data-phone=' +
-        $_phoneValue +
-        ">" +
-        $_phoneValue +
         "</span>" +
         "</td>" +
         "<td>" +
@@ -183,9 +121,6 @@ $(function () {
 
       var $_setNameValueEmpty = $_name.val("");
       var $_setEmailValueEmpty = $_email.val("");
-      var $_setOccupationValueEmpty = $_occupation.val("");
-      var $_setPhoneValueEmpty = $_phone.val("");
-      var $_setLocationValueEmpty = $_location.val("");
 
       deleteContact();
       editContact();
@@ -194,19 +129,12 @@ $(function () {
   }
 
   $("#addContactModal").on("hidden.bs.modal", function (e) {
-    var $_name = document.getElementById("c-name");
+    var $_name = document.getElementById("username");
     var $_email = document.getElementById("c-email");
-    var $_occupation = document.getElementById("c-occupation");
-    var $_phone = document.getElementById("c-phone");
-    var $_location = document.getElementById("c-location");
     var $_getValidationField =
       document.getElementsByClassName("validation-text");
-
     var $_setNameValueEmpty = ($_name.value = "");
     var $_setEmailValueEmpty = ($_email.value = "");
-    var $_setOccupationValueEmpty = ($_occupation.value = "");
-    var $_setPhoneValueEmpty = ($_phone.value = "");
-    var $_setLocationValueEmpty = ($_location.value = "");
 
     for (var i = 0; i < $_getValidationField.length; i++) {
       e.preventDefault();
@@ -226,68 +154,33 @@ $(function () {
       // Get List Item Fields
       var $_name = getParentItem.find(".user-name");
       var $_email = getParentItem.find(".usr-email-addr");
-      var $_occupation = getParentItem.find(".user-work");
-      var $_phone = getParentItem.find(".usr-ph-no");
-      var $_location = getParentItem.find(".usr-location");
-
       // Get Attributes
       var $_nameAttrValue = $_name.attr("data-name");
       var $_emailAttrValue = $_email.attr("data-email");
-      var $_occupationAttrValue = $_occupation.attr("data-occupation");
-      var $_phoneAttrValue = $_phone.attr("data-phone");
-      var $_locationAttrValue = $_location.attr("data-location");
 
       // Get Modal Attributes
-      var $_getModalNameInput = getModal.find("#c-name");
+      var $_getModalNameInput = getModal.find("#username");
       var $_getModalEmailInput = getModal.find("#c-email");
-      var $_getModalOccupationInput = getModal.find("#c-occupation");
-      var $_getModalPhoneInput = getModal.find("#c-phone");
-      var $_getModalLocationInput = getModal.find("#c-location");
 
       // Set Modal Field's Value
       var $_setModalNameValue = $_getModalNameInput.val($_nameAttrValue);
       var $_setModalEmailValue = $_getModalEmailInput.val($_emailAttrValue);
-      var $_setModalOccupationValue = $_getModalOccupationInput.val(
-        $_occupationAttrValue
-      );
-      var $_setModalPhoneValue = $_getModalPhoneInput.val($_phoneAttrValue);
-      var $_setModalLocationValue =
-        $_getModalLocationInput.val($_locationAttrValue);
-
       $("#addContactModal").modal("show");
 
       $("#btn-edit").click(function () {
         var getParent = $(this).parents(".modal-content");
 
-        var $_getInputName = getParent.find("#c-name");
+        var $_getInputName = getParent.find("#username");
         var $_getInputNmail = getParent.find("#c-email");
-        var $_getInputNccupation = getParent.find("#c-occupation");
-        var $_getInputNhone = getParent.find("#c-phone");
-        var $_getInputNocation = getParent.find("#c-location");
 
         var $_nameValue = $_getInputName.val();
         var $_emailValue = $_getInputNmail.val();
-        var $_occupationValue = $_getInputNccupation.val();
-        var $_phoneValue = $_getInputNhone.val();
-        var $_locationValue = $_getInputNocation.val();
 
         var setUpdatedNameValue = $_name.text($_nameValue);
         var setUpdatedEmailValue = $_email.text($_emailValue);
-        var setUpdatedOccupationValue = $_occupation.text($_occupationValue);
-        var setUpdatedPhoneValue = $_phone.text($_phoneValue);
-        var setUpdatedLocationValue = $_location.text($_locationValue);
-
         var setUpdatedAttrNameValue = $_name.attr("data-name", $_nameValue);
         var setUpdatedAttrEmailValue = $_email.attr("data-email", $_emailValue);
-        var setUpdatedAttrOccupationValue = $_occupation.attr(
-          "data-occupation",
-          $_occupationValue
-        );
-        var setUpdatedAttrPhoneValue = $_phone.attr("data-phone", $_phoneValue);
-        var setUpdatedAttrLocationValue = $_location.attr(
-          "data-location",
-          $_locationValue
-        );
+
         $("#addContactModal").modal("hide");
       });
     });
@@ -308,16 +201,13 @@ $(function () {
 // Validation Process
 
 var $_getValidationField = document.getElementsByClassName("validation-text");
-var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
-var phoneReg = /^\d{10}$/;
-
-getNameInput = document.getElementById("c-name");
+getNameInput = document.getElementById("username");
 
 getNameInput.addEventListener("input", function () {
   getNameInputValue = this.value;
 
   if (getNameInputValue == "") {
-    $_getValidationField[0].innerHTML = "Name Required";
+    $_getValidationField[0].innerHTML = "유저 아이디를 채워주세요";
     $_getValidationField[0].style.display = "block";
   } else {
     $_getValidationField[0].style.display = "none";
@@ -325,12 +215,11 @@ getNameInput.addEventListener("input", function () {
 });
 
 getEmailInput = document.getElementById("c-email");
-
 getEmailInput.addEventListener("input", function () {
   getEmailInputValue = this.value;
 
   if (getEmailInputValue == "") {
-    $_getValidationField[1].innerHTML = "Email Required";
+    $_getValidationField[1].innerHTML = "이메일을 채워주세요";
     $_getValidationField[1].style.display = "block";
   } else if (reg.test(getEmailInputValue) == false) {
     $_getValidationField[1].innerHTML = "Invalid Email";
@@ -340,18 +229,3 @@ getEmailInput.addEventListener("input", function () {
   }
 });
 
-getPhoneInput = document.getElementById("c-phone");
-
-getPhoneInput.addEventListener("input", function () {
-  getPhoneInputValue = this.value;
-
-  if (getPhoneInputValue == "") {
-    $_getValidationField[2].innerHTML = "Phone Number Required";
-    $_getValidationField[2].style.display = "block";
-  } else if (phoneReg.test(getPhoneInputValue) == false) {
-    $_getValidationField[2].innerHTML = "Invalid (Enter 10 Digits)";
-    $_getValidationField[2].style.display = "block";
-  } else {
-    $_getValidationField[2].style.display = "none";
-  }
-});

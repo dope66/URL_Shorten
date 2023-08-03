@@ -403,7 +403,7 @@
                                 <input
                                         class="form-control product-search"
                                         id="input-search"
-                                        placeholder="회원 찾기(개발중)"
+                                        placeholder="회원 찾기(미완성)"
                                         type="text"
                                 />
                             </form>
@@ -472,14 +472,15 @@
                             <div class="modal-body">
                                 <div class="add-contact-box">
                                     <div class="add-contact-content">
-                                        <form id="addContactModalTitle">
+                                        <form id="addContactModalTitle" method="post" th:action="@{/user/registerProc}">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3 contact-name">
                                                         <input
                                                                 class="form-control"
-                                                                id="c-name"
-                                                                placeholder="Name"
+                                                                id="username"
+                                                                name="username"
+                                                                placeholder="UserName"
                                                                 type="text"
                                                         />
                                                         <span
@@ -492,39 +493,43 @@
                                                         <input
                                                                 class="form-control"
                                                                 id="c-email"
+                                                                name="email"
                                                                 placeholder="Email"
-                                                                type="text"
+                                                                type="email"
                                                         />
                                                         <span
                                                                 class="validation-text text-danger"
                                                         ></span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3 contact-password">
+                                                        <input
+                                                                class="form-control"
+                                                                id="password"
+                                                                name="password"
+                                                                placeholder="password"
+                                                                type="password"
+                                                        />
+                                                        <span
+                                                                class="validation-text text-danger"
+                                                        ></span>
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                            <input id="roles" name="roles" th:value="USER" type="hidden">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-3 contact-occupation">
-                                                        <input
-                                                                class="form-control"
-                                                                id="c-occupation"
-                                                                placeholder="Occupation"
-                                                                type="text"
-                                                        />
+                                                    <div class="col mb-3">
+                                                        <input checked class="with-gap material-inputs material-inputs radio-col-blue"
+                                                               id="experience1" name="experience" type="radio" value="신입">
+                                                        <label for="experience1">신입</label>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="mb-3 contact-phone">
-                                                        <input
-                                                                class="form-control"
-                                                                id="c-phone"
-                                                                placeholder="Phone"
-                                                                type="text"
-                                                        />
-                                                        <span
-                                                                class="validation-text text-danger"
-                                                        ></span>
+                                                    <div class="col mb-3">
+                                                        <input class="with-gap material-inputs material-inputs radio-col-blue"
+                                                               id="experience2" name="experience" type="radio" value="경력">
+                                                        <label for="experience2">경력</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -535,35 +540,30 @@
                                                         <input
                                                                 class="form-control"
                                                                 id="c-location"
-                                                                placeholder="Location"
+                                                                placeholder="기술 스택은 로그인 후 직접 기입하세요"
                                                                 type="text"
+                                                                readonly
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success rounded-pill px-4"
+                                                        id="btn-add" type="submit">
+                                                    Add
+                                                </button>
+                                                <button class="btn btn-success rounded-pill px-4"
+                                                        id="btn-edit">
+                                                    Save
+                                                </button>
+                                                <button class="btn btn-danger rounded-pill px-4"
+                                                        data-bs-dismiss="modal" type="button">
+                                                    Discard
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button
-                                        class="btn btn-success rounded-pill px-4"
-                                        id="btn-add"
-                                >
-                                    Add
-                                </button>
-                                <button
-                                        class="btn btn-success rounded-pill px-4"
-                                        id="btn-edit"
-                                >
-                                    Save
-                                </button>
-                                <button
-                                        class="btn btn-danger rounded-pill px-4"
-                                        data-bs-dismiss="modal"
-                                >
-                                    Discard
-                                </button>
                             </div>
                         </div>
                     </div>

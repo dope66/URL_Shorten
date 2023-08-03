@@ -10,11 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -23,6 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -42,6 +41,9 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers("/user/findPassword").permitAll();
                     authorizeRequests.anyRequest().permitAll();
                 }))
+                .exceptionHandling((httpSecurityExceptionHandlingConfigurer -> {
+                    httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(accessDeniedHandler);
+                }))
                 .formLogin((formLogin) -> {
                     /* 권한이 필요한 요청은 해당 url로 리다이렉트 */
                     formLogin
@@ -59,6 +61,7 @@ public class SecurityConfig {
                                     }
                             )
                             .failureHandler(authenticationFailureHandler)
+
 
 
                             .permitAll();

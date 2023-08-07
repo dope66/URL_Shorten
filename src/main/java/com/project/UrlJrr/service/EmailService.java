@@ -41,7 +41,7 @@ public class EmailService {
 
     @Value("${server.name}")
     private String serverName;
-
+    //서버 재시작 시 설정할 기본 스캐줄
     private String emailSchedule = "0 0 18 * * ?";
 
 
@@ -78,68 +78,55 @@ public class EmailService {
     }
 
 
-    //    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
-//    @Scheduled(cron = "0 0 15 * * ?") // 매일 오후 3시에
     @Scheduled(cron = "#{emailService.getEmailSchedule()}")
     public void sendEmailsToSubscribers() throws IOException {
         System.out.println("이메일 서비스 시작");
-        // 크롤링 데이터 가져오기
-        List<Scrap> scraps = scrapingService.ScrapSaram();
         // 발송하지 않은 정보 가져오기
-        List<Scrap> sentScraps = scrapRepository.findBySent(false);
-
-        System.out.println("보낼 공고 갯수 =" + sentScraps.size());
-
-        if (sentScraps.isEmpty()) {
+        List<Scrap> unsentScraps = scrapRepository.findBySent(false);
+        System.out.println("보낼 공고 갯수 =" + unsentScraps.size());
+        if (unsentScraps.isEmpty()) {
             System.out.println("보낼 공고가 없습니다.");
             return; // 이메일을 발송할 공고가 없으면 메서드 종료
         }
         // 이메일 본문 쓰기
-        StringBuilder emailContent = new StringBuilder();
+        String emailContent = buildEmailContent(unsentScraps);
 
-        for (Scrap scrap : sentScraps) {
+        List<String> subscriberEmails = userService.getSubScribeEmail();
+
+        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 " + unsentScraps.size() + " 개의 공고";
+
+        sendEmailsToSubscribers(subscriberEmails, subject, emailContent);
+
+        System.out.println("이메일 서비스 실행 종료");
+    }
+    // 이메일 작성
+    public String buildEmailContent(List<Scrap> scraps){
+        StringBuilder emailContent = new StringBuilder();
+        for (Scrap scrap : scraps) {
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
                     .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
             // 더 추가 가능 표로 보기 쉽게 변경 해보자
         }
-        /*
-        to = 회원 이메일
-        subject = 이메일 제목
-        text = 내용
-        * */
-        // 구독되어있는 사용자들의 이메일 가져오기
-        List<String> subscriberEmails = userService.getSubScribeEmail();
-        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 " + sentScraps.size() + " 개의 공고";
-        String text = emailContent.toString();
-        // 이메일이 저장된 사용자가 있는 경우에만 발송
+        return emailContent.toString();
+    }
+    // 구독자에게만 이메일 전송
+    public void sendEmailsToSubscribers(List<String> subscriberEmails,String subject,String text){
         if (!subscriberEmails.isEmpty()) {
             // 각 사용자에게 이메일 발송
-            for (String email : subscriberEmails) {
-                sendEmail(email, subject, text);
-            }
-            Email email = Email.builder()
-                    .recipient(subscriberEmails.toString())
-                    .subject(subject)
-                    .sendEmailTime(LocalDateTime.now())
-                    .build();
-            emailRepository.save(email);
+            subscriberEmails.forEach(email -> sendEmail(email, subject, text));
 
-            System.out.println("이메일을 성공적으로 보냈습니다.");
-            // 이메일을 발송한 scrap들의 sent 값을 true로 변경하여 중복 발송 방지
-            for (Scrap scrap : sentScraps) {
-                scrap.setSent(true);
-                scrapRepository.save(scrap);
-            }
-            System.out.println("sent 값을 true로 변경 ");
+            // 이메일 데이터 저장
+            saveSentEmailData(subscriberEmails, subject);
+            // 이메일 발송 처리된 scrap들의 sent 값을 true로 변경하여 중복 발송 방지
+            markScrapsAsSent();
         } else {
             System.out.println("저장된 이메일이 없습니다.");
         }
 
-
-        System.out.println("이메일 서비스 실행 종료");
+        System.out.println("이메일을 성공적으로 보냈습니다.");
     }
-
+    // 전송
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -148,7 +135,25 @@ public class EmailService {
         javaMailSender.send(message);
 
     }
+    // 전송한 이메일 로그로 저장
+    private void saveSentEmailData(List<String> subscriberEmails, String subject) {
+        String recipients = String.join(", ", subscriberEmails);
 
+        Email email = Email.builder()
+                .recipient(recipients)
+                .subject(subject)
+                .sendEmailTime(LocalDateTime.now())
+                .build();
+        emailRepository.save(email);
+    }
+    // 중복을 제거하기우해서 sent값 true로 변경
+    private void markScrapsAsSent() {
+        List<Scrap> sentScraps = scrapRepository.findBySent(false);
+        sentScraps.forEach(scrap -> {
+            scrap.setSent(true);
+            scrapRepository.save(scrap);
+        });
+    }
     public Page<Email> emailList(int page, int size) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(page, size, sort);

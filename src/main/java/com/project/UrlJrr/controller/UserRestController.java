@@ -28,8 +28,6 @@ public class UserRestController {
 
         // userData 객체를 사용하여 파라미터에 접근
         String username = userData.getUsername();
-//        String password1 = userData.getPassword();
-//        String password2 = userData.getPassword2();
         String email = userData.getEmail();
         System.out.println(email);
         String skillStack = userData.getSkillStack();
@@ -40,13 +38,6 @@ public class UserRestController {
 
         // 접속 중 username 과 전달 받은 username 일치 여부 확인
         if (userService.getUsername().equals(username)) {
-            // 비밀번호 일치 여부 확인 로직
-//            if (!password1.equals(password2)) {
-//                ajaxDTO.setTitle("실패");
-//                ajaxDTO.setMessage("비밀번호가 일치하지 않습니다.");
-//                ajaxDTO.setFlag("error");
-//                return ajaxDTO;
-//            }
 
             // 이메일 중복 여부 확인
             // 이메일이 존재하지않는 이메일이며 내가가진 이메일 주소가 아니라면 update

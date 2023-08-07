@@ -88,7 +88,6 @@ public class EmailService {
             System.out.println("보낼 공고가 없습니다.");
             return; // 이메일을 발송할 공고가 없으면 메서드 종료
         }
-        // 이메일 본문 쓰기
         String emailContent = buildEmailContent(unsentScraps);
 
         List<String> subscriberEmails = userService.getSubScribeEmail();
@@ -106,7 +105,7 @@ public class EmailService {
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
                     .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
-            // 더 추가 가능 표로 보기 쉽게 변경 해보자
+
         }
         return emailContent.toString();
     }
@@ -146,7 +145,7 @@ public class EmailService {
                 .build();
         emailRepository.save(email);
     }
-    // 중복을 제거하기우해서 sent값 true로 변경
+    // 중복으로 이메일을 보내는것을 방지하기 위해서 sent값 true로 변경
     private void markScrapsAsSent() {
         List<Scrap> sentScraps = scrapRepository.findBySent(false);
         sentScraps.forEach(scrap -> {

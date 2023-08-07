@@ -65,8 +65,6 @@ public class MatchingService {
     /*
     userSkillStack 을 ScrapSkillStack 에 하나씩 비교하면서
     점수를 올리는 형식
-    매칭 점수 변경이 필요함.
-
     그래서 공고에 맞춰서 얼마나 맞는게 있는지 퍼센트로 확인,
     * */
     public int calculateScore(String userSkillStack, String scrapSkillStack) {

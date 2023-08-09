@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -226,7 +225,7 @@ public class ScrapingService {
                     .requirement(requirement)
                     .jobType(jobType)
                     .sent(false)
-                    .createDate(String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .createDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .build();
 
             scraps.add(scrap);

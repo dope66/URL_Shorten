@@ -37,6 +37,7 @@ public class UserController {
     public String registerProc(@Validated UserDto userDto, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("userDto", userDto);
+            // 유효성
             Map<String, String> validatorResult = userService.validatedHandling(errors);
             model.addAttribute("validatorResult", validatorResult);
             return "pages/user/register";
@@ -127,7 +128,7 @@ public class UserController {
             model.addAttribute("errorMessage", result);
 
         }
-        return "pages/user/findPassword";
+        return "pages/user/login";
 
     }
 

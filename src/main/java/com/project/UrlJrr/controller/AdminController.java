@@ -1,17 +1,20 @@
 package com.project.UrlJrr.controller;
 
+import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.Email;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.service.EmailService;
 import com.project.UrlJrr.service.UserService;
 import com.project.UrlJrr.utils.CronUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -66,11 +69,24 @@ public class AdminController {
 
 
     @GetMapping("/emailLogPage")
-    public String emailLogPage (Model model){
-        List<Email> emailList =emailService.emailList();
-        model.addAttribute("emails",emailList);
+    public String emailLogPage(Model model, @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+        Page<Email> emailPage = emailService.emailList(page, size);
+        model.addAttribute("emails", emailPage.getContent());
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", emailPage.getTotalPages());
         return "pages/user/adminEmailLogPage";
     }
 
+    @PostMapping("/adminRegister")
+    public String register(UserDto userDto, RedirectAttributes redirectAttributes) {
+        try {
+            userService.register(userDto);
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/admin/userManagement";
+    }
 
 }

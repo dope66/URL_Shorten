@@ -1,357 +1,180 @@
 $(function () {
-  function checkall(clickchk, relChkbox) {
-    var checker = $("#" + clickchk);
-    var multichk = $("." + relChkbox);
+    function checkall(clickchk, relChkbox) {
+        var checker = $("#" + clickchk);
+        var multichk = $("." + relChkbox);
 
-    checker.click(function () {
-      multichk.prop("checked", $(this).prop("checked"));
-      $(".show-btn").toggle();
-    });
-  }
-
-  checkall("contact-check-all", "contact-chkbox");
-
-  $("#input-search").on("keyup", function () {
-    var rex = new RegExp($(this).val(), "i");
-    $(".search-table .search-items:not(.header-item)").hide();
-    $(".search-table .search-items:not(.header-item)")
-      .filter(function () {
-        return rex.test($(this).text());
-      })
-      .show();
-  });
-
-  $("#btn-add-contact").on("click", function (event) {
-    $("#addContactModal #btn-add").show();
-    $("#addContactModal #btn-edit").hide();
-    $("#addContactModal").modal("show");
-  });
-
-  function deleteContact() {
-    $(".delete").on("click", function (event) {
-      event.preventDefault();
-      /* Act on the event */
-      $(this).parents(".search-items").remove();
-    });
-  }
-
-  function addContact() {
-    $("#btn-add").click(function () {
-      var getParent = $(this).parents(".modal-content");
-
-      var $_name = getParent.find("#c-name");
-      var $_email = getParent.find("#c-email");
-      var $_occupation = getParent.find("#c-occupation");
-      var $_phone = getParent.find("#c-phone");
-      var $_location = getParent.find("#c-location");
-
-      var $_getValidationField =
-        document.getElementsByClassName("validation-text");
-      var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
-      var phoneReg = /^\d*\.?\d*$/;
-
-      var $_nameValue = $_name.val();
-      var $_emailValue = $_email.val();
-      var $_occupationValue = $_occupation.val();
-      var $_phoneValue = $_phone.val();
-      var $_locationValue = $_location.val();
-
-      if ($_nameValue == "") {
-        $_getValidationField[0].innerHTML = "Name must be filled out";
-        $_getValidationField[0].style.display = "block";
-      } else {
-        $_getValidationField[0].style.display = "none";
-      }
-
-      if ($_emailValue == "") {
-        $_getValidationField[1].innerHTML = "Email Id must be filled out";
-        $_getValidationField[1].style.display = "block";
-      } else if (reg.test($_emailValue) == false) {
-        $_getValidationField[1].innerHTML = "Invalid Email";
-        $_getValidationField[1].style.display = "block";
-      } else {
-        $_getValidationField[1].style.display = "none";
-      }
-
-      if ($_phoneValue == "") {
-        $_getValidationField[2].innerHTML = "Invalid (Enter 10 Digits)";
-        $_getValidationField[2].style.display = "block";
-      } else if (phoneReg.test($_phoneValue) == false) {
-        $_getValidationField[2].innerHTML = "Please Enter A numeric value";
-        $_getValidationField[2].style.display = "block";
-      } else {
-        $_getValidationField[2].style.display = "none";
-      }
-
-      if (
-        $_nameValue == "" ||
-        $_emailValue == "" ||
-        reg.test($_emailValue) == false ||
-        $_phoneValue == "" ||
-        phoneReg.test($_phoneValue) == false
-      ) {
-        return false;
-      }
-
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, "0");
-      var mm = String(today.getMonth()); //January is 0!
-      var time = String(today.getTime());
-      var yyyy = today.getFullYear();
-      var monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      today = dd + " " + monthNames[mm] + " " + yyyy;
-      var cdate = dd + mm + time;
-
-      $html =
-        '<tr class="search-items">' +
-        "<td>" +
-        '<div class="n-chk align-self-center text-center">' +
-        '<div class="form-check">' +
-        '<input type="checkbox" class="form-check-input contact-chkbox primary" id="' +
-        cdate +
-        '">' +
-        '<label class="form-check-label" for="' +
-        cdate +
-        '"></label>' +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        '<div class="d-flex align-items-center">' +
-        '<img src="../../assets/images/users/2.jpg" alt="avatar" class="rounded-circle" width="45">' +
-        '<div class="ms-3">' +
-        '<div class="user-meta-info">' +
-        '<h5 class="user-name mb-0" data-name=' +
-        $_nameValue +
-        ">" +
-        $_nameValue +
-        "</h5>" +
-        '<span class="user-work text-muted" data-occupation=' +
-        $_occupationValue +
-        ">" +
-        $_occupationValue +
-        "</span>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        '<span class="usr-email-addr" data-email=' +
-        $_emailValue +
-        ">" +
-        $_emailValue +
-        "</span>" +
-        "</td>" +
-        "<td>" +
-        '<span class="usr-location" data-location=' +
-        $_locationValue +
-        ">" +
-        $_locationValue +
-        "</span>" +
-        "</td>" +
-        "<td>" +
-        '<span class="usr-ph-no" data-phone=' +
-        $_phoneValue +
-        ">" +
-        $_phoneValue +
-        "</span>" +
-        "</td>" +
-        "<td>" +
-        '<div class="action-btn">' +
-        '<a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>' +
-        '<a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>' +
-        "</div>" +
-        "</td>" +
-        "</tr>";
-
-      $(".search-table > tbody >tr:first").before($html);
-      $("#addContactModal").modal("hide");
-      feather.replace();
-
-      var $_setNameValueEmpty = $_name.val("");
-      var $_setEmailValueEmpty = $_email.val("");
-      var $_setOccupationValueEmpty = $_occupation.val("");
-      var $_setPhoneValueEmpty = $_phone.val("");
-      var $_setLocationValueEmpty = $_location.val("");
-
-      deleteContact();
-      editContact();
-      checkall("contact-check-all", "contact-chkbox");
-    });
-  }
-
-  $("#addContactModal").on("hidden.bs.modal", function (e) {
-    var $_name = document.getElementById("c-name");
-    var $_email = document.getElementById("c-email");
-    var $_occupation = document.getElementById("c-occupation");
-    var $_phone = document.getElementById("c-phone");
-    var $_location = document.getElementById("c-location");
-    var $_getValidationField =
-      document.getElementsByClassName("validation-text");
-
-    var $_setNameValueEmpty = ($_name.value = "");
-    var $_setEmailValueEmpty = ($_email.value = "");
-    var $_setOccupationValueEmpty = ($_occupation.value = "");
-    var $_setPhoneValueEmpty = ($_phone.value = "");
-    var $_setLocationValueEmpty = ($_location.value = "");
-
-    for (var i = 0; i < $_getValidationField.length; i++) {
-      e.preventDefault();
-      $_getValidationField[i].style.display = "none";
+        checker.click(function () {
+            multichk.prop("checked", $(this).prop("checked"));
+            $(".show-btn").toggle();
+        });
     }
-  });
 
-  function editContact() {
-    $(".edit").on("click", function (event) {
-      $("#addContactModal #btn-add").hide();
-      $("#addContactModal #btn-edit").show();
+    checkall("contact-check-all", "contact-chkbox");
 
-      // Get Parents
-      var getParentItem = $(this).parents(".search-items");
-      var getModal = $("#addContactModal");
-
-      // Get List Item Fields
-      var $_name = getParentItem.find(".user-name");
-      var $_email = getParentItem.find(".usr-email-addr");
-      var $_occupation = getParentItem.find(".user-work");
-      var $_phone = getParentItem.find(".usr-ph-no");
-      var $_location = getParentItem.find(".usr-location");
-
-      // Get Attributes
-      var $_nameAttrValue = $_name.attr("data-name");
-      var $_emailAttrValue = $_email.attr("data-email");
-      var $_occupationAttrValue = $_occupation.attr("data-occupation");
-      var $_phoneAttrValue = $_phone.attr("data-phone");
-      var $_locationAttrValue = $_location.attr("data-location");
-
-      // Get Modal Attributes
-      var $_getModalNameInput = getModal.find("#c-name");
-      var $_getModalEmailInput = getModal.find("#c-email");
-      var $_getModalOccupationInput = getModal.find("#c-occupation");
-      var $_getModalPhoneInput = getModal.find("#c-phone");
-      var $_getModalLocationInput = getModal.find("#c-location");
-
-      // Set Modal Field's Value
-      var $_setModalNameValue = $_getModalNameInput.val($_nameAttrValue);
-      var $_setModalEmailValue = $_getModalEmailInput.val($_emailAttrValue);
-      var $_setModalOccupationValue = $_getModalOccupationInput.val(
-        $_occupationAttrValue
-      );
-      var $_setModalPhoneValue = $_getModalPhoneInput.val($_phoneAttrValue);
-      var $_setModalLocationValue =
-        $_getModalLocationInput.val($_locationAttrValue);
-
-      $("#addContactModal").modal("show");
-
-      $("#btn-edit").click(function () {
-        var getParent = $(this).parents(".modal-content");
-
-        var $_getInputName = getParent.find("#c-name");
-        var $_getInputNmail = getParent.find("#c-email");
-        var $_getInputNccupation = getParent.find("#c-occupation");
-        var $_getInputNhone = getParent.find("#c-phone");
-        var $_getInputNocation = getParent.find("#c-location");
-
-        var $_nameValue = $_getInputName.val();
-        var $_emailValue = $_getInputNmail.val();
-        var $_occupationValue = $_getInputNccupation.val();
-        var $_phoneValue = $_getInputNhone.val();
-        var $_locationValue = $_getInputNocation.val();
-
-        var setUpdatedNameValue = $_name.text($_nameValue);
-        var setUpdatedEmailValue = $_email.text($_emailValue);
-        var setUpdatedOccupationValue = $_occupation.text($_occupationValue);
-        var setUpdatedPhoneValue = $_phone.text($_phoneValue);
-        var setUpdatedLocationValue = $_location.text($_locationValue);
-
-        var setUpdatedAttrNameValue = $_name.attr("data-name", $_nameValue);
-        var setUpdatedAttrEmailValue = $_email.attr("data-email", $_emailValue);
-        var setUpdatedAttrOccupationValue = $_occupation.attr(
-          "data-occupation",
-          $_occupationValue
-        );
-        var setUpdatedAttrPhoneValue = $_phone.attr("data-phone", $_phoneValue);
-        var setUpdatedAttrLocationValue = $_location.attr(
-          "data-location",
-          $_locationValue
-        );
-        $("#addContactModal").modal("hide");
-      });
+    $("#btn-add-contact").on("click", function (event) {
+        $("#addContactModal #btn-add").show();
+        $("#addContactModal").modal("show");
     });
-  }
 
-  $(".delete-multiple").on("click", function () {
-    var inboxCheckboxParents = $(".contact-chkbox:checked").parents(
-      ".search-items"
-    );
-    inboxCheckboxParents.remove();
-  });
 
-  deleteContact();
-  addContact();
-  editContact();
+    // function addContact() {
+    //     $("#btn-add").click(function () {
+    //         var getParent = $(this).parents(".modal-content");
+    //         var $_username = getParent.find("#username");
+    //         var $_email = getParent.find("#email");
+    //         var $_password = getParent.find("#password");
+    //         var formData={
+    //             username: $_nameValue,
+    //             email: $_emailValue,
+    //             password: $_passwordValue
+    //         }
+    //         var $_getValidationField =
+    //             document.getElementsByClassName("validation-text");
+    //         var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
+    //         var passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+    //         var $_nameValue = $_username.val();
+    //         var $_emailValue = $_email.val();
+    //         var $_passwordValue = $_password.val();
+    //
+    //         if ($_nameValue == "") {
+    //             $_getValidationField[0].innerHTML = "아이디를 채워주세요";
+    //             $_getValidationField[0].style.display = "block";
+    //         } else {
+    //             $_getValidationField[0].style.display = "none";
+    //         }
+    //
+    //         if ($_emailValue == "") {
+    //             $_getValidationField[1].innerHTML = "이메일을 채워주세요";
+    //             $_getValidationField[1].style.display = "block";
+    //         } else if (reg.test($_emailValue) == false) {
+    //             $_getValidationField[1].innerHTML = "이메일 형식을 맞춰주세요";
+    //             $_getValidationField[1].style.display = "block";
+    //         } else {
+    //             $_getValidationField[1].style.display = "none";
+    //         }
+    //         if ($_passwordValue == "") {
+    //             $_getValidationField[1].innerHTML = "비밀번호 채워주세요";
+    //             $_getValidationField[1].style.display = "block";
+    //         } else if (passwordReg.test($_passwordValue) == false) {
+    //             $_getValidationField[1].innerHTML = "비밀번호 형식을 맞춰주세요";
+    //             $_getValidationField[1].style.display = "block";
+    //         } else {
+    //             $_getValidationField[1].style.display = "none";
+    //         }
+    //
+    //         if (
+    //             $_nameValue == "" ||
+    //             $_emailValue == "" ||
+    //             reg.test($_emailValue) == false||
+    //             $_passwordValue==""||
+    //             passwordReg.test($_passwordValue)==false
+    //         ) {
+    //             return false;
+    //         }
+    //         if($_nameValue == "" || $_emailValue == "" || reg.test($_emailValue) == false||
+    //             $_passwordValue==""|| passwordReg.test($_passwordValue)==false){
+    //             $("#success-message").text(""); // 성공 메시지 지움
+    //             $("#error-message").text("입력된 정보를 확인해주세요."); // 실패 메시지 표시
+    //             return false;
+    //         } else {
+    //             $("#error-message").text("");
+    //         }
+    //         // $.ajax({
+    //         //     type:"POST",
+    //         //     url:"/admin/adminRegister",
+    //         //     data:JSON.stringify(formData),
+    //         //     contentType: "application/json",
+    //         //     success: function (data) {
+    //         //         $("#modal-message").text(""); // 이전 메시지를 지웁니다.
+    //         //         $("#modal-message").text(data); // 서버로부터의 성공 메시지를 모달에 표시합니다.
+    //         //     },
+    //         //     error: function (xhr, textStatus, errorThrown) {
+    //         //         $("#modal-message").text(""); // 이전 메시지를 지웁니다.
+    //         //         $("#modal-message").text(xhr.responseText); // 서버로부터의 오류 메시지를 모달에 표시합니다.
+    //         //     },
+    //         // });
+    //
+    //             // AJAX request to submit the form
+    //             $.ajax({
+    //             type: "POST",
+    //             url: "/admin/adminRegister",
+    //             data: JSON.stringify(formData),
+    //             success: function (data) {
+    //
+    //             $("#modal-message").text("Success: " + data);
+    //             $("#modal-message").addClass("text-success"); // 성공 메시지는 초록색으로 표시합니다.
+    //         },
+    //             error: function (xhr, textStatus, errorThrown) {
+    //
+    //             $("#modal-message").text("Error: " + xhr.responseText);
+    //             $("#modal-message").addClass("text-danger"); // 오류 메시지는 빨간색으로 표시합니다.
+    //         },
+    //         });
+    //
+    //
+    //             // 모달이 닫힐 때 메시지와 클래스를 초기화합니다.
+    //             $("#addContactModal").on("hidden.bs.modal", function () {
+    //             $("#modal-message").text("");
+    //             $("#modal-message").removeClass("text-success");
+    //             $("#modal-message").removeClass("text-danger");
+    //         });
+    //
+    //         $("#addContactModal").modal("hide");
+    //         var $_setNameValueEmpty = $_username.val("");
+    //         var $_setEmailValueEmpty = $_email.val("");
+    //         var $_setPasswordValueEmpty = $_password.val("");
+    //
+    //         checkall("contact-check-all", "contact-chkbox");
+    //     });
+    // }
+
+    $("#addContactModal").on("hidden.bs.modal", function (e) {
+        var $_username = document.getElementById("username");
+        var $_email = document.getElementById("c-email");
+        var $_password = document.getElementById("password");
+        var $_getValidationField =
+            document.getElementsByClassName("validation-text");
+        var $_setNameValueEmpty = ($_username.value = "");
+        var $_setEmailValueEmpty = ($_email.value = "");
+        var $_setPasswordValueEmpty = ($_password.value = "");
+
+        for (var i = 0; i < $_getValidationField.length; i++) {
+            e.preventDefault();
+            $_getValidationField[i].style.display = "none";
+        }
+    });
+    addContact();
 });
 
-// Validation Process
-
-var $_getValidationField = document.getElementsByClassName("validation-text");
-var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
-var phoneReg = /^\d{10}$/;
-
-getNameInput = document.getElementById("c-name");
-
-getNameInput.addEventListener("input", function () {
-  getNameInputValue = this.value;
-
-  if (getNameInputValue == "") {
-    $_getValidationField[0].innerHTML = "Name Required";
-    $_getValidationField[0].style.display = "block";
-  } else {
-    $_getValidationField[0].style.display = "none";
-  }
-});
-
-getEmailInput = document.getElementById("c-email");
-
-getEmailInput.addEventListener("input", function () {
-  getEmailInputValue = this.value;
-
-  if (getEmailInputValue == "") {
-    $_getValidationField[1].innerHTML = "Email Required";
-    $_getValidationField[1].style.display = "block";
-  } else if (reg.test(getEmailInputValue) == false) {
-    $_getValidationField[1].innerHTML = "Invalid Email";
-    $_getValidationField[1].style.display = "block";
-  } else {
-    $_getValidationField[1].style.display = "none";
-  }
-});
-
-getPhoneInput = document.getElementById("c-phone");
-
-getPhoneInput.addEventListener("input", function () {
-  getPhoneInputValue = this.value;
-
-  if (getPhoneInputValue == "") {
-    $_getValidationField[2].innerHTML = "Phone Number Required";
-    $_getValidationField[2].style.display = "block";
-  } else if (phoneReg.test(getPhoneInputValue) == false) {
-    $_getValidationField[2].innerHTML = "Invalid (Enter 10 Digits)";
-    $_getValidationField[2].style.display = "block";
-  } else {
-    $_getValidationField[2].style.display = "none";
-  }
-});
+// // Validation Process
+// var $_getValidationField = document.getElementsByClassName("validation-text");
+// var reg = /^.+@[^\.].*\.[a-z]{2,}$/;
+// var passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+// getNameInput = document.getElementById("username");
+//
+// getNameInput.addEventListener("input", function () {
+//     getNameInputValue = this.value;
+//
+//     if (getNameInputValue == "") {
+//         $_getValidationField[0].innerHTML = "이름이 요구됨";
+//         $_getValidationField[0].style.display = "block";
+//     } else {
+//         $_getValidationField[0].style.display = "none";
+//     }
+// });
+//
+// getEmailInput = document.getElementById("email");
+//
+// getEmailInput.addEventListener("input", function () {
+//     getEmailInputValue = this.value;
+//
+//     if (getEmailInputValue == "") {
+//         $_getValidationField[1].innerHTML = "이메일이 요구됨";
+//         $_getValidationField[1].style.display = "block";
+//     } else if (reg.test(getEmailInputValue) == false) {
+//         $_getValidationField[1].innerHTML = "이메일 형식";
+//         $_getValidationField[1].style.display = "block";
+//     } else {
+//         $_getValidationField[1].style.display = "none";
+//     }
+// });

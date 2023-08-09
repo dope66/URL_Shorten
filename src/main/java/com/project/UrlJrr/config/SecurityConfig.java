@@ -1,21 +1,14 @@
 package com.project.UrlJrr.config;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.io.IOException;
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
 @RequiredArgsConstructor
@@ -36,8 +29,8 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
                     authorizeRequests.requestMatchers("/user/registerProc").permitAll();
-                    authorizeRequests.requestMatchers("/user/login").permitAll();
-                    authorizeRequests.requestMatchers("/user/logout").permitAll();
+                    authorizeRequests.requestMatchers("/user/login").anonymous();
+                    authorizeRequests.requestMatchers("/user/logout").authenticated();
                     authorizeRequests.requestMatchers("/user/findPassword").permitAll();
                     authorizeRequests.anyRequest().permitAll();
                 }))
@@ -52,28 +45,17 @@ public class SecurityConfig {
                             .usernameParameter("username")
                             .passwordParameter("password")
                             .successHandler(
-                                    new AuthenticationSuccessHandler() {
-                                        @Override
-                                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                            System.out.println("authentication: " + authentication.getName());
-                                            response.sendRedirect("/");
-                                        }
+                                    (request, response, authentication) -> {
+                                        System.out.println("authentication: " + authentication.getName());
+                                        response.sendRedirect("/");
                                     }
                             )
-                            .failureHandler(authenticationFailureHandler)
-
-
-
-                            .permitAll();
-
+                            .failureHandler(authenticationFailureHandler).permitAll();
 
                 })
-                .logout((logout) -> {
-                    logout.logoutUrl("/user/logout")
-                            .logoutSuccessUrl("/")
-                            .permitAll();
-
-                })
+                .logout((logout) -> logout.logoutUrl("/user/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll())
                 .build();
 
     }

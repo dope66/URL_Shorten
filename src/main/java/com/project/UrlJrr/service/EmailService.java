@@ -4,6 +4,7 @@ import com.project.UrlJrr.entity.Email;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.repository.EmailRepository;
 import com.project.UrlJrr.repository.ScrapRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,7 @@ public class EmailService {
     @Value("${server.name}")
     private String serverName;
     //서버 재시작 시 설정할 기본 스캐줄
+    @Getter
     private String emailSchedule = "0 0 18 * * ?";
 
 
@@ -71,10 +73,6 @@ public class EmailService {
         configureTasks();
 
         // 이후에 스케줄링이 자동으로 업데이트됩니다.
-    }
-
-    public String getEmailSchedule() {
-        return emailSchedule;
     }
 
 

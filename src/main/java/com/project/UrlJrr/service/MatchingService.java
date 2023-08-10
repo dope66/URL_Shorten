@@ -24,13 +24,13 @@ public class MatchingService {
             int experienceScore = calculateExperienceScore(user.getExperience(), scrap.getExperience());
             int sumScore = score + experienceScore;
 
-            if (sumScore <= 5) {
+            if (sumScore <=7) {
                 grade = "D";
-            } else if (sumScore <= 7) {
+            } else if (sumScore <= 9) {
                 grade = "C";
-            } else if (sumScore <= 10) {
+            } else if (sumScore <= 11) {
                 grade = "B";
-            } else if (sumScore <= 12) {
+            } else if (sumScore <= 13) {
                 grade = "A";
             } else {
                 grade = "S";
@@ -58,15 +58,10 @@ public class MatchingService {
             return 5;
         } else {
             // 경력이 매칭되지 않는 경우
-            return 0;
+            return -5;
         }
     }
 
-    /*
-    userSkillStack 을 ScrapSkillStack 에 하나씩 비교하면서
-    점수를 올리는 형식
-    그래서 공고에 맞춰서 얼마나 맞는게 있는지 퍼센트로 확인,
-    * */
     public int calculateScore(String userSkillStack, String scrapSkillStack) {
         int totalScore = 0;
 

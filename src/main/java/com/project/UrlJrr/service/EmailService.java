@@ -71,7 +71,6 @@ public class EmailService {
         System.out.println("변견된 스캐줄 : " + newSchedule);
         configureTasks();
 
-        // 이후에 스케줄링이 자동으로 업데이트됩니다.
     }
 
 
@@ -98,10 +97,17 @@ public class EmailService {
     // 이메일 작성
     public String buildEmailContent(List<Scrap> scraps){
         StringBuilder emailContent = new StringBuilder();
+        int maxSkillStacklength=40; // 최대 길이
         for (Scrap scrap : scraps) {
+            String skillStack = scrap.getSkillStack();
+            if(skillStack.length()>maxSkillStacklength){
+                skillStack=skillStack.substring(0,maxSkillStacklength)+"...";
+            }
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
-                    .append("요구 기술 스택: ").append(scrap.getSkillStack()).append("\n")
+                    .append("요구 기술 스택: ").append(skillStack).append("\n")
+                    .append("요구 경력 : ").append(scrap.getExperience()).append("\n")
+//                    .append("나와의 매칭 등급: ").append(" ").append("\n")
                     .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
 
         }
@@ -156,4 +162,6 @@ public class EmailService {
         Pageable pageable = PageRequest.of(page, size, sort);
         return emailRepository.findAll(pageable);
     }
+
+
 }

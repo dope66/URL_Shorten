@@ -1,12 +1,9 @@
 package com.project.UrlJrr.service;
 
 import com.project.UrlJrr.dto.UserDto;
-import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;

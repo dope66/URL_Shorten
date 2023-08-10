@@ -34,7 +34,6 @@ public class EmailService {
 
     private final UserService userService;
     private final JavaMailSender javaMailSender;
-    private final ScrapingService scrapingService;
     private final ScrapRepository scrapRepository;
     private final TaskScheduler taskScheduler;
     private final EmailRepository emailRepository;
@@ -102,6 +101,7 @@ public class EmailService {
         for (Scrap scrap : scraps) {
             emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
                     .append("제목: ").append(scrap.getArticleText()).append("\n")
+                    .append("요구 기술 스택: ").append(scrap.getSkillStack()).append("\n")
                     .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
 
         }

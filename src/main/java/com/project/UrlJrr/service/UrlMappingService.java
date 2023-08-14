@@ -36,7 +36,7 @@ public class UrlMappingService {
 
     public String getOriginalUrl(String shortUrl) {
         if ("favicon.ico".equals(shortUrl)) {
-            return ""; // 빈 문자열 반환 또는 다른 처리 방식 선택
+            return "";
         }
         Optional<UrlMapping> urlMapping = urlMappingRepository.findByShortUrl(shortUrl);
         if (urlMapping.isPresent()) {

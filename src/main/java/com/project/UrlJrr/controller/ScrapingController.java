@@ -2,7 +2,6 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
-import com.project.UrlJrr.repository.ScrapRepository;
 import com.project.UrlJrr.service.ScrapingService;
 import com.project.UrlJrr.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ import java.util.List;
 public class ScrapingController {
     private final ScrapingService scrapingService;
     private final UserService userService;
-// 컨트롤러 변경점 추가
+
     @GetMapping("/crawling/list")
     public String crawling(
             @RequestParam(required = false, defaultValue = "1") int page,
@@ -35,21 +34,7 @@ public class ScrapingController {
             @RequestParam(required = false, defaultValue = "id") String sortField,
             @RequestParam(required = false, defaultValue = "desc") String sortOrder,
             Model model) {
-        List<Scrap> allScraps =scrapingService.scrapList();
-        int unsentCount = 0;
-        long maxId =0;
-        int deletedCount=0;
-        for(Scrap scrap : allScraps){
-            if(!scrap.isSent()){
-                unsentCount++;
-            }
-            if(scrap.getId()>maxId){
-                maxId=scrap.getId();
-            }
-        }
-        int scrapTableSize = allScraps.size();
-        deletedCount = (int) (maxId - scrapTableSize);
-        Page<Scrap> scrapPage;
+
         Pageable pageable;
         Sort sort = Sort.by(sortField);
 
@@ -59,36 +44,38 @@ public class ScrapingController {
             sort = sort.descending();
         }
 
+        List<Scrap> allScraps = scrapingService.scrapList();
+        int scrapTableSize = allScraps.size();
+        long maxId = scrapingService.findMaxId(allScraps);
+        int unsentCount = scrapingService.calculateUnsentCount(allScraps);
+        int deletedCount = scrapingService.calculateDeletedCount(maxId, scrapTableSize);
+
+        Page<Scrap> scrapPage;
         if (StringUtils.hasText(search)) {
             pageable = PageRequest.of(page - 1, 10, sort);
-            scrapPage = scrapingService.ScrapSearchList(search, pageable);
-            model.addAttribute("scraps", scrapPage.getContent());
+            scrapPage = scrapingService.scrapSearchList(search, pageable);
         } else {
             pageable = PageRequest.of(page - 1, 10, sort);
             scrapPage = scrapingService.showListScrap(pageable);
-            model.addAttribute("scraps", scrapPage.getContent());
-
         }
-        // 페이지 단위 조절
+
         int totalPages = scrapPage.getTotalPages();
         int groupSize = 10;
         int groupStart = (page - 1) / groupSize * groupSize + 1;
         int groupEnd = Math.min(groupStart + groupSize - 1, totalPages);
+
+        model.addAttribute("scraps", scrapPage.getContent());
         model.addAttribute("search", search);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", scrapPage.getTotalPages());
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortOrder", sortOrder);
         model.addAttribute("groupStart", groupStart);
         model.addAttribute("groupEnd", groupEnd);
         model.addAttribute("maxId", maxId);
-        model.addAttribute("deleteCount",deletedCount);
-        model.addAttribute("unsentCount",unsentCount);
-        model.addAttribute("allScraps",allScraps);
-
-
-
-
+        model.addAttribute("deleteCount", deletedCount);
+        model.addAttribute("unsentCount", unsentCount);
+        model.addAttribute("allScraps", allScraps);
 
         return "pages/matching/crawl";
     }

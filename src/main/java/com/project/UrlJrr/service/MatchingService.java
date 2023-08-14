@@ -3,9 +3,9 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.ScrapRepository;
-import com.project.UrlJrr.skillenum.jobField;
 import com.project.UrlJrr.skillenum.JobType;
 import com.project.UrlJrr.skillenum.TechStack;
+import com.project.UrlJrr.skillenum.jobField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -198,7 +198,6 @@
 
                                 <input id="selected-skills-input" name="skillStack" type="hidden">
                                 <datalist id="skill-list-datalist" th:text="${user.getSkillStack()}">
-                                    <!-- 기술스택 자동완성을 위한 옵션들 -->
                                 </datalist>
                             </div>
 
@@ -366,24 +365,6 @@
 
 </script>
 
-
-<!--<script th:inline="javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        var validatorResult = /*[[${validatorResult}]]*/ {};-->
-
-<!--        if (validatorResult.username) {-->
-<!--            $('#username-error').text(validatorResult.username);-->
-<!--            $('#username').addClass('is-invalid');-->
-<!--            $('#username-error').show();-->
-<!--        }-->
-
-<!--        if (validatorResult.password) {-->
-<!--            $('#password-error').text(validatorResult.password);-->
-<!--            $('#password').addClass('is-invalid');-->
-<!--            $('#password-error').show();-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 
 
 </body>

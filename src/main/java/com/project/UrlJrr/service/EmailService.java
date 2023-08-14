@@ -118,7 +118,6 @@ public class EmailService {
         if (!subscriberEmails.isEmpty()) {
             // 각 사용자에게 이메일 발송
             subscriberEmails.forEach(email -> sendEmail(email, subject, text));
-
             // 이메일 데이터 저장
             saveSentEmailData(subscriberEmails, subject);
             // 이메일 발송 처리된 scrap들의 sent 값을 true로 변경하여 중복 발송 방지

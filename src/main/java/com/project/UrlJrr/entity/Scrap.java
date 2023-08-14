@@ -6,10 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Entity
 @Getter
 @Setter
@@ -22,10 +18,9 @@ public class Scrap {
     private Long id;
     private String articleText;
     private String articleUrl;
-
+    private String source;
     @Column(length = 1000)
     private String skillStack;
-
     private String company;
     private String deadline;
     private String location;
@@ -35,13 +30,16 @@ public class Scrap {
     private boolean sent;
     private String createDate;
 
+
+
     @Builder
-    public Scrap(Long id, String articleText, String articleUrl, String skillStack,
+    public Scrap(Long id, String articleText, String articleUrl, String source,String skillStack,
                  String company, String deadline, String location, String experience, String requirement,
                  String jobType, boolean sent, String createDate) {
         this.id = id;
         this.articleText = articleText;
         this.articleUrl = articleUrl;
+        this.source = source;
         this.skillStack = skillStack;
         this.company = company;
         this.deadline = deadline;

@@ -144,9 +144,17 @@ public class JobKoreaService {
                     }
                 }
             }
+
+            String sourceName = ""; // 기본값 설정
+            if (articleUrl.contains("saramin")) {
+                sourceName = "사람인";
+            } else if (articleUrl.contains("jobkorea")) {
+                sourceName = "잡코리아";
+            }
             Scrap scrap = Scrap.builder()
                     .articleText(articleText)
                     .articleUrl(articleUrl)
+                    .source(sourceName)
                     .skillStack(skillStack)
                     .company(company)
                     .deadline(deadline)

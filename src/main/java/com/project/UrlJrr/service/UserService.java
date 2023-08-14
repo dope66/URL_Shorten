@@ -61,7 +61,6 @@ public class UserService {
     }
 
     public boolean checkPassword(String newPassword){
-        //return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
         return newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}");
     }
 
@@ -177,7 +176,6 @@ public class UserService {
     }
 
     private String generateTemporaryPassword() {
-//       임시 비번 생성로직 구현해야됨
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
         String temporaryPassword = "";

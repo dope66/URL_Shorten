@@ -31,7 +31,6 @@ public class UserDto {
                 .skillStack(skillStack)
                 .experience(experience)
                 .email(email)
-                .subScribe(subScribe)
                 .roles(roles)
                 .build();
     }

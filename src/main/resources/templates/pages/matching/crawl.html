@@ -135,6 +135,7 @@
                                 <th>매칭 정보</th>
                                 <th>회사</th>
                                 <th>발송 여부</th>
+                                <th>사이트</th>
                                 <th>마감 기간</th>
 
                             </tr>
@@ -159,6 +160,7 @@
                                     <span class="badge bg-light-primary text-warning font-weight-medium"
                                           th:if=="${scrap.sent}==true">발송 완료</span>
                                 </td>
+                                <td th:text="${scrap.getSource()}">
                                 <td th:text="${scrap.deadline}">
                                 </td>
                             </tr>

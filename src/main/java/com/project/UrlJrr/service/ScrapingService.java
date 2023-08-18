@@ -45,7 +45,7 @@ public class ScrapingService{
             }
         };
         // crawling 주기 설정 (15분 마다)
-        long delay = 0; // 딜레이 설정
+        long delay = 3000; // 딜레이 설정
         long period = 60 * 15 * 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, delay, period);

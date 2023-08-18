@@ -1,5 +1,6 @@
 package com.project.UrlJrr.service;
 
+import com.project.UrlJrr.dto.MatchingResultDto;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.ScrapRepository;
@@ -9,6 +10,8 @@ import com.project.UrlJrr.skillenum.jobField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,8 +71,6 @@ public class MatchingService {
         String[] skills = scrapSkillStack.split(",");
         for (String skill : skills) {
             String trimmedSkill = skill.trim();
-            System.out.println("skill: " + trimmedSkill);
-
             if (userSkillStack.contains(trimmedSkill)) {
                 totalScore += getScoreFromJobType(trimmedSkill);
                 totalScore += getScoreFromField(trimmedSkill);
@@ -77,7 +78,6 @@ public class MatchingService {
             }
         }
 
-        System.out.println("totalScore: " + totalScore);
         return totalScore;
     }
 
@@ -124,6 +124,24 @@ public class MatchingService {
     public Scrap getScrapById(Long scrapId) {
         Optional<Scrap> scrapOptional = scrapRepository.findById(scrapId);
         return scrapOptional.orElse(null);
+    }
+
+    public List<MatchingResultDto> calculateAndStoreMatchingResults(User user, List<Scrap> scraps) {
+        List<MatchingResultDto> matchingResults = new ArrayList<>();
+
+        for (Scrap scrap : scraps) {
+            String matchingGrade = calculateMatchingScore(user, scrap.getId()); // 매칭 등급 계산
+
+            MatchingResultDto matchingResultDto = new MatchingResultDto();
+            matchingResultDto.setScrapId(scrap.getId());
+            matchingResultDto.setMatchingGrade(matchingGrade);
+
+            matchingResults.add(matchingResultDto);
+        }
+
+
+
+        return matchingResults;
     }
 
 

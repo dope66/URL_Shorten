@@ -58,6 +58,7 @@
                         <h5 class="card-subtitle mb-3 pb-3 border-bottom">
                             구독 해주셔서 감사합니다.
                         </h5>
+                        현재 이메일 주기 시간은 <span class="card-subtitle mb-3 pb-3 border-bottom" th:text="${schedule}"></span>
                     </div>
                     <div th:if="${user.isSubScribe()}!=true">
                         <h5 class="card-subtitle mb-3 pb-3 border-bottom">

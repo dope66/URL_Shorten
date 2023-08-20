@@ -2,8 +2,10 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
+import com.project.UrlJrr.service.EmailService;
 import com.project.UrlJrr.service.ScrapingService;
 import com.project.UrlJrr.service.UserService;
+import com.project.UrlJrr.utils.CronUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ import java.util.List;
 public class ScrapingController {
     private final ScrapingService scrapingService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @GetMapping("/crawling/list")
     public String crawling(
@@ -85,7 +88,10 @@ public class ScrapingController {
     public String crawlingApply(Model model) {
         String username = userService.getUsername();
         User user = userService.getUserByUsername(username);
+        String schedule = emailService.getEmailSchedule();
+        String readableSchedule = CronUtils.convertToReadableFormat(schedule);
         model.addAttribute("user",user);
+        model.addAttribute("schedule", readableSchedule);
         return "pages/matching/apply";
     }
 

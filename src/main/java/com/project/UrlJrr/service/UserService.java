@@ -154,7 +154,6 @@ public class UserService {
         return "";
     }
 
-
     public void resetPasswordAndSendEmail(String email, String username) {
         // db에서 찾고 없으면 메세지
         User user;

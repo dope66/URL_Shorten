@@ -90,10 +90,6 @@ public class EmailService {
             System.out.println("보낼 공고가 없습니다.");
             return; // 이메일을 발송할 공고가 없으면 메서드 종료
         }
-
-
-
-
         List<String> subscriberEmails = userService.getSubScribeEmail();
         for(String email : subscriberEmails){
             Optional<User> userOptional = userRepository.findByEmail(email); // 이메일을 기반으로 사용자 정보 조회
@@ -102,43 +98,13 @@ public class EmailService {
                 String emailContent = buildEmailContent(unsentScraps, user);
                 String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 " + unsentScraps.size() + " 개의 공고";
 
-                sendEmailsToSubscribers(subscriberEmails, subject, emailContent);
+                sendToSubscribers(subscriberEmails, subject, emailContent);
             }
 
         }
-
-
-
         System.out.println("이메일 서비스 실행 종료");
     }
-
-    // 이메일 작성
-    public String buildEmailContent(List<Scrap> scraps, User user){
-        StringBuilder emailContent = new StringBuilder();
-        int maxSkillStacklength=40; // 최대 길이
-        List<MatchingResultDto> matchingResults = matchingService.calculateAndStoreMatchingResults(user, scraps);
-
-        for (int i = 0; i < scraps.size(); i++) {
-            Scrap scrap = scraps.get(i);
-            MatchingResultDto matchingResultDto = matchingResults.get(i);
-
-            String skillStack = scrap.getSkillStack();
-            if(skillStack.length() > maxSkillStacklength){
-                skillStack = skillStack.substring(0, maxSkillStacklength) + "...";
-            }
-
-            emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
-                    .append("제목: ").append(scrap.getArticleText()).append("\n")
-                    .append("요구 기술 스택: ").append(skillStack).append("\n")
-                    .append("요구 경력 : ").append(scrap.getExperience()).append("\n")
-                    .append("나와의 매칭 등급: ").append(matchingResultDto.getMatchingGrade()).append("\n")
-                    .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
-        }
-        return emailContent.toString();
-    }
-
-    // 구독자에게만 이메일 전송
-    public void sendEmailsToSubscribers(List<String> subscriberEmails,String subject,String text){
+    public void sendToSubscribers(List<String> subscriberEmails,String subject,String text){
         if (!subscriberEmails.isEmpty()) {
             // 각 사용자에게 이메일 발송
             subscriberEmails.forEach(email -> sendEmail(email, subject, text));
@@ -152,6 +118,37 @@ public class EmailService {
 
         System.out.println("이메일을 성공적으로 보냈습니다.");
     }
+
+
+    // 이메일 작성
+    public String buildEmailContent(List<Scrap> scraps, User user){
+        StringBuilder emailContent = new StringBuilder();
+        int maxSkillStacklength=40; // 최대 길이
+        List<MatchingResultDto> matchingResults = matchingService.calculateAndStoreMatchingResults(user, scraps);
+        for (int i = 0; i < scraps.size(); i++) {
+            Scrap scrap = scraps.get(i);
+            MatchingResultDto matchingResultDto = matchingResults.get(i);
+            String skillStack = scrap.getSkillStack();
+            if(skillStack.length() > maxSkillStacklength){
+                skillStack = skillStack.substring(0, maxSkillStacklength) + "...";
+            }
+            if (!matchingResultDto.getMatchingGrade().equals("B") && !matchingResultDto.getMatchingGrade().equals("A")&& !matchingResultDto.getMatchingGrade().equals("S")) {
+                continue;
+            }
+                System.out.println("matchingResultDto = "+matchingResultDto.getMatchingGrade());
+                emailContent.append("회사: ").append(scrap.getCompany()).append("\n")
+                        .append("제목: ").append(scrap.getArticleText()).append("\n")
+                        .append("요구 기술 스택: ").append(skillStack).append("\n")
+                        .append("요구 경력 : ").append(scrap.getExperience()).append("\n")
+                        .append("나와의 매칭 등급: ").append(matchingResultDto.getMatchingGrade()).append("\n")
+                        .append("URL: ").append(serverName).append("/matching/").append(scrap.getId()).append("\n\n");
+
+        }
+        return emailContent.toString();
+    }
+    // 구독자에게만 이메일 전송
+
+
     // 전송
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();

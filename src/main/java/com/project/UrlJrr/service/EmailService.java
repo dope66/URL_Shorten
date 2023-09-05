@@ -91,20 +91,23 @@ public class EmailService {
             return; // 이메일을 발송할 공고가 없으면 메서드 종료
         }
         List<String> subscriberEmails = userService.getSubScribeEmail();
+        StringBuilder emailContent = new StringBuilder();
         for(String email : subscriberEmails){
             Optional<User> userOptional = userRepository.findByEmail(email); // 이메일을 기반으로 사용자 정보 조회
             if(userOptional.isPresent()){
                 User user = userOptional.get();
-                String emailContent = buildEmailContent(unsentScraps, user);
-                String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 " + unsentScraps.size() + " 개의 공고";
+//                String emailContent = buildEmailContent(unsentScraps, user);
+                String emailContentForUser = buildEmailContent(unsentScraps, user);
+                emailContent.append(emailContentForUser);
 
-                sendToSubscribers(subscriberEmails, subject, emailContent);
             }
 
         }
+        String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 ";
+        sendEmailsToSubscribers(subscriberEmails, subject, emailContent.toString());
         System.out.println("이메일 서비스 실행 종료");
     }
-    public void sendToSubscribers(List<String> subscriberEmails,String subject,String text){
+    public void sendEmailsToSubscribers(List<String> subscriberEmails,String subject,String text){
         if (!subscriberEmails.isEmpty()) {
             // 각 사용자에게 이메일 발송
             subscriberEmails.forEach(email -> sendEmail(email, subject, text));
@@ -146,7 +149,7 @@ public class EmailService {
         }
         return emailContent.toString();
     }
-    // 구독자에게만 이메일 전송
+
 
 
     // 전송

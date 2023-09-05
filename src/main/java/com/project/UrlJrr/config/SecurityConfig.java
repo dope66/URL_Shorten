@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfgit igurer::disable)
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests -> {
                     authorizeRequests.requestMatchers("/matching/**").authenticated();
                     authorizeRequests.requestMatchers("/crawling/apply").authenticated();

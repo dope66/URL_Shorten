@@ -55,26 +55,34 @@ public class EmailService {
     private ScheduledFuture<?> scheduledTask;
 
     public void configureTasks() {
+        System.out.println("configure Task 실행");
         if (scheduledTask != null) {
+            System.out.println("schduledTask " + scheduledTask);
             scheduledTask.cancel(true);
+        }else{
+            System.out.println("schduledTask " + scheduledTask);
         }
 
         Runnable task = () -> {
             try {
+                System.out.println("이메일 프로세스");
                 sendEmailsToSubscribers();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         };
-
+        System.out.println("Trigger 시작");
         Trigger trigger = new CronTrigger(emailSchedule);
+        System.out.println("이메일  스캐줄 : " + emailSchedule);
         scheduledTask = taskScheduler.schedule(task, trigger);
+        System.out.println("스캐줄 테스크 실행 완료");
     }
 
     // 스케줄링 변경 메서드
     public void updateEmailSchedule(String newSchedule) {
         emailSchedule = newSchedule;
-        System.out.println("변견된 스캐줄 : " + newSchedule);
+        System.out.println("이메일  스캐줄 : " + emailSchedule);
+        System.out.println("변경된 스케줄  : " +newSchedule);
         configureTasks();
 
     }
@@ -82,6 +90,7 @@ public class EmailService {
 
     @Scheduled(cron = "#{emailService.getEmailSchedule()}")
     public void sendEmailsToSubscribers() throws IOException {
+        System.out.println("스케줄  : " +emailSchedule);
         System.out.println("이메일 서비스 시작");
         // 발송하지 않은 정보 가져오기
         List<Scrap> unsentScraps = scrapRepository.findBySent(false);
@@ -104,10 +113,10 @@ public class EmailService {
 
         }
         String subject = LocalDate.now().format(DateTimeFormatter.ofPattern("MM월 dd일")) + "채용 정보 알림 ";
-        sendEmailsToSubscribers(subscriberEmails, subject, emailContent.toString());
+        sendToSubscribers(subscriberEmails, subject, emailContent.toString());
         System.out.println("이메일 서비스 실행 종료");
     }
-    public void sendEmailsToSubscribers(List<String> subscriberEmails,String subject,String text){
+    public void sendToSubscribers(List<String> subscriberEmails,String subject,String text){
         if (!subscriberEmails.isEmpty()) {
             // 각 사용자에게 이메일 발송
             subscriberEmails.forEach(email -> sendEmail(email, subject, text));

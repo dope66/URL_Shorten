@@ -188,7 +188,7 @@ public class ScrapingService{
                     .articleText(articleText)
                     .articleUrl(articleUrl)
                     .skillStack(skillStack)
-                    .source(sourceName)
+                    .sourceSite(sourceName)
                     .company(company)
                     .deadline(deadline)
                     .location(location)
@@ -243,6 +243,15 @@ public class ScrapingService{
 
     public int calculateDeletedCount(long maxId, int scrapTableSize) {
         return (int) (maxId - scrapTableSize);
+    }
+
+
+    public Page<Scrap> findAll(Pageable pageable) {
+        return scrapRepository.findAll(pageable);
+    }
+
+    public long getTotalScrapCount() {
+        return scrapRepository.count(); // Scrap 테이블의 총 레코드 수를 반환
     }
 
 }

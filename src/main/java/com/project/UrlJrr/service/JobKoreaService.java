@@ -154,7 +154,7 @@ public class JobKoreaService {
             Scrap scrap = Scrap.builder()
                     .articleText(articleText)
                     .articleUrl(articleUrl)
-                    .source(sourceName)
+                    .sourceSite(sourceName)
                     .skillStack(skillStack)
                     .company(company)
                     .deadline(deadline)

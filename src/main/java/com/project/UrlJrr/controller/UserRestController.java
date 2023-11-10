@@ -3,12 +3,20 @@ package com.project.UrlJrr.controller;
 import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.dto.ajaxDTO;
 import com.project.UrlJrr.entity.User;
+import com.project.UrlJrr.exception.ErrorResponse;
+import com.project.UrlJrr.exception.UserException;
 import com.project.UrlJrr.repository.UserRepository;
 import com.project.UrlJrr.service.UserService;
 import com.project.UrlJrr.service.modifyService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +31,7 @@ public class UserRestController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/modify")
+    @PutMapping("/modify")
     public ajaxDTO modifySave(@RequestBody UserDto userData) {
 
         // userData 객체를 사용하여 파라미터에 접근
@@ -68,6 +76,32 @@ public class UserRestController {
             return ajaxDTO;
         }
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto userDto) {
+        try {
+            User newUser = userService.register(userDto);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        } catch (UserException ex) {
+            int errorCode = ex.getExceptionType().getErrorCode();
+            String errorMessage = ex.getExceptionType().getErrorMessage();
+            ErrorResponse errorResponse = new ErrorResponse(errorCode, errorMessage);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response){
+        userService.deleteUser(id);
+//         로그아웃 처리를 위해 SecurityContextLogoutHandler를 사용하여 세션 무효화
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, null);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+
 }
 
 

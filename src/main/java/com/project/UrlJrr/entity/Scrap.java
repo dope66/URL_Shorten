@@ -18,7 +18,7 @@ public class Scrap {
     private Long id;
     private String articleText;
     private String articleUrl;
-    private String source;
+    private String sourceSite;
     @Column(length = 1000)
     private String skillStack;
     private String company;
@@ -33,13 +33,13 @@ public class Scrap {
 
 
     @Builder
-    public Scrap(Long id, String articleText, String articleUrl, String source,String skillStack,
+    public Scrap(Long id, String articleText, String articleUrl, String sourceSite,String skillStack,
                  String company, String deadline, String location, String experience, String requirement,
                  String jobType, boolean sent, String createDate) {
         this.id = id;
         this.articleText = articleText;
         this.articleUrl = articleUrl;
-        this.source = source;
+        this.sourceSite = sourceSite;
         this.skillStack = skillStack;
         this.company = company;
         this.deadline = deadline;

@@ -146,6 +146,7 @@ public class UserService {
     }
 
     public String userEamilCheck(String email, String username) {
+
         if (email.isEmpty()) {
             return "빈칸을 채워주세요 ";
         } else if (username.isEmpty()) {

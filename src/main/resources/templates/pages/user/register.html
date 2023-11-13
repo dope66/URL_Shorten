@@ -135,7 +135,7 @@
                 <!-- Form -->
                 <div class="row mt-4">
                     <div class="col-12">
-                        <form method="post" th:object="${userDto}" id="join-form">
+                        <form id="join-form">
                             <div class="form-floating mb-3">
                                 <input
                                         class="form-control form-input-bg"
@@ -173,21 +173,22 @@
                                 <div class="error-message" id="email-error" style="display: none;"></div>
                             </div>
                             <div class="row">
-<!--                                <div class="col mb-3">-->
-<!--                                    <input checked class="with-gap material-inputs material-inputs radio-col-blue"-->
-<!--                                           id="experience1" name="experience" type="radio" value="신입">-->
-<!--                                    <label for="experience1">신입</label>-->
+<!--                                <div class="col mb-10">-->
+<!--                                    <select id="experience" name="experience">-->
+<!--                                        <option value="신입">신입</option>-->
+<!--                                        <option value="경력">경력</option>-->
+<!--                                    </select>-->
 <!--                                </div>-->
-<!--                                <div class="col mb-3">-->
-<!--                                    <input class="with-gap material-inputs material-inputs radio-col-blue"-->
-<!--                                           id="experience2" name="experience" type="radio" value="경력">-->
-<!--                                    <label for="experience2">경력</label>-->
-<!--                                </div>-->
-                                <div class="col mb-10">
-                                    <select id="experience" name="experience">
-                                        <option value="신입">신입</option>
-                                        <option value="경력">경력</option>
-                                    </select>
+
+                                <div class="col mb-3">
+                                    <input checked class="with-gap material-inputs material-inputs radio-col-blue"
+                                           id="experience1" name="experience" type="radio" value="신입">
+                                    <label for="experience1">신입</label>
+                                </div>
+                                <div class="col mb-3">
+                                    <input class="with-gap material-inputs material-inputs radio-col-blue"
+                                           id="experience2" name="experience" type="radio" value="경력">
+                                    <label for="experience2">경력</label>
                                 </div>
 
                             </div>
@@ -266,7 +267,14 @@
         const password = document.getElementById('password').value;
         const email = document.getElementById('email').value;
         const roles = document.getElementById('roles').value;
-        const experience = document.getElementById('experience').value;
+        const experienceRadios = document.getElementsByName('experience');
+        let experience;
+        for (const radio of experienceRadios) {
+            if (radio.checked) {
+                experience = radio.value;
+                break;
+            }
+        }
         const skillSktack = document.getElementById('skill-input').value;
         const newUser = {username, password,email,roles,experience,skillSktack};
 

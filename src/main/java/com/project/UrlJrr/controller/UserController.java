@@ -64,28 +64,6 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/changePassword")
-    public String changePasswordProc(
-            @RequestParam("currentPassword") String currentPassword,
-            @RequestParam("newPassword") String newPassword,
-            @RequestParam("confirmPassword") String confirmPassword,
-            Model model) {
-        String resultMessage = userService.changePassword(currentPassword, newPassword, confirmPassword);
-
-        if (resultMessage.startsWith("error:")) {
-            model.addAttribute("error", resultMessage.substring(6));
-            return "pages/user/changePassword";
-        } else {
-            model.addAttribute("success", resultMessage);
-            model.addAttribute("redirect", true); // 변경 성공 시 리다이렉트 여부 추가
-            return "pages/user/changePassword";
-        }
-
-
-    }
-
-
-
     @PostMapping("/findPassword")
     public String findPasswordProc(@RequestParam("email") String email, @RequestParam("username") String username, Model model) {
         String result = userService.userEamilCheck(email, username);

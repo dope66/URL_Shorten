@@ -1,5 +1,6 @@
 package com.project.UrlJrr.controller;
 
+import com.project.UrlJrr.dto.ChangePasswordRequest;
 import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.dto.ajaxDTO;
 import com.project.UrlJrr.entity.User;
@@ -100,7 +101,22 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/changePassword")
+    public ResponseEntity<String> changePasswordProc(@RequestBody ChangePasswordRequest request) {
+        String currentPassword = request.getCurrentPassword();
+        String newPassword = request.getNewPassword();
+        String confirmPassword = request.getConfirmPassword();
 
+        String resultMessage = userService.changePassword(currentPassword, newPassword, confirmPassword);
+
+        if (resultMessage.startsWith("error:")) {
+            // 오류 응답 반환
+            return ResponseEntity.badRequest().body(resultMessage.substring(6));
+        } else {
+            // 성공 응답 반환
+            return ResponseEntity.ok(resultMessage);
+        }
+    }
 
 }
 

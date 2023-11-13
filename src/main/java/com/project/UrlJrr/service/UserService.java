@@ -120,20 +120,16 @@ public class UserService {
     public String changePassword(String currentPassword, String newPassword, String confirmPassword) {
         String username = getUsername();
         User user = getUserByUsername(username);
-        //        현재 비밀번호 확인 하기
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            return "error : 현재 비밀번호가 올바르지 않습니다.";
+            return "error: 현재 비밀번호가 올바르지 않습니다.";
         }
-//       새로운 비밀번호 정규식 검증
         if (!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")) {
             return "error: 비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용해야 합니다.";
         }
-//      비밀번호 일치 여부
         if (!newPassword.equals(confirmPassword)) {
             return "error: 새로운 비밀번호가 일치하지 않습니다.";
 
         }
-//        비밀번호 업데이트
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 

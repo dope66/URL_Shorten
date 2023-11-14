@@ -20,58 +20,7 @@ public class ScrapingController {
     private final EmailService emailService;
 
     @GetMapping("/crawling/list")
-    public String crawling(
-
-//
-//            @RequestParam(required = false, defaultValue = "1") int page,
-//            @RequestParam(required = false) String search,
-//            @RequestParam(required = false, defaultValue = "id") String sortField,
-//            @RequestParam(required = false, defaultValue = "desc") String sortOrder,
-//            Model model
-    ) {
-//
-//        Pageable pageable;
-//        Sort sort = Sort.by(sortField);
-//
-//        if (sortOrder.equals("asc")) {
-//            sort = sort.ascending();
-//        } else {
-//            sort = sort.descending();
-//        }
-//
-//        List<Scrap> allScraps = scrapingService.scrapList();
-//        int scrapTableSize = allScraps.size();
-//        long maxId = scrapingService.findMaxId(allScraps);
-//        int unsentCount = scrapingService.calculateUnsentCount(allScraps);
-//        int deletedCount = scrapingService.calculateDeletedCount(maxId, scrapTableSize);
-//
-//        Page<Scrap> scrapPage;
-//        if (StringUtils.hasText(search)) {
-//            pageable = PageRequest.of(page - 1, 10, sort);
-//            scrapPage = scrapingService.scrapSearchList(search, pageable);
-//        } else {
-//            pageable = PageRequest.of(page - 1, 10, sort);
-//            scrapPage = scrapingService.showListScrap(pageable);
-//        }
-//
-//        int totalPages = scrapPage.getTotalPages();
-//        int groupSize = 10;
-//        int groupStart = (page - 1) / groupSize * groupSize + 1;
-//        int groupEnd = Math.min(groupStart + groupSize - 1, totalPages);
-//
-//        model.addAttribute("scraps", scrapPage.getContent());
-//        model.addAttribute("search", search);
-//        model.addAttribute("currentPage", page);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("sortField", sortField);
-//        model.addAttribute("sortOrder", sortOrder);
-//        model.addAttribute("groupStart", groupStart);
-//        model.addAttribute("groupEnd", groupEnd);
-//        model.addAttribute("maxId", maxId);
-//        model.addAttribute("deleteCount", deletedCount);
-//        model.addAttribute("unsentCount", unsentCount);
-//        model.addAttribute("allScraps", allScraps);
-
+    public String crawling() {
         return "pages/matching/crawl";
     }
 
@@ -93,15 +42,5 @@ public class ScrapingController {
         userService.subScribeChange();
         return "redirect:/crawling/apply";
     }
-
-//
-//    @Bean
-//    public PageableHandlerMethodArgumentResolverCustomizer customize() {
-//        return p -> {
-//            p.setOneIndexedParameters(true);    // 1 페이지 부터 시작
-//            p.setMaxPageSize(10);       // 한 페이지에 10개씩 출력
-//        };
-//    }
-
 
 }

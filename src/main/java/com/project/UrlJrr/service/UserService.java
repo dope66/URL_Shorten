@@ -145,12 +145,9 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public String userEamilCheck(String email, String username) {
-
-        if (email.isEmpty()) {
-            return "빈칸을 채워주세요 ";
-        } else if (username.isEmpty()) {
-            return "빈칸을 채워주세요 ";
+    public String userEmailCheck(String email, String username) {
+        if (email.isEmpty() || username.isEmpty()) {
+            return "빈칸을 채워주세요";
         }
         Optional<User> user = userRepository.findByEmailAndUsername(email, username);
         if (!user.isPresent()) {

@@ -117,6 +117,17 @@ public class UserRestController {
             return ResponseEntity.ok(resultMessage);
         }
     }
+    @PostMapping("/findPassword")
+    public ResponseEntity<?> findPassword(@RequestParam("email") String email, @RequestParam("username") String username) {
+        String result = userService.userEmailCheck(email, username);
+        if (result.isEmpty()) {
+            userService.resetPasswordAndSendEmail(email, username);
+            return ResponseEntity.ok("이메일을 성공적으로 보냈습니다! 이메일을 확인해주세요.");
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
 
 }
 

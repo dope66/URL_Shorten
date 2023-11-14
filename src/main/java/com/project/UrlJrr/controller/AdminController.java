@@ -47,6 +47,17 @@ public class AdminController {
 
     }
 
+    @GetMapping("/emailLogPage")
+    public String emailLogPage(Model model, @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+        Page<Email> emailPage = emailService.emailList(page, size);
+        model.addAttribute("emails", emailPage.getContent());
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", emailPage.getTotalPages());
+        return "pages/user/adminEmailLogPage";
+    }
+
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") Long userId) {
         userService.deleteUser(userId);
@@ -65,18 +76,6 @@ public class AdminController {
         emailService.updateEmailSchedule(newSchedule);
         return "redirect:/admin/page";
 
-    }
-
-
-    @GetMapping("/emailLogPage")
-    public String emailLogPage(Model model, @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size) {
-        Page<Email> emailPage = emailService.emailList(page, size);
-        model.addAttribute("emails", emailPage.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("totalPages", emailPage.getTotalPages());
-        return "pages/user/adminEmailLogPage";
     }
 
     @PostMapping("/adminRegister")

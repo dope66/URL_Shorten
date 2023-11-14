@@ -31,6 +31,7 @@ public class ScrapRestController {
 
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
+
     @GetMapping("/totalScrapCount")
     public ResponseEntity<Long> getTotalScrapCount() {
         long totalScrapCount = scrapingService.getTotalScrapCount();

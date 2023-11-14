@@ -173,13 +173,6 @@
                                 <div class="error-message" id="email-error" style="display: none;"></div>
                             </div>
                             <div class="row">
-<!--                                <div class="col mb-10">-->
-<!--                                    <select id="experience" name="experience">-->
-<!--                                        <option value="신입">신입</option>-->
-<!--                                        <option value="경력">경력</option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-
                                 <div class="col mb-3">
                                     <input checked class="with-gap material-inputs material-inputs radio-col-blue"
                                            id="experience1" name="experience" type="radio" value="신입">
@@ -275,8 +268,11 @@
                 break;
             }
         }
-        const skillSktack = document.getElementById('skill-input').value;
-        const newUser = {username, password,email,roles,experience,skillSktack};
+        // const skillSktack = document.getElementById('skill-input').value;
+        const skillStackItems = document.querySelectorAll("#selected-skills-list li");
+        const skillStack = Array.from(skillStackItems).map(item => item.textContent.replace("삭제","").trim()).join(',');
+
+        const newUser = {username, password,email,roles,experience, skillStack};
 
         fetch('/user/register',{
             method:'POST',

@@ -92,7 +92,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteUser(id);
 //         로그아웃 처리를 위해 SecurityContextLogoutHandler를 사용하여 세션 무효화
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
@@ -117,6 +117,7 @@ public class UserRestController {
             return ResponseEntity.ok(resultMessage);
         }
     }
+
     @PostMapping("/findPassword")
     public ResponseEntity<?> findPassword(@RequestParam("email") String email, @RequestParam("username") String username) {
         String result = userService.userEmailCheck(email, username);

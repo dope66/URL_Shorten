@@ -366,7 +366,7 @@
         var userId = document.getElementById('id').value;
 
 
-        fetch('/user/delete/' + userId, {
+        fetch('/user/' + userId, {
             method: 'DELETE'
         })
             .then(response => {

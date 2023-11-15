@@ -91,7 +91,7 @@ public class UserRestController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
         userService.deleteUser(id);
 //         로그아웃 처리를 위해 SecurityContextLogoutHandler를 사용하여 세션 무효화
@@ -101,7 +101,7 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/changePassword")
+    @PutMapping("/Password")
     public ResponseEntity<String> changePasswordProc(@RequestBody ChangePasswordRequest request) {
         String currentPassword = request.getCurrentPassword();
         String newPassword = request.getNewPassword();
@@ -118,7 +118,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/findPassword")
+    @PostMapping("/Password")
     public ResponseEntity<?> findPassword(@RequestParam("email") String email, @RequestParam("username") String username) {
         String result = userService.userEmailCheck(email, username);
         if (result.isEmpty()) {

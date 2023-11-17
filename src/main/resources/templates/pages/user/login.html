@@ -106,7 +106,7 @@
                 <!-- Form -->
                 <div class="row">
                     <div class="col-12">
-                        <form method="post" th:action="@{/user/loginProc}" th:object="${userDto}">
+                        <form th:method="post" th:action="@{/user/loginProc}" >
                             <div class="form-group mb-3">
                                 <div class="">
                                     <label for="username"></label>
@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                             <!--오류 메시지가 존재하는 경우에만 표시 -->
-                            <div th:if="${param.error}">
+                            <div th:if="${param.error}" id="errorSession">
                                 <p><span th:text="${param.error}"></span></p>
                             </div>
 

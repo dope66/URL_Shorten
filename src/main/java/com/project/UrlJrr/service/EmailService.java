@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.TaskScheduler;
@@ -189,11 +187,15 @@ public class EmailService {
             scrapRepository.save(scrap);
         });
     }
-    public Page<Email> emailList(int page, int size) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        Pageable pageable = PageRequest.of(page, size, sort);
+
+    public Page<Email> findAll(Pageable pageable){
         return emailRepository.findAll(pageable);
     }
-
+    public long getTotalEmailLog() {
+        return emailRepository.count();
+    }
+    public List<Email> emailList() {
+        return emailRepository.findAll();
+    }
 
 }

@@ -37,7 +37,7 @@ public class JobKoreaService {
             }
         };
         // crawling 주기 설정 (20분 마다)
-        long delay = 0; // 딜레이 설정
+        long delay = 3000; // 딜레이 설정
         long period = 60 * 20 * 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, delay, period);

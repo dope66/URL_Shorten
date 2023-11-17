@@ -437,7 +437,7 @@
                             <div class="modal-body">
                                 <div class="add-contact-box">
                                     <div id="registerModal" class="add-contact-content">
-                                        <form id="addContactModalTitle" method="post" th:action="@{/admin/adminRegister}">
+                                        <form id="join-form">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3 contact-name">
@@ -648,5 +648,39 @@
 <!--This page plugins -->
 <script src="/static/dist/js/pages/contact/contact.js"></script>
 </body>
+<script>
+    const joinFrom = document.getElementById("join-form");
 
+    joinFrom.addEventListener('submit',(event)=>{
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        const roles = document.getElementById('roles').value;
+        const newUser = {username, password,email,roles};
+
+        fetch('/user/register',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(response =>{
+                if(response.ok){
+                    alert('회원 가입 성공')
+                    window.location.href='/';
+                }else{
+                    response.json().then(errorResponse => {
+                        alert(errorResponse.errorMessage);
+                    });
+                }
+            })
+            .catch(error =>{
+                console.error('fetch 오류 요청 ',error);
+            });
+
+    })
+
+</script>
 </html>

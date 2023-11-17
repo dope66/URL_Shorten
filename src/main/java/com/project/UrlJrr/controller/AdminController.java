@@ -1,6 +1,5 @@
 package com.project.UrlJrr.controller;
 
-import com.project.UrlJrr.dto.UserDto;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.service.EmailService;
 import com.project.UrlJrr.service.UserService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -70,14 +68,5 @@ public class AdminController {
 
     }
 
-    @PostMapping("/adminRegister")
-    public String register(UserDto userDto, RedirectAttributes redirectAttributes) {
-        try {
-            userService.register(userDto);
-        } catch (IllegalStateException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        }
-        return "redirect:/admin/userManagement";
-    }
 
 }

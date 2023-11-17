@@ -66,16 +66,7 @@ public class UserService {
         return newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}");
     }
 
-    //
-//    public Map<String, String> validatedHandling(Errors errors) {
-//        Map<String, String> validatorResult = new HashMap<>();
-//        for (FieldError error : errors.getFieldErrors()) {
-//            String fieldName = error.getField();
-//            String errorMessage = error.getDefaultMessage();
-//            validatorResult.put(fieldName, errorMessage);
-//        }
-//        return validatorResult;
-//    }
+
     //모든 이메일
     public List<String> getAllUserEmails() {
         List<User> users = userRepository.findAll();

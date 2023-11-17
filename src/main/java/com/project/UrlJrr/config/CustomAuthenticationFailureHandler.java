@@ -44,7 +44,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                     "비밀번호가 일치하지 않습니다.";
             request.getSession().setAttribute("failedUsername", username);
             response.sendRedirect("/user/login?error=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8.toString()));
-            return;
+
         }
 
 

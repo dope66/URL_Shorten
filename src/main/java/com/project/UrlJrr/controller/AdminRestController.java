@@ -2,6 +2,7 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.entity.Email;
 import com.project.UrlJrr.service.EmailService;
+import com.project.UrlJrr.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminRestController {
     private final EmailService emailService;
+    private final UserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> emailLogPage(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)

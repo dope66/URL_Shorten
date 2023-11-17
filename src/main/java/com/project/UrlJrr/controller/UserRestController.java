@@ -97,7 +97,7 @@ public class UserRestController {
 //         로그아웃 처리를 위해 SecurityContextLogoutHandler를 사용하여 세션 무효화
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, response, null);
-
+        System.out.println("유저 삭제 완료");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

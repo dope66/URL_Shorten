@@ -6,6 +6,8 @@ import com.project.UrlJrr.exception.UserException;
 import com.project.UrlJrr.exception.UserExceptionType;
 import com.project.UrlJrr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
@@ -128,10 +130,12 @@ public class UserService {
 
     }
 
-    public List<User> showListUser() {
+    public Page<User> showListUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+    public List<User> userList() {
         return userRepository.findAll();
     }
-
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -178,6 +182,8 @@ public class UserService {
         }
         return temporaryPassword;
     }
-
+    public long getTotalUser() {
+        return userRepository.count();
+    }
 
 }

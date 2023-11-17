@@ -477,7 +477,7 @@
 
 
     function fetchEmails(page) {
-        fetch(`/api/admin?page=${page}`)
+        fetch(`/api/admin/email?page=${page}`)
             .then(response => response.json())
             .then(data => {
                 tbody.innerHTML = "";

@@ -18,7 +18,7 @@ public class ScrapAutoDelete {
     private final ScrapRepository scrapRepository;
 
 
-    @Scheduled(initialDelay = 3000, fixedRate = 300000) // 5분마다 확인용
+    @Scheduled(initialDelay = 3000, fixedRate = 3600000) // 1시간
     public void deleteExpiredScraps() {
         System.out.println("----------------------");
         System.out.println("DB 삭제 실행");

@@ -36,9 +36,38 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 </head>
+<style>
+    /* 페이지 목록 스타일 */
+    #page-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
 
+    /* 각 페이지 번호 스타일 */
+    .page-list-item {
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        color: #333;
+        text-align: center;
+    }
+
+    /* 현재 페이지 번호 스타일 */
+    .current-page {
+        background-color: #007bff; /* 현재 페이지의 배경색 */
+        color: #fff; /* 현재 페이지의 텍스트 색상 */
+    }
+
+
+</style>
 <body>
 <!-- -------------------------------------------------------------- -->
 <!-- Preloader - style you can find in spinners.css -->
@@ -278,7 +307,7 @@
                                 class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="/admin/emailLogPage"
                         ><i class="mdi mdi-file-document"></i
-                        ><span class="hide-menu">발송로그(개발중)</span></a
+                        ><span class="hide-menu">발송로그</span></a
                         >
                     </li>
                     <hr>
@@ -398,11 +427,11 @@
             <div class="widget-content searchable-container list">
                 <div class="card card-body">
                     <div class="row">
-                        <div >
+                        <div>
                             <a
-                                class="btn btn-info"
-                                href="javascript:void(0)"
-                                id="btn-add-contact"
+                                    class="btn btn-info"
+                                    href="javascript:void(0)"
+                                    id="btn-add-contact"
                             >
                                 <i class="feather-sm fill-white me-1" data-feather="users"></i>
                                 회원추가</a
@@ -411,9 +440,6 @@
                     </div>
                 </div>
 
-                <div th:if="${errorMessage}" class="alert alert-danger">
-                    <p th:text="${errorMessage}"></p>
-                </div>
                 <!-- Modal -->
                 <div
                         aria-hidden="true"
@@ -437,7 +463,7 @@
                             <div class="modal-body">
                                 <div class="add-contact-box">
                                     <div id="registerModal" class="add-contact-content">
-                                        <form id="addContactModalTitle" method="post" th:action="@{/admin/adminRegister}">
+                                        <form id="join-form">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3 contact-name">
@@ -487,13 +513,16 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="col mb-3">
-                                                        <input checked class="with-gap material-inputs material-inputs radio-col-blue"
-                                                               id="experience1" name="experience" type="radio" value="신입">
+                                                        <input checked
+                                                               class="with-gap material-inputs material-inputs radio-col-blue"
+                                                               id="experience1" name="experience" type="radio"
+                                                               value="신입">
                                                         <label for="experience1">신입</label>
                                                     </div>
                                                     <div class="col mb-3">
                                                         <input class="with-gap material-inputs material-inputs radio-col-blue"
-                                                               id="experience2" name="experience" type="radio" value="경력">
+                                                               id="experience2" name="experience" type="radio"
+                                                               value="경력">
                                                         <label for="experience2">경력</label>
                                                     </div>
                                                 </div>
@@ -532,7 +561,7 @@
                 </div>
                 <div class="card card-body">
                     <div class="table-responsive">
-                        <table class="table search-table v-middle">
+                        <table class="table search-table v-middle" id="adminUserTable">
                             <thead class="header-item  text-center">
                             <th>계정</th>
                             <th>이메일</th>
@@ -541,93 +570,31 @@
                             <th>삭제</th>
                             </thead>
                             <tbody>
-                            <!-- row -->
 
-                            <tr class="text-center search-items" th:each="user : ${users}">
-                                <td>
-                                    <div class="d-flex align-items-center">
-
-                                        <div class="ms-3">
-                                            <div class="user-meta-info">
-                                                <h6 class="text-center user-name mb-0 font-weight-medium"
-                                                    th:text="${user.username}">
-
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                        <span class="usr-email-addr" th:text="${user.email}"
-                        ></span
-                        >
-                                </td>
-                                <td>
-                        <span class="usr-location" th:text="${user.experience}"
-                        ></span
-                        >
-                                </td>
-                                <td>
-                        <span class="usr-ph-no" th:text="${user.roles}"
-                        ></span
-                        >
-                                </td>
-                                <td>
-                                    <form action="/admin/deleteUser" method="post">
-                                        <input name="userId" th:value="${user.id}" type="hidden"/>
-                                        <button class="action-btn" th:if="${user.roles}==USER" type="submit">
-
-                                            <i class="feather-sm fill-white mdi mdi-delete"
-
-                                            ></i>
-                                        </button>
-                                        <div class="action-btn" th:if="${user.roles}!=USER">
-
-                                            <i class="feather-sm mdi mdi-alert-octagram"
-
-                                            ></i>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-                            <!-- /.row -->
                             </tbody>
+
                         </table>
+                        <div id="pagination">
+                            <!--<button id="prev-button">이전</button>-->
+                            <input type="hidden" readonly id="page-number" th:value="1">
+                            <span id="page-list"></span>
+                            <!--<button id="next-button">다음</button>-->
+
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- -------------------------------------------------------------- -->
-            <!-- End PAge Content -->
-            <!-- -------------------------------------------------------------- -->
+
         </div>
 
-        <!-- -------------------------------------------------------------- -->
-        <!-- End Container fluid  -->
-        <!-- -------------------------------------------------------------- -->
-        <!-- -------------------------------------------------------------- -->
-        <!-- footer -->
-        <!-- -------------------------------------------------------------- -->
         <footer class="footer text-center">
             All Rights Reserved by 김현우
         </footer>
-        <!-- -------------------------------------------------------------- -->
-        <!-- End footer -->
-        <!-- -------------------------------------------------------------- -->
-    </div>
-    <!-- -------------------------------------------------------------- -->
-    <!-- End Page wrapper  -->
-    <!-- -------------------------------------------------------------- -->
-</div>
-<!-- -------------------------------------------------------------- -->
-<!-- End Wrapper -->
-<!-- -------------------------------------------------------------- -->
-<!-- -------------------------------------------------------------- -->
-<!-- customizer Panel -->
-<!-- -------------------------------------------------------------- -->
 
-<!-- -------------------------------------------------------------- -->
-<!-- All Jquery -->
-<!-- -------------------------------------------------------------- -->
+    </div>
+
+</div>
+
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -648,5 +615,165 @@
 <!--This page plugins -->
 <script src="/static/dist/js/pages/contact/contact.js"></script>
 </body>
+<script>
+    const joinFrom = document.getElementById("join-form");
 
+    joinFrom.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        const roles = document.getElementById('roles').value;
+        const experienceRadios = document.getElementsByName('experience');
+        let experience;
+        for (const radio of experienceRadios) {
+            if (radio.checked) {
+                experience = radio.value;
+                break;
+            }
+        }
+        const newUser = {username, password, email, roles, experience};
+
+        fetch('/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('회원 가입 성공')
+                    window.location.reload();
+                } else {
+                    response.json().then(errorResponse => {
+                        alert(errorResponse.errorMessage);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청 ', error);
+            });
+
+    })
+
+</script>
+<script>
+
+
+    const adminUserTable = document.getElementById("adminUserTable");
+    const tbody = adminUserTable.querySelector("tbody");
+    const pageNumberSpan = document.getElementById("page-number");
+    const pageList = document.getElementById("page-list");
+    let currentPage = 0;
+    let totalPages = 0;
+    const itemsPerPage = 10;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/admin/totalUser')
+            .then(response => response.json())
+            .then(data => {
+                const totalUser = data;
+                totalPages = Math.ceil(totalUser / itemsPerPage);
+                updatePagination();
+            })
+            .catch(error => {
+                console.error('User count fetch error:', error);
+            });
+
+        // 초기 페이지 로딩
+        fetchUsers(currentPage);
+    });
+
+    function goToPage(page) {
+        fetchUsers(page);
+        currentPage = page;
+        updatePagination();
+    }
+
+    function updatePagination() {
+        pageNumberSpan.textContent = currentPage + 1;
+        pageList.innerHTML = ""; // 페이지 목록 초기화
+
+        // 페이지 목록을 생성하고 현재 페이지 주변의 페이지 번호를 추가
+        const numPagesToShow = 10; // 한 번에 표시할 페이지 수
+        const startPage = Math.max(0, currentPage - Math.floor(numPagesToShow / 2));
+        const endPage = Math.min(totalPages - 1, startPage + numPagesToShow - 1);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageItem = document.createElement("span");
+            pageItem.textContent = i + 1;
+            pageItem.classList.add("page-list-item"); // 클래스 추가
+            if (i === currentPage) {
+                pageItem.classList.add("current-page");
+            }
+            pageItem.addEventListener("click", () => {
+                goToPage(i);
+            });
+            pageList.appendChild(pageItem);
+        }
+
+    }
+
+    function fetchUsers(page) {
+        fetch(`/api/admin?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = "";
+
+                data._embedded.userList.forEach(user => {
+                    const row = document.createElement('tr');
+                    const userId= user.id;
+                    const username = document.createElement('td');
+                    username.textContent = user.username;
+                    const email = document.createElement('td');
+                    email.textContent = user.email;
+                    const experience = document.createElement('td');
+                    experience.textContent = user.experience;
+                    const roles = document.createElement('td');
+                    roles.textContent = user.roles;
+                    const deleteUser = document.createElement('td');
+
+                    // roles이 'ADMIN'이 아닌 경우에만 삭제 버튼 생성
+                    if (user.roles !== 'ADMIN') {
+                        const deleteButton = document.createElement('button');
+                        deleteButton.classList.add('action-btn');
+                        deleteButton.innerHTML = '<i class="feather-sm fill-white mdi mdi-delete"></i>';
+                        deleteButton.addEventListener('click', function () {
+                            fetch('/api/admin/' + userId, {
+                                method: 'DELETE'
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        // 성공적으로 삭제되었을 때
+                                        alert('회원 탈퇴가 완료되었습니다');
+                                        window.location.reload();
+                                    } else {
+                                        // 오류 발생 시
+                                        alert('회원 탈퇴를 할수 없습니다');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('알수 없는 오류로 실패하였습니다.');
+                                });
+                            console.log('Delete button clicked for user ID:', user.id);
+                        });
+
+                        deleteUser.appendChild(deleteButton);
+                    }
+
+                    row.appendChild(username);
+                    row.appendChild(email);
+                    row.appendChild(experience);
+                    row.appendChild(roles);
+                    row.appendChild(deleteUser);
+                    tbody.appendChild(row);
+
+
+                });
+                currentPage = page;
+            });
+    }
+</script>
 </html>

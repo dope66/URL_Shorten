@@ -122,6 +122,7 @@
                     <div class="col-12">
                         <div>
                             <div class="form-floating mb-3">
+                                <input type="hidden" id="id" th:value="${user.getId()}">
                                 <input
                                         class="form-control form-input-bg"
                                         disabled
@@ -198,7 +199,6 @@
 
                                 <input id="selected-skills-input" name="skillStack" type="hidden">
                                 <datalist id="skill-list-datalist" th:text="${user.getSkillStack()}">
-                                    <!-- 기술스택 자동완성을 위한 옵션들 -->
                                 </datalist>
                             </div>
 
@@ -217,12 +217,11 @@
                                 </a>
                             </div>
                             <div th:if="${user.getRoles()}!=ADMIN">
-                                <form action="/user/deleteUser" method="post">
+
                                     <input name="userId" th:value="${user.getId()}" type="hidden">
-                                    <button class="btn btn-light-danger d-block w-100">
+                                    <button class="btn btn-light-danger d-block w-100" id="delete-button" name="delete-button">
                                         회원 탈퇴
                                     </button>
-                                </form>
                             </div>
 
 
@@ -305,10 +304,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         initSkills();
     });
-</script>
 
-
-<script>
 
     function clickButton() {
 
@@ -364,26 +360,36 @@
         });
     }
 
+
+    document.getElementById('delete-button').addEventListener('click', function () {
+        // 사용자의 ID 가져오기
+        var userId = document.getElementById('id').value;
+
+
+        fetch('/user/' + userId, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 성공적으로 삭제되었을 때
+                    alert('회원 탈퇴가 완료되었습니다');
+                    location.href = '/';
+                } else {
+                    // 오류 발생 시
+                    alert('회원 탈퇴를 할수 없습니다');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('알수 없는 오류로 실패하였습니다.');
+            });
+    });
+
+
+
 </script>
 
 
-<!--<script th:inline="javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        var validatorResult = /*[[${validatorResult}]]*/ {};-->
-
-<!--        if (validatorResult.username) {-->
-<!--            $('#username-error').text(validatorResult.username);-->
-<!--            $('#username').addClass('is-invalid');-->
-<!--            $('#username-error').show();-->
-<!--        }-->
-
-<!--        if (validatorResult.password) {-->
-<!--            $('#password-error').text(validatorResult.password);-->
-<!--            $('#password').addClass('is-invalid');-->
-<!--            $('#password-error').show();-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
 
 
 </body>

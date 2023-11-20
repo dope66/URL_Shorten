@@ -40,7 +40,6 @@ public class UrlMappingController {
         if (originalUrl != null) {
             return "redirect:" + originalUrl;
         } else {
-            // 유효하지 않은 단축 url
             return "pages/urlShort/resultPage";
         }
 

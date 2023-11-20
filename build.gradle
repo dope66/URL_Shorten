@@ -27,8 +27,7 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
-
-
+    implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '2.1.2'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 

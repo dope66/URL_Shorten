@@ -6,20 +6,47 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-<head>
-    <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">
-    <title>테스트 페이지 </title>
+<!--<head th:fragment="defaultLayout">-->
+<!--    <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">-->
+<!--    header-->
+<!--</head>-->
 
-</head>
-<!-- -------------------------------------------------------------- -->
-<!-- Bread crumb and right sidebar toggle -->
-<!-- -------------------------------------------------------------- -->
+<style>
+    /* 페이지 목록 스타일 */
+    #page-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 각 페이지 번호 스타일 */
+    .page-list-item {
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        color: #333;
+        text-align: center;
+    }
+
+    /* 현재 페이지 번호 스타일 */
+    .current-page {
+        background-color: #007bff; /* 현재 페이지의 배경색 */
+        color: #fff; /* 현재 페이지의 텍스트 색상 */
+    }
+
+
+</style>
+
 <div class="row page-titles">
     <div class="col-md-5 col-12 align-self-center">
         <h3 class="text-themecolor mb-0">채용 공고</h3>
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
-                <a href="javascript:void(0)">Main</a>
+                <a href="/">Main</a>
             </li>
             <li class="breadcrumb-item active">채용 공고</li>
         </ol>
@@ -30,17 +57,9 @@
         </div>
     </div>
 </div>
-<!-- -------------------------------------------------------------- -->
-<!-- End Bread crumb and right sidebar toggle -->
-<!-- -------------------------------------------------------------- -->
-<!-- -------------------------------------------------------------- -->
-<!-- Container fluid  -->
-<!-- -------------------------------------------------------------- -->
+
 <div class="container-fluid">
-    <!-- -------------------------------------------------------------- -->
-    <!-- Start Page Content -->
-    <!-- -------------------------------------------------------------- -->
-    <!-- basic table -->
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -48,42 +67,42 @@
                     <h4 class="card-title">내용</h4>
                     <div class="row mt-4 text-center">
                         <!-- Column -->
-                        <div class="col-md-6 col-lg-3 col-xlg-3">
-                            <div class="card card-hover">
-                                <div class="p-2 rounded bg-light-primary text-center">
-                                    <h1 class="fw-light text-primary" th:text="${maxId}"></h1>
-                                    <h6 class="text-primary">수집한 공고</h6>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
+<!--                            <div class="card card-hover">-->
+<!--                                <div class="p-2 rounded bg-light-primary text-center">-->
+<!--                                    <h1 class="fw-light text-primary" th:text="${maxId}"></h1>-->
+<!--                                    <h6 class="text-primary">수집한 공고</h6>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <!-- Column -->
-                        <div class="col-md-6 col-lg-3 col-xlg-3">
-                            <div class="card card-hover">
-                                <div class="p-2 rounded bg-light-warning text-center">
-                                    <h1 class="fw-light text-warning" th:text="${unsentCount}"></h1>
-                                    <h6 class="text-warning">발송대기 공고</h6>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
+<!--                            <div class="card card-hover">-->
+<!--                                <div class="p-2 rounded bg-light-warning text-center">-->
+<!--                                    <h1 class="fw-light text-warning" th:text="${unsentCount}"></h1>-->
+<!--                                    <h6 class="text-warning">발송대기 공고</h6>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <!-- Column -->
-                        <div class="col-md-6 col-lg-3 col-xlg-3">
-                            <div class="card card-hover">
-                                <div class="p-2 rounded bg-light-success text-center">
-                                    <h1 class="fw-light text-success" th:text="${allScraps.size()}"></h1>
-                                    <h6 class="text-success">진행중 공고</h6>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
+<!--                            <div class="card card-hover">-->
+<!--                                <div class="p-2 rounded bg-light-success text-center">-->
+<!--                                    <h1 class="fw-light text-success" th:text="${allScraps.size()}"></h1>-->
+<!--                                    <h6 class="text-success">진행중 공고</h6>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <!-- Column -->
-                        <div class="col-md-6 col-lg-3 col-xlg-3">
-                            <div class="card card-hover">
-                                <div class="p-2 rounded bg-light-danger text-center">
-                                    <h1 class="fw-light text-danger" th:text="${deleteCount}"></h1>
-                                    <h6 class="text-danger">마감된 공고</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Column -->
+<!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
+<!--                            <div class="card card-hover">-->
+<!--                                <div class="p-2 rounded bg-light-danger text-center">-->
+<!--                                    <h1 class="fw-light text-danger" th:text="${deleteCount}"></h1>-->
+<!--                                    <h6 class="text-danger">마감된 공고</h6>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
                     </div>
 
                     <div class="table-responsive mt-4 mb-4 ">
@@ -135,69 +154,23 @@
                                 <th>매칭 정보</th>
                                 <th>회사</th>
                                 <th>발송 여부</th>
+                                <th>사이트</th>
                                 <th>마감 기간</th>
 
                             </tr>
                             </thead>
-                            <tbody id="table-body">
-
-
-                            <tr th:each="scrap : ${scraps}">
-                                <td class="fw-bold link text-center" th:text="${scrap.id}"></td>
-                                <td th:text="${scrap.articleText.length() > 30 ? scrap.articleText.substring(0, 30) + '...' : scrap.articleText}"></td>
-                                <td class="text-center">
-                                    <a class="font-weight-medium link"
-                                       target="_blank"
-                                       th:href="'/matching/'+${scrap.id}">바로가기
-                                    </a>
-                                </td>
-                                <td th:text="${scrap.company}"></td>
-
-                                <td class="text-center">
-                                    <span class="badge bg-light-warning text-warning font-weight-medium"
-                                          th:if=="${scrap.sent}==false">발송 대기</span>
-                                    <span class="badge bg-light-primary text-warning font-weight-medium"
-                                          th:if=="${scrap.sent}==true">발송 완료</span>
-                                </td>
-                                <td th:text="${scrap.deadline}">
-                                </td>
-                            </tr>
+                            <tbody>
+                            <!-- 게시물 목록을 여기에 동적 추가                            -->
                             </tbody>
                         </table>
 
-                        <!-- 페이지 번호 표시 -->
-                        <div class="row">
-                            <div class="col"></div>
-                            <div class="col py-2 px-3 align-self-center">
-                                <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                                    <div class="btn-group">
-                                        <a th:href="@{/crawling/list(page=${currentPage - 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
-                                           th:if="${currentPage > 1}">
-                                            <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                    type="button">Previous
-                                            </button>
-                                        </a>
+                        <!-- 이전 페이지 버튼 -->
+                        <div id="pagination">
+<!--                            <button id="prev-button">이전</button>-->
+                            <input type="hidden" readonly id="page-number" th:value="1">
+                            <span id="page-list"></span>
+<!--                            <button id="next-button">다음</button>-->
 
-                                        <span th:each="pageNumber : ${#numbers.sequence(groupStart, groupEnd)}">
-                                        <a class="btn btn-light-primary text-primary font-weight-medium"
-                                           th:classappend="${pageNumber == currentPage} ? 'active'"
-                                           th:href="@{/crawling/list(page=${pageNumber}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}">
-                                            <span th:text="${pageNumber}"></span>
-                                        </a>
-
-                                        </span>
-
-
-                                        <a th:href="@{/crawling/list(page=${currentPage + 1}, search=${search}, sortField=${sortField}, sortOrder=${sortOrder})}"
-                                           th:if="${currentPage < totalPages}">
-                                            <button class="btn btn-light-primary text-primary font-weight-medium"
-                                                    type="button">Next
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col"></div>
                         </div>
                     </div>
                 </div>
@@ -205,9 +178,121 @@
         </div>
     </div>
 </div>
-<!-- -------------------------------------------------------------- -->
-<!-- End Container fluid  -->
-<!-- -------------------------------------------------------------- -->
+
+<script>
+    const scrapTable = document.getElementById("zero_config");
+    const tbody = scrapTable.querySelector("tbody");
+    const pageNumberSpan = document.getElementById("page-number");
+    const pageList = document.getElementById("page-list");
+    let currentPage = 0; // 현재 페이지 번호
+    let totalPages = 0; // Scrap의 총 페이지 수
+    const itemsPerPage = 10; // 페이지당 아이템 수
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Scrap의 총 갯수를 가져오는 API 호출
+        fetch('/api/scrap/totalScrapCount')
+            .then(response => response.json())
+            .then(data => {
+                const totalScrapCount = data; // Scrap의 총 갯수
+                totalPages = Math.ceil(totalScrapCount / itemsPerPage); // 페이지 수를 동적으로 설정
+                // 나머지 코드와 함께 페이지 번호 업데이트
+                updatePagination();
+            })
+            .catch(error => {
+                console.error('Scrap count fetch error:', error);
+            });
+
+        // 초기 페이지 로딩
+        fetchScraps(currentPage);
+    });
+    function goToPage(page) {
+        fetchScraps(page);
+        currentPage = page;
+        updatePagination();
+    }
+
+    function updatePagination() {
+        pageNumberSpan.textContent = currentPage + 1;
+        pageList.innerHTML = ""; // 페이지 목록 초기화
+
+        // 페이지 목록을 생성하고 현재 페이지 주변의 페이지 번호를 추가
+        const numPagesToShow = 10; // 한 번에 표시할 페이지 수
+        const startPage = Math.max(0, currentPage - Math.floor(numPagesToShow / 2));
+        const endPage = Math.min(totalPages - 1, startPage + numPagesToShow - 1);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageItem = document.createElement("span");
+            pageItem.textContent = i + 1;
+            pageItem.classList.add("page-list-item"); // 클래스 추가
+            if (i === currentPage) {
+                pageItem.classList.add("current-page");
+            }
+            pageItem.addEventListener("click", () => {
+                goToPage(i);
+            });
+            pageList.appendChild(pageItem);
+        }
+
+    }
+    // 게시물 목록 불러오기
+    function fetchScraps(page) {
+        fetch(`/api/scrap?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = ""; // 이전 목록을 지웁니다.
+
+                data._embedded.scrapList.forEach(scrap => {
+                    const row = document.createElement('tr');
+
+                    const scrapId = document.createElement('td');
+                    scrapId.textContent = scrap.id;
+
+                    const scrapTitle = document.createElement('td');
+                    // scrapTitle.textContent = scrap.articleText;
+                    const maxTitleLength = 25; // 표시할 최대 길이
+                    scrapTitle.textContent = scrap.articleText.length > maxTitleLength
+                        ? scrap.articleText.slice(0, maxTitleLength) + "..." // 긴 제목은 자르고 "..." 추가
+                        : scrap.articleText; // 짧은 제목은 그대로 표시
+
+                    const scrapMatching = document.createElement('td');
+                    const link = document.createElement('a');
+                    link.href = `/matching/${scrap.id}`;
+                    link.textContent = "바로가기";
+                    link.target = "_blank";
+                    scrapMatching.appendChild(link);
+
+                    const scrapCompany = document.createElement('td');
+                    scrapCompany.textContent = scrap.company;
+
+                    const scrapSent = document.createElement('td');
+                    scrapSent.textContent = scrap.sent ? "발송완료" : "발송대기";
+
+
+                    const scrapSite = document.createElement('td');
+                    scrapSite.textContent = scrap.sourceSite;
+
+
+                    const scrapDeadLine = document.createElement('td');
+                    scrapDeadLine.textContent = scrap.deadline;
+
+
+
+                    row.appendChild(scrapId);
+                    row.appendChild(scrapTitle);
+                    row.appendChild(scrapMatching);
+                    row.appendChild(scrapCompany);
+                    row.appendChild(scrapSent);
+                    row.appendChild(scrapSite);
+                    row.appendChild(scrapDeadLine);
+                    tbody.appendChild(row);
+                });
+
+                currentPage = page;
+            });
+    }
+
+</script>
 
 
 </html>

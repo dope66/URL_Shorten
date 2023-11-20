@@ -29,6 +29,35 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        /* 페이지 목록 스타일 */
+        #page-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 각 페이지 번호 스타일 */
+        .page-list-item {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+        }
+
+        /* 현재 페이지 번호 스타일 */
+        .current-page {
+            background-color: #007bff; /* 현재 페이지의 배경색 */
+            color: #fff; /* 현재 페이지의 텍스트 색상 */
+        }
+
+
+    </style>
 </head>
 
 <body>
@@ -84,13 +113,9 @@
         </path>
     </svg>
 </div>
-<!-- -------------------------------------------------------------- -->
-<!-- Main wrapper - style you can find in pages.scss -->
-<!-- -------------------------------------------------------------- -->
+
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
+
     <header class="topbar">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header">
@@ -98,28 +123,22 @@
                 <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
                     <i class="ti-menu ti-close"></i>
                 </a>
-                <!-- ============================================================== -->
-                <!-- Logo -->
-                <!-- ============================================================== -->
                 <a class="navbar-brand" href="/">
                     <!-- Logo icon -->
                     <b class="logo-icon">
-                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                        <!-- Dark Logo icon -->
+
                         <img
                                 alt="homepage"
                                 class="dark-logo"
                                 src="/static/assets/images/logo-icon.png"/>
-                        <!-- Light Logo icon -->
+
                         <img
                                 alt="homepage"
                                 class="light-logo"
                                 src="/static/assets/images/logo-light-icon.png"/>
                     </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
+
                     <span class="logo-text">
-                <!-- dark Logo text -->
                 <img
                         alt="homepage"
                         class="dark-logo"
@@ -131,12 +150,6 @@
                         src="/static/assets/images/logo-light-text.png"/>
               </span>
                 </a>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Toggle which is visible on mobile only -->
-                <!-- ============================================================== -->
                 <a
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
@@ -148,23 +161,13 @@
                     <i class="ti-more"></i>
                 </a>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
+
             <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
 
             </div>
         </nav>
     </header>
-    <!-- ============================================================== -->
-    <!-- End Topbar header -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
+
     <aside class="left-sidebar">
         <!-- Sidebar scroll-->
         <div class="scroll-sidebar">
@@ -227,8 +230,7 @@
                     </div>
                 </div>
             </div>
-            <!-- End User profile text-->
-            <!-- Sidebar navigation-->
+
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
 
@@ -343,22 +345,13 @@
 
                 </ul>
             </nav>
-            <!-- End Sidebar navigation -->
+
         </div>
-        <!-- End Sidebar scroll-->
-        <!-- Bottom points-->
-        <!-- End Bottom points-->
+
     </aside>
-    <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <!-- -------------------------------------------------------------- -->
-    <!-- Page wrapper  -->
-    <!-- -------------------------------------------------------------- -->
+
     <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
+
         <div class="row page-titles">
             <div class="col-md-5 col-12 align-self-center">
                 <h3 class="text-themecolor mb-0">관리자</h3>
@@ -375,110 +368,42 @@
                 </div>
             </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <!-- -------------------------------------------------------------- -->
-        <!-- Container fluid  -->
-        <!-- -------------------------------------------------------------- -->
+
         <div class="container-fluid">
-            <!-- -------------------------------------------------------------- -->
-            <!-- Start Page Content -->
-            <!-- -------------------------------------------------------------- -->
+
             <div class="widget-content searchable-container list">
                 <div class="card card-body">
                     <div class="table-responsive">
-                        <table class="table search-table v-middle">
+                        <table class="table search-table v-middle" id="emailTable">
                             <thead class="header-item text-center">
-                            <th>id</th>
-                            <th>시간</th>
-                            <th>제목</th>
-                            </thead>
-                            <tbody id="emailListTable">
-                            <tr class="text-center search-items" th:each="email : ${emails}">
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                            <div class="user-meta-info">
-                                                <h6 class="text-center user-name mb-0 font-weight-medium"
-                                                    th:text="${email.id}">
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="email-send-time" th:text="${email.sendEmailTime}"></span>
-                                </td>
-                                <td>
-                                    <span class="email-subject" th:text="${email.subject}"></span>
-                                </td>
+                            <tr>
+                                <th>id</th>
+                                <th>시간</th>
+                                <th>제목</th>
                             </tr>
-
-
+                            </thead>
+                            <tbody>
+<!--                            이메일 로그 -->
                             </tbody>
                         </table>
-                        <div class="col py-2 px-3 align-self-md-center">
-                            <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
-                                <div class="btn-group">
-                                    <a th:href="@{/admin/emailLogPage(page=0)}" th:class="${page == 0} ? disabled">
-                                        <button class="btn btn-light-secondary text-primary font-weight-medium"
-                                                type="button">&lt;
-                                        </button>
-                                    </a>
-                                    <div th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                                        <a th:href="@{/admin/emailLogPage(page=${i}, size=${size})}"
-                                           th:class="${page == i} ? active">
-                                            <button class="btn btn-light-secondary text-primary font-weight-medium"
-                                                    type="button" th:text="${i + 1}">
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <a th:href="@{/admin/emailLogPage(page=${totalPages - 1})}"
-                                       th:class="${page == totalPages - 1} ? disabled">
-                                        <button class="btn btn-light-secondary text-primary font-weight-medium"
-                                                type="button">&gt;
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
+
+                        <!-- 이전 페이지 버튼 -->
+                        <div id="pagination">
+                            <!--                            <button id="prev-button">이전</button>-->
+                            <input type="hidden" readonly id="page-number" th:value="1">
+                            <span id="page-list"></span>
+                            <!--                            <button id="next-button">다음</button>-->
+
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- -------------------------------------------------------------- -->
-            <!-- End PAge Content -->
-            <!-- -------------------------------------------------------------- -->
+            <footer class="footer text-center">
+                All Rights Reserved by 김현우
+            </footer>
         </div>
-
-        <!-- -------------------------------------------------------------- -->
-        <!-- End Container fluid  -->
-        <!-- -------------------------------------------------------------- -->
-        <!-- -------------------------------------------------------------- -->
-        <!-- footer -->
-        <!-- -------------------------------------------------------------- -->
-        <footer class="footer text-center">
-            All Rights Reserved by 김현우
-        </footer>
-        <!-- -------------------------------------------------------------- -->
-        <!-- End footer -->
-        <!-- -------------------------------------------------------------- -->
     </div>
-    <!-- -------------------------------------------------------------- -->
-    <!-- End Page wrapper  -->
-    <!-- -------------------------------------------------------------- -->
 </div>
-<!-- -------------------------------------------------------------- -->
-<!-- End Wrapper -->
-<!-- -------------------------------------------------------------- -->
-<!-- -------------------------------------------------------------- -->
-<!-- customizer Panel -->
-<!-- -------------------------------------------------------------- -->
-
-<!-- -------------------------------------------------------------- -->
-<!-- All Jquery -->
-<!-- -------------------------------------------------------------- -->
-
 </body>
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
@@ -498,4 +423,84 @@
 <script src="/static/dist/js/feather.min.js"></script>
 <script src="/static/dist/js/custom.min.js"></script>
 
+<script>
+    const emailTable = document.getElementById("emailTable");
+    const tbody = emailTable.querySelector("tbody");
+    const pageNumberSpan = document.getElementById("page-number");
+    const pageList = document.getElementById("page-list");
+    let currentPage = 0;
+    let totalPages = 0;
+    const itemsPerPage = 10;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/api/admin/totalLog')
+            .then(response => response.json())
+            .then(data => {
+                const emailLog = data;
+                totalPages = Math.ceil(emailLog / itemsPerPage);
+                updatePagination();
+            })
+            .catch(error => {
+                console.error('이메일 불러오기 실패 :', error);
+            });
+        fetchEmails(currentPage);
+    });
+
+    function goToPage(page) {
+        fetchEmails(page);
+        currentPage = page;
+        updatePagination();
+    }
+
+    function updatePagination() {
+        pageNumberSpan.textContent = currentPage + 1;
+        pageList.innerHTML = ""; // 페이지 목록 초기화
+
+
+        const numPagesToShow = 10;
+        const startPage = Math.max(0, currentPage - Math.floor(numPagesToShow / 2));
+        const endPage = Math.min(totalPages - 1, startPage + numPagesToShow - 1);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageItem = document.createElement("span");
+            pageItem.textContent = i + 1;
+            pageItem.classList.add("page-list-item");
+            if (i === currentPage) {
+                pageItem.classList.add("current-page");
+            }
+            pageItem.addEventListener("click", () => {
+                goToPage(i);
+            });
+            pageList.appendChild(pageItem);
+        }
+    }
+
+
+    function fetchEmails(page) {
+        fetch(`/api/admin/email?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = "";
+
+
+                data._embedded.emailList.forEach(email => {
+                    const row = document.createElement('tr');
+                    const emailId = document.createElement('td');
+                    emailId.textContent = email.id;
+                    const emailDate = document.createElement('td');
+                    emailDate.textContent = email.sendEmailTime;
+
+                    const emailsubject = document.createElement('td');
+                    emailsubject.textContent = email.subject;
+
+
+                    row.appendChild(emailId);
+                    row.appendChild(emailDate);
+                    row.appendChild(emailsubject);
+                    tbody.appendChild(row);
+                });
+                currentPage = page;
+            });
+    }
+</script>
 </html>

@@ -37,7 +37,7 @@ public class JobKoreaService {
             }
         };
         // crawling 주기 설정 (20분 마다)
-        long delay = 0; // 딜레이 설정
+        long delay = 3000; // 딜레이 설정
         long period = 60 * 20 * 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, delay, period);
@@ -144,9 +144,17 @@ public class JobKoreaService {
                     }
                 }
             }
+
+            String sourceName = ""; // 기본값 설정
+            if (articleUrl.contains("saramin")) {
+                sourceName = "사람인";
+            } else if (articleUrl.contains("jobkorea")) {
+                sourceName = "잡코리아";
+            }
             Scrap scrap = Scrap.builder()
                     .articleText(articleText)
                     .articleUrl(articleUrl)
+                    .sourceSite(sourceName)
                     .skillStack(skillStack)
                     .company(company)
                     .deadline(deadline)

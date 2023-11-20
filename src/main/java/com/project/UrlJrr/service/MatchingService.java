@@ -1,14 +1,17 @@
 package com.project.UrlJrr.service;
 
+import com.project.UrlJrr.dto.MatchingResultDto;
 import com.project.UrlJrr.entity.Scrap;
 import com.project.UrlJrr.entity.User;
 import com.project.UrlJrr.repository.ScrapRepository;
-import com.project.UrlJrr.skillenum.jobField;
 import com.project.UrlJrr.skillenum.JobType;
 import com.project.UrlJrr.skillenum.TechStack;
+import com.project.UrlJrr.skillenum.jobField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,13 +27,13 @@ public class MatchingService {
             int experienceScore = calculateExperienceScore(user.getExperience(), scrap.getExperience());
             int sumScore = score + experienceScore;
 
-            if (sumScore <= 5) {
+            if (sumScore <=7) {
                 grade = "D";
-            } else if (sumScore <= 7) {
+            } else if (sumScore <= 9) {
                 grade = "C";
-            } else if (sumScore <= 10) {
+            } else if (sumScore <= 11) {
                 grade = "B";
-            } else if (sumScore <= 12) {
+            } else if (sumScore <= 13) {
                 grade = "A";
             } else {
                 grade = "S";
@@ -58,23 +61,16 @@ public class MatchingService {
             return 5;
         } else {
             // 경력이 매칭되지 않는 경우
-            return 0;
+            return -5;
         }
     }
 
-    /*
-    userSkillStack 을 ScrapSkillStack 에 하나씩 비교하면서
-    점수를 올리는 형식
-    그래서 공고에 맞춰서 얼마나 맞는게 있는지 퍼센트로 확인,
-    * */
     public int calculateScore(String userSkillStack, String scrapSkillStack) {
         int totalScore = 0;
 
         String[] skills = scrapSkillStack.split(",");
         for (String skill : skills) {
             String trimmedSkill = skill.trim();
-            System.out.println("skill: " + trimmedSkill);
-
             if (userSkillStack.contains(trimmedSkill)) {
                 totalScore += getScoreFromJobType(trimmedSkill);
                 totalScore += getScoreFromField(trimmedSkill);
@@ -82,7 +78,6 @@ public class MatchingService {
             }
         }
 
-        System.out.println("totalScore: " + totalScore);
         return totalScore;
     }
 
@@ -129,6 +124,24 @@ public class MatchingService {
     public Scrap getScrapById(Long scrapId) {
         Optional<Scrap> scrapOptional = scrapRepository.findById(scrapId);
         return scrapOptional.orElse(null);
+    }
+
+    public List<MatchingResultDto> calculateAndStoreMatchingResults(User user, List<Scrap> scraps) {
+        List<MatchingResultDto> matchingResults = new ArrayList<>();
+
+        for (Scrap scrap : scraps) {
+            String matchingGrade = calculateMatchingScore(user, scrap.getId()); // 매칭 등급 계산
+
+            MatchingResultDto matchingResultDto = new MatchingResultDto();
+            matchingResultDto.setScrapId(scrap.getId());
+            matchingResultDto.setMatchingGrade(matchingGrade);
+
+            matchingResults.add(matchingResultDto);
+        }
+
+
+
+        return matchingResults;
     }
 
 

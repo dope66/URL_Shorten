@@ -32,7 +32,7 @@ import java.util.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ScrapingService {
+public class ScrapingService{
     private final ScrapRepository scrapRepository;
 
 <<<<<<< HEAD
@@ -43,7 +43,7 @@ public class ScrapingService {
             @Override
             public void run() {
                 try {
-                    List<Scrap> scraps = ScrapSaram();
+                    List<Scrap> scraps = scrapSaram();
 
                 } catch (IOException e) {
                     log.error("에러");
@@ -52,15 +52,19 @@ public class ScrapingService {
             }
         };
         // crawling 주기 설정 (15분 마다)
-        long delay = 0; // 딜레이 설정
+        long delay = 5000; // 딜레이 설정
         long period = 60 * 15 * 1000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, delay, period);
     }
 
+<<<<<<< HEAD
 
 >>>>>>> 51a2909ee3daae4d46c9e325020b144458a80f17
     public List<Scrap> ScrapSaram() throws IOException {
+=======
+    public List<Scrap> scrapSaram() throws IOException {
+>>>>>>> main
         List<Scrap> scraps = new ArrayList<>();
 
         // 기본 url 설정
@@ -139,8 +143,6 @@ public class ScrapingService {
             }
             String skillStack = skillStackJoiner.toString();
             String company = element.select("div.area_corp > strong > a").text();
-            //deadline 설정 추가
-//            String deadlineText = element.select("div.area_job > div.job_date > span").text();
             String deadlineText;
             if (element.select("div.area_job > div.job_date > span > span").size() > 0) {
                 deadlineText = element.select("div.area_job > div.job_date > span > span").text();
@@ -149,12 +151,12 @@ public class ScrapingService {
             }
             String deadline = null;
             switch (deadlineText) {
-                case "상시채용", "채용시","진행예정"-> deadline = deadlineText; // 날짜 형식 변환 없이 그대로 사용
+                case "상시채용", "채용시", "진행예정" -> deadline = deadlineText; // 날짜 형식 변환 없이 그대로 사용
                 case "오늘마감" -> deadline = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 case "내일마감" ->
                         deadline = LocalDateTime.now().toLocalDate().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 default -> {
-                    // 날짜를 변환
+                    // 날짜 변환
                     if (!deadlineText.endsWith("시마감")) {
                         String[] parts = deadlineText.split("[(/]"); // "/" 또는 "("을 기준으로 문자열 분리
                         String month = parts[0].replace("~", "").trim(); // 월 정보 추출 후 공백 제거
@@ -213,11 +215,18 @@ public class ScrapingService {
                 }
             }
 
+            String sourceName = ""; // 기본값 설정
+            if (articleUrl.contains("saramin")) {
+                sourceName = "사람인";
+            } else if (articleUrl.contains("jobkorea")) {
+                sourceName = "잡코리아";
+            }
 
             Scrap scrap = Scrap.builder()
                     .articleText(articleText)
                     .articleUrl(articleUrl)
                     .skillStack(skillStack)
+                    .sourceSite(sourceName)
                     .company(company)
                     .deadline(deadline)
                     .location(location)
@@ -231,7 +240,7 @@ public class ScrapingService {
             scraps.add(scrap);
             if (!isDuplicate) {
                 scrapRepository.save(scrap);
-                System.out.println("get Id " +scrap.getId());
+                System.out.println("get Id " + scrap.getId());
             }
         }
 
@@ -242,17 +251,47 @@ public class ScrapingService {
         return scrapRepository.findAll(pageable);
     }
 
-    public Page<Scrap> ScrapSearchList(String search, Pageable pageable){
+    public Page<Scrap> scrapSearchList(String search, Pageable pageable) {
         return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
 
     }
 
-
-    public List<Scrap> scrapList(){
+    public List<Scrap> scrapList() {
         return scrapRepository.findAll();
+    }
+    public int calculateUnsentCount(List<Scrap> allScraps) {
+        int unsentCount = 0;
+        for (Scrap scrap : allScraps) {
+            if (!scrap.isSent()) {
+                unsentCount++;
+            }
+        }
+        return unsentCount;
+    }
+
+    public long findMaxId(List<Scrap> allScraps) {
+        long maxId = 0;
+        for (Scrap scrap : allScraps) {
+            if (scrap.getId() > maxId) {
+                maxId = scrap.getId();
+            }
+        }
+        return maxId;
+    }
+
+    public int calculateDeletedCount(long maxId, int scrapTableSize) {
+        return (int) (maxId - scrapTableSize);
     }
 
 >>>>>>> 51a2909ee3daae4d46c9e325020b144458a80f17
+
+    public Page<Scrap> findAll(Pageable pageable) {
+        return scrapRepository.findAll(pageable);
+    }
+
+    public long getTotalScrapCount() {
+        return scrapRepository.count(); // Scrap 테이블의 총 레코드 수를 반환
+    }
 
 }
 

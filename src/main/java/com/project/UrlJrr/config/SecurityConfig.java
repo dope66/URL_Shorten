@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 @Configuration
-@EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests -> {
                     authorizeRequests.requestMatchers("/matching/**").authenticated();
                     authorizeRequests.requestMatchers("/crawling/apply").authenticated();
+                    authorizeRequests.requestMatchers("/user/modify").authenticated();
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/user/register").permitAll();
                     authorizeRequests.requestMatchers("/user/registerProc").permitAll();

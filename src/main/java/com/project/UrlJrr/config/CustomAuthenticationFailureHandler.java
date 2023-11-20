@@ -29,6 +29,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (!userOptional.isPresent()) {
             String errorMessage = "등록되지 않은 아이디입니다.";
+//            String errorMessage = String.valueOf(new UserException(UserExceptionType.NOT_FOUND_MEMBER));
             request.getSession().setAttribute("failedUsername", username);
             response.sendRedirect("/user/login?error=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8.toString()));
             return;
@@ -38,10 +39,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         // 비밀번호 검증
         if (!isPasswordValid(user, request.getParameter("password"))) {
-            String errorMessage = "비밀번호가 일치하지 않습니다.";
+            String errorMessage =
+//                    String.valueOf(new UserException(UserExceptionType.WRONG_PASSWORD));
+                    "비밀번호가 일치하지 않습니다.";
             request.getSession().setAttribute("failedUsername", username);
             response.sendRedirect("/user/login?error=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8.toString()));
-            return;
+
         }
 
 

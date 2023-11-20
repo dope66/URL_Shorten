@@ -5,9 +5,11 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <!--공통 JS / CSS 영역을 관리하는 환경 영역-->
-<head th:replace="~{common/fragments/config :: ConfigFragment}">
-    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>
+<head th:fragment="defaultLayout" th:replace="~{common/fragments/config :: ConfigFragment}">
+
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">MY SITE</title>
     <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">
+
 </head>
 
 <body>

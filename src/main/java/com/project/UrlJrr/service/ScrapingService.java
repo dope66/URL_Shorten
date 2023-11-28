@@ -209,15 +209,6 @@ public class ScrapingService{
         return scraps;
     }
 
-    public Page<Scrap> showListScrap(Pageable pageable) {
-        return scrapRepository.findAll(pageable);
-    }
-
-    public Page<Scrap> scrapSearchList(String search, Pageable pageable) {
-        return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
-
-    }
-
     public List<Scrap> scrapList() {
         return scrapRepository.findAll();
     }
@@ -254,5 +245,9 @@ public class ScrapingService{
         return scrapRepository.count(); // Scrap 테이블의 총 레코드 수를 반환
     }
 
+    public Page<Scrap> findByTitleContaining(String title, Pageable pageable) {
+
+        return scrapRepository.findByArticleTextContaining(title, pageable);
+    }
 }
 

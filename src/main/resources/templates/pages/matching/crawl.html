@@ -109,37 +109,37 @@
 
                         <div class="row">
                             <!-- 정렬 기준 선택 -->
-                            <div class="dropdown">
-                                <button aria-expanded="false" class="btn btn-light dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        id="sortDropdown"
-                                        type="button">
-                                    정렬하기
-                                </button>
-                                <ul aria-labelledby="sortDropdown" class="dropdown-menu">
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID
-                                        (오름차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID
-                                        (내림차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">마감기간
-                                        (오름차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">마감기간
-                                        (내림차순)</a></li>
-                                </ul>
-                            </div>
+<!--                            <div class="dropdown">-->
+<!--                                <button aria-expanded="false" class="btn btn-light dropdown-toggle"-->
+<!--                                        data-bs-toggle="dropdown"-->
+<!--                                        id="sortDropdown"-->
+<!--                                        type="button">-->
+<!--                                    정렬하기-->
+<!--                                </button>-->
+<!--                                <ul aria-labelledby="sortDropdown" class="dropdown-menu">-->
+<!--                                    <li><a class="dropdown-item"-->
+<!--                                           th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID-->
+<!--                                        (오름차순)</a></li>-->
+<!--                                    <li><a class="dropdown-item"-->
+<!--                                           th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID-->
+<!--                                        (내림차순)</a></li>-->
+<!--                                    <li><a class="dropdown-item"-->
+<!--                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">마감기간-->
+<!--                                        (오름차순)</a></li>-->
+<!--                                    <li><a class="dropdown-item"-->
+<!--                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">마감기간-->
+<!--                                        (내림차순)</a></li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
 
-                            <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
+
                                 <div class="input-group col-2">
                                     <input aria-label="Text input with checkbox" class="form-control" name="search"
-                                           placeholder="검색어 입력" th:value="${search}" type="text">
-                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색
+                                           placeholder="검색어 입력" type="text" id="search-input">
+                                    <button class="btn btn-light-info text-info font-weight-medium" id="search-button">검색
                                     </button>
                                 </div>
-                            </form>
+
 
 
                         </div>

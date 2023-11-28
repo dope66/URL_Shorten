@@ -25,13 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScrapRestController {
     private final ScrapingService scrapingService;
 
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> scrapList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, PagedResourcesAssembler<Scrap> assembler) {
-//        Page<Scrap> scraps = scrapingService.findAll(pageable);
-//        PagedModel<EntityModel<Scrap>> model = assembler.toModel(scraps);
-//
-//        return new ResponseEntity<>(model, HttpStatus.OK);
-//    }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> scrapList(
             @RequestParam(name = "search", required = false) String search,
@@ -41,10 +34,8 @@ public class ScrapRestController {
         Page<Scrap> scraps;
 
         if (StringUtils.hasText(search)) {
-            // 검색어가 있을 경우 검색 기능을 적용
             scraps = scrapingService.findByTitleContaining(search, pageable);
         } else {
-            // 검색어가 없을 경우 전체 데이터 조회
             scraps = scrapingService.findAll(pageable);
         }
 

@@ -152,7 +152,6 @@ function updateScrapList(data, page) {
     currentPage = page;
 }
 
-// 기본적인 게시물 목록 불러오기
 function fetchScraps(page) {
     fetch(`/api/scrap?page=${page}`)
         .then(response => response.json())
@@ -162,60 +161,3 @@ function fetchScraps(page) {
             updatePagination();
         });
 }
-
-// 게시물 목록 불러오기
-//     function fetchScraps(page) {
-//     fetch(`/api/scrap?page=${page}`)
-//         .then(response => response.json())
-//         .then(data => {
-//             tbody.innerHTML = ""; // 이전 목록을 지웁니다.
-//
-//             data._embedded.scrapList.forEach(scrap => {
-//                 const row = document.createElement('tr');
-//
-//                 const scrapId = document.createElement('td');
-//                 scrapId.textContent = scrap.id;
-//
-//                 const scrapTitle = document.createElement('td');
-//                 // scrapTitle.textContent = scrap.articleText;
-//                 const maxTitleLength = 25; // 표시할 최대 길이
-//                 scrapTitle.textContent = scrap.articleText.length > maxTitleLength
-//                     ? scrap.articleText.slice(0, maxTitleLength) + "..." // 긴 제목은 자르고 "..." 추가
-//                     : scrap.articleText; // 짧은 제목은 그대로 표시
-//
-//                 const scrapMatching = document.createElement('td');
-//                 const link = document.createElement('a');
-//                 link.href = `/matching/${scrap.id}`;
-//                 link.textContent = "바로가기";
-//                 link.target = "_blank";
-//                 scrapMatching.appendChild(link);
-//
-//                 const scrapCompany = document.createElement('td');
-//                 scrapCompany.textContent = scrap.company;
-//
-//                 const scrapSent = document.createElement('td');
-//                 scrapSent.textContent = scrap.sent ? "발송완료" : "발송대기";
-//
-//
-//                 const scrapSite = document.createElement('td');
-//                 scrapSite.textContent = scrap.sourceSite;
-//
-//
-//                 const scrapDeadLine = document.createElement('td');
-//                 scrapDeadLine.textContent = scrap.deadline;
-//
-//
-//
-//                 row.appendChild(scrapId);
-//                 row.appendChild(scrapTitle);
-//                 row.appendChild(scrapMatching);
-//                 row.appendChild(scrapCompany);
-//                 row.appendChild(scrapSent);
-//                 row.appendChild(scrapSite);
-//                 row.appendChild(scrapDeadLine);
-//                 tbody.appendChild(row);
-//             });
-//
-//             currentPage = page;
-//         });
-// }

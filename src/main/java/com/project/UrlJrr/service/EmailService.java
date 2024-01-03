@@ -46,8 +46,9 @@ public class EmailService {
     @Value("${server.name}")
     private String serverName;
     //서버 재시작 시 설정할 기본 스캐줄
+
     @Getter
-    private String emailSchedule = "0 0 18 * * ?";
+    private String emailSchedule =new String( "0 0 18 * * ?");
 
 
     private ScheduledFuture<?> scheduledTask;
@@ -78,9 +79,9 @@ public class EmailService {
 
     // 스케줄링 변경 메서드
     public void updateEmailSchedule(String newSchedule) {
-        emailSchedule = newSchedule;
         System.out.println("이메일  스캐줄 : " + emailSchedule);
-        System.out.println("변경된 스케줄  : " +newSchedule);
+        emailSchedule = newSchedule;
+        System.out.println("변경된 스케줄  : " + newSchedule);
         configureTasks();
 
     }

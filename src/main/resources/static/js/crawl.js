@@ -159,5 +159,10 @@ function fetchScraps(page) {
             tbody.innerHTML = ""; // 이전 목록을 지웁니다.
             updateScrapList(data, page);
             updatePagination();
+            const maxScrapId = Math.max(...data._embedded.scrapList.map(scrap => scrap.id));
+            document.getElementById("totalScraps").textContent = maxScrapId;
+
+
+
         });
 }

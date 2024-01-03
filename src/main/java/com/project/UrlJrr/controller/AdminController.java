@@ -24,6 +24,7 @@ public class AdminController {
         String schedule = emailService.getEmailSchedule();
         String readableSchedule = CronUtils.convertToReadableFormat(schedule);
         System.out.println("schedule이 크론표현식이 아닌가?" + schedule);
+        model.addAttribute("schedule",readableSchedule);
         return "pages/user/adminPage";
     }
 

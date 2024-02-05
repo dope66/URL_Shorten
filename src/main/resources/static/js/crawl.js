@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function updatePagination() {
-    pageNumberSpan.textContent = currentPage + 1;
+    pageNumberSpan.textContent = currentPage ;
     pageList.innerHTML = ""; // 페이지 목록 초기화
 
     // 페이지 목록을 생성하고 현재 페이지 주변의 페이지 번호를 추가
@@ -52,7 +52,7 @@ function updatePagination() {
 }
 
 function calculateNumPagesToShow() {
-    const minNumPagesToShow = 5; // 최소로 표시할 페이지 수
+    const minNumPagesToShow = Math.min(5, totalPages); // 동적으로 최소 페이지 수 계산
     const maxNumPagesToShow = 10; // 최대로 표시할 페이지 수
     return Math.min(
         maxNumPagesToShow,
@@ -96,6 +96,7 @@ function fetchScrapsWithSearch(searchQuery, page) {
         .then(data => {
             tbody.innerHTML = ""; // 이전 목록을 지웁니다.
             updateScrapList(data, page);
+            totalPages = Math.ceil(data.page.totalElements / itemsPerPage); // totalElements로 totalPages 업데이트
             updatePagination();
         });
 }
@@ -159,8 +160,7 @@ function fetchScraps(page) {
             tbody.innerHTML = ""; // 이전 목록을 지웁니다.
             updateScrapList(data, page);
             updatePagination();
-            const maxScrapId = Math.max(...data._embedded.scrapList.map(scrap => scrap.id));
-            document.getElementById("totalScraps").textContent = maxScrapId;
+            document.getElementById("totalScraps").textContent = Math.max(...data._embedded.scrapList.map(scrap => scrap.id));
 
 
 

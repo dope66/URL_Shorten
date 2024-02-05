@@ -209,32 +209,32 @@ public class ScrapingService{
         return scraps;
     }
 
-    public List<Scrap> scrapList() {
-        return scrapRepository.findAll();
-    }
-    public int calculateUnsentCount(List<Scrap> allScraps) {
-        int unsentCount = 0;
-        for (Scrap scrap : allScraps) {
-            if (!scrap.isSent()) {
-                unsentCount++;
-            }
-        }
-        return unsentCount;
-    }
+//    public List<Scrap> scrapList() {
+//        return scrapRepository.findAll();
+//    }
+//    public int calculateUnsentCount(List<Scrap> allScraps) {
+//        int unsentCount = 0;
+//        for (Scrap scrap : allScraps) {
+//            if (!scrap.isSent()) {
+//                unsentCount++;
+//            }
+//        }
+//        return unsentCount;
+//    }
 
-    public long findMaxId(List<Scrap> allScraps) {
-        long maxId = 0;
-        for (Scrap scrap : allScraps) {
-            if (scrap.getId() > maxId) {
-                maxId = scrap.getId();
-            }
-        }
-        return maxId;
-    }
+//    public long findMaxId(List<Scrap> allScraps) {
+//        long maxId = 0;
+//        for (Scrap scrap : allScraps) {
+//            if (scrap.getId() > maxId) {
+//                maxId = scrap.getId();
+//            }
+//        }
+//        return maxId;
+//    }
 
-    public int calculateDeletedCount(long maxId, int scrapTableSize) {
-        return (int) (maxId - scrapTableSize);
-    }
+//    public int calculateDeletedCount(long maxId, int scrapTableSize) {
+//        return (int) (maxId - scrapTableSize);
+//    }
 
 
     public Page<Scrap> findAll(Pageable pageable) {

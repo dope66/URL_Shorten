@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table table-bordered no-wrap fs-3" id="product-log" th:border="1">
+    <thead class="text-center">
+    <div class="row">
+        <div class="input-group col-2">
+            <input aria-label="Text input with checkbox" class="form-control" name="search"
+                   placeholder="검색어 입력" type="text" id="search-input">
+            <button class="btn btn-light-info text-info font-weight-medium" id="search-button">검색
+            </button>
+        </div>
+    </div>
+    <tr>
+        <th>#</th>
+        <th>작업일</th>
+        <th>품 명</th>
+        <th>품번</th>
+        <th>작업수</th>
+        <th>담당자</th>
+
+
+    </tr>
+    </thead>
+
+
+    <tbody>
+
+    </tbody>
+
+</table>
+</body>
+
+<div id="pagination">
+
+    <input type="hidden" readonly id="page-number" th:value="1">
+    <span id="page-list"></span>
+</div>
+<script src="/static/js/mes.js"></script>
+
+</html>

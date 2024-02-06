@@ -30,7 +30,7 @@ public class ScrapAutoDelete {
             String creatDate = scrap.getCreateDate();
             Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
             Matcher matcher = pattern.matcher(deadline);
-            if (deadline.equals("채용시") || deadline.equals("상시채용")||deadline.equals("진행예정")) {
+            if (deadline.equals("채용시") || deadline.equals("상시채용")||deadline.equals("진행예정")||deadline.isEmpty()) {
 
                 int year = Integer.parseInt(creatDate.substring(0, 4));
                 int month = Integer.parseInt(creatDate.substring(5, 7));

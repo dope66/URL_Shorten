@@ -33,6 +33,7 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers("/user/login").anonymous();
                     authorizeRequests.requestMatchers("/user/logout").authenticated();
                     authorizeRequests.requestMatchers("/user/findPassword").permitAll();
+                    authorizeRequests.requestMatchers("/mes/**").permitAll();
                     authorizeRequests.anyRequest().permitAll();
                 }))
                 .exceptionHandling((httpSecurityExceptionHandlingConfigurer -> {

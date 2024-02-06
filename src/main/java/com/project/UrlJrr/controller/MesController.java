@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MesController {
     private final MesService mesService;
     @GetMapping("/productLog")
-    public String MesHomeContorller(){
+    public String MesHome(){
         return "/pages/mes/productLog";
     }
     @GetMapping("/popUp")

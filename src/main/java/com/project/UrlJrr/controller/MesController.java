@@ -15,6 +15,9 @@ public class MesController {
     public String MesHomeContorller(){
         return "/pages/mes/productLog";
     }
-
+    @GetMapping("/popUp")
+    public String popUp(){
+        return "/pages/mes/popUp";
+    }
 
 }

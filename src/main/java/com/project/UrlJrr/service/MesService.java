@@ -1,5 +1,6 @@
 package com.project.UrlJrr.service;
 
+import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.repository.MesRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,9 @@ public class MesService {
 
     public Page<ProductLog> findByWorkDateBetween(Date startDate, Date endDate, Pageable pageable) {
         return mesRepository.findByWorkDateBetween(startDate, endDate, pageable);
+    }
+    public ProductLog register(ProductLogDto productLogDto){
+        return mesRepository.save(productLogDto.toEntity());
     }
 
 }

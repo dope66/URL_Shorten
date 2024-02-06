@@ -1,5 +1,6 @@
 package com.project.UrlJrr.controller;
 
+import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.service.MesService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -63,4 +61,10 @@ public class MesRestController {
         long totalProductLogCount = mesService.getTotalLogCount();
         return ResponseEntity.ok(totalProductLogCount);
     }
+    @PostMapping("/register")
+    public ResponseEntity<?> registryProductLog(@RequestBody ProductLogDto productLogDto){
+        ProductLog newProductLog = mesService.register(productLogDto);
+        return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
+    }
+
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>제품 로그 등록</title>
+    <style>
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .popup-content input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <!-- 제품 로그 입력 폼 -->
+        <form id="product-log-form">
+            <!-- 제품 로그 입력 필드들 -->
+            <input type="date" id="workDate" name="workDate" required>
+            <input type="text" id="productName" name="productName" placeholder="품명" required>
+            <input type="text" id="productNumber" name="productNumber" placeholder="품번" required>
+            <input type="text" id="workload" name="workload" placeholder="작업량" required>
+            <input type="text" id="workerName" name="workerName" placeholder="담당자" required>
+            <!-- 다른 필드들도 동일한 방법으로 추가 -->
+            <button type="submit">등록</button>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const registryForm = document.getElementById("product-log-form");
+        registryForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const workDate = document.getElementById('workDate').value;
+            const productName = document.getElementById('productName').value;
+            const productNumber = document.getElementById('productNumber').value;
+            const workload = document.getElementById('workload').value;
+            const workerName = document.getElementById('workerName').value;
+
+            const newProductLog = { workDate, productName, productNumber, workload, workerName };
+            console.log(newProductLog)
+            fetch('/api/mes/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProductLog)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('등록 성공');
+                        window.close();
+                    }
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        });
+    });
+</script>
+</html>

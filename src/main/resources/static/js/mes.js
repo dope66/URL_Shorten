@@ -152,3 +152,18 @@ function fetchProductLog(page) {
             }
         });
 }
+
+
+function openPopup() {
+    const popupWindow = window.open("popUp", "Popup", "width=400,height=300");
+}
+
+// 팝업 창에서 제품 로그를 등록하는 이벤트 처리
+
+// function submitProductLog(event) {
+//     event.preventDefault();
+//
+//     // 폼 데이터 가져오기
+//     const formData = new FormData(event.target);
+//
+// }

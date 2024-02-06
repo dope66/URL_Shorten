@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +18,21 @@ public class MesService {
         return mesRepository.findAll(pageable);
 
     }
-    public List<ProductLog> productList(){
-        List<ProductLog> productLogList = new ArrayList<>();
-        return productLogList;
-    };
+
     public Page<ProductLog> findByWorkerNameContaining(String workerName, Pageable pageable) {
         return mesRepository.findByWorkerNameContaining(workerName, pageable);
     }
-    public long getTotalLogCount(){
+
+    public long getTotalLogCount() {
         return mesRepository.count();
     }
+
+    public Page<ProductLog> findByWorkDateBetweenAndWorkerNameContaining(Date startDate, Date endDate, String workerName, Pageable pageable) {
+        return mesRepository.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, workerName, pageable);
+    }
+
+    public Page<ProductLog> findByWorkDateBetween(Date startDate, Date endDate, Pageable pageable) {
+        return mesRepository.findByWorkDateBetween(startDate, endDate, pageable);
+    }
+
 }

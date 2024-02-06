@@ -4,7 +4,7 @@ const pageNumberSpan = document.getElementById("page-number");
 const pageList = document.getElementById("page-list");
 let currentPage = 0; // 현재 페이지
 let totalPages = 0;
-const itemsPerPage =10;
+const itemsPerPage = 10;
 let currentSearchQuery = "";
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -20,11 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('product Log count fetch error:', error);
         });
     fetchProductLog(currentPage);
-    console.log("현재 페이지가 몇인데?",currentPage);
+    console.log("현재 페이지가 몇인데?", currentPage);
 });
 
 function updatePagination() {
-    pageNumberSpan.textContent = currentPage ;
+    pageNumberSpan.textContent = currentPage;
     pageList.innerHTML = ""; // 페이지 목록 초기화
 
     const numPagesToShow = calculateNumPagesToShow(); // 동적으로 페이지 수 계산
@@ -57,21 +57,35 @@ function calculateNumPagesToShow() {
 }
 
 
-function goToPage(page) {
-    currentSearchQuery = document.getElementById("search-input").value;
-    console.log("Current Search Query:", currentSearchQuery);
-    console.log("Current Page:", currentPage);
-    fetchProductLogWithSearch(currentSearchQuery, page);
+function getStartDate() {
+    return document.getElementById("start-date").value || ""; // 값이 비어있을 경우 빈 문자열("")로 설정
 }
 
-document.getElementById("search-button").addEventListener("click", function () {
-    const searchQuery = document.getElementById("search-input").value;
-    fetchProductLogWithSearch(searchQuery, 0);
+function getEndDate() {
+    return document.getElementById("end-date").value || ""; // 값이 비어있을 경우 빈 문자열("")로 설정
+}
+
+function getSearchQuery() {
+    return document.getElementById("search-input").value || "";
+}
+
+function goToPage(page) {
+    const startDate = getStartDate();
+    const endDate = getEndDate();
+    const searchQuery = getSearchQuery();
+    fetchProductLogWithFilterAndSearch(startDate, endDate, searchQuery, page);
+}
+
+document.getElementById("filter-button").addEventListener("click", function () {
+    const startDate = getStartDate();
+    const endDate = getEndDate();
+    const searchQuery = getSearchQuery();
+    fetchProductLogWithFilterAndSearch(startDate, endDate, searchQuery, 0);
 });
 
-function fetchProductLogWithSearch(searchQuery, page) {
-    console.log("Search Query in fetchProductLogWithSearch:", searchQuery);
-    fetch(`/api/mes?page=${page}&search=${searchQuery}`)
+
+function fetchProductLogWithFilterAndSearch(startDate, endDate, searchQuery, page) {
+    fetch(`/api/mes?search=${searchQuery}&page=${page}&startDate=${startDate}&endDate=${endDate}`)
         .then(response => response.json())
         .then(data => {
             tbody.innerHTML = ""; // 이전 목록을 지웁니다.
@@ -88,40 +102,47 @@ pageList.addEventListener("click", function (event) {
     }
 });
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR");
+}
+
 function updateProductLogList(data, page) {
     tbody.innerHTML = "";
 
-        data._embedded.productLogList.forEach(productLog => {
-            const row = document.createElement('tr');
-            const productId = document.createElement('td');
-            productId.textContent=productLog.id;
-            const workDate = document.createElement('td');
-            workDate.textContent = productLog.workDate;
-            const productName = document.createElement('td');
-            productName.textContent = productLog.productName;
-            const productNumber = document.createElement('td');
-            productNumber.textContent = productLog.productNumber;
-            const workload = document.createElement('td');
-            workload.textContent=productLog.workload;
-            const workerName = document.createElement('td');
-            workerName.textContent = productLog.workerName;
-            row.appendChild(productId);
-            row.appendChild(workDate);
-            row.appendChild(productName);
-            row.appendChild(productNumber);
-            row.appendChild(workload);
-            row.appendChild(workerName);
-            tbody.appendChild(row);
-        });
+    data._embedded.productLogList.forEach(productLog => {
+        const row = document.createElement('tr');
+        const productId = document.createElement('td');
+        productId.textContent = productLog.id;
+        const workDate = document.createElement('td');
+        workDate.textContent = formatDate(productLog.workDate);
+
+        const productName = document.createElement('td');
+        productName.textContent = productLog.productName;
+        const productNumber = document.createElement('td');
+        productNumber.textContent = productLog.productNumber;
+        const workload = document.createElement('td');
+        workload.textContent = productLog.workload;
+        const workerName = document.createElement('td');
+        workerName.textContent = productLog.workerName;
+        row.appendChild(productId);
+        row.appendChild(workDate);
+        row.appendChild(productName);
+        row.appendChild(productNumber);
+        row.appendChild(workload);
+        row.appendChild(workerName);
+        tbody.appendChild(row);
+    });
     currentPage = page;
 }
+
 function fetchProductLog(page) {
     fetch(`/api/mes?page=${page}`)
         .then(response => response.json())
         .then(data => {
 
             tbody.innerHTML = "";
-            updateProductLogList(data,page);
+            updateProductLogList(data, page);
             updatePagination();
             // 마지막 페이지인 경우에 대한 처리
             if (page === totalPages - 1) {

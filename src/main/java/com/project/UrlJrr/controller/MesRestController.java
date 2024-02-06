@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -29,14 +32,26 @@ public class MesRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> productLogList(
+            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(name = "search", required = false) String search,
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = "workDate", direction = Sort.Direction.DESC) Pageable pageable,
             PagedResourcesAssembler<ProductLog> assembler
     ) {
         Page<ProductLog> productLogs;
-        if (StringUtils.hasText(search)) {
+        if (startDate != null && endDate != null) {
+            // 시작과 끝이 두개다 null이  아닐때 ;
+            if (StringUtils.hasText(search)) {
+                // 검색 단어가 있을때
+                productLogs = mesService.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, search, pageable);
+            } else {
+                productLogs = mesService.findByWorkDateBetween(startDate, endDate, pageable);
+            }
+        } else if (StringUtils.hasText(search)) {
+            // 날자가 없을때
             productLogs = mesService.findByWorkerNameContaining(search, pageable);
         } else {
+            // 기본 리스트 열기
             productLogs = mesService.findAll(pageable);
         }
         PagedModel<EntityModel<ProductLog>> model = assembler.toModel(productLogs);

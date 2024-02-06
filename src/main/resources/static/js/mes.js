@@ -102,10 +102,10 @@ pageList.addEventListener("click", function (event) {
     }
 });
 
-// function formatDate(dateString) {
-//     const date = new Date(dateString);
-//     return date.toLocaleDateString("ko-KR");
-// }
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR");
+}
 
 function updateProductLogList(data, page) {
     tbody.innerHTML = "";
@@ -115,8 +115,7 @@ function updateProductLogList(data, page) {
         const productId = document.createElement('td');
         productId.textContent = productLog.id;
         const workDate = document.createElement('td');
-        // workDate.textContent = formatDate(productLog.workDate);
-        workDate.textContent =productLog.workDate;
+        workDate.textContent = formatDate(productLog.workDate);
         const productName = document.createElement('td');
         productName.textContent = productLog.productName;
         const productNumber = document.createElement('td');

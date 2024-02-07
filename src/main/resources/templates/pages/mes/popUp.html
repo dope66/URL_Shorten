@@ -148,8 +148,10 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('등록 성공');
-                        window.close();
+                        const confirmed = window.confirm('등록이 완료되었습니다. 화면을 닫으시겠습니까?');
+                        if (confirmed) {
+                            window.close();
+                        }
                     }
                 })
                 .catch(error => {

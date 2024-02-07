@@ -109,26 +109,36 @@ function formatDate(dateString) {
 
 function updateProductLogList(data, page) {
     tbody.innerHTML = "";
-
+/*        <th>순</th>
+        <th>차종</th>
+        <th>작업 일</th>
+        <th>품번</th>
+        <th>품명</th>
+        <th>생산량</th>
+        <th>담당자</th>
+*/
     data._embedded.productLogList.forEach(productLog => {
         const row = document.createElement('tr');
         const productId = document.createElement('td');
         productId.textContent = productLog.id;
+        const productionType =document.createElement('td');
+        productionType.textContent=productLog.productionType
         const workDate = document.createElement('td');
         workDate.textContent = formatDate(productLog.workDate);
-        const productName = document.createElement('td');
-        productName.textContent = productLog.productName;
-        const productNumber = document.createElement('td');
-        productNumber.textContent = productLog.productNumber;
-        const workload = document.createElement('td');
-        workload.textContent = productLog.workload;
+        const productionNumber = document.createElement('td');
+        productionNumber.textContent = productLog.productionNumber;
+        const productionName = document.createElement('td');
+        productionName.textContent = productLog.productionName;
+        const production = document.createElement('td');
+        production.textContent = productLog.production;
         const workerName = document.createElement('td');
         workerName.textContent = productLog.workerName;
         row.appendChild(productId);
+        row.appendChild(productionType);
         row.appendChild(workDate);
-        row.appendChild(productName);
-        row.appendChild(productNumber);
-        row.appendChild(workload);
+        row.appendChild(productionNumber);
+        row.appendChild(productionName);
+        row.appendChild(production);
         row.appendChild(workerName);
         tbody.appendChild(row);
     });
@@ -154,15 +164,5 @@ function fetchProductLog(page) {
 
 
 function openPopup() {
-    const popupWindow = window.open("popUp", "Popup", "width=400,height=300");
+    const popupWindow = window.open("popUp", "Popup", "width=400,height=800");
 }
-
-// 팝업 창에서 제품 로그를 등록하는 이벤트 처리
-
-// function submitProductLog(event) {
-//     event.preventDefault();
-//
-//     // 폼 데이터 가져오기
-//     const formData = new FormData(event.target);
-//
-// }

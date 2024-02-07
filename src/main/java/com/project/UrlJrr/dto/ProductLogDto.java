@@ -12,22 +12,26 @@ import java.util.Date;
 public class ProductLogDto {
 
 
-    private String workerName ; // 작업자
-    private String position;    // 직무
-    private String workload;  // 작업량
-    private String productNumber; // 품번
-    private Date workDate;      // 일한 날짜
-    private String productName; // 품명
 
+    private String productionType; //차종
+    private String productionNumber; // 품번
+    private String productionName; // 품명
+    private String production;  // 생산량
+    private String defectRate; // 불량률
+    private String equipmentName; // 담당호기
+    private String workerName; // 담당자
+    private Date workDate;      // 일한 날짜
 
     public ProductLog toEntity() {
         return ProductLog.builder()
                 .workerName(workerName)
-                .position(position)
-                .workload(workload)
-                .productNumber(productNumber)
+                .productionType(productionType)
+                .production(production)
+                .productionNumber(productionNumber)
                 .workDate(workDate)
-                .productName(productName)
+                .productionName(productionName)
+                .equipmentName(equipmentName)
+                .defectRate(defectRate)
                 .build();
     }
 

@@ -4,18 +4,43 @@
     <meta charset="UTF-8">
     <title>제품 로그 등록</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
         .popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
+            background-color: #f9f9f9;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .popup-content input {
+
+        .popup-content input,
+        .popup-content select {
             margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .popup-content button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .popup-content button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -25,29 +50,94 @@
         <!-- 제품 로그 입력 폼 -->
         <form id="product-log-form">
             <!-- 제품 로그 입력 필드들 -->
-            <input type="date" id="workDate" name="workDate" required>
-            <input type="text" id="productName" name="productName" placeholder="품명" required>
-            <input type="text" id="productNumber" name="productNumber" placeholder="품번" required>
-            <input type="text" id="workload" name="workload" placeholder="작업량" required>
-            <input type="text" id="workerName" name="workerName" placeholder="담당자" required>
-            <!-- 다른 필드들도 동일한 방법으로 추가 -->
+            <label for="workDate">작업 일자:</label>
+            <input type="date" id="workDate" name="workDate" required><br>
+
+            <label for="productionType">생산 유형:</label>
+            <input type="text" id="productionType" name="productionType" required><br>
+            <label for="productionNumber">생산 번호:</label>
+            <select name="productionNumber" id="productionNumber"></select><br>
+
+            <label for="productionName">생산 이름:</label>
+            <select name="productionName" id="productionName"></select><br>
+
+            <label for="production">생산량:</label>
+            <input type="text" id="production" name="production" placeholder="생산량" required><br>
+
+            <label for="workerName">담당자:</label>
+            <input type="text" id="workerName" name="workerName" placeholder="담당자" required><br>
             <button type="submit">등록</button>
         </form>
     </div>
 </div>
 </body>
+
 <script>
     window.addEventListener('DOMContentLoaded', () => {
+        // 제품 로그 등록 폼
         const registryForm = document.getElementById("product-log-form");
+
+        // productionType select 요소
+        const productionTypeSelect = document.getElementById('productionType');
+
+        // productName select 요소
+        const productionNumberSelect = document.getElementById('productionNumber');
+        const productionNameSelect = document.getElementById('productionName');
+
+        // productionType 값이 변경될 때 productName을 가져와서 옵션으로 설정
+        productionTypeSelect.addEventListener('change', () => {
+            const selectedProductionType = productionTypeSelect.value;
+
+            // 서버에서 해당 productionType에 해당하는 productName 가져오기
+            fetch(`/api/mes/getProductionNumber?productionType=${selectedProductionType}`)
+                .then(response => response.json())
+                .then(productionNumbers => {
+                    // 이전에 추가된 옵션 제거
+                    productionNumberSelect.innerHTML = '';
+
+                    // 가져온 productName들을 옵션으로 추가
+                    productionNumbers.forEach(productionNumber => {
+                        const option = document.createElement('option');
+                        option.text = productionNumber;
+                        option.value = productionNumber;
+                        productionNumberSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        });
+
+        productionNumberSelect.addEventListener('change', () => {
+            const selectedProductionType = productionTypeSelect.value;
+            fetch(`/api/mes/getProductionName?productionType=${selectedProductionType}`)
+                .then(response => response.json())
+                .then(productionNames => {
+                    productionNameSelect.innerHTML = '';
+
+                    productionNames.forEach(productionName => {
+                        const option = document.createElement('option');
+                        option.text = productionName;
+                        option.value = productionName;
+                        productionNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+
+        });
+        // 등록 폼 제출 시
         registryForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const workDate = document.getElementById('workDate').value;
-            const productName = document.getElementById('productName').value;
-            const productNumber = document.getElementById('productNumber').value;
-            const workload = document.getElementById('workload').value;
+            const productionType = document.getElementById('productionType').value;
+            const productionName = document.getElementById('productionName').value;
+            const productionNumber = document.getElementById('productionNumber').value;
+            const production = document.getElementById('production').value;
             const workerName = document.getElementById('workerName').value;
 
-            const newProductLog = { workDate, productName, productNumber, workload, workerName };
+            const newProductLog = {workDate, productionType, productionName, productionNumber, production, workerName};
             console.log(newProductLog)
             fetch('/api/mes/register', {
                 method: 'POST',
@@ -67,5 +157,7 @@
                 });
         });
     });
+
+
 </script>
 </html>

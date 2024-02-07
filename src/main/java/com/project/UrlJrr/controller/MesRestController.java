@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -66,5 +67,17 @@ public class MesRestController {
         ProductLog newProductLog = mesService.register(productLogDto);
         return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getProductionNumber")
+    public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType){
+        List<String> productionNumbers = mesService.getProductionNumbersByProductionType(productionType);
+        return new ResponseEntity<>(productionNumbers, HttpStatus.OK);
+    }
+    @GetMapping("/getProductionName")
+    public ResponseEntity<?> getProductionNames(@RequestParam(name="productionType")String productionType){
+        List<String> productionNames = mesService.getProductionNamesByProductionType(productionType);
+        return new ResponseEntity<>(productionNames,HttpStatus.OK);
+    }
+
 
 }

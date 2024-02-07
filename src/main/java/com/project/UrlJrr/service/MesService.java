@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,12 @@ public class MesService {
     }
     public ProductLog register(ProductLogDto productLogDto){
         return mesRepository.save(productLogDto.toEntity());
+    }
+    public List<String> getProductionNumbersByProductionType(String productionType) {
+        return mesRepository.findProductNumbersByProductionType(productionType);
+    }
+    public List<String> getProductionNamesByProductionType(String productionType){
+        return mesRepository.findProductNameByProductionType(productionType);
     }
 
 }

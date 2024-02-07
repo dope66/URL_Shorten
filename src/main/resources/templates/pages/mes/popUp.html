@@ -138,25 +138,29 @@
             const workerName = document.getElementById('workerName').value;
 
             const newProductLog = {workDate, productionType, productionName, productionNumber, production, workerName};
-            console.log(newProductLog)
-            fetch('/api/mes/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newProductLog)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        const confirmed = window.confirm('등록이 완료되었습니다. 화면을 닫으시겠습니까?');
-                        if (confirmed) {
+            console.log(newProductLog);
+
+            // 등록 여부를 묻는 확인 창 표시
+            const confirmed = window.confirm('정말로 등록하시겠습니까?');
+            if (confirmed) {
+                // 확인을 선택한 경우에만 등록 진행
+                fetch('/api/mes/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newProductLog)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('등록이 완료되었습니다.');
                             window.close();
                         }
-                    }
-                })
-                .catch(error => {
-                    console.error('fetch 오류 요청 ', error);
-                });
+                    })
+                    .catch(error => {
+                        console.error('fetch 오류 요청 ', error);
+                    });
+            }
         });
     });
 

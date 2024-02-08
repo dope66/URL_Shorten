@@ -4,14 +4,14 @@ import com.project.UrlJrr.entity.ProductLog;
 import lombok.*;
 
 import java.util.Date;
+
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class ProductLogDto {
-
-
 
     private String productionType; //차종
     private String productionNumber; // 품번

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>공정원 관리</title>
+</head>
+<body>
+<h2>공정원 등록</h2>
+
+    <form id="worker-register-form">
+    <img src="#"  height="600" width="400" alt="image">
+    <label for="processName">공정명</label><select name="processName" id="processName"></select><br>
+    <label for="equipmentName">호기</label><select name="equipmentName" id="equipmentName"></select><br>
+    <label for="workerName">성명</label><input type="text" id="workerName" name="workerName"><br>
+    <label for="nation">국적</label><input type="text" id="nation" name="nation"><br>
+    <label for="workShift">주야간조</label><select name="workShift" id="workShift"></select><br>
+    <button id="registerButton">등록</button>
+    </form>
+</body>
+<script>
+    const processNameSelect = document.getElementById('processName');
+    // AJAX 요청으로 enum 값들을 가져와서 select 요소에 추가
+    fetch('/enums/processTypes')
+        .then(response => response.json())
+        .then(processTypes => {
+            processTypes.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                processNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching process types:', error));
+
+    const workShiftSelect = document.getElementById('workShift');
+    // AJAX 요청으로 enum 값들을 가져와서 select 요소에 추가
+    fetch('/enums/WorkShiftEnum')
+        .then(response => response.json())
+        .then(workShiftEnums => {
+            workShiftEnums.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                workShiftSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching process types:', error));
+    const registerForm = document.getElementById("worker-register-form");
+
+    registerForm.addEventListener('submit',(event) =>{
+        event.preventDefault();
+        const processName = document.getElementById('processName').value;
+        const equipmentName = document.getElementById('equipmentName').value;
+        const workerName = document.getElementById('workerName').value;
+        const nation = document.getElementById('nation').value;
+        const workShift = document.getElementById('workShift').value;
+
+        const newWorker={processName,equipmentName,workerName,nation,workShift};
+        const confirmed = window.confirm('공정원 등록하시겠습니까?')
+        if(confirmed){
+            fetch('/api/worker/register',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(newWorker)
+            })
+                .then(response =>{
+                    if(response.ok){
+                        alert('회원 등록완료');
+                        window.history.back();
+                    }
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        }
+
+    })
+</script>
+
+</html>

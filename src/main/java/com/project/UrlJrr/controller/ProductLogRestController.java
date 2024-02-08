@@ -2,7 +2,7 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
-import com.project.UrlJrr.service.MesService;
+import com.project.UrlJrr.service.ProductLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +25,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/mes")
-public class MesRestController {
+public class ProductLogRestController {
 
-    private final MesService mesService;
+    private final ProductLogService productLogService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> productLogList(
@@ -42,16 +42,16 @@ public class MesRestController {
             // 시작과 끝이 두개다 null이  아닐때 ;
             if (StringUtils.hasText(search)) {
                 // 검색 단어가 있을때
-                productLogs = mesService.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, search, pageable);
+                productLogs = productLogService.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, search, pageable);
             } else {
-                productLogs = mesService.findByWorkDateBetween(startDate, endDate, pageable);
+                productLogs = productLogService.findByWorkDateBetween(startDate, endDate, pageable);
             }
         } else if (StringUtils.hasText(search)) {
             // 날자가 없을때
-            productLogs = mesService.findByWorkerNameContaining(search, pageable);
+            productLogs = productLogService.findByWorkerNameContaining(search, pageable);
         } else {
             // 기본 리스트 열기
-            productLogs = mesService.findAll(pageable);
+            productLogs = productLogService.findAll(pageable);
         }
         PagedModel<EntityModel<ProductLog>> model = assembler.toModel(productLogs);
         return new ResponseEntity<>(model, HttpStatus.OK);
@@ -59,33 +59,33 @@ public class MesRestController {
 
     @GetMapping("/totalProductLogCount")
     public ResponseEntity<Long> getTotalProductLogCount() {
-        long totalProductLogCount = mesService.getTotalLogCount();
+        long totalProductLogCount = productLogService.getTotalLogCount();
         return ResponseEntity.ok(totalProductLogCount);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registryProductLog(@RequestBody ProductLogDto productLogDto) {
-        ProductLog newProductLog = mesService.register(productLogDto);
+        ProductLog newProductLog = productLogService.register(productLogDto);
         return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
     }
 
 
     @GetMapping("/getProductionNumber")
     public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType) {
-        List<String> productionNumbers = mesService.getProductionNumbersByProductionType(productionType);
+        List<String> productionNumbers = productLogService.getProductionNumbersByProductionType(productionType);
         return new ResponseEntity<>(productionNumbers, HttpStatus.OK);
     }
 
     @GetMapping("/getProductionName")
     public ResponseEntity<?> getProductionNames(@RequestParam(name = "productionType") String productionType) {
-        List<String> productionNames = mesService.getProductionNamesByProductionType(productionType);
+        List<String> productionNames = productLogService.getProductionNamesByProductionType(productionType);
         return new ResponseEntity<>(productionNames, HttpStatus.OK);
     }
 
 
     @PutMapping("/modify/{id}")
     public ResponseEntity<?> modifyProductLog(@PathVariable("id") Long id, @RequestBody ProductLogDto productLogDto) {
-        ProductLog existingProductLog = mesService.getProductLogById(id);
+        ProductLog existingProductLog = productLogService.getProductLogById(id);
         if (existingProductLog == null) {
             return ResponseEntity.notFound().build();
         }
@@ -96,13 +96,13 @@ public class MesRestController {
         existingProductLog.setProduction(productLogDto.getProduction());
         existingProductLog.setWorkerName(productLogDto.getWorkerName());
 
-        ProductLog updatedProductLog = mesService.modifyProductLog(existingProductLog);
+        ProductLog updatedProductLog = productLogService.modifyProductLog(existingProductLog);
         return ResponseEntity.ok(updatedProductLog);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductLog(@PathVariable("id") Long id) {
-        mesService.deleteProduct(id);
+        productLogService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

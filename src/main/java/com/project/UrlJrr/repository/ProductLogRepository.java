@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MesRepository extends JpaRepository<ProductLog, Long> {
+public interface ProductLogRepository extends JpaRepository<ProductLog, Long> {
     Optional<ProductLog> findById(Long aLong);
 
     Page<ProductLog> findByWorkerNameContaining(String workerName, Pageable pageable);

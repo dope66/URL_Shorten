@@ -24,7 +24,7 @@ public class ProductLog {
     private String productionName; // 품명
     private Long production;  // 생산량
     private Long defectRate; // 불량률
-    private String equipmentName; // 담당기
+    private String equipmentName; // 호기
     private String workerName; // 담당자
 
 

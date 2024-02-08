@@ -1,20 +1,15 @@
-package com.project.UrlJrr.entity;
+package com.project.UrlJrr.dto;
 
 import com.project.UrlJrr.mesenum.ProcessType;
-import jakarta.persistence.*;
 import lombok.*;
 
-@Builder
-@Entity
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
+@Builder
 @NoArgsConstructor
-public class ProcessWorker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Enumerated(EnumType.STRING)
+@AllArgsConstructor
+
+public class ProcessWorkerDto {
     private ProcessType processName; // 공정명
     private String nation; // 국적
     private String position; // 직책

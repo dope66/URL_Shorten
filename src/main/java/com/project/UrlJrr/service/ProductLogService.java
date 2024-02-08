@@ -2,7 +2,7 @@ package com.project.UrlJrr.service;
 
 import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
-import com.project.UrlJrr.repository.MesRepository;
+import com.project.UrlJrr.repository.ProductLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,46 +14,48 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MesService {
-    private final MesRepository mesRepository;
+public class ProductLogService {
+    private final ProductLogRepository productLogRepository;
 
     public Page<ProductLog> findAll(Pageable pageable) {
-        return mesRepository.findAll(pageable);
+        return productLogRepository.findAll(pageable);
 
     }
 
     public Page<ProductLog> findByWorkerNameContaining(String workerName, Pageable pageable) {
-        return mesRepository.findByWorkerNameContaining(workerName, pageable);
+        return productLogRepository.findByWorkerNameContaining(workerName, pageable);
     }
 
     public long getTotalLogCount() {
-        return mesRepository.count();
+        return productLogRepository.count();
     }
 
     public Page<ProductLog> findByWorkDateBetweenAndWorkerNameContaining(Date startDate, Date endDate, String workerName, Pageable pageable) {
-        return mesRepository.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, workerName, pageable);
+        return productLogRepository.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, workerName, pageable);
     }
 
     public Page<ProductLog> findByWorkDateBetween(Date startDate, Date endDate, Pageable pageable) {
-        return mesRepository.findByWorkDateBetween(startDate, endDate, pageable);
+        return productLogRepository.findByWorkDateBetween(startDate, endDate, pageable);
     }
     public ProductLog register(ProductLogDto productLogDto){
-        return mesRepository.save(productLogDto.toEntity());
+        return productLogRepository.save(productLogDto.toEntity());
     }
+
     public ProductLog modifyProductLog(ProductLog productLog) {
-        return mesRepository.save(productLog);
+        return productLogRepository.save(productLog);
     }
 
     public List<String> getProductionNumbersByProductionType(String productionType) {
-        return mesRepository.findProductNumbersByProductionType(productionType);
+        return productLogRepository.findProductNumbersByProductionType(productionType);
     }
     public List<String> getProductionNamesByProductionType(String productionType){
-        return mesRepository.findProductNameByProductionType(productionType);
+        return productLogRepository.findProductNameByProductionType(productionType);
     }
-    public void deleteProduct(Long productId){mesRepository.deleteById(productId);};
+    public void deleteProduct(Long productId){
+        productLogRepository.deleteById(productId);};
 
     public ProductLog getProductLogById(Long id) {
-        Optional<ProductLog> optionalProductLog = mesRepository.findById(id);
+        Optional<ProductLog> optionalProductLog = productLogRepository.findById(id);
         return optionalProductLog.orElse(null);
     }
 

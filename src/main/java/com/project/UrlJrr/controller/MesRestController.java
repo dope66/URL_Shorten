@@ -62,22 +62,49 @@ public class MesRestController {
         long totalProductLogCount = mesService.getTotalLogCount();
         return ResponseEntity.ok(totalProductLogCount);
     }
+
     @PostMapping("/register")
-    public ResponseEntity<?> registryProductLog(@RequestBody ProductLogDto productLogDto){
+    public ResponseEntity<?> registryProductLog(@RequestBody ProductLogDto productLogDto) {
         ProductLog newProductLog = mesService.register(productLogDto);
         return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
     }
 
+
     @GetMapping("/getProductionNumber")
-    public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType){
+    public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType) {
         List<String> productionNumbers = mesService.getProductionNumbersByProductionType(productionType);
         return new ResponseEntity<>(productionNumbers, HttpStatus.OK);
     }
+
     @GetMapping("/getProductionName")
-    public ResponseEntity<?> getProductionNames(@RequestParam(name="productionType")String productionType){
+    public ResponseEntity<?> getProductionNames(@RequestParam(name = "productionType") String productionType) {
         List<String> productionNames = mesService.getProductionNamesByProductionType(productionType);
-        return new ResponseEntity<>(productionNames,HttpStatus.OK);
+        return new ResponseEntity<>(productionNames, HttpStatus.OK);
     }
 
 
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<?> modifyProductLog(@PathVariable("id") Long id, @RequestBody ProductLogDto productLogDto) {
+        ProductLog existingProductLog = mesService.getProductLogById(id);
+        if (existingProductLog == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingProductLog.setWorkDate(productLogDto.getWorkDate());
+        existingProductLog.setProductionType(productLogDto.getProductionType());
+        existingProductLog.setProductionNumber(productLogDto.getProductionNumber());
+        existingProductLog.setProductionName(productLogDto.getProductionName());
+        existingProductLog.setProduction(productLogDto.getProduction());
+        existingProductLog.setWorkerName(productLogDto.getWorkerName());
+
+        ProductLog updatedProductLog = mesService.modifyProductLog(existingProductLog);
+        return ResponseEntity.ok(updatedProductLog);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProductLog(@PathVariable("id") Long id) {
+        mesService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
+

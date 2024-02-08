@@ -109,14 +109,6 @@ function formatDate(dateString) {
 
 function updateProductLogList(data, page) {
     tbody.innerHTML = "";
-/*        <th>순</th>
-        <th>차종</th>
-        <th>작업 일</th>
-        <th>품번</th>
-        <th>품명</th>
-        <th>생산량</th>
-        <th>담당자</th>
-*/
     data._embedded.productLogList.forEach(productLog => {
         const row = document.createElement('tr');
         const productId = document.createElement('td');
@@ -133,6 +125,13 @@ function updateProductLogList(data, page) {
         production.textContent = productLog.production;
         const workerName = document.createElement('td');
         workerName.textContent = productLog.workerName;
+        const editButtonCell = document.createElement('td');
+        const editButton = document.createElement('button');
+        editButton.textContent = '수정';
+        editButton.addEventListener('click', () => {
+            // 수정 페이지로 이동하는 함수 호출
+            openModifyPage(productLog.id); // 혹은 다른 고유 식별자 활용
+        });
         row.appendChild(productId);
         row.appendChild(productionType);
         row.appendChild(workDate);
@@ -140,11 +139,18 @@ function updateProductLogList(data, page) {
         row.appendChild(productionName);
         row.appendChild(production);
         row.appendChild(workerName);
+        editButtonCell.appendChild(editButton);
+        row.appendChild(editButtonCell);
         tbody.appendChild(row);
     });
     currentPage = page;
 }
+// 수정 페이지 열기
+function openModifyPage(productId) {
+    const modifyUrl = `/mes/productLog/${productId}`;
 
+    window.open(modifyUrl, '_blank');
+}
 function fetchProductLog(page) {
     fetch(`/api/mes?page=${page}`)
         .then(response => response.json())

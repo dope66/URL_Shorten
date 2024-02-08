@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +40,21 @@ public class MesService {
     public ProductLog register(ProductLogDto productLogDto){
         return mesRepository.save(productLogDto.toEntity());
     }
+    public ProductLog modifyProductLog(ProductLog productLog) {
+        return mesRepository.save(productLog);
+    }
+
     public List<String> getProductionNumbersByProductionType(String productionType) {
         return mesRepository.findProductNumbersByProductionType(productionType);
     }
     public List<String> getProductionNamesByProductionType(String productionType){
         return mesRepository.findProductNameByProductionType(productionType);
+    }
+    public void deleteProduct(Long productId){mesRepository.deleteById(productId);};
+
+    public ProductLog getProductLogById(Long id) {
+        Optional<ProductLog> optionalProductLog = mesRepository.findById(id);
+        return optionalProductLog.orElse(null);
     }
 
 }

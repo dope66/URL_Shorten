@@ -2,6 +2,7 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.mesenum.ProcessType;
 import com.project.UrlJrr.mesenum.WorkShiftEnum;
+import com.project.UrlJrr.mesenum.EquipmentNameEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,8 @@ public class EnumController {
     public WorkShiftEnum[] getWorkShiftEnum() {
         return WorkShiftEnum.values();
     }
-
+    @GetMapping("/enums/equipmentName")
+    public EquipmentNameEnum[] getEquipmentNameEnum(){
+        return EquipmentNameEnum.values();
+    }
 }

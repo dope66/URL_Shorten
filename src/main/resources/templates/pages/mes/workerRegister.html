@@ -10,7 +10,12 @@
     <form id="worker-register-form">
     <img src="#"  height="600" width="400" alt="image">
     <label for="processName">공정명</label><select name="processName" id="processName"></select><br>
-    <label for="equipmentName">호기</label><select name="equipmentName" id="equipmentName"></select><br>
+    <label for="equipmentName">호기</label>
+        <select name="equipmentName" id="equipmentName">
+            <option value="1호기">1호기</option>
+            <option value="2호기">2호기</option>
+            <option value="3호기">3호기</option>
+        </select><br>
     <label for="workerName">성명</label><input type="text" id="workerName" name="workerName"><br>
     <label for="nation">국적</label><input type="text" id="nation" name="nation"><br>
     <label for="workShift">주야간조</label><select name="workShift" id="workShift"></select><br>
@@ -19,7 +24,6 @@
 </body>
 <script>
     const processNameSelect = document.getElementById('processName');
-    // AJAX 요청으로 enum 값들을 가져와서 select 요소에 추가
     fetch('/enums/processTypes')
         .then(response => response.json())
         .then(processTypes => {

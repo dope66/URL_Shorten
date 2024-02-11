@@ -52,10 +52,15 @@
             <label for="workDate">작업 일자:</label>
             <input type="date" id="workDate" name="workDate" th:value="${productLog.getWorkDate()}"><br>
 
-            <label for="productionType">생산 유형:</label>
-            <input type="text" id="productionType" name="productionType"
-                   th:value="${productLog.getProductionType()}"><br>
-            <label for="productionNumber">생산 번호:</label>
+        <label for="productionType">생산 유형:</label>
+        <div id="productionTypeContainer">
+            <input type="text" id="productionType" name="productionType" th:value="${productLog.getProductionType()}" required>
+            <select id="productionTypeSelect" style="display: none;"></select>
+        </div>
+        <button type="button" id="toggleProductionTypeButton" onclick="toggleProductionType()">선택</button>
+
+
+        <label for="productionNumber">생산 번호:</label>
             <select name="productionNumber" id="productionNumber"></select><br>
 
             <label for="productionName">생산 이름:</label>
@@ -151,5 +156,5 @@
 
 </script>
 <script src="/js/selectNumberAndName.js"></script>
-
+<script src="/js/selectNumberAndName.js"></script>
 </html>

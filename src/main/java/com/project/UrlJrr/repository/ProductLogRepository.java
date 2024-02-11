@@ -28,4 +28,6 @@ public interface ProductLogRepository extends JpaRepository<ProductLog, Long> {
 
     @Query("SELECT DISTINCT productionName FROM ProductLog WHERE productionType = :productionType")
     List<String> findProductNameByProductionType(@Param("productionType") String productionType);
+    @Query("SELECT DISTINCT productionType FROM ProductLog")
+    List<String> findByProductType();
 }

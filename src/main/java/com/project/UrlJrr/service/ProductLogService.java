@@ -40,7 +40,9 @@ public class ProductLogService {
     public ProductLog register(ProductLogDto productLogDto){
         return productLogRepository.save(productLogDto.toEntity());
     }
-
+    public List<String> getProductionTypes(){
+        return productLogRepository.findByProductType();
+    }
     public ProductLog modifyProductLog(ProductLog productLog) {
         return productLogRepository.save(productLog);
     }

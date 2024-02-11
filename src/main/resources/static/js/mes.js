@@ -170,5 +170,5 @@ function fetchProductLog(page) {
 
 
 function openPopup() {
-    const popupWindow = window.open("popUp", "Popup", "width=400,height=800");
+    const popupWindow = window.open("popUp", "Popup", "width=700,height=900");
 }

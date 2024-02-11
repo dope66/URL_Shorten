@@ -39,7 +39,6 @@ public class ProductLogRestController {
     ) {
         Page<ProductLog> productLogs;
         if (startDate != null && endDate != null) {
-            // 시작과 끝이 두개다 null이  아닐때 ;
             if (StringUtils.hasText(search)) {
                 // 검색 단어가 있을때
                 productLogs = productLogService.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, search, pageable);
@@ -68,8 +67,11 @@ public class ProductLogRestController {
         ProductLog newProductLog = productLogService.register(productLogDto);
         return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
     }
-
-
+    @GetMapping("/getProductionType")
+    public ResponseEntity<?> getProductionTypes() {
+        List<String> productionTypes = productLogService.getProductionTypes();
+        return  new ResponseEntity<>(productionTypes, HttpStatus.OK);
+    }
     @GetMapping("/getProductionNumber")
     public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType) {
         List<String> productionNumbers = productLogService.getProductionNumbersByProductionType(productionType);

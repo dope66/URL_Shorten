@@ -4,6 +4,8 @@ import com.project.UrlJrr.mesenum.ProcessType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Entity
 @Getter
@@ -14,6 +16,7 @@ public class ProcessWorker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     private ProcessType processName; // 공정명
     private String nation; // 국적
@@ -21,5 +24,8 @@ public class ProcessWorker {
     private String workShift; // 주야간
     private String workerName; // 이름
     private String equipmentName; // 호기
+
+    @OneToMany(mappedBy = "processWorker")
+    private List<ProductLog> productLogs;
 
 }

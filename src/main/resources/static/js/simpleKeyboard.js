@@ -23,6 +23,9 @@ function toggleVirtualKeyboard() {
 function closeKeyboard() {
     // 가상 키보드를 화면에서 숨기도록 설정
     document.querySelector(".simple-keyboard").classList.add("keyboard-closed");
+
+    // 폼 제출을 방지하기 위해 이벤트의 기본 동작을 중지
+    event.preventDefault();
 }
 
 function onChange(input) {

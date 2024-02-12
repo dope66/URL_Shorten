@@ -92,8 +92,12 @@
             <label for="nation">
                 <input type="text" value="국적" readonly class="form-Name"> <input type="text" id="nation" name="nation">
             </label>
+            <label for="position">
+                <input type="text" readonly value="직책" class="form-Name">
+                <input type="text" id="position" name="position">
+            </label>
             <label for="workShift">
-                <input type="text" value="주야간조" readonly class="form-Name"> <select name="workShift" id="workShift"></select>
+                <input type="text" value="주야간조" readonly class="form-Name"><select name="workShift" id="workShift"></select>
             </label>
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
@@ -170,6 +174,7 @@
         const equipmentName = document.getElementById('equipmentName').value;
         const workerName = document.getElementById('workerName').value;
         const nation = document.getElementById('nation').value;
+        const position = document.getElementById('position').value;
         const workShift = document.getElementById('workShift').value;
 
         // FormData 객체 생성
@@ -179,6 +184,7 @@
         formData.append('equipmentName', equipmentName);
         formData.append('workerName', workerName);
         formData.append('nation', nation);
+        formData.append('position',position);
         formData.append('workShift', workShift);
 
         const confirmed = window.confirm('공정원 등록하시겠습니까?');

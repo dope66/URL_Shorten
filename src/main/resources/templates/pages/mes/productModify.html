@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>제품 로그 등록</title>
+    <title>생산일지 수정</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,19 +52,19 @@
             <label for="workDate">작업 일자:</label>
             <input type="date" id="workDate" name="workDate" th:value="${productLog.getWorkDate()}"><br>
 
-        <label for="productionType">생산 유형:</label>
+        <label for="productionType">생산 유형:        <button type="button" id="toggleProductionTypeButton" onclick="toggleProductionType()">선택</button></label>
         <div id="productionTypeContainer">
             <input type="text" id="productionType" name="productionType" th:value="${productLog.getProductionType()}" required>
             <select id="productionTypeSelect" style="display: none;"></select>
         </div>
-        <button type="button" id="toggleProductionTypeButton" onclick="toggleProductionType()">선택</button>
+
 
 
         <label for="productionNumber">생산 번호:</label>
-            <select name="productionNumber" id="productionNumber"></select><br>
+            <select name="productionNumber" id="productionNumber" th:value="${productLog.getProductionNumber()}"></select><br>
 
             <label for="productionName">생산 이름:</label>
-            <select name="productionName" id="productionName"></select><br>
+            <select name="productionName" id="productionName" th:value="${productLog.getProductionName()}"></select><br>
 
             <label for="production">생산량:</label>
             <input type="text" id="production" name="production" placeholder="생산량" th:value="${productLog.getProduction()}"><br>
@@ -155,6 +155,5 @@
     // 분류 함수
 
 </script>
-<script src="/js/selectNumberAndName.js"></script>
 <script src="/js/selectNumberAndName.js"></script>
 </html>

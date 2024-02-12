@@ -1,9 +1,6 @@
 package com.project.UrlJrr.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -18,6 +15,7 @@ public class ProductLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String productionType; //차종
     private String productionNumber; // 품번
     private Date workDate;      // 일한 날짜
@@ -26,6 +24,10 @@ public class ProductLog {
     private Long defectRate; // 불량률
     private String equipmentName; // 호기
     private String workerName; // 담당자
+
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
+    private ProcessWorker processWorker;
 
 
 }

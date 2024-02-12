@@ -3,6 +3,7 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.repository.ProductLogRepository;
+import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductLogService {
     private final ProductLogRepository productLogRepository;
+    private final WorkerRepository workerRepository;
 
     public Page<ProductLog> findAll(Pageable pageable) {
         return productLogRepository.findAll(pageable);
@@ -50,8 +52,8 @@ public class ProductLogService {
     public List<String> getProductionNumbersByProductionType(String productionType) {
         return productLogRepository.findProductNumbersByProductionType(productionType);
     }
-    public List<String> getProductionNamesByProductionType(String productionType){
-        return productLogRepository.findProductNameByProductionType(productionType);
+    public List<String> getProductionNamesByProductionNumber(String productionNumber){
+        return productLogRepository.findProductNameByProductionNumber(productionNumber);
     }
     public void deleteProduct(Long productId){
         productLogRepository.deleteById(productId);};
@@ -60,5 +62,7 @@ public class ProductLogService {
         Optional<ProductLog> optionalProductLog = productLogRepository.findById(id);
         return optionalProductLog.orElse(null);
     }
-
+    public List<String> getWorkerNames() {
+        return workerRepository.findDistinctWorkerNames();
+    }
 }

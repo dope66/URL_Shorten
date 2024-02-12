@@ -41,9 +41,4 @@ public class WorkerRestController {
     }
 
 
-//    @GetMapping("/list")
-//    public ResponseEntity<?>workerList(){
-//        return new ResponseEntity<>(,HttpStatus.OK);
-//    }
-
 }

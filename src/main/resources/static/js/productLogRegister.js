@@ -1,11 +1,20 @@
 const registryForm = document.getElementById("product-log-form");
 
-
 // 등록 폼 제출 시
 registryForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const workDate = document.getElementById('workDate').value;
-    const productionType = document.getElementById('productionType').value;
+    const productionTypeInput = document.getElementById("productionType").value;
+    const productionTypeSelect = document.getElementById("productionTypeSelect").value;
+    let productionType;
+    if (productionTypeSelect) {
+        productionType = productionTypeSelect;
+    } else {
+        productionType = productionTypeInput;
+    }
+    // 여기서 선택된 생산 유형을 사용하여 필요한 작업을 수행합니다.
+    console.log("선택된 생산 유형:", productionType);
+
     const productionName = document.getElementById('productionName').value;
     const productionNumber = document.getElementById('productionNumber').value;
     const production = document.getElementById('production').value;

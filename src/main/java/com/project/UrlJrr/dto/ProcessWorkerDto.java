@@ -3,6 +3,8 @@ package com.project.UrlJrr.dto;
 import com.project.UrlJrr.mesenum.ProcessType;
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Builder
@@ -16,5 +18,6 @@ public class ProcessWorkerDto {
     private String workShift; // 주야간
     private String workerName; // 이름
     private String equipmentName; // 호기
+    private List<ProductLogDto> productLogs;
 
 }

@@ -165,7 +165,7 @@ function fetchProductionNumbersAndNamesInput(){
 window.addEventListener('DOMContentLoaded', () => {
     // 초기에 생산번호와 생산이름 옵션을 가져오기
     fetchProductionNumbersAndNames();
-    fetchProductionNumbersAndNamesInput();
+    // fetchProductionNumbersAndNamesInput();
     // 초기에 생산 유형 목록을 가져와서 select 태그의 option에 추가
     const productionTypeSelect = document.getElementById('productionTypeSelect');
     const productionTypeInput =document.getElementById('productionType');

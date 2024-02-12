@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mes")
 public class MesController {
     private final ProductLogService productLogService;
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(){
         return "pages/mes/home";
     }
@@ -38,5 +38,6 @@ public class MesController {
         model.addAttribute("productLog", productLogDto);
         return "pages/mes/productModify";
     }
+
 
 }

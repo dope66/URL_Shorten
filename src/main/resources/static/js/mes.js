@@ -109,6 +109,8 @@ function formatDate(dateString) {
 
 function updateProductLogList(data, page) {
     tbody.innerHTML = "";
+    console.log("data 뭐가있지?",data);
+    console.log("_embedded 가있는가.?",data._embedded);
     data._embedded.productLogList.forEach(productLog => {
         const row = document.createElement('tr');
         const productId = document.createElement('td');

@@ -14,7 +14,7 @@
             align-items: flex-start; /* 수직 상단 정렬 */
         }
 
-       #form-container {
+        #form-container {
             width: 50%;
             padding: 0 10px; /* 좌우 여백 추가 */
             box-sizing: border-box; /* padding 값이 요소의 전체 너비에 포함되도록 함 */
@@ -42,9 +42,11 @@
             flex-direction: column;
             width: 100%;
         }
+
         select {
             width: 190px;
         }
+
         #worker-register-form label {
             margin-bottom: 10px;
             width: 100%; /* 라벨의 너비를 100%로 설정하여 부모 요소에 꽉 차도록 함 */
@@ -57,10 +59,18 @@
         a {
             text-decoration: none;
         }
-        .form-Name{
+
+        .form-Name {
             text-align: center;
-            width:100px;
+            width: 100px;
             height: 25px;
+        }
+        #employee-Table {
+            width: 100%;
+        }
+        #employee-Table td {
+            text-align: center;
+            
         }
     </style>
 </head>
@@ -78,17 +88,19 @@
         <form id="worker-register-form">
             <input type="file" id="imageInput" accept="image/*">
             <label for="processName">
-            <input type="text" value="공정명" readonly class="form-Name">
+                <input type="text" value="공정명" readonly class="form-Name">
                 <select name="processName" id="processName"></select>
             </label>
             <label for="equipmentName">
                 <input type="text" value="호기" readonly class="form-Name">
                 <select name="equipmentName" id="equipmentName">
-                <option value="1호기">1호기</option>
-                <option value="2호기">2호기</option>
-                <option value="3호기">3호기</option>
-            </select></label>
-            <label for="workerName"><input type="text" value="성명" readonly class="form-Name"> <input type="text" id="workerName" name="workerName"></label>
+                    <option value="1호기">1호기</option>
+                    <option value="2호기">2호기</option>
+                    <option value="3호기">3호기</option>
+                </select></label>
+            <label for="workerName"><input type="text" value="성명" readonly class="form-Name"> <input type="text"
+                                                                                                     id="workerName"
+                                                                                                     name="workerName"></label>
             <label for="nation">
                 <input type="text" value="국적" readonly class="form-Name"> <input type="text" id="nation" name="nation">
             </label>
@@ -97,7 +109,8 @@
                 <input type="text" id="position" name="position">
             </label>
             <label for="workShift">
-                <input type="text" value="주야간조" readonly class="form-Name"><select name="workShift" id="workShift"></select>
+                <input type="text" value="주야간조" readonly class="form-Name"><select name="workShift"
+                                                                                   id="workShift"></select>
             </label>
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
@@ -106,20 +119,177 @@
         </form>
     </div>
 </div>
+<table id="employee-Table">
+    <div>
+        <input aria-label="Text input with checkbox" class="form-control" name="search"
+               placeholder="담당자 조회" type="text" id="search-input">
+        <button class="btn btn-light-info text-info font-weight-medium" id="filter-button">조회</button>
+    </div>
+    <thead class="text-center">
+    <tr>
+        <th>공정명</th>
+        <th>호기</th>
+        <th>성명</th>
+        <th>국적</th>
+        <th>직책</th>
+        <th>근무</th>
+    </tr>
+
+    <tbody>
+
+    </tbody>
+</table>
+
+
+<div id="pagination">
+    <input type="hidden" readonly id="page-number" th:value="1">
+    <span id="page-list"></span>
+</div>
 
 
 </body>
+<script>
+    const employeeTable = document.getElementById("employee-Table");
+    const tbody = employeeTable.querySelector("tbody");
+    const pageNumberSpan = document.getElementById("page-number");
+    const pageList = document.getElementById("page-list");
+    let currentPage = 0; // 현재 페이지
+    let totalPages = 0;
+    const itemsPerPage = 10;
+    let currentSearchQuery = "";
 
+    document.addEventListener("DOMContentLoaded", function () {
+        currentSearchQuery = document.getElementById("search-input").value;
+        fetch('/api/worker/totalEmployeeCount')
+            .then(response => response.json())
+            .then(data => {
+                const totalEmployeeCount = data;
+                totalPages = Math.ceil(totalEmployeeCount / itemsPerPage);
+                updatePagination();
+            })
+            .catch(error => {
+                console.error('product Log count fetch error:', error);
+            });
+        fetchProductLog(currentPage);
+        console.log("현재 페이지가 몇인데?", currentPage);
+    });
+
+    function calculateNumPagesToShow() {
+        const minNumPagesToShow = Math.min(3, totalPages); // 동적으로 최소 페이지 수 계산
+        const maxNumPagesToShow = 8;
+        return Math.min(
+            maxNumPagesToShow,
+            Math.max(minNumPagesToShow, Math.ceil(totalPages / itemsPerPage))
+        );
+    }
+
+    function goToPage(page) {
+        const searchQuery = getSearchQuery();
+        fetchProductLogWithFilterAndSearch(searchQuery, page);
+    }
+
+    function getSearchQuery() {
+        return document.getElementById("search-input").value || "";
+    }
+
+    document.getElementById("filter-button").addEventListener("click", function () {
+        const searchQuery = getSearchQuery();
+        fetchProductLogWithFilterAndSearch(searchQuery, 0);
+    });
+    pageList.addEventListener("click", function (event) {
+        if (event.target.classList.contains("page-list-item")) {
+            const selectedPage = parseInt(event.target.textContent) - 1;
+            goToPage(selectedPage);
+        }
+    });
+
+    function updatePagination() {
+        pageNumberSpan.textContent = currentPage;
+        pageList.innerHTML = ""; // 페이지 목록 초기화
+
+        const numPagesToShow = calculateNumPagesToShow(); // 동적으로 페이지 수 계산
+        const startPage = Math.max(0, currentPage - Math.floor(numPagesToShow / 2));
+        const endPage = Math.min(totalPages - 1, startPage + numPagesToShow - 1);
+
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageItem = document.createElement("span");
+            pageItem.textContent = i + 1;
+            pageItem.classList.add("page-list-item"); // 클래스 추가
+            if (i === currentPage) {
+                pageItem.classList.add("current-page");
+            }
+            pageItem.addEventListener("click", () => {
+                goToPage(i);
+            });
+            pageList.appendChild(pageItem);
+        }
+
+    }
+
+    function fetchProductLog(page) {
+        fetch(`/api/worker/list?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+
+                tbody.innerHTML = "";
+                updateEmployeeList(data, page);
+                updatePagination();
+                // 마지막 페이지인 경우에 대한 처리
+                if (page === totalPages - 1) {
+                    document.getElementById("totalProductLogs").textContent = (page * itemsPerPage) + (data._embedded?.workerList?.length || 0);
+                } else {
+                    document.getElementById("totalProductLogs").textContent = Math.max(...data._embedded?.workerList?.map(workerList => workerList.id) || [0]);
+                }
+            });
+    }
+
+    function updateEmployeeList(data, page) {
+        tbody.innerHTML = "";
+        console.log("data 뭐가있지?", data);
+        console.log("_embedded 가있는가.?", data._embedded);
+
+        if (data._embedded && data._embedded.processWorkerList) {
+            data._embedded.processWorkerList.forEach(processWorker => {
+                const row = document.createElement('tr');
+                const processName = document.createElement('td');
+                processName.textContent = processWorker.processName;
+                const equipmentName = document.createElement('td');
+                equipmentName.textContent = processWorker.equipmentName;
+                const workerName = document.createElement('td');
+                workerName.textContent = processWorker.workerName;
+                const nation = document.createElement('td');
+                nation.textContent = processWorker.nation;
+                const position = document.createElement('td');
+                position.textContent = processWorker.position;
+                const workShift = document.createElement('td');
+                workShift.textContent = processWorker.workShift;
+
+                row.appendChild(processName);
+                row.appendChild(equipmentName);
+                row.appendChild(workerName);
+                row.appendChild(nation);
+                row.appendChild(position);
+                row.appendChild(workShift);
+                tbody.appendChild(row);
+            });
+        } else {
+            console.error("_embedded.processWorkerList가 없습니다.");
+        }
+        currentPage = page;
+    }
+
+</script>
 <script>
     // 이미지 미리 보기 기능
     const imageInput = document.getElementById('imageInput'); // 이미지 입력란
     const previewImage = document.getElementById('preview-image'); // 미리보기 이미지
 
-    imageInput.addEventListener('change', function() {
+    imageInput.addEventListener('change', function () {
         const file = this.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 previewImage.src = event.target.result;
                 previewImage.style.display = 'block'; // 이미지가 선택되면 보이게 함
             }
@@ -159,7 +329,6 @@
         .catch(error => console.error('Error fetching process types:', error));
 
 
-
     document.getElementById('homeButton').addEventListener('click', function (event) {
         event.preventDefault();
         window.location.href = "/mes/home";
@@ -184,7 +353,7 @@
         formData.append('equipmentName', equipmentName);
         formData.append('workerName', workerName);
         formData.append('nation', nation);
-        formData.append('position',position);
+        formData.append('position', position);
         formData.append('workShift', workShift);
 
         const confirmed = window.confirm('공정원 등록하시겠습니까?');

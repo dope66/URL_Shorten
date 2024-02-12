@@ -43,7 +43,7 @@
             width: 100%;
         }
         select {
-            width: 200px;
+            width: 190px;
         }
         #worker-register-form label {
             margin-bottom: 10px;
@@ -56,6 +56,11 @@
 
         a {
             text-decoration: none;
+        }
+        .form-Name{
+            text-align: center;
+            width:100px;
+            height: 25px;
         }
     </style>
 </head>
@@ -72,15 +77,24 @@
     <div id="form-container">
         <form id="worker-register-form">
             <input type="file" id="imageInput" accept="image/*">
-            <label for="processName" >공정명 <select name="processName" id="processName"></select></label>
-            <label for="equipmentName">호기 <select name="equipmentName" id="equipmentName">
+            <label for="processName">
+            <input type="text" value="공정명" readonly class="form-Name">
+                <select name="processName" id="processName"></select>
+            </label>
+            <label for="equipmentName">
+                <input type="text" value="호기" readonly class="form-Name">
+                <select name="equipmentName" id="equipmentName">
                 <option value="1호기">1호기</option>
                 <option value="2호기">2호기</option>
                 <option value="3호기">3호기</option>
             </select></label>
-            <label for="workerName">성명 <input type="text" id="workerName" name="workerName"></label>
-            <label for="nation">국적 <input type="text" id="nation" name="nation"></label>
-            <label for="workShift">주야간조 <select name="workShift" id="workShift"></select></label>
+            <label for="workerName"><input type="text" value="성명" readonly class="form-Name"> <input type="text" id="workerName" name="workerName"></label>
+            <label for="nation">
+                <input type="text" value="국적" readonly class="form-Name"> <input type="text" id="nation" name="nation">
+            </label>
+            <label for="workShift">
+                <input type="text" value="주야간조" readonly class="form-Name"> <select name="workShift" id="workShift"></select>
+            </label>
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
                 <button id="homeButton" class="btn btn-dark-info">홈으로</button>

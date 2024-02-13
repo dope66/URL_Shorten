@@ -124,38 +124,11 @@
 
 
 </body>
+<script src = "/static/js/workerRegisterEnum.js"></script>
 <script>
-    const processNameSelect = document.getElementById('processName');
-
-    fetch('/enums/processTypes')
-        .then(response => response.json())
-        .then(processTypes => {
-            processTypes.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                processNameSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching process types:', error));
-
-    const workShiftSelect = document.getElementById('workShift');
-    // AJAX 요청으로 enum 값들을 가져와서 select 요소에 추가
-    fetch('/enums/WorkShiftEnum')
-        .then(response => response.json())
-        .then(workShiftEnums => {
-            workShiftEnums.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                workShiftSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching process types:', error));
-
-
-</script>
-<script>
+    /*
+    * 삭제
+    * */
     document.getElementById('deleteButton').addEventListener('click', function () {
         // 폼 제출을 방지하기 위해 이벤트의 기본 동작을 중지
         event.preventDefault();
@@ -181,5 +154,55 @@
     });
 
 
+</script>
+<script>
+    /*
+    * 수정
+    * */
+
+    document.getElementById('modifyButton').addEventListener('click', function () {
+        event.preventDefault();
+        var processWorkerId = document.getElementById('processWorkerId').value;
+        var processName = document.getElementById('processName').value;
+        var equipmentName = document.getElementById('equipmentName').value;
+        var workerName = document.getElementById('workerName').value;
+        var nation = document.getElementById('nation').value;
+        var position = document.getElementById('position').value;
+        var workShift = document.getElementById('workShift').value;
+
+
+        var data = {
+            processName: processName,
+            equipmentName: equipmentName,
+            workerName: workerName,
+            nation: nation,
+            position: position,
+            workShift: workShift
+        };
+        const confirmed = window.confirm('정말 수정 하시겠습니까?');
+        if(confirmed){
+            fetch('/api/worker/modify/' + processWorkerId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('수정이 완료되었습니다.');
+                        window.close();
+                    } else {
+                        alert('수정에 실패했습니다. 상태 코드: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('수정에 실패했습니다. 네트워크 오류가 발생했습니다.');
+                });
+        }
+
+
+    });
 </script>
 </html>

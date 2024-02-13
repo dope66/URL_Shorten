@@ -46,4 +46,8 @@ public class WorkerService {
         Optional<ProcessWorker> optionalProcessWorker = workerRepository.findById(id);
         return optionalProcessWorker.orElse(null);
     }
+
+    public ProcessWorker modifyProcessWorker(ProcessWorker processWorker) {
+        return workerRepository.save(processWorker);
+    }
 }

@@ -75,6 +75,27 @@ public class WorkerRestController {
         workerService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<?> modifyProcessWorker(@PathVariable("id") Long id, @RequestBody ProcessWorkerDto processWorkerDto) {
+        ProcessWorker existingProcessWorker = workerService.getProcessWorkerById(id);
+        if(existingProcessWorker==null){
+            return ResponseEntity.notFound().build();
+        }
+        //        existingProductLog.setWorkDate(productLogDto.getWorkDate());
+        existingProcessWorker.setWorkerName(processWorkerDto.getWorkerName());
+        existingProcessWorker.setProcessName(processWorkerDto.getProcessName());
+        existingProcessWorker.setNation(processWorkerDto.getNation());
+        existingProcessWorker.setEquipmentName(processWorkerDto.getEquipmentName());
+        existingProcessWorker.setPosition(processWorkerDto.getPosition());
+        existingProcessWorker.setWorkShift(processWorkerDto.getWorkShift());
+
+        ProcessWorker updateProcessWorker = workerService.modifyProcessWorker(existingProcessWorker);
+        return ResponseEntity.ok(updateProcessWorker);
+    }
+
+
+
+
 
 
 }

@@ -56,7 +56,7 @@ public class ProductLogService {
         return productLogRepository.findProductNameByProductionNumber(productionNumber);
     }
     public void deleteProduct(Long productId){
-        productLogRepository.deleteById(productId);};
+        productLogRepository.deleteById(productId);}
 
     public ProductLog getProductLogById(Long id) {
         Optional<ProductLog> optionalProductLog = productLogRepository.findById(id);

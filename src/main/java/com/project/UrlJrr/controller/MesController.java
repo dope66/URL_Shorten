@@ -1,7 +1,9 @@
 package com.project.UrlJrr.controller;
 
+import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.service.ProductLogService;
+import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/mes")
 public class MesController {
     private final ProductLogService productLogService;
+    private final WorkerService workerService;
     @GetMapping("/home")
     public String home(){
         return "pages/mes/home";
@@ -26,6 +29,15 @@ public class MesController {
     public String mesWorker(){
         return "pages/mes/workerRegister";
     }
+
+    @GetMapping("/worker/{id}")
+    public String EmployeeDetail(@PathVariable Long id, Model model) {
+        ProcessWorker processWorkerDto = workerService.getProcessWorkerById(id);
+        model.addAttribute("processWorker", processWorkerDto);
+        return "pages/mes/workerDetail";
+    }
+
+
     @GetMapping("/popUp")
     public String popUp(){
         return "pages/mes/popUp";

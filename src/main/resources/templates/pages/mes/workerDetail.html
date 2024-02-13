@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>공정원 관리</title>
+    <style>
+        h2 {
+            text-align: center;
+        }
+
+        #worker-container {
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: flex-start; /* 수직 상단 정렬 */
+        }
+
+        #form-container {
+            width: 50%;
+            padding: 0 10px; /* 좌우 여백 추가 */
+            box-sizing: border-box; /* padding 값이 요소의 전체 너비에 포함되도록 함 */
+        }
+
+        #image-container {
+
+            width: 50%; /* 화면 전체 너비를 차지하도록 변경 */
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+        }
+
+        #preview-image {
+
+            align-content: end;
+            object-fit: contain;
+            width: 300px;
+            height: 100%;
+        }
+
+        #worker-register-form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        select {
+            width: 190px;
+        }
+
+        #worker-register-form label {
+            margin-bottom: 10px;
+            width: 100%; /* 라벨의 너비를 100%로 설정하여 부모 요소에 꽉 차도록 함 */
+        }
+
+        #worker-register-form label:last-child {
+            margin-bottom: 0; /* 마지막 라벨의 마진을 제거하여 폼 요소들 사이의 간격을 일정하게 유지 */
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .form-Name {
+            text-align: center;
+            width: 100px;
+            height: 25px;
+        }
+        #employee-Table {
+            width: 100%;
+        }
+        #employee-Table td {
+            text-align: center;
+
+        }
+    </style>
+</head>
+<body>
+<h2>공정원 등록</h2>
+
+
+<div id="worker-container">
+    <div id="image-container">
+        <!-- 이미지 미리 보기를 위한 요소 -->
+        <img id="preview-image" src="/static/image/defaultWorker.png" alt="미리 보기">
+
+    </div>
+    <div id="form-container">
+        <form id="worker-register-form">
+            <input type="hidden" th:value="${processWorker.getId()}" id="processWorkerId">
+<!--            <input type="file" id="imageInput" accept="image/*">-->
+            <label for="processName">
+                <input type="text" value="공정명" readonly class="form-Name">
+                <select name="processName" id="processName"></select>
+            </label>
+            <label for="equipmentName">
+                <input type="text" value="호기" readonly class="form-Name">
+                <select name="equipmentName" id="equipmentName">
+                    <option value="1호기">1호기</option>
+                    <option value="2호기">2호기</option>
+                    <option value="3호기">3호기</option>
+                </select></label>
+            <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
+                <input type="text" id="workerName" name="workerName" th:value="${processWorker.getWorkerName()}"></label>
+            <label for="nation">
+                <input type="text" value="국적" readonly class="form-Name">
+                <input type="text" id="nation" name="nation" th:value="${processWorker.getNation()}">
+            </label>
+            <label for="position">
+                <input type="text" readonly value="직책" class="form-Name">
+                <input type="text" id="position" name="position" th:value="${processWorker.getPosition()}">
+            </label>
+            <label for="workShift">
+                <input type="text" value="주야간조" readonly class="form-Name">
+                <select name="workShift" id="workShift"></select>
+            </label>
+            <div id="navigation-container">
+                <button id="modifyButton" class="btn btn-dark-info">수정</button>
+                <button id="deleteButton" class="btn btn-dark-info">삭제</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+<script>
+    const processNameSelect = document.getElementById('processName');
+
+    fetch('/enums/processTypes')
+        .then(response => response.json())
+        .then(processTypes => {
+            processTypes.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                processNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching process types:', error));
+
+    const workShiftSelect = document.getElementById('workShift');
+    // AJAX 요청으로 enum 값들을 가져와서 select 요소에 추가
+    fetch('/enums/WorkShiftEnum')
+        .then(response => response.json())
+        .then(workShiftEnums => {
+            workShiftEnums.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                workShiftSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching process types:', error));
+
+
+</script>
+<script>
+    document.getElementById('deleteButton').addEventListener('click', function () {
+        // 폼 제출을 방지하기 위해 이벤트의 기본 동작을 중지
+        event.preventDefault();
+        // 삭제할 제품 로그의 ID 가져오기
+        var processWorkerId = document.getElementById('processWorkerId').value;
+
+        const confirmed = window.confirm('정말 삭제 하시겠습니까?');
+        if (confirmed) {
+            fetch('/api/worker/' + processWorkerId, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // 성공적으로 삭제되었을 때
+                        alert('삭제가 완료 되었습니다.');
+                        window.history.back();
+                    } else {
+                        // 오류 발생 시
+                        alert('삭제에 실패했습니다. 상태 코드: ' + response.status);
+                    }
+                })
+        }
+    });
+
+
+</script>
+</html>

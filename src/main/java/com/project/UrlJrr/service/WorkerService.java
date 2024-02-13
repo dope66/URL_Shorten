@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class WorkerService {
@@ -34,5 +36,14 @@ public class WorkerService {
 
     public long getTotalEmployeeCount() {
         return workerRepository.count();
+    }
+
+    public void deleteEmployee(Long id) {
+        workerRepository.deleteById(id);
+    }
+
+    public ProcessWorker getProcessWorkerById(Long id) {
+        Optional<ProcessWorker> optionalProcessWorker = workerRepository.findById(id);
+        return optionalProcessWorker.orElse(null);
     }
 }

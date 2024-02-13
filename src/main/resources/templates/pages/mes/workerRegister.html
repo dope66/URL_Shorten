@@ -89,7 +89,7 @@
             <input type="file" id="imageInput" accept="image/*">
             <label for="processName">
                 <input type="text" value="공정명" readonly class="form-Name">
-                <select name="processName" id="processName"></select>
+                <select name="processName" id="processName" required></select>
             </label>
             <label for="equipmentName">
                 <input type="text" value="호기" readonly class="form-Name">
@@ -99,18 +99,18 @@
                     <option value="3호기">3호기</option>
                 </select></label>
             <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
-                <input type="text" id="workerName" name="workerName"></label>
+                <input type="text" id="workerName" name="workerName" required></label>
             <label for="nation">
                 <input type="text" value="국적" readonly class="form-Name">
-                <input type="text" id="nation" name="nation">
+                <input type="text" id="nation" name="nation" required>
             </label>
             <label for="position">
                 <input type="text" readonly value="직책" class="form-Name">
-                <input type="text" id="position" name="position">
+                <input type="text" id="position" name="position" required>
             </label>
             <label for="workShift">
                 <input type="text" value="주야간조" readonly class="form-Name">
-                <select name="workShift" id="workShift"></select>
+                <select name="workShift" id="workShift" required></select>
             </label>
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
@@ -149,6 +149,7 @@
 
 </body>
 <script>
+    // 공정원 검색, 리스트 JS
     const employeeTable = document.getElementById("employee-Table");
     const tbody = employeeTable.querySelector("tbody");
     const pageNumberSpan = document.getElementById("page-number");
@@ -377,7 +378,7 @@
                 .then(response => {
                     if (response.ok) {
                         alert('회원 등록완료');
-                        window.history.back();
+                        window.location.reload();
                     }
                 })
                 .catch(error => {
@@ -387,6 +388,7 @@
     });
 
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
 <!--    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->

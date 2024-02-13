@@ -70,6 +70,11 @@ public class WorkerRestController {
         long totalEmployeeCount = workerService.getTotalEmployeeCount();
         return ResponseEntity.ok(totalEmployeeCount);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+        workerService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
 }

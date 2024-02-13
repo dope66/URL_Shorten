@@ -264,6 +264,11 @@
 
         if (data._embedded && data._embedded.processWorkerList) {
             data._embedded.processWorkerList.forEach(processWorker => {
+
+                const processWorkerIdInput = document.createElement('input');
+                processWorkerIdInput.type = 'hidden';
+                processWorkerIdInput.value = processWorker.id;
+                console.log(processWorkerIdInput)
                 const row = document.createElement('tr');
                 const processName = document.createElement('td');
                 processName.textContent = processWorker.processName;
@@ -271,6 +276,9 @@
                 equipmentName.textContent = processWorker.equipmentName;
                 const workerName = document.createElement('td');
                 workerName.textContent = processWorker.workerName;
+                workerName.addEventListener('click',()=>{
+                    openModifyPage(processWorkerIdInput.value);
+                })
                 const nation = document.createElement('td');
                 nation.textContent = processWorker.nation;
                 const position = document.createElement('td');
@@ -291,7 +299,11 @@
         }
         currentPage = page;
     }
+    function openModifyPage(processWorkerIdInputId) {
 
+        const modifyUrl = `/mes/worker/${processWorkerIdInputId}`;
+        window.open(modifyUrl, '_blank');
+    }
 </script>
 <script>
     // 이미지 미리 보기 기능

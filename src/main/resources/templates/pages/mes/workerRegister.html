@@ -98,19 +98,19 @@
                     <option value="2호기">2호기</option>
                     <option value="3호기">3호기</option>
                 </select></label>
-            <label for="workerName"><input type="text" value="성명" readonly class="form-Name"> <input type="text"
-                                                                                                     id="workerName"
-                                                                                                     name="workerName"></label>
+            <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
+                <input type="text" id="workerName" name="workerName"></label>
             <label for="nation">
-                <input type="text" value="국적" readonly class="form-Name"> <input type="text" id="nation" name="nation">
+                <input type="text" value="국적" readonly class="form-Name">
+                <input type="text" id="nation" name="nation">
             </label>
             <label for="position">
                 <input type="text" readonly value="직책" class="form-Name">
                 <input type="text" id="position" name="position">
             </label>
             <label for="workShift">
-                <input type="text" value="주야간조" readonly class="form-Name"><select name="workShift"
-                                                                                   id="workShift"></select>
+                <input type="text" value="주야간조" readonly class="form-Name">
+                <select name="workShift" id="workShift"></select>
             </label>
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
@@ -121,9 +121,9 @@
 </div>
 <table id="employee-Table">
     <div>
-        <input aria-label="Text input with checkbox" class="form-control" name="search"
-               placeholder="담당자 조회" type="text" id="search-input">
-        <button class="btn btn-light-info text-info font-weight-medium" id="filter-button">조회</button>
+        <input  class="form-control" name="search"
+               placeholder="담당자 조회" type="text" id="Employee-input">
+        <button class="btn btn-light-info text-info font-weight-medium" id="Employee-button">조회</button>
     </div>
     <thead class="text-center">
     <tr>
@@ -159,18 +159,17 @@
     let currentSearchQuery = "";
 
     document.addEventListener("DOMContentLoaded", function () {
-        currentSearchQuery = document.getElementById("search-input").value;
+        currentSearchQuery = document.getElementById("Employee-input").value;
         fetch('/api/worker/totalEmployeeCount')
             .then(response => response.json())
             .then(data => {
-                const totalEmployeeCount = data;
-                totalPages = Math.ceil(totalEmployeeCount / itemsPerPage);
+                totalPages = Math.ceil(data / itemsPerPage);
                 updatePagination();
             })
             .catch(error => {
-                console.error('product Log count fetch error:', error);
+                console.error('Employee count fetch error:', error);
             });
-        fetchProductLog(currentPage);
+        fetchProcessEmployee(currentPage);
         console.log("현재 페이지가 몇인데?", currentPage);
     });
 
@@ -182,20 +181,33 @@
             Math.max(minNumPagesToShow, Math.ceil(totalPages / itemsPerPage))
         );
     }
+    document.getElementById("Employee-button").addEventListener("click", function () {
+        const searchQuery = getSearchQuery();
+        fetchProcessEmployeeSearch (searchQuery, 0);
+    });
 
     function goToPage(page) {
         const searchQuery = getSearchQuery();
-        fetchProductLogWithFilterAndSearch(searchQuery, page);
+        fetchProcessEmployeeSearch (searchQuery, page);
     }
 
     function getSearchQuery() {
-        return document.getElementById("search-input").value || "";
+        return document.getElementById("Employee-input").value || "";
     }
 
-    document.getElementById("filter-button").addEventListener("click", function () {
-        const searchQuery = getSearchQuery();
-        fetchProductLogWithFilterAndSearch(searchQuery, 0);
-    });
+
+    function fetchProcessEmployeeSearch (searchQuery, page) {
+        fetch(`/api/worker/list?search=${searchQuery}&page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                tbody.innerHTML = ""; // 이전 목록을 지웁니다.
+                updateEmployeeList(data, page);
+                totalPages = Math.ceil(data.page.totalElements / itemsPerPage); // totalElements로 totalPages 업데이트
+                updatePagination();
+            });
+    }
+
+
     pageList.addEventListener("click", function (event) {
         if (event.target.classList.contains("page-list-item")) {
             const selectedPage = parseInt(event.target.textContent) - 1;
@@ -227,7 +239,7 @@
 
     }
 
-    function fetchProductLog(page) {
+    function fetchProcessEmployee(page) {
         fetch(`/api/worker/list?page=${page}`)
             .then(response => response.json())
             .then(data => {
@@ -236,11 +248,11 @@
                 updateEmployeeList(data, page);
                 updatePagination();
                 // 마지막 페이지인 경우에 대한 처리
-                if (page === totalPages - 1) {
-                    document.getElementById("totalProductLogs").textContent = (page * itemsPerPage) + (data._embedded?.workerList?.length || 0);
-                } else {
-                    document.getElementById("totalProductLogs").textContent = Math.max(...data._embedded?.workerList?.map(workerList => workerList.id) || [0]);
-                }
+                // if (page === totalPages - 1) {
+                //     document.getElementById("totalProductLogs").textContent = (page * itemsPerPage) + (data._embedded?.processWorkerList?.length || 0);
+                // } else {
+                //     document.getElementById("totalProductLogs").textContent = Math.max(...data._embedded?.processWorkerList?.map(processWorkerList => processWorker.id) || [0]);
+                // }
             });
     }
 

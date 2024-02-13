@@ -57,10 +57,8 @@ public class WorkerRestController {
         Page<ProcessWorker> ProcessWorkers;
 
         if (StringUtils.hasText(search)) {
-            // 날자가 없을때
             ProcessWorkers = workerService.findByWorkerNameContaining(search, pageable);
         } else {
-            // 기본 리스트 열기
             ProcessWorkers = workerService.findAll(pageable);
         }
         PagedModel<EntityModel<ProcessWorker>> model = assembler.toModel(ProcessWorkers);

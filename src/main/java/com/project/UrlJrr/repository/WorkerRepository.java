@@ -17,5 +17,5 @@ public interface WorkerRepository extends JpaRepository<ProcessWorker, Long> {
     List<String> findDistinctWorkerNames();
 
 
-    Page<ProcessWorker> findByWorkerNameContaining(String search, Pageable pageable);
+    Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable);
 }

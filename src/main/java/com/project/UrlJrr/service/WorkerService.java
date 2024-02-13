@@ -24,8 +24,8 @@ public class WorkerService {
         return workerRepository.save(processWorker);
     }
 
-    public Page<ProcessWorker> findByWorkerNameContaining(String search, Pageable pageable) {
-        return workerRepository.findByWorkerNameContaining(search,pageable);
+    public Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable) {
+        return workerRepository.findByWorkerNameContaining(workerName,pageable);
     }
 
     public Page<ProcessWorker> findAll(Pageable pageable) {

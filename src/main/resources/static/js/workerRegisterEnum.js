@@ -25,3 +25,5 @@ fetch('/enums/WorkShiftEnum')
         });
     })
     .catch(error => console.error('Error fetching process types:', error));
+
+const position =document.getElementById('position');

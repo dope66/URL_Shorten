@@ -6,24 +6,26 @@ import lombok.*;
 
 import java.util.List;
 
-@Builder
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProcessWorker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ProcessType processName; // 공정명
-    private String nation; // 국적
-    private String position; // 직책
-    private String workShift; // 주야간
-    private String workerName; // 이름
-    private String equipmentName; // 호기
+    private ProcessType processName;
+    private String nation;
+    private String position;
+    private String workShift;
+    private String workerName;
+    private String equipmentName;
+
+    private String imagePath; // 이미지 파일 경로 저장 필드 추가
 
     @OneToMany(mappedBy = "processWorker")
     private List<ProductLog> productLogs;

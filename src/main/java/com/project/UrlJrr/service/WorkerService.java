@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WorkerService {
     private final WorkerRepository workerRepository;
-    public ProcessWorker workerRegister(ProcessWorkerDto processWorkerDto) {
+    public ProcessWorker workerRegister(ProcessWorkerDto processWorkerDto, String imagePath) {
         ProcessWorker processWorker = new ProcessWorker();
         processWorker.setProcessName(processWorkerDto.getProcessName());
         processWorker.setNation(processWorkerDto.getNation());
@@ -22,9 +22,11 @@ public class WorkerService {
         processWorker.setWorkShift(processWorkerDto.getWorkShift());
         processWorker.setWorkerName(processWorkerDto.getWorkerName());
         processWorker.setEquipmentName(processWorkerDto.getEquipmentName());
+        processWorker.setImagePath(imagePath); // 이미지 경로 설정
 
         return workerRepository.save(processWorker);
     }
+
 
     public Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable) {
         return workerRepository.findByWorkerNameContaining(workerName,pageable);

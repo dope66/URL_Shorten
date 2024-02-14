@@ -4,7 +4,6 @@ import com.project.UrlJrr.dto.ProcessWorkerDto;
 import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,8 +27,8 @@ import java.io.IOException;
 public class WorkerRestController {
     private final WorkerService workerService;
 
-    @Value("${spring.web.resources.static-locations}")
-    private String externalDirectoryPath;
+
+    private String externalDirectoryPath = "/root/server";
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registryWorker(@RequestPart(name = "image", required = false) MultipartFile imageFile,

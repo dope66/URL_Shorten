@@ -17,10 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,31 +27,31 @@ public class WorkerRestController {
     @Value("${spring.web.resources.static-locations}")
     private String externalDirectoryPath;
 
-    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registryWorker(@RequestPart(name = "image", required = false) MultipartFile imageFile,
-                                            @ModelAttribute ProcessWorkerDto processWorkerDto) {
-        String imagePath = null;
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                // 외부 디렉토리 경로 수정
-                String absolutePath = externalDirectoryPath.replace("file:", ""); // "file:" 접두어 제거
-                File directory = new File(absolutePath);
-                if (!directory.exists()) {
-                    directory.mkdirs(); // 디렉토리가 없으면 생성
-                }
-
-                String fileName = "image_" + System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                imagePath = absolutePath + fileName; // 파일 경로 저장
-                imageFile.transferTo(new File(imagePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>("Failed to save image", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        ProcessWorker newWorker = workerService.workerRegister(processWorkerDto, imagePath); // 서비스 메소드 수정에 따라 imagePath 추가
-        return new ResponseEntity<>(newWorker, HttpStatus.CREATED);
-    }
+//    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<?> registryWorker(@RequestPart(name = "image", required = false) MultipartFile imageFile,
+//                                            @ModelAttribute ProcessWorkerDto processWorkerDto) {
+//        String imagePath = null;
+//        if (imageFile != null && !imageFile.isEmpty()) {
+//            try {
+//                // 외부 디렉토리 경로 수정
+//                String absolutePath = externalDirectoryPath.replace("file:", ""); // "file:" 접두어 제거
+//                File directory = new File(absolutePath);
+//                if (!directory.exists()) {
+//                    directory.mkdirs(); // 디렉토리가 없으면 생성
+//                }
+//
+//                String fileName = "image_" + System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+//                imagePath = absolutePath + fileName; // 파일 경로 저장
+//                imageFile.transferTo(new File(imagePath));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return new ResponseEntity<>("Failed to save image", HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//
+//        ProcessWorker newWorker = workerService.workerRegister(processWorkerDto, imagePath); // 서비스 메소드 수정에 따라 imagePath 추가
+//        return new ResponseEntity<>(newWorker, HttpStatus.CREATED);
+//    }
 
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)

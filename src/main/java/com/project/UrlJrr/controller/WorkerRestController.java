@@ -28,7 +28,7 @@ public class WorkerRestController {
     private final WorkerService workerService;
 
 
-    private String externalDirectoryPath = "/root/server";
+    private String externalDirectoryPath = "/root/server/image";
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registryWorker(@RequestPart(name = "image", required = false) MultipartFile imageFile,

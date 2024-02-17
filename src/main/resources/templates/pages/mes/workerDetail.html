@@ -65,9 +65,11 @@
             width: 100px;
             height: 25px;
         }
+
         #employee-Table {
             width: 100%;
         }
+
         #employee-Table td {
             text-align: center;
 
@@ -86,7 +88,7 @@
             <img id="preview-image" src="/static/image/defaultWorker.png" alt="미리 보기">
         </th:block>
         <th:block th:if="${processWorker.getImagePath()}!=null">
-            <img id="worker-image" alt="workImage" th:src="${processWorker.getImagePath()}">
+            <img id="workerImage" alt="workerImage"> <!-- id 속성 추가 -->
         </th:block>
 
 
@@ -107,7 +109,8 @@
                     <option value="3호기">3호기</option>
                 </select></label>
             <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
-                <input type="text" id="workerName" name="workerName" th:value="${processWorker.getWorkerName()}"></label>
+                <input type="text" id="workerName" name="workerName"
+                       th:value="${processWorker.getWorkerName()}"></label>
             <label for="nation">
                 <input type="text" value="국적" readonly class="form-Name">
                 <input type="text" id="nation" name="nation" th:value="${processWorker.getNation()}">
@@ -129,9 +132,30 @@
 </div>
 
 
-
 </body>
-<script src = "/static/js/workerRegisterEnum.js"></script>
+<script src="/static/js/workerRegisterEnum.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var workerId = document.getElementById("processWorkerId").value;
+        console.log("workerId",workerId);
+        var imageUrl = "/getBase64Image?id=" + workerId;
+
+        fetch(imageUrl)
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (data) {
+                var imageElement = document.querySelector("#workerImage"); // 이미지 태그의 ID
+                if (imageElement) {
+                    imageElement.src = data;
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    });
+
+</script>
 <script>
     /*
     * 삭제
@@ -187,7 +211,7 @@
             workShift: workShift
         };
         const confirmed = window.confirm('정말 수정 하시겠습니까?');
-        if(confirmed){
+        if (confirmed) {
             fetch('/api/worker/modify/' + processWorkerId, {
                 method: 'PUT',
                 headers: {

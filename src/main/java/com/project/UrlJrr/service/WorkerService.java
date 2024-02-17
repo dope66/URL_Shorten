@@ -52,4 +52,10 @@ public class WorkerService {
     public ProcessWorker modifyProcessWorker(ProcessWorker processWorker) {
         return workerRepository.save(processWorker);
     }
+
+    public String getImagePathByWorkerId(Long id) {
+        ProcessWorker ImagePathByprocessWorker = getProcessWorkerById(id);
+        System.out.println("processWorkerImagePath " + ImagePathByprocessWorker);
+        return ImagePathByprocessWorker.getImagePath();
+    }
 }

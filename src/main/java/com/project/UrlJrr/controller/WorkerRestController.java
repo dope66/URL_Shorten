@@ -4,6 +4,7 @@ import com.project.UrlJrr.dto.ProcessWorkerDto;
 import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,15 +21,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/worker")
 public class WorkerRestController {
     private final WorkerService workerService;
-
-
-    private String externalDirectoryPath = "/root/server/image";
+    @Value("${external.directory.path}")
+    private String externalDirectoryPath;
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registryWorker(@RequestPart(name = "image", required = false) MultipartFile imageFile,
@@ -44,7 +47,7 @@ public class WorkerRestController {
                 }
 
                 String fileName = "image_" + System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                imagePath = absolutePath + fileName; // 파일 경로 저장
+                imagePath = Paths.get(absolutePath, fileName).toString();
                 imageFile.transferTo(new File(imagePath));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -56,6 +59,19 @@ public class WorkerRestController {
         return new ResponseEntity<>(newWorker, HttpStatus.CREATED);
     }
 
+    @GetMapping("/getBase64Image")
+    public ResponseEntity<?> getBase64Image(@RequestParam Long id) {
+        try {
+            String imagePath = workerService.getImagePathByWorkerId(id); // DB에서 작업자 ID에 해당하는 이미지 경로 조회
+            System.out.println("imagePath "+ imagePath);
+            File imageFile = new File(imagePath);
+            String base64Image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
+            return ResponseEntity.ok("data:image/jpeg;base64," + base64Image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to convert image to Base64", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> workerList(@RequestParam(name = "search", required = false) String search,

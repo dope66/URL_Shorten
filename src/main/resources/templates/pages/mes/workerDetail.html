@@ -138,7 +138,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         var workerId = document.getElementById("processWorkerId").value;
         console.log("workerId",workerId);
-        var imageUrl = "/getBase64Image?id=" + workerId;
+        var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
 
         fetch(imageUrl)
             .then(function (response) {

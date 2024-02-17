@@ -50,6 +50,10 @@ public class MesController {
         model.addAttribute("productLog", productLogDto);
         return "pages/mes/productModify";
     }
+    @GetMapping("/firstProduction")
+    public String firstProductionTest(){
+        return "pages/mes/firstProduction";
+    }
 
 
 }

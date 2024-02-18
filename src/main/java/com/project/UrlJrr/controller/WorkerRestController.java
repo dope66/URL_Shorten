@@ -41,14 +41,15 @@ public class WorkerRestController {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 // 외부 디렉토리 경로 수정
-                String absolutePath = externalDirectoryPath.replace("file:", ""); // "file:" 접두어 제거
-                File directory = new File(absolutePath);
-                if (!directory.exists()) {
-                    directory.mkdirs(); // 디렉토리가 없으면 생성
+                String directoryPath = externalDirectoryPath.replace("file:", ""); // "file:" 접두어 제거
+                String workerDirectoryPath = Paths.get(directoryPath, "worker").toString(); // worker 폴더 경로
+                File workerDirectory = new File(workerDirectoryPath);
+                if (!workerDirectory.exists()) {
+                    workerDirectory.mkdirs(); // worker 폴더가 없으면 생성
                 }
 
                 String fileName = "image_" + System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                imagePath = Paths.get(absolutePath, fileName).toString();
+                imagePath = Paths.get(workerDirectoryPath, fileName).toString();
                 imageFile.transferTo(new File(imagePath));
             } catch (IOException e) {
                 e.printStackTrace();

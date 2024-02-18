@@ -67,21 +67,25 @@ public class ProductLogRestController {
         ProductLog newProductLog = productLogService.register(productLogDto);
         return new ResponseEntity<>(newProductLog, HttpStatus.CREATED);
     }
+
     @GetMapping("/getProductionType")
     public ResponseEntity<?> getProductionTypes() {
         List<String> productionTypes = productLogService.getProductionTypes();
-        return  new ResponseEntity<>(productionTypes, HttpStatus.OK);
+        return new ResponseEntity<>(productionTypes, HttpStatus.OK);
     }
+
     @GetMapping("/getProductionNumber")
     public ResponseEntity<?> getProductionNumbers(@RequestParam(name = "productionType") String productionType) {
         List<String> productionNumbers = productLogService.getProductionNumbersByProductionType(productionType);
         return new ResponseEntity<>(productionNumbers, HttpStatus.OK);
     }
+
     @GetMapping("/getWorkerName")
     public ResponseEntity<List<String>> getWorkerName() {
         List<String> workerNames = productLogService.getWorkerNames();
         return new ResponseEntity<>(workerNames, HttpStatus.OK);
     }
+
     @GetMapping("/getProductionName")
     public ResponseEntity<?> getProductionNames(@RequestParam(name = "productionNumber") String productionNumber) {
         List<String> productionNames = productLogService.getProductionNamesByProductionNumber(productionNumber);

@@ -30,7 +30,8 @@ import java.util.Base64;
 @RequestMapping("/api/worker")
 public class WorkerRestController {
     private final WorkerService workerService;
-    @Value("${external.directory.path")
+
+    @Value("${external.directory.path}")
     private String externalDirectoryPath;
 
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

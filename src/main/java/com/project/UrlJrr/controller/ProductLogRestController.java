@@ -3,6 +3,7 @@ package com.project.UrlJrr.controller;
 import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.service.ProductLogService;
+import com.project.UrlJrr.service.ProductionTestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ProductLogRestController {
 
     private final ProductLogService productLogService;
+    private final ProductionTestService productionTestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> productLogList(
@@ -115,5 +117,6 @@ public class ProductLogRestController {
         productLogService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
 }

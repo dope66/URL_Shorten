@@ -1,6 +1,5 @@
 package com.project.UrlJrr.entity;
 
-import com.project.UrlJrr.mesenum.ProcessType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,8 +16,8 @@ public class ProcessWorker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ProcessType processName;
+
+    private String processName;
     private String nation;
     private String position;
     private String workShift;

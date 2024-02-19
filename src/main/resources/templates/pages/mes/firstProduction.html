@@ -16,23 +16,85 @@
 </head>
 <body>
 <form id="production-test-form">
-<label for="productionTypeSelect">생산 유형
-    <div id="productionTypeContainer">
-        <select id="productionTypeSelect" required>
-            <option value="" disabled selected>선택하세요</option>
-        </select>
-    </div>
-</label>
-<label for="productionNumber">품 번 </label><select type="text" readonly name="productionNumber" id="productionNumber"></select>
-<label for="productionName">품 명</label><input type="text" readonly name="productionName" id="productionName">
-<label for="processWorker">공정원 </label><select name="processWorker" id="processWorker"></select>
+    <label for="processName">생산 설비 </label><select name="processName" id="processName">
+    <option value="" disabled selected>생산 설비</option>
+</select>
+    <label for="equipmentName">호기 </label><select name="equipmentName" id="equipmentName">
+</select>
+<label for="processWorker">공정원 </label><input readonly type="text" name="processWorker" id="processWorker">
 <label for="test1"></label>검사 1<input type="text" readonly value="검사 1" id="test1">
 <label for="test2"></label>검사 2<input type="text" readonly value="검사 2" id="test2">
     <button>등록</button>
 </form>
 </body>
 
-<script src="/static/js/selectNumberAndName.js"></script>
+<script>
+    function fetchProcessNameAndWorkerName() {
+        const selectedProcessName = document.getElementById("processName");
+        const equipmentNameSelect = document.getElementById("equipmentName");
+        const workerNameSelect = document.getElementById("processWorker");
+
+        // equipmentNameSelect 초기화
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
+
+
+        // fetch(`/api/worker/getEquipmentName?processName=${encodeURIComponent(selectedProcessName.value)}`)
+        fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
+            .then(response => response.json())
+            .then(equipmentNames => {
+                console.log("equipmentName : ", equipmentNames);
+                equipmentNames.forEach(equipmentName => {
+                    const option = document.createElement('option');
+                    option.text = equipmentName;
+                    option.value = equipmentName;
+                    equipmentNameSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청 ', error);
+            });
+    }
+
+    const processNameSelect = document.getElementById("processName");
+    const equipmentNameSelect = document.getElementById("equipmentName");
+    const processWorkerSelect = document.getElementById("processWorker");
+
+    processNameSelect.addEventListener('change', () => {
+        // productionType 변경 시 productionName 값 초기화
+        equipmentNameSelect.value = '';
+        fetchProcessNameAndWorkerName();
+    });
+
+    equipmentNameSelect.addEventListener('change', () => {
+        fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
+            .then(response => response.json())
+            .then(workerName => {
+                console.log("workerName", workerName);
+                processWorkerSelect.value = workerName;
+            }).catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+    });
+
+    // 페이지 로드 시 processNameSelect 요소 초기화
+    fetch('/api/worker/getProcessName')
+        .then(response => response.json())
+        .then(data => {
+            console.log("processname: ", data);
+            data.forEach(processName => {
+                const option = document.createElement('option');
+                option.text = processName;
+                option.value = processName;
+                processNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+
+    // 페이지 로드 시 fetchProcessNameAndWorkerName 함수 호출하여 초기화
+    fetchProcessNameAndWorkerName();
+</script>
 <script>
     const productionTestForm = document.getElementById("production-test-form");
     productionTestForm.addEventListener('submit', (event) => {
@@ -41,11 +103,7 @@
         const productionNumber = document.getElementById("productionNumber").value;
         const productionName = document.getElementById('productionName').value;
         const processWorker = document.getElementById('processWorker').value;
-
-
         const newTest = {productionTypeSelect, productionNumber, productionName, processWorker};
-
-
         const confirmed = window.confirm('정말로 등록하시겠습니까?');
         if (confirmed) {
             // 확인을 선택한 경우에만 등록 진행
@@ -72,16 +130,6 @@
 </script>
 <script>
 
-    const workerNameSelect = document.getElementById("workerName");
-    fetch(`/api/mes/getWorkerName`)
-        .then(response => response.json())
-        .then(workerName => {
-            workerNameSelect.innerHTML = '';
-            workerNameSelect.value=workerName;
-        })
-        .catch(error => {
-            console.error('fetch 오류 요청 ', error);
-        });
 
 </script>
 

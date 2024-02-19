@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,13 @@ public interface WorkerRepository extends JpaRepository<ProcessWorker, Long> {
 
 
     Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable);
+
+    @Query("SELECT DISTINCT processName from ProcessWorker ")
+    List<String> findByProcessName();
+    @Query("SELECT DISTINCT equipmentName FROM ProcessWorker WHERE processName = :processName")
+    List<String> findEquipmentNamesByProcessName(@Param("processName")String processName);
+
+    @Query("SELECT DISTINCT worker.workerName FROM ProcessWorker worker WHERE worker.processName = :processName AND worker.equipmentName = :equipmentName")
+    List<String> findWorkerNamesByProcessAndEquipment(@Param("processName") String processName, @Param("equipmentName") String equipmentName);
+
 }

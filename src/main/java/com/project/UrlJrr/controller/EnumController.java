@@ -2,7 +2,7 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.mesenum.EquipmentNameEnum;
 import com.project.UrlJrr.mesenum.PositionEnum;
-import com.project.UrlJrr.mesenum.ProcessType;
+import com.project.UrlJrr.mesenum.ProcessName;
 import com.project.UrlJrr.mesenum.WorkShiftEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EnumController {
 
     @GetMapping("/enums/processTypes")
-    public ProcessType[] getProcessTypes() {
-        return ProcessType.values();
+    public ProcessName[] getProcessTypes() {
+        return ProcessName.values();
     }
 
     @GetMapping("/enums/WorkShiftEnum")

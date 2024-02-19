@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +58,18 @@ public class WorkerService {
         ProcessWorker ImagePathByprocessWorker = getProcessWorkerById(id);
         System.out.println("processWorkerImagePath " + ImagePathByprocessWorker);
         return ImagePathByprocessWorker.getImagePath();
+    }
+
+
+    public List<String> getEquipmentNamesByProcessName(String processName) {
+        return workerRepository.findEquipmentNamesByProcessName(processName);
+    }
+    public List<String> getWorkerNamesByProcessAndEquipment(String processName, String equipmentName) {
+        return workerRepository.findWorkerNamesByProcessAndEquipment(processName, equipmentName);
+    }
+
+
+    public List<String> getProcessName() {
+        return workerRepository.findByProcessName();
     }
 }

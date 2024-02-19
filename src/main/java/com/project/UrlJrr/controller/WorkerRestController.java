@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -123,6 +124,23 @@ public class WorkerRestController {
         return ResponseEntity.ok(updateProcessWorker);
     }
 
+
+    @GetMapping("/getProcessName")
+    public ResponseEntity<?> getProcessName(){
+        List<String> processNames= workerService.getProcessName();
+        return new ResponseEntity<>(processNames,HttpStatus.OK);
+    }
+    @GetMapping("/getEquipmentName")
+    public ResponseEntity<?> getEquipmentName(@RequestParam(name="processName")String processName){
+        List<String> equipmentNames = workerService.getEquipmentNamesByProcessName(processName);
+        return new ResponseEntity<>(equipmentNames,HttpStatus.OK);
+    }
+    @GetMapping("/getWorkerName")
+    public ResponseEntity<?> getWorkerName(@RequestParam(name = "processName") String processName,
+                                           @RequestParam(name = "equipmentName") String equipmentName) {
+        List<String> workerNames = workerService.getWorkerNamesByProcessAndEquipment(processName, equipmentName);
+        return new ResponseEntity<>(workerNames, HttpStatus.OK);
+    }
 
 
 }

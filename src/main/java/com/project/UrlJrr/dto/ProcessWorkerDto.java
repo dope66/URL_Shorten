@@ -1,7 +1,6 @@
 package com.project.UrlJrr.dto;
 
 import com.project.UrlJrr.entity.ProcessWorker;
-import com.project.UrlJrr.mesenum.ProcessType;
 import lombok.*;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class ProcessWorkerDto {
-    private ProcessType processName; // 공정명
+    private String processName; // 공정명
     private String nation; // 국적
     private String position; // 직책
     private String workShift; // 주야간

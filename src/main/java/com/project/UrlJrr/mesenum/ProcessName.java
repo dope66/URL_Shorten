@@ -1,6 +1,6 @@
 package com.project.UrlJrr.mesenum;
 
-public enum ProcessType {
+public enum ProcessName {
     용접,
     프레스,
     보링,

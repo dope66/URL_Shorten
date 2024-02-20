@@ -72,4 +72,8 @@ public class WorkerService {
     public List<String> getProcessName() {
         return workerRepository.findByProcessName();
     }
+
+    public List<String> getIdByProcessNameAndEquipmentNameAndWorkerName(String processName, String equipmentName, String workerName) {
+        return workerRepository.findIdByProcessNameAndEquipmentNameAndWorkerName(processName,equipmentName,workerName);
+    }
 }

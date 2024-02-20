@@ -12,6 +12,12 @@
             width: 200px;
             box-sizing: border-box;
         }
+        #workerImage {
+            align-content: end;
+            object-fit: contain;
+            width: 300px;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -24,11 +30,17 @@
 <label for="processWorker">공정원 </label><input readonly type="text" name="processWorker" id="processWorker">
 <label for="test1"></label>검사 1<input type="text" readonly value="검사 1" id="test1">
 <label for="test2"></label>검사 2<input type="text" readonly value="검사 2" id="test2">
+    <input type="text" id="workerId">
+    <div id="image-container">
+        <img id="workerImage" alt="workerImage">
+    </div>
     <button>등록</button>
 </form>
 </body>
 
 <script>
+
+
     function fetchProcessNameAndWorkerName() {
         const selectedProcessName = document.getElementById("processName");
         const equipmentNameSelect = document.getElementById("equipmentName");
@@ -58,23 +70,63 @@
     const processNameSelect = document.getElementById("processName");
     const equipmentNameSelect = document.getElementById("equipmentName");
     const processWorkerSelect = document.getElementById("processWorker");
-
+    const worekerIdselect = document.getElementById("workerId");
     processNameSelect.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
         equipmentNameSelect.value = '';
         fetchProcessNameAndWorkerName();
     });
 
+    // equipmentNameSelect.addEventListener('change', () => {
+    //     fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
+    //         .then(response => response.json())
+    //         .then(workerName => {
+    //             console.log("workerName", workerName);
+    //             processWorkerSelect.value = workerName;
+    //         }).catch(error => {
+    //         console.error('fetch 오류 요청 ', error);
+    //     });
+    // });
     equipmentNameSelect.addEventListener('change', () => {
         fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
-            .then(workerName => {
-                console.log("workerName", workerName);
-                processWorkerSelect.value = workerName;
-            }).catch(error => {
-            console.error('fetch 오류 요청 ', error);
-        });
+            .then(workerInfo => {
+                console.log("workerInfo", workerInfo);
+                console.log("workerInfo.value", workerInfo.value);
+                processWorkerSelect.value = workerInfo;
+                fetch(`/api/worker/getWorkerId?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}&workerName=${processWorkerSelect.value}`)
+                    .then(response=>response.json())
+                    .then(workerId=>{
+                        console.log("workerId",workerId);
+                        worekerIdselect.value=workerId;
+                        var imageUrl="/api/worker/getBase64Image?id=" + workerId;
+                        fetch(imageUrl)
+                            .then(function (response) {
+                                return response.text();
+                            })
+                            .then(function (data) {
+                                var imageElement = document.querySelector("#workerImage"); // 이미지 태그의 ID
+                                if (imageElement) {
+                                    imageElement.src = data;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.error('Error:', error);
+                            });
+                    }) .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청 ', error);
+            });
     });
+
+
+
+
+
 
     // 페이지 로드 시 processNameSelect 요소 초기화
     fetch('/api/worker/getProcessName')

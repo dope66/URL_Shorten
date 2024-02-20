@@ -22,6 +22,8 @@ public class ProductionTest {
     private String processName;
     private String equipmentName;
     private String processWorker;
+    private int productionCount;
+    private int defectCount;
     private String testOne;
     private String testTwo;
 

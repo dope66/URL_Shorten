@@ -17,6 +17,8 @@ public class ProductionTestDto {
     private String processWorker;
     private String testOne;
     private String testTwo;
+    private int productionCount;
+    private int defectCount;
 
     public ProductionTest toEntity() {
         return ProductionTest.builder()
@@ -25,7 +27,8 @@ public class ProductionTestDto {
                 .processWorker(processWorker)
                 .testOne(testOne)
                 .testTwo(testTwo)
-
+                .defectCount(defectCount)
+                .productionCount(productionCount)
                 .build();
     }
 

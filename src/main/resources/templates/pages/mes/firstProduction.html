@@ -18,6 +18,51 @@
             width: 300px;
             height: 100%;
         }
+        #keyboardModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f0f0f0;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+        .keyboard-button {
+            padding: 15px 25px;
+
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .keyboard-button:hover {
+            background-color: #e0e0e0;
+        }
+        .keyboard-ok-button{
+            padding: 10px 18px;
+
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
     </style>
 </head>
 <body>
@@ -30,12 +75,43 @@
 <label for="processWorker">공정원 </label><input readonly type="text" name="processWorker" id="processWorker">
 <label for="test1"></label>검사 1<input type="text" readonly value="검사 1" id="test1">
 <label for="test2"></label>검사 2<input type="text" readonly value="검사 2" id="test2">
-    <input type="text" id="workerId">
+    <label for="productionCount">생산수량</label>
+    <input type="text" name="productionCount" id="productionCount" onclick="openKeyboardForCount('productionCount')">
+
+    <label for="defectCount">불량수량</label>
+    <input type="text" name="defectCount" id="defectCount" onclick="openKeyboardForCount('defectCount')">
+
+    <input type="hidden" id="workerId">
     <div id="image-container">
         <img id="workerImage" alt="workerImage">
     </div>
     <button>등록</button>
 </form>
+<div id="keyboardModal" class="modal">
+    <div class="modal-content">
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(1)">1</button>
+            <button class="keyboard-button" onclick="pressKey(2)">2</button>
+            <button class="keyboard-button" onclick="pressKey(3)">3</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(4)">4</button>
+            <button class="keyboard-button" onclick="pressKey(5)">5</button>
+            <button class="keyboard-button" onclick="pressKey(6)">6</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(7)">7</button>
+            <button class="keyboard-button" onclick="pressKey(8)">8</button>
+            <button class="keyboard-button" onclick="pressKey(9)">9</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey('Cancel')">&times;</button>
+            <button class="keyboard-button" onclick="pressKey(0)">0</button>
+            <button class="keyboard-ok-button" onclick="pressKey('OK')">OK</button>
+        </div>
+    </div>
+</div>
+
 </body>
 
 <script>
@@ -154,7 +230,9 @@
         const processName = document.getElementById('processName').value;
         const equipmentName = document.getElementById("equipmentName").value;
         const processWorker = document.getElementById('processWorker').value;
-        const newTest = {processName, equipmentName, processWorker};
+        const productionCount = document.getElementById('productionCount').value;
+        const defectCount = document.getElementById('defectCount').value;
+        const newTest = {processName, equipmentName, processWorker, productionCount, defectCount};
         console.log("new Test ;",newTest);
         const confirmed = window.confirm('정말로 등록하시겠습니까?');
         if (confirmed) {
@@ -181,6 +259,43 @@
 
 </script>
 <script>
+
+    function openKeyboardForCount(inputId) {
+        // Set a global variable to keep track of the current input field
+        currentInputField = document.getElementById(inputId);
+
+        // Open the keyboard modal only if the clicked input field is for productionCount or defectCount
+        if (inputId === 'productionCount' || inputId === 'defectCount') {
+            openKeyboard();
+        }
+    }
+
+    // Global variable to keep track of the current input field
+    var currentInputField;
+    function pressKey(key) {
+        if (key === "OK") {
+            // 모달을 닫기만 하고 값을 설정하지 않음
+            closeKeyboard();
+        } else if (key === "Cancel") {
+            // Clear input field and close the keyboard modal
+            currentInputField.value = "";
+            closeKeyboard();
+        } else {
+            // Add numeric key value to the input field
+            currentInputField.value += key;
+        }
+    }
+
+    function openKeyboard() {
+        var modal = document.getElementById("keyboardModal");
+        modal.style.display = "block";
+    }
+
+    // JavaScript 코드에 closeKeyboard 함수 추가
+    function closeKeyboard() {
+        var modal = document.getElementById("keyboardModal");
+        modal.style.display = "none";
+    }
 
 
 </script>

@@ -16,9 +16,14 @@
     <style>
         #product-log {
             width: 100%;
-            height: 100%;
             align-content: center;
+            margin: auto;
         }
+        .htCenter {
+            text-align: center;
+            vertical-align: middle;
+        }
+
 
     </style>
 </head>
@@ -28,11 +33,14 @@
 <!-- 검색어를 입력받을 input 필드 추가 -->
 
 <!-- 날짜 범위를 입력받을 input 필드 추가 -->
+<div id="search-header">
 <input type="date" id="start-date" placeholder="시작일">
 <input type="date" id="end-date" placeholder="종료일">
 <input type="text" id="search-input" placeholder="검색어 입력">
-<button onclick="performSearch()">검색</button>
+<button onclick="performSearch()">검색</button><button onclick="openPopup()">일지 등록</button>   <a href="/mes/home"><button>홈으로</button></a>
 
+
+</div>
 
 
 
@@ -51,8 +59,11 @@
 
 
 <script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-<!--<script src="/js/mes.js"></script>-->
 <script>
+
+    function openPopup() {
+        const popupWindow = window.open("popUp", "Popup", "width=700,height=900");
+    }
     let currentPage = 0;
     let originalData = []; // 원본 데이터 배열
     let hot;
@@ -78,6 +89,14 @@
     function createHandsontable(data) {
         const container = document.getElementById('product-log');
         hot  =new Handsontable(container, {
+            cells: function(row, col, prop) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter';
+                return cellProperties;
+            },
+            className: "htCenter",
+            colWidths: [100, 100, 180, 200, 100, 80], // 각 열의 너비를 픽셀 단위로 설정
+            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
             data: data.map(productLog => [
                 productLog.productionType,
@@ -90,12 +109,12 @@
             ]),
             colHeaders: [ '차종', '작업 일', '품번', '품명', '생산량', '생산자'],
             columns: [
-                {data: 0, readOnly: true},
-                {data: 1, readOnly: true},
-                {data: 2, readOnly: true},
-                {data: 3, readOnly: true},
-                {data: 4, readOnly: true},
-                {data: 5, readOnly: true}
+                {data: 0, readOnly: true, className: "htCenter"},
+                {data: 1, readOnly: true , className: "htCenter"},
+                {data: 2, readOnly: true, className: "htCenter"},
+                {data: 3, readOnly: true, className: "htCenter"},
+                {data: 4, readOnly: true, className: "htCenter"},
+                {data: 5, readOnly: true, className: "htCenter"}
             ],
             columnSorting: true, // 정렬 활성화
             contextMenu: false, // 우클릭 메뉴 활성화

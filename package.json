@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@handsontable/react": "^14.1.0",
+    "handsontable": "^14.1.0"
+  }
+}

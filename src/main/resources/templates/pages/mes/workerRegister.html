@@ -65,16 +65,21 @@
             width: 100px;
             height: 25px;
         }
-
         #employee-Table {
-            width: 100%;
+            margin: 0 auto;
+            width: 50%;
         }
-
-        #employee-Table td {
-            text-align: center;
-
+        #employee-search{
+            margin: 0 auto;
+            width: 50%;
         }
     </style>
+
+    <!-- Handsontable CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+
+    <!-- Handsontable JS -->
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 </head>
 <body>
 <h2>공정원 등록</h2>
@@ -108,8 +113,8 @@
             </label>
             <label for="position">
                 <input type="text" readonly value="직책" class="form-Name">
-<!--                <input type="text" id="position" name="position" required>-->
-                <select name="position" id="position"  required></select>
+                <!--                <input type="text" id="position" name="position" required>-->
+                <select name="position" id="position" required></select>
             </label>
             <label for="workShift">
                 <input type="text" value="주야간조" readonly class="form-Name">
@@ -122,31 +127,11 @@
         </form>
     </div>
 </div>
-<table id="employee-Table">
-    <div>
-        <label for="Employee-input"><input class="form-control" name="search"
-                                           placeholder="담당자 조회" type="text" id="Employee-input">
-            <button class="btn btn-light-info text-info font-weight-medium" id="Employee-button">조회</button>
-        </label>
-    </div>
-    <thead class="text-center">
-    <tr>
-        <th>공정명</th>
-        <th>호기</th>
-        <th>성명</th>
-        <th>국적</th>
-        <th>직책</th>
-        <th>근무</th>
-    </tr>
-
-    <tbody>
-
-    </tbody>
-
-
-</table>
-
-
+<div id="employee-search">
+    <input type="text" id="search-input" placeholder="공정원 입력">
+    <button onclick="workerSearch()">검색</button>
+</div>
+<div id="employee-Table"></div>
 <div id="pagination">
     <input type="hidden" readonly id="page-number" th:value="1">
     <span id="page-list"></span>
@@ -154,142 +139,149 @@
 
 </body>
 <script>
-    fetch('/enums/positionEnum')
-        .then(response=>response.json())
-        .then(positionEnums=>{
-            positionEnums.forEach(name=>{
-                const option = document.createElement('option');
-                option.value=name;
-                option.textContent=name;
-                position.appendChild(option);
-                if(option.value === "조장"){
-                    console.log("직책이 조장이에요!")
-                }
-            });
-        })
-        .catch(error=>console.error('Error fetching process types. positionEnum ! : ',error));
 
-</script>
-<script>
-    // 공정원 검색, 리스트 JS
-    const employeeTable = document.getElementById("employee-Table");
-    const tbody = employeeTable.querySelector("tbody");
-    const pageNumberSpan = document.getElementById("page-number");
-    const pageList = document.getElementById("page-list");
-    let currentPage = 0; // 현재 페이지
-    let totalPages = 0;
-    const itemsPerPage = 10;
-    let currentSearchQuery = "";
+    function openPopup() {
+        const popupWindow = window.open("popUp", "Popup", "width=700,height=900");
+    }
 
+
+    let currentPage = 0;
+    let originalData = []; // 원본 데이터 배열
+    let hot;
     document.addEventListener("DOMContentLoaded", function () {
-        currentSearchQuery = document.getElementById("Employee-input").value;
-        fetch('/api/worker/totalEmployeeCount')
-            .then(response => response.json())
-            .then(data => {
-                totalPages = Math.ceil(data / itemsPerPage);
-                updatePagination();
-            })
-            .catch(error => {
-                console.error('Employee count fetch error:', error);
-            });
-        fetchProcessEmployee(currentPage);
-        console.log("현재 페이지가 몇인데?", currentPage);
+        // 페이지 로드 시 실행되는 코드
+        fetchProcessWorkerList(currentPage); // 초기 페이지 데이터 로딩
     });
 
-    document.getElementById("Employee-button").addEventListener("click", function () {
-        const searchQuery = getSearchQuery();
-        fetchProcessEmployeeSearch(searchQuery, 0);
-    });
-
-    function goToPage(page) {
-        const searchQuery = getSearchQuery();
-        fetchProcessEmployeeSearch(searchQuery, page);
-    }
-
-    function getSearchQuery() {
-        return document.getElementById("Employee-input").value || "";
-    }
-
-
-    function fetchProcessEmployeeSearch(searchQuery, page) {
-        fetch(`/api/worker/list?search=${searchQuery}&page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                tbody.innerHTML = ""; // 이전 목록을 지웁니다.
-                updateEmployeeList(data, page);
-                totalPages = Math.ceil(data.page.totalElements / itemsPerPage); // totalElements로 totalPages 업데이트
-                updatePagination();
-            });
-    }
-
-
-    function fetchProcessEmployee(page) {
+    function fetchProcessWorkerList(page) {
         fetch(`/api/worker/list?page=${page}`)
             .then(response => response.json())
             .then(data => {
-
-                tbody.innerHTML = "";
-                updateEmployeeList(data, page);
-                updatePagination();
-                // 마지막 페이지인 경우에 대한 처리
-                // if (page === totalPages - 1) {
-                //     document.getElementById("totalProductLogs").textContent = (page * itemsPerPage) + (data._embedded?.processWorkerList?.length || 0);
-                // } else {
-                //     document.getElementById("totalProductLogs").textContent = Math.max(...data._embedded?.processWorkerList?.map(processWorkerList => processWorker.id) || [0]);
-                // }
+                originalData = data._embedded.processWorkerList; // 원본 데이터 업데이트
+                createHandsontable(originalData); // Handsontable 인스턴스 생성 및 데이터 적용
+                console.log("originalDataPagination", originalData);
+                updatePagination(); // 페이지네이션 업데이트
             });
     }
 
-    function updateEmployeeList(data, page) {
-        tbody.innerHTML = "";
-        console.log("data 뭐가있지?", data);
-        console.log("_embedded 가있는가.?", data._embedded);
+    function createHandsontable(data) {
+        const container = document.getElementById('employee-Table');
+        hot = new Handsontable(container, {
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter';
+                return cellProperties;
+            },
+            className: "htCenter",
+            /*
+            * 공정명
+            * 호기
+            * 성명
+            * 국적
+            * 직책
+            * 주야간조
+            * */
+            colWidths: [100, 100, 100, 100, 100, 100], // 각 열의 너비를 픽셀 단위로 설정
+            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
+            licenseKey: 'non-commercial-and-evaluation',
+            data: data.map(processWorker => [
+                processWorker.processName,
+                processWorker.equipmentName,
+                processWorker.workerName,
+                processWorker.nation,
+                processWorker.position,
+                processWorker.workShift
 
-        if (data._embedded && data._embedded.processWorkerList) {
-            data._embedded.processWorkerList.forEach(processWorker => {
+            ]),
+            colHeaders: ['공정명', '호기', '성명', '국적', '직책', '주야간조'],
+            columns: [
+                {data: 0, readOnly: true, className: "htCenter"},
+                {data: 1, readOnly: true, className: "htCenter"},
+                {data: 2, readOnly: true, className: "htCenter"},
+                {data: 3, readOnly: true, className: "htCenter"},
+                {data: 4, readOnly: true, className: "htCenter"},
+                {data: 5, readOnly: true, className: "htCenter"}
+            ],
+            columnSorting: true, // 정렬 활성화
+            contextMenu: false, // 우클릭 메뉴 활성화
+            manualRowMove: true, // 행 이동 활성화
+            manualColumnMove: true, // 열 이동 활성화
+            filters: true, // 필터링 활성화
+            dropdownMenu: false, // 드롭다운 메뉴 활성화
+            rowHeaders: true, // 행 번호 표시
+            search: true, // 검색 기능 활성화
+            // 기타 필요한 Handsontable 옵션 추가
+        });
 
-                const processWorkerIdInput = document.createElement('input');
-                processWorkerIdInput.type = 'hidden';
-                processWorkerIdInput.value = processWorker.id;
-                console.log(processWorkerIdInput)
-                const row = document.createElement('tr');
-                const processName = document.createElement('td');
-                processName.textContent = processWorker.processName;
-                const equipmentName = document.createElement('td');
-                equipmentName.textContent = processWorker.equipmentName;
-                const workerName = document.createElement('td');
-                workerName.textContent = processWorker.workerName;
-                workerName.addEventListener('click', () => {
-                    openModifyPage(processWorkerIdInput.value);
-                })
-                const nation = document.createElement('td');
-                nation.textContent = processWorker.nation;
-                const position = document.createElement('td');
-                position.textContent = processWorker.position;
-                const workShift = document.createElement('td');
-                workShift.textContent = processWorker.workShift;
+        console.log("hot : ", hot);
+    }
 
-                row.appendChild(processName);
-                row.appendChild(equipmentName);
-                row.appendChild(workerName);
-                row.appendChild(nation);
-                row.appendChild(position);
-                row.appendChild(workShift);
-                tbody.appendChild(row);
-            });
-        } else {
-            console.error("_embedded.processWorkerList가 없습니다.");
+
+    function workerSearch() {
+        if (!hot || !hot.getPlugin('search')) {
+            console.error('Handsontable 인스턴스가 초기화되지 않았거나, 검색 플러그인을 사용할 수 없습니다.');
+            return;
         }
-        currentPage = page;
+
+        const query = document.getElementById('search-input').value.trim();
+        // 원본 데이터에서 날짜 조건에 맞는 데이터를 필터링
+        let dateFilteredData = originalData.filter(item => {
+            const itemDate = new Date(item.workDate);
+            // 시작 날짜 조건
+            const startCondition = startDate ? new Date(startDate) <= itemDate : true;
+
+            // 종료 날짜 조건 - 당일 포함 (endDate의 23:59:59까지 포함)
+            let endCondition = true;
+            if (endDate) {
+                let endDateObj = new Date(endDate);
+                endDateObj.setHours(23, 59, 59); // 종료 날짜를 당일의 마지막 시각으로 설정
+                endCondition = itemDate <= endDateObj;
+            }
+
+            return startCondition && endCondition;
+        });
+
+        let filteredData = [];
+        if (query) {
+            // 임시로 날짜 필터링된 데이터를 Handsontable에 로드하여 검색 수행
+            hot.loadData(dateFilteredData.map(item => [
+                item.processName,
+                item.equipmentName,
+                item.workerName,
+                item.nation,
+                item.position,
+                item.workShift
+            ]));
+
+            // 검색 플러그인으로 검색 수행
+            const searchPlugin = hot.getPlugin('search');
+            const searchResult = searchPlugin.query(query);
+            let resultRowsIndexes = Array.from(new Set(searchResult.map(result => result.row)));
+            filteredData = resultRowsIndexes.map(index => dateFilteredData[index]);
+        } else {
+            // 검색어가 없는 경우, 날짜 필터링 결과를 그대로 사용
+            filteredData = dateFilteredData;
+        }
+
+        // 필터링된 데이터 로드
+        if (filteredData.length > 0) {
+            hot.loadData(filteredData.map(item => [
+                item.productionType,
+                formatDate(item.workDate),
+                item.productionNumber,
+                item.productionName,
+                item.production,
+                item.workerName
+            ]));
+            console.log('검색 및 날짜 필터링된 데이터를 표시합니다.');
+        } else {
+            console.log('조건에 맞는 데이터가 없습니다.');
+            hot.loadData([]);
+        }
     }
 
-    function openModifyPage(processWorkerIdInputId) {
 
-        const modifyUrl = `/mes/worker/${processWorkerIdInputId}`;
-        window.open(modifyUrl, '_blank');
-    }
 </script>
-<script src="/static/js/workerRegisterEnum.js"></script>
 <script>
     // 이미지 미리 보기 기능
     const imageInput = document.getElementById('imageInput'); // 이미지 입력란
@@ -358,7 +350,27 @@
     });
 
 </script>
-<script src="/static/js/page.js"></script>
+<script>
+    fetch('/enums/positionEnum')
+        .then(response => response.json())
+        .then(positionEnums => {
+            positionEnums.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                position.appendChild(option);
+                if (option.value === "조장") {
+                    console.log("직책이 조장이에요!")
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching process types. positionEnum ! : ', error));
+
+</script>
+<script src="/static/js/workerRegisterEnum.js"></script>
+
+
+<!--<script src="/static/js/page.js"></script>-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href="/static/dist/css/style.min.css" rel="stylesheet"/>

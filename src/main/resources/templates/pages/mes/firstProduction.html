@@ -1,59 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>초중종물 검사</title>
     <style>
-        select {
+
+        body {
+            background-color: #000;
+            color: #FFFFFF;
+        }
+
+        input, select {
             margin-bottom: 10px;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            width: 200px;
+            width: 100%;
             box-sizing: border-box;
+            background-color: #000;
+            color: #00ff00;
+            font-weight: bold;
         }
+
         #workerImage {
             align-content: end;
             object-fit: contain;
             width: 300px;
-            height: 100%;
+            height: 300px;
         }
+
         #keyboardModal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #f0f0f0;
+            background-color: #3c3c3c;
             z-index: 1000;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .modal-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-
         }
+
         .keyboard-row {
             display: flex;
             justify-content: center;
             margin-bottom: 5px;
         }
-        .keyboard-button {
-            padding: 15px 25px;
 
-            border: 1px solid #ccc;
+        .keyboard-button {
+            color: #FFFFFF;
+            padding: 15px 25px;
+            border: 1px solid #5d5d5d;
             border-radius: 4px;
-            background-color: #fff;
+            background-color: #4a4a4a;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .keyboard-button:hover {
             background-color: #e0e0e0;
         }
-        .keyboard-ok-button{
-            padding: 10px 18px;
 
+        .keyboard-ok-button {
+            padding: 10px 18px;
             border: 1px solid #ccc;
             border-radius: 4px;
             background-color: #4CAF50;
@@ -62,31 +79,88 @@
             transition: background-color 0.3s ease;
         }
 
+        #info-table-1 {
+            width: 100%;
+        }
 
+        #info-table-2 {
+            width: 100%;
+
+        }
     </style>
 </head>
 <body>
-<form id="production-test-form">
-    <label for="processName">생산 설비 </label><select name="processName" id="processName">
-    <option value="" disabled selected>생산 설비</option>
-</select>
-    <label for="equipmentName">호기 </label><select name="equipmentName" id="equipmentName">
-</select>
-<label for="processWorker">공정원 </label><input readonly type="text" name="processWorker" id="processWorker">
-<label for="test1"></label>검사 1<input type="text" readonly value="검사 1" id="test1">
-<label for="test2"></label>검사 2<input type="text" readonly value="검사 2" id="test2">
-    <label for="productionCount">생산수량</label>
-    <input type="text" name="productionCount" id="productionCount" onclick="openKeyboardForCount('productionCount')">
+<table id="info-table-1" th:border="1">
+    <thead>
+    <th>생산설비</th>
+    <th>호기</th>
+    <th>검사 1</th>
+    <th>검사 2</th>
+    </thead>
+    <tbody>
+    <form id="production-test-form">
+        <tr>
+            <td>
+                <select name="processName" id="processName"  required>
+                    <option value="" disabled selected>생산 설비</option>
+                </select>
+            </td>
+            <td>
+                <select name="equipmentName" id="equipmentName"  required>
+                </select>
+            </td>
 
-    <label for="defectCount">불량수량</label>
-    <input type="text" name="defectCount" id="defectCount" onclick="openKeyboardForCount('defectCount')">
+            <td>
+                <input type="text" readonly value="검사 1" id="test1" >
+            </td>
+            <td>
+                <input type="text" readonly value="검사 2" id="test2" >
+            </td>
 
-    <input type="hidden" id="workerId">
-    <div id="image-container">
-        <img id="workerImage" alt="workerImage">
-    </div>
-    <button>등록</button>
-</form>
+        </tr>
+
+    </form>
+    </tbody>
+</table>
+<table id="info-table-2" th:border="1">
+    <thead>
+    <th>고객사</th>
+    <th>비고</th>
+    <th>생산수량</th>
+    <th>불량수량</th>
+    </thead>
+    <tbody>
+    <td style="width : 200px"></td>
+    <td></td>
+    <td style="width : 200px">
+        <input type="text" name="productionCount" id="productionCount" style="width: 100%" required
+               onclick="openKeyboardForCount('productionCount')">
+    </td>
+    <td style="width : 200px">
+        <input type="text" name="defectCount" id="defectCount" style="width: 100%" required
+               onclick="openKeyboardForCount('defectCount')">
+    </td>
+    </tbody>
+</table>
+<button style="width: 300px;background-color: #4b4b4b;color:#FFFFFF">등록</button>
+<table id="info-table-3" th:border="1">
+    <thead>
+    <th>공정원</th>
+    </thead>
+    <tbody>
+    <td>
+        <div id="image-container">
+        <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
+        </div>
+        <input readonly type="text" name="processWorker" id="processWorker" style="width : 300px; " required>
+    </td>
+    </tbody>
+
+</table>
+
+
+
+<input type="hidden" id="workerId">
 <div id="keyboardModal" class="modal">
     <div class="modal-content">
         <div class="keyboard-row">
@@ -152,17 +226,6 @@
         equipmentNameSelect.value = '';
         fetchProcessNameAndWorkerName();
     });
-
-    // equipmentNameSelect.addEventListener('change', () => {
-    //     fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
-    //         .then(response => response.json())
-    //         .then(workerName => {
-    //             console.log("workerName", workerName);
-    //             processWorkerSelect.value = workerName;
-    //         }).catch(error => {
-    //         console.error('fetch 오류 요청 ', error);
-    //     });
-    // });
     equipmentNameSelect.addEventListener('change', () => {
         fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
@@ -171,25 +234,34 @@
                 console.log("workerInfo.value", workerInfo.value);
                 processWorkerSelect.value = workerInfo;
                 fetch(`/api/worker/getWorkerId?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}&workerName=${processWorkerSelect.value}`)
-                    .then(response=>response.json())
-                    .then(workerId=>{
-                        console.log("workerId",workerId);
-                        worekerIdselect.value=workerId;
-                        var imageUrl="/api/worker/getBase64Image?id=" + workerId;
+                    .then(response => response.json())
+                    .then(workerId => {
+                        console.log("workerId", workerId);
+                        worekerIdselect.value = workerId;
+                        var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
+
                         fetch(imageUrl)
                             .then(function (response) {
+                                // 이미지가 성공적으로 로드되었는지 확인
+                                if (!response.ok) throw new Error('Image not found');
                                 return response.text();
                             })
                             .then(function (data) {
-                                var imageElement = document.querySelector("#workerImage"); // 이미지 태그의 ID
+                                // 성공적으로 이미지 데이터를 받아온 경우
+                                var imageElement = document.querySelector("#workerImage");
                                 if (imageElement) {
                                     imageElement.src = data;
                                 }
                             })
                             .catch(function (error) {
+                                // 이미지 로드에 실패한 경우 기본 이미지로 대체
                                 console.error('Error:', error);
+                                var imageElement = document.querySelector("#workerImage");
+                                if (imageElement) {
+                                    imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
+                                }
                             });
-                    }) .catch(error => {
+                    }).catch(error => {
                     console.error('아이디를 가져오는 도중 오류 발생: ', error);
                 });
 
@@ -198,10 +270,6 @@
                 console.error('fetch 오류 요청 ', error);
             });
     });
-
-
-
-
 
 
     // 페이지 로드 시 processNameSelect 요소 초기화
@@ -233,7 +301,7 @@
         const productionCount = document.getElementById('productionCount').value;
         const defectCount = document.getElementById('defectCount').value;
         const newTest = {processName, equipmentName, processWorker, productionCount, defectCount};
-        console.log("new Test ;",newTest);
+        console.log("new Test ;", newTest);
         const confirmed = window.confirm('정말로 등록하시겠습니까?');
         if (confirmed) {
             // 확인을 선택한 경우에만 등록 진행
@@ -272,6 +340,7 @@
 
     // Global variable to keep track of the current input field
     var currentInputField;
+
     function pressKey(key) {
         if (key === "OK") {
             // 모달을 닫기만 하고 값을 설정하지 않음

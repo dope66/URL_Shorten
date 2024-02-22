@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>공정원 관리</title>
@@ -179,16 +182,7 @@
             colWidths: [80,100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
             rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
-            // data: data.map(processWorker => [
-            //     processWorker.id,
-            //     processWorker.processName,
-            //     processWorker.equipmentName,
-            //     processWorker.workerName,
-            //     processWorker.nation,
-            //     processWorker.position,
-            //     processWorker.workShift
-            //
-            // ])
+
             data:data,
             colHeaders: ['ID','공정명', '호기', '성명', '국적', '직책', '주야간조'],
             columns: [

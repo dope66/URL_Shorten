@@ -5,17 +5,9 @@ import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,7 +58,7 @@ public class WorkerRestController {
     public ResponseEntity<?> getBase64Image(@RequestParam Long id) {
         try {
             String imagePath = workerService.getImagePathByWorkerId(id); // DB에서 작업자 ID에 해당하는 이미지 경로 조회
-            System.out.println("imagePath "+ imagePath);
+            System.out.println("imagePath " + imagePath);
             File imageFile = new File(imagePath);
             String base64Image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
             return ResponseEntity.ok("data:image/jpeg;base64," + base64Image);
@@ -75,23 +67,28 @@ public class WorkerRestController {
             return new ResponseEntity<>("Failed to convert image to Base64", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> workerList(@RequestParam(name = "search", required = false) String search,
-                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                        PagedResourcesAssembler<ProcessWorker> assembler) {
-
-        Page<ProcessWorker> ProcessWorkers;
-
-
-        if (StringUtils.hasText(search)) {
-            ProcessWorkers = workerService.findByWorkerNameContaining(search, pageable);
-        } else {
-            ProcessWorkers = workerService.findAll(pageable);
-        }
-        PagedModel<EntityModel<ProcessWorker>> model = assembler.toModel(ProcessWorkers);
-        return new ResponseEntity<>(model, HttpStatus.OK);
-
+//    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> workerList(@RequestParam(name = "search", required = false) String search,
+//                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+//                                        PagedResourcesAssembler<ProcessWorker> assembler) {
+//
+//        Page<ProcessWorker> ProcessWorkers;
+//
+//
+//        if (StringUtils.hasText(search)) {
+//            ProcessWorkers = workerService.findByWorkerNameContaining(search, pageable);
+//        } else {
+//            ProcessWorkers = workerService.findAll(pageable);
+//        }
+//        PagedModel<EntityModel<ProcessWorker>> model = assembler.toModel(ProcessWorkers);
+//        return new ResponseEntity<>(model, HttpStatus.OK);
+//
+//    }
+    @GetMapping("/list")
+    public ResponseEntity<List<ProcessWorker>> workerList() {
+        List<ProcessWorker> workers;
+        workers = workerService.findAll();
+        return new ResponseEntity<>(workers, HttpStatus.OK);
     }
 
     @GetMapping("/totalEmployeeCount")
@@ -126,15 +123,17 @@ public class WorkerRestController {
 
 
     @GetMapping("/getProcessName")
-    public ResponseEntity<?> getProcessName(){
-        List<String> processNames= workerService.getProcessName();
-        return new ResponseEntity<>(processNames,HttpStatus.OK);
+    public ResponseEntity<?> getProcessName() {
+        List<String> processNames = workerService.getProcessName();
+        return new ResponseEntity<>(processNames, HttpStatus.OK);
     }
+
     @GetMapping("/getEquipmentName")
-    public ResponseEntity<?> getEquipmentName(@RequestParam(name="processName")String processName){
+    public ResponseEntity<?> getEquipmentName(@RequestParam(name = "processName") String processName) {
         List<String> equipmentNames = workerService.getEquipmentNamesByProcessName(processName);
-        return new ResponseEntity<>(equipmentNames,HttpStatus.OK);
+        return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }
+
     @GetMapping("/getWorkerName")
     public ResponseEntity<?> getWorkerName(@RequestParam(name = "processName") String processName,
                                            @RequestParam(name = "equipmentName") String equipmentName) {
@@ -145,9 +144,9 @@ public class WorkerRestController {
     @GetMapping("/getWorkerId")
     public ResponseEntity<?> getWorkerName(@RequestParam(name = "processName") String processName,
                                            @RequestParam(name = "equipmentName") String equipmentName,
-                                           @RequestParam(name = "workerName") String workerName){
-        List<String> workerIds = workerService.getIdByProcessNameAndEquipmentNameAndWorkerName(processName,equipmentName,workerName);
-        return new ResponseEntity<>(workerIds,HttpStatus.OK);
+                                           @RequestParam(name = "workerName") String workerName) {
+        List<String> workerIds = workerService.getIdByProcessNameAndEquipmentNameAndWorkerName(processName, equipmentName, workerName);
+        return new ResponseEntity<>(workerIds, HttpStatus.OK);
 
     }
 

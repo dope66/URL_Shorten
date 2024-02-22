@@ -4,8 +4,6 @@ import com.project.UrlJrr.dto.ProcessWorkerDto;
 import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WorkerService {
     private final WorkerRepository workerRepository;
+
     public ProcessWorker workerRegister(ProcessWorkerDto processWorkerDto, String imagePath) {
         ProcessWorker processWorker = new ProcessWorker();
         processWorker.setProcessName(processWorkerDto.getProcessName());
@@ -29,14 +28,20 @@ public class WorkerService {
     }
 
 
-    public Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable) {
-        return workerRepository.findByWorkerNameContaining(workerName,pageable);
+//    public Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable) {
+//        return workerRepository.findByWorkerNameContaining(workerName, pageable);
+//    }
+
+    //        public Page<ProcessWorker> findAll(Pageable pageable) {
+//        return workerRepository.findAll(pageable);
+//    }
+    public List<ProcessWorker> findAll() {
+        return workerRepository.findAll();
     }
 
-    public Page<ProcessWorker> findAll(Pageable pageable) {
-        return workerRepository.findAll(pageable);
-    }
-
+    //    public List<ProcessWorker> findByWorkerNameContaining(String search) {
+//        return workerRepository.findByWorkerNameContaining(search);
+//    }
     public long getTotalEmployeeCount() {
         return workerRepository.count();
     }
@@ -64,6 +69,7 @@ public class WorkerService {
     public List<String> getEquipmentNamesByProcessName(String processName) {
         return workerRepository.findEquipmentNamesByProcessName(processName);
     }
+
     public List<String> getWorkerNamesByProcessAndEquipment(String processName, String equipmentName) {
         return workerRepository.findWorkerNamesByProcessAndEquipment(processName, equipmentName);
     }
@@ -74,6 +80,6 @@ public class WorkerService {
     }
 
     public List<String> getIdByProcessNameAndEquipmentNameAndWorkerName(String processName, String equipmentName, String workerName) {
-        return workerRepository.findIdByProcessNameAndEquipmentNameAndWorkerName(processName,equipmentName,workerName);
+        return workerRepository.findIdByProcessNameAndEquipmentNameAndWorkerName(processName, equipmentName, workerName);
     }
 }

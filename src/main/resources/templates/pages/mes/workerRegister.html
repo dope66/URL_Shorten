@@ -59,6 +59,22 @@
             margin-bottom: 0; /* 마지막 라벨의 마진을 제거하여 폼 요소들 사이의 간격을 일정하게 유지 */
         }
 
+
+        #modify-container{
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: flex-start; /* 수직 상단 정렬 */
+        }
+
+        #modify-container label {
+            margin-bottom: 10px;
+            width: 100%; /* 라벨의 너비를 100%로 설정하여 부모 요소에 꽉 차도록 함 */
+        }
+
+        #modify-container label:last-child {
+            margin-bottom: 0; /* 마지막 라벨의 마진을 제거하여 폼 요소들 사이의 간격을 일정하게 유지 */
+        }
+
         a {
             text-decoration: none;
         }
@@ -69,22 +85,12 @@
             height: 25px;
         }
 
-        #employee-Table {
+        #employee-Table-container {
             margin: 0 auto;
-            width: 50%;
+            max-width: 770px; /* 최대 너비 600px로 설정 */
+
         }
 
-            /*margin-top: 10px;
-
-            margin-right: 20px;
-
-            margin-bottom: 30px;
-
-            margin-left: 20px;*/
-        #employee-search {
-            margin: 0 auto;
-            width: 50%;
-        }
     </style>
 
     <!-- Handsontable CSS -->
@@ -125,7 +131,6 @@
             </label>
             <label for="position">
                 <input type="text" readonly value="직책" class="form-Name">
-                <!--                <input type="text" id="position" name="position" required>-->
                 <select name="position" id="position" required></select>
             </label>
             <label for="workShift">
@@ -139,18 +144,21 @@
         </form>
     </div>
 </div>
-<div id="employee-search">
-    <select name="search-processName" id="search-processName" style="width: 150px">
-        <option value="" disabled selected>공정명 선택</option>
-    </select>
-    <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
-<!--        <option value="" disabled selected></option>-->
-    </select>
-    <input type="text" id="search-input" placeholder="공정원 입력">
-    <button onclick="workerSearch()">검색</button>
-    <button onclick="wholeWorker()">전체검색</button>
+
+<div id="employee-Table-container">
+    <div id="employee-search">
+        <select name="search-processName" id="search-processName" style="width: 150px">
+            <option value="" disabled selected>공정명 선택</option>
+        </select>
+        <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
+            <!--        <option value="" disabled selected></option>-->
+        </select>
+        <input type="text" id="search-input" placeholder="공정원 입력">
+        <button onclick="workerSearch()">검색</button>
+        <button onclick="wholeWorker()">전체검색</button>
+    </div>
+    <div id="employee-Table"></div>
 </div>
-<div id="employee-Table"></div>
 <div id="pagination">
     <input type="hidden" readonly id="page-number" th:value="1">
     <span id="page-list"></span>
@@ -160,6 +168,88 @@
 <script src="/static/js/processWorkerRegisterJS.js"></script>
 <script src="/static/js/workerRegisterEnum.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function updateWorkerContainer(rowData) {
+        let workerContainer = document.getElementById('worker-container');
+        if (!workerContainer) {
+            workerContainer = document.createElement('div');
+            workerContainer.id = 'worker-container';
+            document.body.appendChild(workerContainer); // 또는 다른 컨테이너에 추가
+        }
+
+        // worker-container의 내용을 초기화합니다.
+        workerContainer.innerHTML = `
+     <form id="worker-register-form">
+            <input type="file" id="imageInput" accept="image/*" required>
+            <label for="processName">
+                <input type="text" value="공정명" readonly class="form-Name">
+                <select name="processName" id="processName" required></select>
+            </label>
+            <label for="equipmentName">
+                <input type="text" value="호기" readonly class="form-Name">
+                <select name="equipmentName" id="equipmentName">
+                    <option value="1호기">1호기</option>
+                    <option value="2호기">2호기</option>
+                    <option value="3호기">3호기</option>
+                </select></label>
+            <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
+                <input type="text" id="workerName" name="workerName" value="${rowData.workerName}" required></label>
+            <label for="nation">
+                <input type="text" value="국적" readonly class="form-Name">
+                <input type="text" id="nation" name="nation" required value="${rowData.nation}">
+            </label>
+            <label for="position">
+                <input type="text" readonly value="직책" class="form-Name">
+                <select name="position" id="position" required "></select>
+            </label>
+            <label for="workShift">
+                <input type="text" value="주야간조" readonly class="form-Name">
+                <select name="workShift" id="workShift" required"></select>
+            </label>
+            <div id="navigation-container">
+                <button id="saveButton" class="btn btn-dark-info">수정</button>
+                <button id="homeButton" class="btn btn-dark-info">홈으로</button>
+            </div>
+        </form>`;
+        fetchProcessNames(rowData.processName);
+        fetchWorkShiftEnum(rowData.workShift);
+        fetchPositionEnum(rowData.position);
+        console.log('rowData position',rowData.position);
+        const processNameSelect = document.getElementById('processName');
+
+        const equipmentNameSelect = document.getElementById('equipmentName');
+        const positionSelect = document.getElementById('position');
+        const workShiftSelect = document.getElementById('workShift');
+        processNameSelect.value = rowData.processName;
+        equipmentNameSelect.value=rowData.equipmentName;
+        positionSelect.value=rowData.position;
+        workShiftSelect.value=rowData.workShift;
+
+
+
+        // 수정 버튼 클릭 이벤트 처리
+        document.getElementById('saveButton').addEventListener('click', function() {
+            // 여기에 수정 사항을 서버에 저장하는 로직을 구현합니다.
+            const updatedData = {
+                workerName: document.getElementById('workerName').value,
+                processName: document.getElementById('processName').value,
+                equipmentName: document.getElementById('equipmentName').value,
+                nation: document.getElementById('nation').value,
+                position: document.getElementById('position').value,
+                workShift: document.getElementById('workShift').value,
+            };
+
+            console.log('Updated Data:', updatedData);
+            // fetch API 등을 사용하여 서버에 수정된 데이터를 전송합니다.
+            // 예: fetch('/api/worker/update', { method: 'POST', body: JSON.stringify(updatedData), headers: { 'Content-Type': 'application/json' } })...
+
+
+
+        });
+    }
+</script>
+
+
 <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
 
 </html>

@@ -4,6 +4,10 @@ let hot;
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로드 시 실행되는 코드
     fetchProcessWorkerList(currentPage); // 초기 페이지 데이터 로딩
+    fetchProcessNames(); // 공정명 목록 가져오기
+    fetchProcessNameAndWorkerName();
+    fetchWorkShiftEnum(); // 근무조 목록 가져오기
+    fetchPositionEnum();
 });
 
 function fetchProcessWorkerList(page) {
@@ -29,7 +33,6 @@ function createHandsontable(data) {
         colWidths: [100, 100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
-        width: '50%',
         data: data,
         colHeaders: ['ID', '공정명', '호기', '성명', '국적', '직책', '주야간조'],
         columns: [
@@ -45,7 +48,6 @@ function createHandsontable(data) {
             columns: [0], // 'ID' 열을 숨깁니다.
             indicators: false // 숨겨진 열의 지시자 표시 여부
         },
-
         height: 300,
         columnSorting: true, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
@@ -57,10 +59,9 @@ function createHandsontable(data) {
         search: true, // 검색 기능 활성화
         afterOnCellMouseDown: function (event, coords) {
             const rowData = hot.getSourceDataAtRow(coords.row);
+            // applyDataToForm(rowData);
             console.log("rowData", rowData);
-            const workerId = rowData.id;
-            console.log(workerId);
-            window.open(`/mes/worker/${encodeURIComponent(workerId)}`);
+            updateWorkerContainer(rowData);
         }
     });
 
@@ -169,23 +170,51 @@ registerForm.addEventListener('submit', (event) => {
     }
 });
 
+const selectedProcessName = document.getElementById("search-processName");
+const equipmentNameSelect = document.getElementById("search-equipmentName");
+
+function fetchProcessNames(selectedProcessName) {
+    fetch('/api/worker/getProcessName')
+        .then(response => response.json())
+        .then(data => {
+            const processNameSelect = document.getElementById('processName');
+            // 기존의 옵션을 초기화
+            processNameSelect.innerHTML = '';
+            // 가져온 데이터로 옵션 생성
+            data.forEach(processName => {
+                const option = document.createElement('option');
+                option.text = processName;
+                option.value = processName;
+                processNameSelect.appendChild(option);
+            });
+            // 선택된 공정명이 있을 경우 해당 옵션을 선택 상태로 설정
+            if (selectedProcessName) {
+                processNameSelect.value = selectedProcessName;
+            }
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청: ', error);
+        });
+}
+
 fetch('/api/worker/getProcessName')
     .then(response => response.json())
     .then(data => {
-        console.log("processname: ", data);
+        selectedProcessName.innerHTML = '<option value="" disabled selected>공정 선택</option>';
+        // 가져온 데이터로 옵션 생성
         data.forEach(processName => {
             const option = document.createElement('option');
             option.text = processName;
             option.value = processName;
             selectedProcessName.appendChild(option);
         });
+
     })
     .catch(error => {
-        console.error('fetch 오류 요청 ', error);
+        console.error('fetch 오류 요청: ', error);
     });
-const selectedProcessName = document.getElementById("search-processName");
-const equipmentNameSelect = document.getElementById("search-equipmentName");
-fetchProcessNameAndWorkerName();
+
+
 selectedProcessName.addEventListener('change', () => {
     // productionType 변경 시 productionName 값 초기화
     equipmentNameSelect.value = '';

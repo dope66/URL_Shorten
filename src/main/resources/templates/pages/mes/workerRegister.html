@@ -357,20 +357,42 @@
     });
 
     function fetchProcessNameAndWorkerName() {
+        // 호기 선택란 초기화
         equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
-        fetch(`/api/worker/getAllEquipmentName`)
-            .then(response=> response.json())
-            .then(equipmentNames=>{
-                equipmentNames.forEach(equipmentName => {
-                    const option = document.createElement('option');
-                    option.text = equipmentName;
-                    option.value = equipmentName;
-                    equipmentNameSelect.appendChild(option);
+
+        if (selectedProcessName.value) {
+            // 공정명이 선택된 경우, 해당하는 호기만 가져오기
+            fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
                 });
-            }).catch(error => {
-            console.error('fetch 오류 요청 ', error);
-        });
+        } else {
+            // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
+            fetch(`/api/worker/getAllEquipmentName`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        }
     }
+
 
 </script>
 <script src="/static/js/workerRegisterEnum.js"></script>

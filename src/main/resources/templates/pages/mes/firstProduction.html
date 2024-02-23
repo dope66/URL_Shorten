@@ -101,20 +101,20 @@
     <form id="production-test-form">
         <tr>
             <td>
-                <select name="processName" id="processName"  required>
+                <select name="processName" id="processName" required>
                     <option value="" disabled selected>생산 설비</option>
                 </select>
             </td>
             <td>
-                <select name="equipmentName" id="equipmentName"  required>
+                <select name="equipmentName" id="equipmentName" required>
                 </select>
             </td>
 
             <td>
-                <input type="text" readonly value="검사 1" id="test1" >
+                <input type="text" readonly value="검사 1" id="test1">
             </td>
             <td>
-                <input type="text" readonly value="검사 2" id="test2" >
+                <input type="text" readonly value="검사 2" id="test2">
             </td>
 
         </tr>
@@ -150,14 +150,13 @@
     <tbody>
     <td>
         <div id="image-container">
-        <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
+            <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
         </div>
         <input readonly type="text" name="processWorker" id="processWorker" style="width : 300px; " required>
     </td>
     </tbody>
 
 </table>
-
 
 
 <input type="hidden" id="workerId">
@@ -190,7 +189,7 @@
 
 <script>
 
-
+    // 공정명과 호기 이름을 가져오는 함수
     function fetchProcessNameAndWorkerName() {
         const selectedProcessName = document.getElementById("processName");
         const equipmentNameSelect = document.getElementById("equipmentName");
@@ -198,9 +197,7 @@
 
         // equipmentNameSelect 초기화
         equipmentNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
-
-
-        // fetch(`/api/worker/getEquipmentName?processName=${encodeURIComponent(selectedProcessName.value)}`)
+        //공정명값으로 호기 가져오기
         fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
             .then(equipmentNames => {
@@ -221,11 +218,13 @@
     const equipmentNameSelect = document.getElementById("equipmentName");
     const processWorkerSelect = document.getElementById("processWorker");
     const worekerIdselect = document.getElementById("workerId");
+
     processNameSelect.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
         equipmentNameSelect.value = '';
         fetchProcessNameAndWorkerName();
     });
+    // 호기 변경시 공정원 이름 변경
     equipmentNameSelect.addEventListener('change', () => {
         fetch(`/api/worker/getWorkerName?processName=${processNameSelect.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
@@ -291,7 +290,9 @@
     // 페이지 로드 시 fetchProcessNameAndWorkerName 함수 호출하여 초기화
     fetchProcessNameAndWorkerName();
 </script>
+
 <script>
+    // 초중물 검사 등록 기능
     const productionTestForm = document.getElementById("production-test-form");
     productionTestForm.addEventListener('submit', (event) => {
         event.preventDefault();

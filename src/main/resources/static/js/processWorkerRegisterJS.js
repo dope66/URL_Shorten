@@ -55,7 +55,7 @@ function createHandsontable(data) {
             indicators: false // 숨겨진 열의 지시자 표시 여부
         },
         height: 300,
-        columnSorting: true, // 정렬 활성화
+        columnSorting: false, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
         manualRowMove: true, // 행 이동 활성화
         manualColumnMove: true, // 열 이동 활성화

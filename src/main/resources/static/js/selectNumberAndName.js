@@ -1,3 +1,5 @@
+
+// 생산 유형에 따라 생산 번호와 생산 이름을 가져오는 함수입니다.
 function fetchProductionNumbersAndNames() {
     const selectedProductionType = document.getElementById("productionTypeSelect").value; // 선택된 생산 유형을 가져옵니다.
     console.log("productionType Select : ", selectedProductionType);
@@ -35,6 +37,7 @@ function fetchProductionNumbersAndNames() {
 const productionTypeSelect = document.getElementById('productionTypeSelect');
 const productionNameSelect = document.getElementById('productionName'); // productionNameSelect 가져오기
 
+// 생산 유형 목록 가져오기
 fetch('/api/mes/getProductionType')
     .then(response => response.json())
     .then(data => {
@@ -48,7 +51,7 @@ fetch('/api/mes/getProductionType')
     .catch(error => {
         console.error('fetch 오류 요청 ', error);
     });
-
+// 생산 유형 변경시 생산 번호와 생산 이름 가져오기
 productionTypeSelect.addEventListener('change', () => {
     // productionType 변경 시 productionName 값 초기화
     productionNameSelect.value = '';

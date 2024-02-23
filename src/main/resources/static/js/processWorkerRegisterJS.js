@@ -6,6 +6,7 @@ const previewImage = document.getElementById('preview-image'); // 미리보기 �
 const registerForm = document.getElementById("worker-register-form");
 const selectedProcessName = document.getElementById("search-processName");
 const equipmentNameSelect = document.getElementById("search-equipmentName");
+// 페이지 로드 시 실행되는 코드
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로드 시 실행되는 코드
     fetchProcessWorkerList(currentPage); // 초기 페이지 데이터 로딩
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchPositionEnum();
     fetchProcessNameDetail();
 });
-
+// 초기 공정원 불러오기 및 페이지네이션
 function fetchProcessWorkerList(page) {
     fetch(`/api/worker/list?page=${page}`)
         .then(response => response.json())
@@ -26,7 +27,7 @@ function fetchProcessWorkerList(page) {
 
         });
 }
-
+// 근무조 목록 가져오기
 function createHandsontable(data) {
     const container = document.getElementById('employee-Table');
     hot = new Handsontable(container, {
@@ -73,7 +74,7 @@ function createHandsontable(data) {
 
     console.log("hot : ", hot);
 }
-
+// 공정원 검색 기능
 function workerSearch() {
     const processNameSelected = document.getElementById('search-processName').value;
     const equipmentNameSelected = document.getElementById('search-equipmentName').value;
@@ -96,7 +97,7 @@ function workerSearch() {
         console.log('검색 결과가 없습니다.');
     }
 }
-
+// 전체 공정원 리스트 불러오기
 function wholeWorker() {
     // 원본 데이터를 Handsontable에 다시 로드합니다.
     hot.loadData(originalData);
@@ -111,7 +112,6 @@ function wholeWorker() {
 }
 
 // 이미지 미리 보기 기능
-
 imageInput.addEventListener('change', function () {
     const file = this.files[0];
     if (file) {
@@ -126,14 +126,12 @@ imageInput.addEventListener('change', function () {
         previewImage.style.display = 'none'; // 이미지를 숨김
     }
 });
-
-
-
+// 홈 버튼
 document.getElementById('homeButton').addEventListener('click', function (event) {
     event.preventDefault();
     window.location.href = "/mes/home";
 });
-
+// 공정원 등록
 registerForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -174,7 +172,7 @@ registerForm.addEventListener('submit', (event) => {
     }
 });
 
-
+// 해당하는 공정명 검색기능으로 가져오기
 function fetchProcessNames(selectedProcessName) {
     fetch('/api/worker/getProcessName')
         .then(response => response.json())
@@ -198,13 +196,13 @@ function fetchProcessNames(selectedProcessName) {
             console.error('fetch 오류 요청: ', error);
         });
 }
-
+// 공정명 변경시 호기 목록 가져오기
 selectedProcessName.addEventListener('change', () => {
     // productionType 변경 시 productionName 값 초기화
     equipmentNameSelect.value = '';
     fetchProcessNameAndWorkerName();
 });
-
+// 공정명에 따른 호기 목록 가져오기
 function fetchProcessNameAndWorkerName() {
     // 호기 선택란 초기화
     equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';

@@ -1,6 +1,6 @@
 const registryForm = document.getElementById("product-log-form");
 
-// 등록 폼 제출 시
+// 생산일지 등록 폼 제출 시
 registryForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const workDate = document.getElementById('workDate').value;

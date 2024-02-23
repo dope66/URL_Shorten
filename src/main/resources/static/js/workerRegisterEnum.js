@@ -1,6 +1,6 @@
 const processNameSelect = document.getElementById('processName');
 const positionSelect = document.getElementById('position');
-
+// enum 에서 가져온 값들을 select 태그에 추가
 function fetchProcessNameDetail(ProcessName){
     fetch('/enums/processNameEnum')
         .then(response => response.json())
@@ -44,10 +44,6 @@ function fetchWorkShiftEnum(SelectWorkShift) {
         })
         .catch(error => console.error('Error fetching process types:', error));
 }
-
-
-
-
 
 function fetchPositionEnum(SelectPosition) {
     fetch('/enums/positionEnum')

@@ -10,22 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EnumController {
 
-    @GetMapping("/enums/processTypes")
-    public ProcessName[] getProcessTypes() {
-        return ProcessName.values();
-    }
 
     @GetMapping("/enums/WorkShiftEnum")
     public WorkShiftEnum[] getWorkShiftEnum() {
         return WorkShiftEnum.values();
     }
+
     @GetMapping("/enums/equipmentName")
-    public EquipmentNameEnum[] getEquipmentNameEnum(){
+    public EquipmentNameEnum[] getEquipmentNameEnum() {
         return EquipmentNameEnum.values();
     }
 
     @GetMapping("/enums/positionEnum")
-    public PositionEnum[] getPositionEnum(){
+    public PositionEnum[] getPositionEnum() {
         return PositionEnum.values();
+    }
+
+    @GetMapping("/enums/processNameEnum")
+    public ProcessName[] getProcessNameEnum() {
+        return ProcessName.values();
+
     }
 }

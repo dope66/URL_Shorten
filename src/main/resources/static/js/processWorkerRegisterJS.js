@@ -1,6 +1,11 @@
 let currentPage = 0;
 let originalData = []; // 원본 데이터 배열
 let hot;
+const imageInput = document.getElementById('imageInput'); // 이미지 입력란
+const previewImage = document.getElementById('preview-image'); // 미리보기 이미지
+const registerForm = document.getElementById("worker-register-form");
+const selectedProcessName = document.getElementById("search-processName");
+const equipmentNameSelect = document.getElementById("search-equipmentName");
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로드 시 실행되는 코드
     fetchProcessWorkerList(currentPage); // 초기 페이지 데이터 로딩
@@ -105,8 +110,6 @@ function wholeWorker() {
 }
 
 // 이미지 미리 보기 기능
-const imageInput = document.getElementById('imageInput'); // 이미지 입력란
-const previewImage = document.getElementById('preview-image'); // 미리보기 이미지
 
 imageInput.addEventListener('change', function () {
     const file = this.files[0];
@@ -122,7 +125,7 @@ imageInput.addEventListener('change', function () {
         previewImage.style.display = 'none'; // 이미지를 숨김
     }
 });
-const registerForm = document.getElementById("worker-register-form");
+
 
 
 document.getElementById('homeButton').addEventListener('click', function (event) {
@@ -170,16 +173,14 @@ registerForm.addEventListener('submit', (event) => {
     }
 });
 
-const selectedProcessName = document.getElementById("search-processName");
-const equipmentNameSelect = document.getElementById("search-equipmentName");
 
 function fetchProcessNames(selectedProcessName) {
     fetch('/api/worker/getProcessName')
         .then(response => response.json())
         .then(data => {
-            const processNameSelect = document.getElementById('processName');
+            const processNameSelect = document.getElementById('search-processName');
             // 기존의 옵션을 초기화
-            processNameSelect.innerHTML = '';
+            processNameSelect.innerHTML = '<option value="" disabled selected>공정 선택</option>';
             // 가져온 데이터로 옵션 생성
             data.forEach(processName => {
                 const option = document.createElement('option');
@@ -196,24 +197,6 @@ function fetchProcessNames(selectedProcessName) {
             console.error('fetch 오류 요청: ', error);
         });
 }
-
-fetch('/api/worker/getProcessName')
-    .then(response => response.json())
-    .then(data => {
-        selectedProcessName.innerHTML = '<option value="" disabled selected>공정 선택</option>';
-        // 가져온 데이터로 옵션 생성
-        data.forEach(processName => {
-            const option = document.createElement('option');
-            option.text = processName;
-            option.value = processName;
-            selectedProcessName.appendChild(option);
-        });
-
-    })
-    .catch(error => {
-        console.error('fetch 오류 요청: ', error);
-    });
-
 
 selectedProcessName.addEventListener('change', () => {
     // productionType 변경 시 productionName 값 초기화

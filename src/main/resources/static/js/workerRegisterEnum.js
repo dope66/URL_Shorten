@@ -1,15 +1,17 @@
 const processNameSelect = document.getElementById('processName');
 const positionSelect = document.getElementById('position');
 
-fetch('/enums/processTypes')
+
+fetch('/enums/processNameEnum')
     .then(response => response.json())
-    .then(processTypes => {
-        processTypes.forEach(name => {
+    .then(processNameEnums => {
+        processNameEnums.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
             option.textContent = name;
             processNameSelect.appendChild(option);
         });
+
     })
     .catch(error => console.error('Error fetching process types:', error));
 

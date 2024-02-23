@@ -206,6 +206,7 @@
                 <input type="text" value="주야간조" readonly class="form-Name">
                 <select name="workShift" id="workShift" required"></select>
             </label>
+                <input type="hidden" id="idSelect" value="${rowData.id}">
             <div id="navigation-container">
                 <button id="saveButton" class="btn btn-dark-info">수정</button>
                 <button id="homeButton" class="btn btn-dark-info">홈으로</button>
@@ -214,16 +215,19 @@
         fetchProcessNames(rowData.processName);
         fetchWorkShiftEnum(rowData.workShift);
         fetchPositionEnum(rowData.position);
+        fetchImageAndUpdatePreview(rowData.id);
         console.log('rowData position',rowData.position);
         const processNameSelect = document.getElementById('processName');
 
         const equipmentNameSelect = document.getElementById('equipmentName');
         const positionSelect = document.getElementById('position');
         const workShiftSelect = document.getElementById('workShift');
+
         processNameSelect.value = rowData.processName;
         equipmentNameSelect.value=rowData.equipmentName;
         positionSelect.value=rowData.position;
         workShiftSelect.value=rowData.workShift;
+
 
 
 
@@ -246,6 +250,23 @@
 
 
         });
+    }
+    function fetchImageAndUpdatePreview(workerId) {
+        fetch(`/getBase64Image?id=${workerId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Base64 인코딩된 이미지 데이터를 받아옵니다.
+                const base64Image = data;
+                const previewImage = document.getElementById('preview-image');
+                console.log("base64Image",base64Image);
+                previewImage.src = base64Image; // 이미지 태그의 src 속성을 업데이트합니다.
+            })
+            .catch(error => {
+                console.error('이미지를 불러오는 중 오류 발생:', error);
+                // 에러 처리 로직 (예: 기본 이미지 설정)
+                const previewImage = document.getElementById('preview-image');
+                previewImage.src = '/static/image/defaultWorker.png'; // 에러 발생 시 기본 이미지로 대체
+            });
     }
 </script>
 

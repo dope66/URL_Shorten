@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchProcessNameAndWorkerName();
     fetchWorkShiftEnum(); // 근무조 목록 가져오기
     fetchPositionEnum();
+    fetchProcessNameDetail();
 });
 
 function fetchProcessWorkerList(page) {

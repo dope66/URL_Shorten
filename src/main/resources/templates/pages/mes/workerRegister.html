@@ -259,7 +259,7 @@
         document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
         document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
 
-    
+
     }
 
 
@@ -358,22 +358,18 @@
 
     function fetchProcessNameAndWorkerName() {
         equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
-        //공정명값으로 호기 가져오기
-        fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
-            .then(response => response.json())
-            .then(equipmentNames => {
-
-                console.log("equipmentName : ", equipmentNames);
+        fetch(`/api/worker/getAllEquipmentName`)
+            .then(response=> response.json())
+            .then(equipmentNames=>{
                 equipmentNames.forEach(equipmentName => {
                     const option = document.createElement('option');
                     option.text = equipmentName;
                     option.value = equipmentName;
                     equipmentNameSelect.appendChild(option);
                 });
-            })
-            .catch(error => {
-                console.error('fetch 오류 요청 ', error);
-            });
+            }).catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
     }
 
 </script>

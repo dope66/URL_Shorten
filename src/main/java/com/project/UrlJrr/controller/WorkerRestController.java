@@ -67,23 +67,6 @@ public class WorkerRestController {
             return new ResponseEntity<>("Failed to convert image to Base64", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> workerList(@RequestParam(name = "search", required = false) String search,
-//                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-//                                        PagedResourcesAssembler<ProcessWorker> assembler) {
-//
-//        Page<ProcessWorker> ProcessWorkers;
-//
-//
-//        if (StringUtils.hasText(search)) {
-//            ProcessWorkers = workerService.findByWorkerNameContaining(search, pageable);
-//        } else {
-//            ProcessWorkers = workerService.findAll(pageable);
-//        }
-//        PagedModel<EntityModel<ProcessWorker>> model = assembler.toModel(ProcessWorkers);
-//        return new ResponseEntity<>(model, HttpStatus.OK);
-//
-//    }
     @GetMapping("/list")
     public ResponseEntity<List<ProcessWorker>> workerList() {
         List<ProcessWorker> workers;
@@ -109,7 +92,6 @@ public class WorkerRestController {
         if (existingProcessWorker == null) {
             return ResponseEntity.notFound().build();
         }
-        //        existingProductLog.setWorkDate(productLogDto.getWorkDate());
         existingProcessWorker.setWorkerName(processWorkerDto.getWorkerName());
         existingProcessWorker.setProcessName(processWorkerDto.getProcessName());
         existingProcessWorker.setNation(processWorkerDto.getNation());
@@ -131,6 +113,11 @@ public class WorkerRestController {
     @GetMapping("/getEquipmentName")
     public ResponseEntity<?> getEquipmentName(@RequestParam(name = "processName") String processName) {
         List<String> equipmentNames = workerService.getEquipmentNamesByProcessName(processName);
+        return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
+    }
+    @GetMapping("/getAllEquipmentName")
+    public ResponseEntity<?> getAllEquipmentName(){
+        List<String> equipmentNames = workerService.getAllEquipmentNames();
         return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }
 

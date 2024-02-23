@@ -27,21 +27,10 @@ public class WorkerService {
         return workerRepository.save(processWorker);
     }
 
-
-//    public Page<ProcessWorker> findByWorkerNameContaining(String workerName, Pageable pageable) {
-//        return workerRepository.findByWorkerNameContaining(workerName, pageable);
-//    }
-
-    //        public Page<ProcessWorker> findAll(Pageable pageable) {
-//        return workerRepository.findAll(pageable);
-//    }
     public List<ProcessWorker> findAll() {
         return workerRepository.findAll();
     }
 
-    //    public List<ProcessWorker> findByWorkerNameContaining(String search) {
-//        return workerRepository.findByWorkerNameContaining(search);
-//    }
     public long getTotalEmployeeCount() {
         return workerRepository.count();
     }
@@ -81,5 +70,9 @@ public class WorkerService {
 
     public List<String> getIdByProcessNameAndEquipmentNameAndWorkerName(String processName, String equipmentName, String workerName) {
         return workerRepository.findIdByProcessNameAndEquipmentNameAndWorkerName(processName, equipmentName, workerName);
+    }
+
+    public List<String> getAllEquipmentNames() {
+        return workerRepository.findByEquipmentName();
     }
 }

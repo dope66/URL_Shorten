@@ -67,6 +67,7 @@ public class WorkerRestController {
             return new ResponseEntity<>("Failed to convert image to Base64", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/list")
     public ResponseEntity<List<ProcessWorker>> workerList() {
         List<ProcessWorker> workers;
@@ -86,11 +87,34 @@ public class WorkerRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/modify/{id}")
-    public ResponseEntity<?> modifyProcessWorker(@PathVariable("id") Long id, @RequestBody ProcessWorkerDto processWorkerDto) {
+    @PostMapping(value = "/modify/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> modifyProcessWorker(@PathVariable("id") Long id,
+                                                 @RequestPart(name = "image", required = false) MultipartFile imageFile,
+                                                 @ModelAttribute ProcessWorkerDto processWorkerDto) {
         ProcessWorker existingProcessWorker = workerService.getProcessWorkerById(id);
         if (existingProcessWorker == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String directoryPath = externalDirectoryPath.replace("file:", "");
+                String workerDirectoryPath = Paths.get(directoryPath, "worker").toString();
+                File workerDirectory = new File(workerDirectoryPath);
+                if (!workerDirectory.exists() && !workerDirectory.mkdirs()) {
+                    throw new IOException("Failed to create directory: " + workerDirectoryPath);
+                }
+
+                String fileName = "image_" + System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+                String imagePath = Paths.get(workerDirectoryPath, fileName).toString();
+                imageFile.transferTo(new File(imagePath));
+
+
+                existingProcessWorker.setImagePath(imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("Failed to save image", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
         existingProcessWorker.setWorkerName(processWorkerDto.getWorkerName());
         existingProcessWorker.setProcessName(processWorkerDto.getProcessName());
@@ -99,8 +123,8 @@ public class WorkerRestController {
         existingProcessWorker.setPosition(processWorkerDto.getPosition());
         existingProcessWorker.setWorkShift(processWorkerDto.getWorkShift());
 
-        ProcessWorker updateProcessWorker = workerService.modifyProcessWorker(existingProcessWorker);
-        return ResponseEntity.ok(updateProcessWorker);
+        ProcessWorker updatedProcessWorker = workerService.modifyProcessWorker(existingProcessWorker);
+        return ResponseEntity.ok(updatedProcessWorker);
     }
 
 
@@ -115,8 +139,9 @@ public class WorkerRestController {
         List<String> equipmentNames = workerService.getEquipmentNamesByProcessName(processName);
         return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }
+
     @GetMapping("/getAllEquipmentName")
-    public ResponseEntity<?> getAllEquipmentName(){
+    public ResponseEntity<?> getAllEquipmentName() {
         List<String> equipmentNames = workerService.getAllEquipmentNames();
         return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }

@@ -50,7 +50,6 @@ public class WorkerService {
 
     public String getImagePathByWorkerId(Long id) {
         ProcessWorker ImagePathByprocessWorker = getProcessWorkerById(id);
-        System.out.println("processWorkerImagePath " + ImagePathByprocessWorker);
         return ImagePathByprocessWorker.getImagePath();
     }
 

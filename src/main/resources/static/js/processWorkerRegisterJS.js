@@ -110,7 +110,18 @@ function wholeWorker() {
 
 
 }
-
+fetch('/api/worker/getAllWorkerName')
+    .then(response => response.json()
+        .then(data => {
+            const workerNameSelect = document.getElementById('search-input');
+            workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+            data.forEach(workerName => {
+                const option = document.createElement('option');
+                option.text = workerName;
+                option.value = workerName;
+                workerNameSelect.appendChild(option);
+            });
+        }));
 // 이미지 미리 보기 기능
 imageInput.addEventListener('change', function () {
     const file = this.files[0];

@@ -74,4 +74,8 @@ public class WorkerService {
     public List<String> getAllEquipmentNames() {
         return workerRepository.findByEquipmentName();
     }
+
+    public List<String> getAllWorkerNames() {
+        return workerRepository.findByWorkerName();
+    }
 }

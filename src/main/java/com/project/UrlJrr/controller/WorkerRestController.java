@@ -145,6 +145,11 @@ public class WorkerRestController {
         List<String> equipmentNames = workerService.getAllEquipmentNames();
         return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }
+    @GetMapping("/getAllWorkerName")
+    public ResponseEntity<?> getAllWorkerName() {
+        List<String> workerNames = workerService.getAllWorkerNames();
+        return new ResponseEntity<>(workerNames, HttpStatus.OK);
+    }
 
     @GetMapping("/getWorkerName")
     public ResponseEntity<?> getWorkerName(@RequestParam(name = "processName") String processName,

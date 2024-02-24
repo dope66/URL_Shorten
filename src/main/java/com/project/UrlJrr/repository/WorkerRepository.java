@@ -26,4 +26,7 @@ public interface WorkerRepository extends JpaRepository<ProcessWorker, Long> {
     List<String> findIdByProcessNameAndEquipmentNameAndWorkerName(@Param("processName") String processName,@Param("equipmentName") String equipmentName, @Param("workerName") String workerName);
     @Query("SELECT DISTINCT equipmentName from ProcessWorker ")
     List<String> findByEquipmentName();
+    @Query("SELECT worker.workerName FROM ProcessWorker worker")
+    List<String> findByWorkerName();
+
 }

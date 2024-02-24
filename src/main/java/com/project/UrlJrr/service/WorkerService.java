@@ -78,4 +78,8 @@ public class WorkerService {
     public List<String> getAllWorkerNames() {
         return workerRepository.findByWorkerName();
     }
+
+    public List<String> getWorkerNamesByProcessName(String processName) {
+        return workerRepository.findWorkerNamesByProcessName(processName);
+    }
 }

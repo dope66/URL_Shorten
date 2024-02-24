@@ -28,5 +28,6 @@ public interface WorkerRepository extends JpaRepository<ProcessWorker, Long> {
     List<String> findByEquipmentName();
     @Query("SELECT worker.workerName FROM ProcessWorker worker")
     List<String> findByWorkerName();
-
+    @Query("SELECT worker.workerName FROM ProcessWorker worker WHERE worker.processName = :processName")
+    List<String> findWorkerNamesByProcessName(@Param("processName") String processName);
 }

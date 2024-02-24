@@ -6,6 +6,8 @@ const previewImage = document.getElementById('preview-image'); // 미리보기 �
 const registerForm = document.getElementById("worker-register-form");
 const selectedProcessName = document.getElementById("search-processName");
 const equipmentNameSelect = document.getElementById("search-equipmentName");
+
+
 // 페이지 로드 시 실행되는 코드
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로드 시 실행되는 코드
@@ -108,20 +110,25 @@ function wholeWorker() {
     document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
     document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
 
+    AllWorkerName();
 
 }
-fetch('/api/worker/getAllWorkerName')
-    .then(response => response.json()
-        .then(data => {
-            const workerNameSelect = document.getElementById('search-input');
-            workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
-            data.forEach(workerName => {
-                const option = document.createElement('option');
-                option.text = workerName;
-                option.value = workerName;
-                workerNameSelect.appendChild(option);
-            });
-        }));
+//전체 공정원 이름 리스트 불러오기
+function AllWorkerName(){
+    fetch('/api/worker/getAllWorkerName')
+        .then(response => response.json()
+            .then(data => {
+                const workerNameSelect = document.getElementById('search-input');
+                workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                data.forEach(workerName => {
+                    const option = document.createElement('option');
+                    option.text = workerName;
+                    option.value = workerName;
+                    workerNameSelect.appendChild(option);
+                });
+            }));
+}
+
 // 이미지 미리 보기 기능
 imageInput.addEventListener('change', function () {
     const file = this.files[0];
@@ -213,11 +220,11 @@ selectedProcessName.addEventListener('change', () => {
     equipmentNameSelect.value = '';
     fetchProcessNameAndWorkerName();
 });
-// 공정명에 따른 호기 목록 가져오기
+
 function fetchProcessNameAndWorkerName() {
     // 호기 선택란 초기화
-    equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
 
+    equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
     if (selectedProcessName.value) {
         // 공정명이 선택된 경우, 해당하는 호기만 가져오기
         fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
@@ -228,6 +235,21 @@ function fetchProcessNameAndWorkerName() {
                     option.text = equipmentName;
                     option.value = equipmentName;
                     equipmentNameSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청 ', error);
+            });
+        fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
+            .then(response => response.json())
+            .then(workerNames => {
+                const workerNameSelect = document.getElementById('search-input');
+                workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                workerNames.forEach(workerName => {
+                    const option = document.createElement('option');
+                    option.text = workerName;
+                    option.value = workerName;
+                    workerNameSelect.appendChild(option);
                 });
             })
             .catch(error => {
@@ -248,6 +270,11 @@ function fetchProcessNameAndWorkerName() {
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
+        AllWorkerName();
+
+
     }
+
 }
+
 

@@ -447,8 +447,12 @@ function createDeleteButton() {
 
     deleteButton.id = 'deleteButton';
     deleteButton.textContent = '삭제';
-    deleteButton.classList.add('btn', 'btn-danger'); // 필요한 클래스 추가
-
+    // deleteButton.classList.add('btn', 'btn-danger'); // 필요한 클래스 추가
+    deleteButton.style.backgroundColor = '#f61e1e'; // 일단 숨김
+    deleteButton.style.borderColor = '#f61e1e';
+    deleteButton.style.color = 'white';
+    deleteButton.style.height= '30px';
+    deleteButton.style.width= '100px';
     // navigation-container 요소 선택
     const navigationContainer = document.getElementById('navigation-container');
 

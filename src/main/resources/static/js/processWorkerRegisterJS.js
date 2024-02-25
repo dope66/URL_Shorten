@@ -11,13 +11,16 @@ const equipmentNameSelect = document.getElementById("search-equipmentName");
 // 페이지 로드 시 실행되는 코드
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로드 시 실행되는 코드
-    fetchProcessWorkerList(currentPage); // 초기 페이지 데이터 로딩
-    fetchProcessNames(); // 공정명 목록 가져오기
+    fetchInitialData();
+});
+function fetchInitialData() {
+    fetchProcessWorkerList(currentPage);
+    fetchProcessNames();
     fetchProcessNameAndWorkerName();
-    fetchWorkShiftEnum(); // 근무조 목록 가져오기
+    fetchWorkShiftEnum();
     fetchPositionEnum();
     fetchProcessNameDetail();
-});
+}
 
 // 초기 공정원 불러오기 및 페이지네이션
 function fetchProcessWorkerList(page) {
@@ -26,8 +29,6 @@ function fetchProcessWorkerList(page) {
         .then(data => {
             originalData = data;
             createHandsontable(originalData);
-            console.log("originalDataPagination", originalData);
-
         });
 }
 
@@ -60,6 +61,7 @@ function createHandsontable(data) {
             indicators: false // 숨겨진 열의 지시자 표시 여부
         },
         height: 300,
+        viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
         columnSorting: false, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
         manualRowMove: true, // 행 이동 활성화
@@ -75,20 +77,18 @@ function createHandsontable(data) {
             updateWorkerContainer(rowData);
         }
     });
-
-    console.log("hot : ", hot);
 }
 
 // 공정원 검색 기능
 function workerSearch() {
-    const processNameSelected = document.getElementById('search-processName').value;
-    const equipmentNameSelected = document.getElementById('search-equipmentName').value;
-    const workerNameQuery = document.getElementById('search-input').value.trim().toLowerCase(); // 대소문자 구분 없이 검색하기 위해 소문자로 변환
+    const processNameSelected = selectedProcessName.value;
+    const equipmentNameSelected = equipmentNameSelect.value;
+    const workerNameQuery = document.getElementById('search-input').value.trim().toLowerCase();
 
     const filteredData = originalData.filter(item => {
-        const matchesProcessName = processNameSelected ? item.processName === processNameSelected : true;
-        const matchesEquipmentName = equipmentNameSelected ? item.equipmentName === equipmentNameSelected : true;
-        const matchesWorkerName = workerNameQuery ? item.workerName.toLowerCase().includes(workerNameQuery) : true;
+        const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
+        const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
+        const matchesWorkerName = !workerNameQuery || item.workerName.toLowerCase().includes(workerNameQuery);
         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 
@@ -287,9 +287,6 @@ function fetchProcessNameAndWorkerName() {
 document.addEventListener('DOMContentLoaded', function () {
     // 페이지 로드 시 권한 상태 확인 및 적용
     const hasPermission = sessionStorage.getItem('hasEditPermission') === 'true';
-
-
-    // enableEditAndDeleteFeatures(hasPermission);
     enableEditAndDeleteFeatures(hasPermission, false)
     const positionSelect = document.getElementById('position');
     positionSelect.addEventListener('change', function () {
@@ -367,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
 
 
 function enableEditAndDeleteFeatures(hasPermission, isEditMode = true) {

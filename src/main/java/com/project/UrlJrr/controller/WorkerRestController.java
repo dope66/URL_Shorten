@@ -171,6 +171,4 @@ public class WorkerRestController {
         return new ResponseEntity<>(workerIds, HttpStatus.OK);
 
     }
-
-
 }

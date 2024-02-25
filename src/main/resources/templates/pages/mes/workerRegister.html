@@ -139,7 +139,7 @@
             <div id="navigation-container">
                 <button id="registerButton" class="btn btn-dark-info">등록</button>
                 <button id="homeButton" class="btn btn-dark-info">홈으로</button>
-                <button id="deleteButton"  class="btn btn-dark-danger">삭제</button>
+<!--                <button id="deleteButton"  class="btn btn-dark-danger">삭제</button>-->
 
 
             </div>
@@ -171,13 +171,11 @@
 <script src="/static/js/workerRegisterEnum.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-
-
-</script>
-<script>
     document.addEventListener('DOMContentLoaded', function () {
         // 페이지 로드 시 권한 상태 확인 및 적용
         const hasPermission = sessionStorage.getItem('hasEditPermission') === 'true';
+
+
         // enableEditAndDeleteFeatures(hasPermission);
         enableEditAndDeleteFeatures(hasPermission, false)
         const positionSelect = document.getElementById('position');
@@ -251,36 +249,55 @@
             if (existingFieldContainer) existingFieldContainer.remove();
         }
 
-
+        if (hasPermission) {
+            createDeleteButton();
+        }
 
     });
+
+
     function enableEditAndDeleteFeatures(hasPermission, isEditMode = true) {
         const modifyButton = document.getElementById('registerButton');
         const deleteButton = document.getElementById('deleteButton'); // 삭제 버튼 선택
         // modifyButton.style.display = (isEditMode && hasPermission) || !isEditMode ? 'inline-block' : 'none';
-        if (hasPermission && isEditMode) {
-            modifyButton.style.display = 'inline-block';
-            deleteButton.style.display = 'inline-block'; // 삭제 버튼도 권한에 따라 표시 여부 결정
-        } else if (!isEditMode) {
-            // 등록 모드일 때는 등록 버튼만 표시
-            modifyButton.style.display = 'inline-block';
-            deleteButton.style.display = 'none'; // 삭제 버튼 숨김
-        } else {
-            // 권한이 없을 경우 모든 버튼 숨김
-            modifyButton.style.display = 'none';
-            deleteButton.style.display = 'none';
+
+        if (modifyButton) {
+            if (hasPermission && isEditMode) {
+                modifyButton.style.display = 'inline-block';
+                // deleteButton이 존재할 때만 스타일을 변경
+                if (deleteButton) deleteButton.style.display = 'inline-block';
+            } else if (!isEditMode) {
+                modifyButton.style.display = 'inline-block';
+                // 등록 모드에서는 deleteButton을 숨김 (존재하는 경우)
+                if (deleteButton) deleteButton.style.display = 'none';
+            } else {
+                // 권한이 없을 경우 modifyButton을 숨김
+                modifyButton.style.display = 'none';
+                // 권한이 없을 경우 deleteButton도 숨김 (존재하는 경우)
+                if (deleteButton) deleteButton.style.display = 'none';
+            }
         }
+
+
+
     }
 
     function updateWorkerContainer(rowData) {
 
         const isEditMode = !!rowData && !!rowData.id;
-
-        const deleteButton = document.getElementById('deleteButton');
-        if (rowData && rowData.id) {
-            deleteButton.onclick = function() {
+        let deleteButton = document.getElementById('deleteButton');
+        if (!deleteButton) {
+            createDeleteButton();
+            deleteButton = document.getElementById('deleteButton');
+        }else{
+            deleteButton.addEventListener('click', function() {
+                // 삭제 로직 실행
+                console.log('삭제 로직을 실행합니다.');
                 deleteWorker(rowData.id);
-            };
+            });
+        }
+
+        if (rowData && rowData.id) {
             deleteButton.style.display = 'inline-block'; // 삭제 버튼 표시
         } else {
             deleteButton.style.display = 'none'; // 삭제 버튼 숨김
@@ -312,6 +329,24 @@
 
         };
     }
+    const deleteButton = document.createElement('button');
+    function createDeleteButton() {
+        // 삭제 버튼 생성
+
+        deleteButton.id = 'deleteButton';
+        deleteButton.textContent = '삭제';
+        deleteButton.classList.add('btn', 'btn-danger'); // 필요한 클래스 추가
+
+        // navigation-container 요소 선택
+        const navigationContainer = document.getElementById('navigation-container');
+
+        // 삭제 버튼을 navigation-container에 추가
+        navigationContainer.appendChild(deleteButton);
+
+        // 삭제 버튼에 클릭 이벤트 리스너 추가
+
+    }
+
 
     function deleteWorker(workerId) {
         event.preventDefault();

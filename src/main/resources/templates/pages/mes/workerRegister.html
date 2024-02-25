@@ -92,10 +92,8 @@
         }
 
     </style>
-
     <!-- Handsontable CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
-
     <!-- Handsontable JS -->
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 </head>
@@ -181,21 +179,46 @@
                 addLoginFields(formContainer); // 조장 선택 시 로그인 필드 추가
             }
         });
-
         function addLoginFields(parentElement) {
-            // 비밀번호 입력 필드 생성 및 추가
-            const passwordInput = createInputElement('password', 'adminPassword', '관리자 비밀번호');
-            parentElement.appendChild(passwordInput);
+            const fieldContainer = document.createElement('div');
+            fieldContainer.style.display = 'flex'; // Flexbox 레이아웃 적용
+            fieldContainer.style.alignItems = 'center'; // 세로 중앙 정렬
+            fieldContainer.style.marginTop = '5px'; // 상단 여백 추가
 
-            // 권한 부여 버튼 생성 및 추가
+            // 비밀번호 입력 필드 생성 및 스타일 설정
+            const passwordInput = createInputElement('password', 'adminPassword', '관리자 비밀번호');
+            passwordInput.style.marginRight = '5px'; // 버튼과의 간격
+             // 너비 설정
+            passwordInput.style.width = '190px';
+            // 권한 부여 버튼 생성 및 스타일 설정
             const authButton = document.createElement('button');
             authButton.textContent = '권한 부여';
             authButton.id = 'authButton';
-            parentElement.appendChild(authButton);
+            authButton.style.backgroundColor = '#e8b839';
+            authButton.style.color = 'white';
+            authButton.style.border = 'none';
+            authButton.style.cursor = 'pointer';
+            authButton.style.width = '100px';
+            // fieldContainer에 비밀번호 입력 필드와 권한 부여 버튼 추가
+            fieldContainer.appendChild(passwordInput);
+            fieldContainer.appendChild(authButton);
+
+            // position 선택 요소의 label 태그의 다음 형제로 fieldContainer 삽입
+            const positionSelect = document.getElementById('position');
+            if (positionSelect) {
+                const nextSibling = positionSelect.nextElementSibling; // 다음 형제 요소를 올바르게 참조
+                const formContainer = positionSelect.parentNode; // positionSelect의 부모 요소를 참조
+
+                if (nextSibling) {
+                    formContainer.insertBefore(fieldContainer, nextSibling);
+                } else {
+                    formContainer.appendChild(fieldContainer); // 다음 형제 요소가 없다면, 마지막 자식으로 추가
+                }
+            }
 
             authButton.addEventListener('click', function() {
+                event.preventDefault(); // 폼의 기본 제출을 방지
                 const password = passwordInput.value;
-                // 'admin'을 올바른 비밀번호로 가정합니다.
                 if (password === 'admin') {
                     alert('권한이 부여되었습니다.');
                     enableEditAndDeleteFeatures(true); // 권한 부여 성공
@@ -204,7 +227,6 @@
                     enableEditAndDeleteFeatures(false); // 권한 부여 실패
                 }
             });
-
         }
 
         function createInputElement(type, id, placeholder) {
@@ -234,8 +256,6 @@
 
     });
 </script>
-
-
 <script>
 
 

@@ -36,6 +36,10 @@ public class MesController {
         model.addAttribute("processWorker", processWorkerDto);
         return "pages/mes/workerDetail";
     }
+    @GetMapping("/testSearch")
+    public String testSearch(){
+        return "pages/mes/testSearch";
+    }
 
 
     @GetMapping("/popUp")

@@ -2,6 +2,8 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.dto.ProcessWorkerDto;
 import com.project.UrlJrr.entity.ProcessWorker;
+import com.project.UrlJrr.entity.ProductionTest;
+import com.project.UrlJrr.service.ProductionTestService;
 import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/worker")
 public class WorkerRestController {
     private final WorkerService workerService;
+    private final ProductionTestService productionTestService;
 
     @Value("${external.directory.path}")
     private String externalDirectoryPath;
@@ -177,5 +180,11 @@ public class WorkerRestController {
         List<String> workerIds = workerService.getIdByProcessNameAndWorkerName(processName, workerName);
         return new ResponseEntity<>(workerIds, HttpStatus.OK);
 
+    }
+    @GetMapping("/testList")
+    public ResponseEntity<?> getTestList() {
+        List<ProductionTest> productionTests;
+        productionTests =productionTestService.findAll();
+        return new ResponseEntity<>(productionTests, HttpStatus.OK);
     }
 }

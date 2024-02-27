@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>조회 검색</title>
+    <!-- Handsontable CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <!-- Handsontable JS -->
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <style>
+        #test-search-container {
+            padding: 10px;
+            color: #c5c5c5;
+            background-color: #3d3d3d;
+        }
+        #search-test-detail{
+            padding: 10px;
+            color: #c5c5c5;
+            background-color: #3d3d3d;
+        }
+
+    </style>
+</head>
+<body>
+<div id="test-search-container">
+    기간 검색 : <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+    공정명 검색 : <select type="text" id="search-processName"></select>
+    호기 검색 : <select type="text" id="search-equipmentName"></select>
+    공정원 검색 : <select type="text" id="search-workerName"></select>
+    <button id="searchButton" class="btn btn-dark-info" onclick="workerSearch()">기간 검색</button>
+</div>
+<div id="search-test-detail">
+    공정 : <input type="text" readonly id="searched-processName">
+    호기 : <input type="text" readonly id="searched-equipmentName">
+    공정원 : <input type="text" readonly id="searched-workerName">
+
+</div>
+<div id="test-list"></div>
+</body>
+<script>
+    const selectedProcessName = document.getElementById("search-processName");
+    const equipmentNameSelect = document.getElementById("search-equipmentName");
+    const workerNameSelect = document.getElementById("search-workerName");
+    selectedProcessName.innerHTML = '<option value="" disabled selected>공정명 선택</option>';
+    fetchTestList();
+    fetchProcessNameAndWorkerName();
+    fetchProcessNames();
+
+
+    function fetchTestList() {
+        fetch(`/api/worker/testList`)
+            .then(response => response.json())
+            .then(data => {
+                originalData = data;
+                createHandsontable(originalData);
+            });
+    }
+
+    function createHandsontable(data) {
+        const container = document.getElementById('test-list');
+        hot = new Handsontable(container, {
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter';
+                return cellProperties;
+            },
+            className: "htCenter",
+            colWidths: [100, 150, 100, 100, 100, 100, 200,150,100,100], // 각 열의 너비를 픽셀 단위로 설정
+            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
+            licenseKey: 'non-commercial-and-evaluation',
+            data: data,
+            colHeaders: ['ID', '생산날짜', '생산설비', '호기', '작업자', '고객사', '비고','등록시간','생산량','불량수량'],
+            columns: [
+                {data: 'id', readOnly: true, className: "htCenter"},
+                {data: 'productionDate', readOnly: true,  renderer: dateRenderer,className: "htCenter"},
+                {data: 'processName', readOnly: true, className: "htCenter"},
+                {data: 'equipmentName', readOnly: true, className: "htCenter"},
+                {data: 'processWorker', readOnly: true, className: "htCenter"},
+                {data: 'company', readOnly: true, className: "htCenter"},
+                {data: 'note', readOnly: true, className: "htCenter"},
+                {data: 'registerDate', readOnly: true, className: "htCenter" , renderer: dateRenderer},
+                {data: 'productionCount', readOnly: true, className: "htCenter"},
+                {data: 'defectCount', readOnly: true, className: "htCenter"},
+            ],
+            hiddenColumns: {
+                columns: [0], // 'ID' 열을 숨깁니다.
+                indicators: false // 숨겨진 열의 지시자 표시 여부
+            },
+            height: 300,
+            viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
+            columnSorting: false, // 정렬 활성화
+            contextMenu: false, // 우클릭 메뉴 활성화
+            manualRowMove: true, // 행 이동 활성화
+            manualColumnMove: true, // 열 이동 활성화
+            filters: true, // 필터링 활성화
+            dropdownMenu: false, // 드롭다운 메뉴 활성화
+            rowHeaders: true, // 행 번호 표시
+            search: true, // 검색 기능 활성화
+            // afterOnCellMouseDown: function (event, coords) {
+            //     const rowData = hot.getSourceDataAtRow(coords.row);
+            //     // applyDataToForm(rowData);
+            //     console.log("rowData", rowData);
+            //     updateWorkerContainer(rowData);
+            // }
+        });
+    }
+    function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
+        const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric', // '2-digit'에서 'numeric'으로 변경하여 연도를 4자리로 표시
+            month: '2-digit',
+            day: '2-digit'
+        });
+
+        // value가 유효한 날짜인지 확인
+        const dateValue = value instanceof Date ? value : new Date(value);
+        if (!isNaN(dateValue.getTime())) {
+            // 날짜 형식으로 변환
+            td.textContent = dateFormatter.format(dateValue).replace(/\./g,'-').slice(0, -1);
+        } else {
+            // 유효하지 않은 날짜인 경우 기본 텍스트 설정
+            td.textContent = '';
+        }
+
+        return td;
+    }
+
+    function fetchProcessNameAndWorkerName() {
+        // 호기 선택란 초기화
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+        if (selectedProcessName.value) {
+            // 공정명이 선택된 경우, 해당하는 호기만 가져오기
+            fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+            fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(workerNames => {
+                    const workerNameSelect = document.getElementById('search-workerName');
+                    workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                    workerNames.forEach(workerName => {
+                        const option = document.createElement('option');
+                        option.text = workerName;
+                        option.value = workerName;
+                        workerNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        } else {
+            // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
+            fetch(`/api/worker/getAllEquipmentName`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+            AllWorkerName();
+
+
+        }
+
+    }
+    function AllWorkerName() {
+        fetch('/api/worker/getAllWorkerName')
+            .then(response => response.json()
+                .then(data => {
+                    const workerNameSelect = document.getElementById('search-workerName');
+                    workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                    data.forEach(workerName => {
+                        const option = document.createElement('option');
+                        option.text = workerName;
+                        option.value = workerName;
+                        workerNameSelect.appendChild(option);
+                    });
+                }));
+    }
+
+    function workerSearch() {
+        const processNameSelected = selectedProcessName.value;
+        const equipmentNameSelected = equipmentNameSelect.value;
+        // const workerNameQuery = document.getElementById('search-workerName').value.trim().toLowerCase();
+        const workerNameElement = document.getElementById('search-workerName');
+        const workerNameQuery = workerNameElement && workerNameElement.value ? workerNameElement.value.trim().toLowerCase() : '';
+
+
+        const filteredData = originalData.filter(item => {
+            const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
+            const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
+            const matchesWorkerName = !workerNameQuery || item.workerName.toLowerCase().includes(workerNameQuery);
+            return matchesProcessName && matchesEquipmentName && matchesWorkerName;
+        });
+
+        if (filteredData.length > 0) {
+            // 검색 결과가 있는 경우, 검색된 데이터만 로드
+            hot.loadData(filteredData);
+            console.log('검색된 데이터를 표시합니다.');
+        } else {
+            // 검색 결과가 없는 경우
+            hot.loadData([]);
+            console.log('검색 결과가 없습니다.');
+        }
+    }
+    function fetchProcessNames(selectedProcessName) {
+        fetch('/api/worker/getProcessName')
+            .then(response => response.json())
+            .then(data => {
+                const processNameSelect = document.getElementById('search-processName');
+                // 기존의 옵션을 초기화
+                processNameSelect.innerHTML = '<option value="" disabled selected>공정 선택</option>';
+                // 가져온 데이터로 옵션 생성
+                data.forEach(processName => {
+                    const option = document.createElement('option');
+                    option.text = processName;
+                    option.value = processName;
+                    processNameSelect.appendChild(option);
+                });
+                // 선택된 공정명이 있을 경우 해당 옵션을 선택 상태로 설정
+                if (selectedProcessName) {
+                    processNameSelect.value = selectedProcessName;
+                }
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청: ', error);
+            });
+    }
+</script>
+</html>

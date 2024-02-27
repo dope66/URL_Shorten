@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,5 +29,8 @@ public class ProductionTest {
     private int defectCount;
     private String company;
     private String note;
+    private Date productionDate;
+    private LocalDateTime registerDate;
+
 
 }

@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -15,5 +17,9 @@ public class ProductionTestService {
 
     public ProductionTest register(ProductionTestDto productionTestDto) {
         return productionTestRepository.save(productionTestDto.toEntity());
+    }
+
+    public List<ProductionTest> findAll() {
+        return productionTestRepository.findAll();
     }
 }

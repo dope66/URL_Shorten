@@ -83,7 +83,7 @@ function createHandsontable(data) {
 function workerSearch() {
     const processNameSelected = selectedProcessName.value;
     const equipmentNameSelected = equipmentNameSelect.value;
-    const workerNameQuery = document.getElementById('search-input').value.trim().toLowerCase();
+    const workerNameQuery = document.getElementById('search-workerName').value.trim().toLowerCase();
 
     const filteredData = originalData.filter(item => {
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
@@ -110,7 +110,7 @@ function wholeWorker() {
     console.log("전체 리스트를 불러옵니다.");
 
     // 검색 입력란과 선택란을 초기화합니다.
-    document.getElementById('search-input').value = '';
+    document.getElementById('search-workerName').value = '';
     document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
     document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
 
@@ -123,7 +123,7 @@ function AllWorkerName() {
     fetch('/api/worker/getAllWorkerName')
         .then(response => response.json()
             .then(data => {
-                const workerNameSelect = document.getElementById('search-input');
+                const workerNameSelect = document.getElementById('search-workerName');
                 workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
                 data.forEach(workerName => {
                     const option = document.createElement('option');
@@ -195,7 +195,7 @@ registerForm.addEventListener('submit', (event) => {
     }
 });
 
-// 해당하는 공정명 검색기능으로 가져오기
+// 공정명 가져오기
 function fetchProcessNames(selectedProcessName) {
     fetch('/api/worker/getProcessName')
         .then(response => response.json())
@@ -226,7 +226,6 @@ selectedProcessName.addEventListener('change', () => {
     equipmentNameSelect.value = '';
     fetchProcessNameAndWorkerName();
 });
-
 function fetchProcessNameAndWorkerName() {
     // 호기 선택란 초기화
 
@@ -249,7 +248,7 @@ function fetchProcessNameAndWorkerName() {
         fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
             .then(workerNames => {
-                const workerNameSelect = document.getElementById('search-input');
+                const workerNameSelect = document.getElementById('search-workerName');
                 workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
                 workerNames.forEach(workerName => {
                     const option = document.createElement('option');
@@ -365,8 +364,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
-
 function enableEditAndDeleteFeatures(hasPermission, isEditMode = true) {
     const modifyButton = document.getElementById('registerButton');
     const deleteButton = document.getElementById('deleteButton'); // 삭제 버튼 선택
@@ -391,7 +388,7 @@ function enableEditAndDeleteFeatures(hasPermission, isEditMode = true) {
 
 
 }
-
+// 수정 버튼 변경
 function updateWorkerContainer(rowData) {
 
     const isEditMode = !!rowData && !!rowData.id;
@@ -430,6 +427,7 @@ function updateWorkerContainer(rowData) {
 
     };
 }
+// 삭제 기능
 function deleteWorker(workerId) {
     event.preventDefault();
     const confirmed = window.confirm('정말 삭제 하시겠습니까?');
@@ -451,6 +449,7 @@ function deleteWorker(workerId) {
     }
 }
 const deleteButton = document.createElement('button');
+// 삭제 버튼 생성
 function createDeleteButton() {
     // 삭제 버튼 생성
 
@@ -477,8 +476,6 @@ function createDeleteButton() {
         }
     };
 }
-
-
 
 function modifyWorker(workerId) {
     // FormData 객체 생성
@@ -532,7 +529,7 @@ function setSelectedValue(selectId, value) {
         }
     }
 }
-
+/// 이미지 불러오기
 function fetchImageAndUpdatePreview(workerId) {
     fetch(`/api/worker/getBase64Image?id=${workerId}`)
         .then(response => response.text()) // 응답을 텍스트로 처리

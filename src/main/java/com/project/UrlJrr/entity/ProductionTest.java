@@ -24,7 +24,7 @@ public class ProductionTest {
     private String processWorker;
     private int productionCount;
     private int defectCount;
-    private String testOne;
-    private String testTwo;
+    private String company;
+    private String note;
 
 }

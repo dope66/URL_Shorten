@@ -56,13 +56,21 @@
         }
 
         .keyboard-button {
+            display: flex; /* Flex 컨테이너로 설정 */
+            justify-content: center; /* 가로축 중앙 정렬 */
+            align-items: center; /* 세로축 중앙 정렬 */
+            text-align: center; /* 텍스트 중앙 정렬 */
             color: #FFFFFF;
             padding: 15px 25px;
+            margin: 0 5px;
             border: 1px solid #5d5d5d;
             border-radius: 4px;
             background-color: #4a4a4a;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            flex: 1;
+            width: auto; /* 버튼의 너비를 자동으로 설정하여 패딩에 따라 크기가 조정되도록 함 */
+            height: auto; /* 버튼의 높이를 자동으로 설정 */
         }
 
         .keyboard-button:hover {
@@ -70,13 +78,16 @@
         }
 
         .keyboard-ok-button {
-            padding: 10px 18px;
+            padding: 15px 25px;
             border: 1px solid #ccc;
             border-radius: 4px;
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s ease;
+        }
+        .keyboard-ok-button:hover {
+            background-color: #45a049;
         }
 
         #info-table-1 {
@@ -87,6 +98,18 @@
             width: 100%;
 
         }
+
+        #tables-container {
+            display: flex;
+        }
+
+        #test-note {
+            width: 85%;
+        }
+        #test-note select{
+            width: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -130,35 +153,102 @@
     <th>불량수량</th>
     </thead>
     <tbody>
-    <td style="width : 200px"></td>
-    <td></td>
+    <td style="width : 200px"><input type="text" id="company"></td>
+    <td><input type="text" id="note"></td>
     <td style="width : 200px">
         <input type="text" name="productionCount" id="productionCount" style="width: 100%" required
-               onclick="openKeyboardForCount('productionCount')">
+               onfocus="openKeyboardForCount('productionCount')">
     </td>
     <td style="width : 200px">
         <input type="text" name="defectCount" id="defectCount" style="width: 100%" required
-               onclick="openKeyboardForCount('defectCount')">
+               onfocus="openKeyboardForCount('defectCount')">
     </td>
+
     </tbody>
 </table>
-<button style="width: 300px;background-color: #4b4b4b;color:#FFFFFF">등록</button>
-<table id="info-table-3" th:border="1">
-    <thead>
-    <th>공정원</th>
-    </thead>
-    <tbody>
-    <td>
-        <div id="image-container">
-            <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
-        </div>
-        <select name="processWorker" id="processWorker" style="width : 300px; " required></select>
-    </td>
-    </tbody>
+<div id="tables-container">
+    <table th:border="1" id="test-note">
+        <thead>
+        <th>순번</th>
+        <th>검사항목</th>
+        <th>검사규격</th>
+        <th>확인방법</th>
+        <th>결과</th>
+        </thead>
+        <tbody>
+        <!--현재는 그냥 넣을 것이지만 나중에는 해당하는 검사 유형을 불러와서 해야 함-->
+        <tr>
+            <td>1</td>
+            <td>외관</td>
+            <td>외관기준서에 준함</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>외관</td>
+            <td>스크래치 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>외관</td>
+            <td>이물질이 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>외관</td>
+            <td>발청이 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>기준홀</td>
+            <td>&phi;2.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>기준홀</td>
+            <td>&phi;4.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>기준홀</td>
+            <td>&phi;2.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <table id="info-table-3" th:border="1">
+        <thead>
+        <th>공정원</th>
+        </thead>
+        <tbody>
+        <td>
+            <div id="image-container">
+                <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
+            </div>
+            <select name="processWorker" id="processWorker" style="width : 300px; " required></select>
+        </td>
+        <tr>
+            <td>
+                <button onclick="registTest()" id="test-submit" style="width: 100%">등록</button>
+            </td>
+        </tr>
+        </tbody>
 
-</table>
+    </table>
 
-
+</div>
 <input type="hidden" id="workerId">
 <div id="keyboardModal" class="modal">
     <div class="modal-content">
@@ -178,17 +268,47 @@
             <button class="keyboard-button" onclick="pressKey(9)">9</button>
         </div>
         <div class="keyboard-row">
-            <button class="keyboard-button" onclick="pressKey('Cancel')">&times;</button>
+            <button class="keyboard-button" onclick="pressKey('Backspace')"><</button>
             <button class="keyboard-button" onclick="pressKey(0)">0</button>
+            <button class="keyboard-button" onclick="pressKey('.')"
+                    style="width: 62px;height: 53px;"
+            >.</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey('Cancel')">cancel</button>
             <button class="keyboard-ok-button" onclick="pressKey('OK')">OK</button>
         </div>
+
     </div>
 </div>
 
 </body>
-
 <script>
+    const processNameSelect = document.getElementById("processName");
+    const equipmentNameSelect = document.getElementById("equipmentName");
+    const workerNameSelect = document.getElementById("processWorker");
+    const worekerIdselect = document.getElementById("workerId");
+    var imageElement = document.querySelector("#workerImage");
 
+    workerNameSelect.innerHTML='<option value="" disabled selected>공정원 선택</option>';
+    // 페이지 로드 시 processNameSelect 요소 초기화
+    fetch('/api/worker/getProcessName')
+        .then(response => response.json())
+        .then(data => {
+            console.log("processname: ", data);
+            data.forEach(processName => {
+                const option = document.createElement('option');
+                option.text = processName;
+                option.value = processName;
+                processNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+
+    // 페이지 로드 시 fetchProcessNameAndWorkerName 함수 호출하여 초기화
+    fetchProcessNameAndWorkerName();
     // 공정명과 호기 이름을 가져오는 함수
     function fetchProcessNameAndWorkerName() {
         const selectedProcessName = document.getElementById("processName");
@@ -198,30 +318,63 @@
         // equipmentNameSelect 초기화
         equipmentNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
         //공정명값으로 호기 가져오기
-        fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
-            .then(response => response.json())
-            .then(equipmentNames => {
-                console.log("equipmentName : ", equipmentNames);
-                equipmentNames.forEach(equipmentName => {
-                    const option = document.createElement('option');
-                    option.text = equipmentName;
-                    option.value = equipmentName;
-                    equipmentNameSelect.appendChild(option);
+        if(selectedProcessName.value){
+            fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    console.log("equipmentName : ", equipmentNames);
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
                 });
-            })
-            .catch(error => {
-                console.error('fetch 오류 요청 ', error);
-            });
+
+            fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(workerNames => {
+                    const workerNameSelect = document.getElementById('processWorker');
+                    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                    workerNames.forEach(workerName => {
+                        const option = document.createElement('option');
+                        option.text = workerName;
+                        option.value = workerName;
+                        workerNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+        }else{
+            fetch(`/api/worker/getAllEquipmentName`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+
+
+        }
+
     }
 
-    const processNameSelect = document.getElementById("processName");
-    const equipmentNameSelect = document.getElementById("equipmentName");
-    const workerNameSelect = document.getElementById("processWorker");
-    const worekerIdselect = document.getElementById("workerId");
 
     processNameSelect.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
         equipmentNameSelect.value = '';
+        workerNameSelect.value='';
+        imageElement.src = "/static/image/defaultWorker.png";
         fetchProcessNameAndWorkerName();
     });
     // 호기 변경시 공정원 이름 변경
@@ -253,73 +406,93 @@
         const equipmentName = equipmentNameSelect.value;
         const workerName = workerNameSelect.value;
 
-        fetch(`/api/worker/getWorkerId?processName=${processName}&equipmentName=${equipmentName}&workerName=${workerName}`)
-            .then(response => response.json())
-            .then(workerId => {
-                console.log("workerId", workerId);
-                worekerIdselect.value = workerId;
-                var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
-                fetch(imageUrl)
-                    .then(function (response) {
-                        // 이미지가 성공적으로 로드되었는지 확인
-                        if (!response.ok) throw new Error('Image not found');
-                        return response.text();
-                    })
-                    .then(function (data) {
-                        // 성공적으로 이미지 데이터를 받아온 경우
-                        var imageElement = document.querySelector("#workerImage");
-                        if (imageElement) {
-                            imageElement.src = data;
-                        }
-                    })
-                    .catch(function (error) {
-                        // 이미지 로드에 실패한 경우 기본 이미지로 대체
-                        console.error('Error:', error);
-                        var imageElement = document.querySelector("#workerImage");
-                        if (imageElement) {
-                            imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
-                        }
-                    });
-            })
-            .catch(error => {
-                console.error('아이디를 가져오는 도중 오류 발생: ', error);
-            });
+        if(processName && equipmentName && workerName){
+            fetch(`/api/worker/getWorkerId?processName=${processName}&equipmentName=${equipmentName}&workerName=${workerName}`)
+                .then(response => response.json())
+                .then(workerId => {
+                    console.log("workerId", workerId);
+                    worekerIdselect.value = workerId;
+                    var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
+                    fetch(imageUrl)
+                        .then(function (response) {
+                            // 이미지가 성공적으로 로드되었는지 확인
+                            if (!response.ok) throw new Error('Image not found');
+                            return response.text();
+                        })
+                        .then(function (data) {
+                            // 성공적으로 이미지 데이터를 받아온 경우
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = data;
+                            }
+                        })
+                        .catch(function (error) {
+                            // 이미지 로드에 실패한 경우 기본 이미지로 대체
+                            console.error('Error:', error);
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+        }
+        else if(processName && workerName){
+            fetch(`/api/worker/getWorkerIdWithProcessNameAndWorkerName?processName=${processName}&workerName=${workerName}`)
+                .then(response => response.json())
+                .then(workerId => {
+                    console.log("workerId", workerId);
+                    worekerIdselect.value = workerId;
+                    var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
+                    fetch(imageUrl)
+                        .then(function (response) {
+                            // 이미지가 성공적으로 로드되었는지 확인
+                            if (!response.ok) throw new Error('Image not found');
+                            return response.text();
+                        })
+                        .then(function (data) {
+                            // 성공적으로 이미지 데이터를 받아온 경우
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = data;
+                            }
+                        })
+                        .catch(function (error) {
+                            // 이미지 로드에 실패한 경우 기본 이미지로 대체
+                            console.error('Error:', error);
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+
+        }
     }
 
     // workerName select option이 변경될 때마다 fetchWorkerId 함수 실행
     workerNameSelect.addEventListener('change', fetchWorkerId);
 
 
-    // 페이지 로드 시 processNameSelect 요소 초기화
-    fetch('/api/worker/getProcessName')
-        .then(response => response.json())
-        .then(data => {
-            console.log("processname: ", data);
-            data.forEach(processName => {
-                const option = document.createElement('option');
-                option.text = processName;
-                option.value = processName;
-                processNameSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('fetch 오류 요청 ', error);
-        });
-
-    // 페이지 로드 시 fetchProcessNameAndWorkerName 함수 호출하여 초기화
-    fetchProcessNameAndWorkerName();
 </script>
 <script>
     // 초중물 검사 등록 기능
     const productionTestForm = document.getElementById("production-test-form");
-    productionTestForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+
+    function registTest() {
         const processName = document.getElementById('processName').value;
         const equipmentName = document.getElementById("equipmentName").value;
         const processWorker = document.getElementById('processWorker').value;
+        const note = document.getElementById('note').value;
+        const company = document.getElementById('company').value;
         const productionCount = document.getElementById('productionCount').value;
         const defectCount = document.getElementById('defectCount').value;
-        const newTest = {processName, equipmentName, processWorker, productionCount, defectCount};
+        const newTest = {processName, equipmentName, processWorker, note,company,productionCount, defectCount};
         console.log("new Test ;", newTest);
         const confirmed = window.confirm('정말로 등록하시겠습니까?');
         if (confirmed) {
@@ -341,38 +514,40 @@
                     console.error('fetch 오류 요청 ', error);
                 });
         }
-    });
+
+    }
 
 
 </script>
 <script>
 
     function openKeyboardForCount(inputId) {
-        // Set a global variable to keep track of the current input field
         currentInputField = document.getElementById(inputId);
 
-        // Open the keyboard modal only if the clicked input field is for productionCount or defectCount
         if (inputId === 'productionCount' || inputId === 'defectCount') {
             openKeyboard();
         }
     }
-
-    // Global variable to keep track of the current input field
     var currentInputField;
 
     function pressKey(key) {
-        if (key === "OK") {
-            // 모달을 닫기만 하고 값을 설정하지 않음
+        var currentValue = currentInputField.value; // 현재 입력 필드의 값을 가져옵니다.
+
+        if (key === "OK" || key === "Cancel") {
             closeKeyboard();
-        } else if (key === "Cancel") {
-            // Clear input field and close the keyboard modal
-            currentInputField.value = "";
-            closeKeyboard();
+        } else if (key === "Backspace") {
+            currentInputField.value = currentValue.slice(0, -1);
+        } else if (key === '.') {
+            if (currentValue === '') {
+                currentInputField.value = '0.';
+            } else if (!currentValue.includes('.')) {
+                currentInputField.value += '.';
+            }
         } else {
-            // Add numeric key value to the input field
             currentInputField.value += key;
         }
     }
+
 
     function openKeyboard() {
         var modal = document.getElementById("keyboardModal");

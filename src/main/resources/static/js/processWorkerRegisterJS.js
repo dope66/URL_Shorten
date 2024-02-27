@@ -6,7 +6,7 @@ const previewImage = document.getElementById('preview-image'); // 미리보기 �
 const registerForm = document.getElementById("worker-register-form");
 const selectedProcessName = document.getElementById("search-processName");
 const equipmentNameSelect = document.getElementById("search-equipmentName");
-
+let currentWorkerId = null;
 
 // 페이지 로드 시 실행되는 코드
 document.addEventListener("DOMContentLoaded", function () {
@@ -283,7 +283,7 @@ function fetchProcessNameAndWorkerName() {
 
 }
 
-
+//권한 부여 기능
 document.addEventListener('DOMContentLoaded', function () {
     // 페이지 로드 시 권한 상태 확인 및 적용
     const hasPermission = sessionStorage.getItem('hasEditPermission') === 'true';
@@ -380,7 +380,7 @@ function enableEditAndDeleteFeatures(hasPermission, isEditMode = true) {
         } else if (!isEditMode) {
             modifyButton.style.display = 'inline-block';
             // 등록 모드에서는 deleteButton을 숨김 (존재하는 경우)
-            if (deleteButton) deleteButton.style.display = 'none';
+            if (modifyButton.value === "등록") deleteButton.style.display = 'none';
         } else {
             // 권한이 없을 경우 modifyButton을 숨김
             modifyButton.style.display = 'none';
@@ -396,23 +396,14 @@ function updateWorkerContainer(rowData) {
 
     const isEditMode = !!rowData && !!rowData.id;
     let deleteButton = document.getElementById('deleteButton');
+    currentWorkerId = rowData ? rowData.id : null; // 현재 worker ID 업데이트
     if (!deleteButton) {
         createDeleteButton();
-        deleteButton = document.getElementById('deleteButton');
     } else {
-        deleteButton.addEventListener('click', function () {
-            // 삭제 로직 실행
-            console.log('삭제 로직을 실행합니다.');
-            deleteWorker(rowData.id);
-        });
+        deleteButton.style.display = rowData && rowData.id ? 'inline-block' : 'none';
     }
 
-    if (rowData && rowData.id) {
-        deleteButton.style.display = 'inline-block'; // 삭제 버튼 표시
-    } else {
-        deleteButton.style.display = 'none'; // 삭제 버튼 숨김
-    }
-    // 기존 form 내의 입력 필드에 rowData 기반으로 데이터 설정
+
     document.getElementById('workerName').value = rowData ? rowData.workerName : '';
     document.getElementById('nation').value = rowData ? rowData.nation : '';
     // Select 태그의 값 설정
@@ -439,31 +430,6 @@ function updateWorkerContainer(rowData) {
 
     };
 }
-
-const deleteButton = document.createElement('button');
-
-function createDeleteButton() {
-    // 삭제 버튼 생성
-
-    deleteButton.id = 'deleteButton';
-    deleteButton.textContent = '삭제';
-    // deleteButton.classList.add('btn', 'btn-danger'); // 필요한 클래스 추가
-    deleteButton.style.backgroundColor = '#f61e1e'; // 일단 숨김
-    deleteButton.style.borderColor = '#f61e1e';
-    deleteButton.style.color = 'white';
-    deleteButton.style.height= '30px';
-    deleteButton.style.width= '100px';
-    // navigation-container 요소 선택
-    const navigationContainer = document.getElementById('navigation-container');
-
-    // 삭제 버튼을 navigation-container에 추가
-    navigationContainer.appendChild(deleteButton);
-
-    // 삭제 버튼에 클릭 이벤트 리스너 추가
-
-}
-
-
 function deleteWorker(workerId) {
     event.preventDefault();
     const confirmed = window.confirm('정말 삭제 하시겠습니까?');
@@ -484,6 +450,35 @@ function deleteWorker(workerId) {
             });
     }
 }
+const deleteButton = document.createElement('button');
+function createDeleteButton() {
+    // 삭제 버튼 생성
+
+    deleteButton.id = 'deleteButton';
+    deleteButton.textContent = '삭제';
+    deleteButton.style.backgroundColor = '#f61e1e'; // 일단 숨김
+    deleteButton.style.borderColor = '#f61e1e';
+    deleteButton.style.color = 'white';
+    deleteButton.style.height= '30px';
+    deleteButton.style.width= '100px';
+    deleteButton.style.display = 'none'; // 처음에는 숨김
+    // navigation-container 요소 선택
+    const navigationContainer = document.getElementById('navigation-container');
+
+    // 삭제 버튼을 navigation-container에 추가
+    navigationContainer.appendChild(deleteButton);
+
+    // 삭제 버튼에 클릭 이벤트 리스너 추가
+    deleteButton.onclick = function () {
+
+        event.preventDefault();
+        if (currentWorkerId) {
+            deleteWorker(currentWorkerId);
+        }
+    };
+}
+
+
 
 function modifyWorker(workerId) {
     // FormData 객체 생성

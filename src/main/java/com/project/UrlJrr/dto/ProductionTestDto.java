@@ -15,8 +15,8 @@ public class ProductionTestDto {
     private String processName;
     private String equipmentName;
     private String processWorker;
-    private String testOne;
-    private String testTwo;
+    private String company;
+    private String note;
     private int productionCount;
     private int defectCount;
 
@@ -25,8 +25,8 @@ public class ProductionTestDto {
                 .processName(processName)
                 .equipmentName(equipmentName)
                 .processWorker(processWorker)
-                .testOne(testOne)
-                .testTwo(testTwo)
+                .company(company)
+                .note(note)
                 .defectCount(defectCount)
                 .productionCount(productionCount)
                 .build();

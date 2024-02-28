@@ -132,6 +132,7 @@ function workerSearch() {
 }
 // 전체 공정명(생산설비)을 불러오는 함수
 function fetchProcessNames(selectedProcessName) {
+    console.log("전체 공정명 가져오기");
     fetch('/api/worker/getProcessName')
         .then(response => response.json())
         .then(data => {
@@ -154,3 +155,17 @@ function fetchProcessNames(selectedProcessName) {
             console.error('fetch 오류 요청: ', error);
         });
 }
+function wholeWorker() {
+    // 원본 데이터를 Handsontable에 다시 로드합니다.
+    hot.loadData(originalData);
+    console.log("전체 리스트를 불러옵니다.");
+
+    // 검색 입력란과 선택란을 초기화합니다.
+    document.getElementById('search-workerName').value = '';
+    document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
+    document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+
+    AllWorkerName();
+
+}
+

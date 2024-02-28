@@ -30,7 +30,7 @@
     공정명 검색 : <select type="text" id="search-processName"></select>
     호기 검색 : <select type="text" id="search-equipmentName"></select>
     공정원 검색 : <select type="text" id="search-workerName"></select>
-    <button id="searchButton" class="btn btn-dark-info" onclick="workerSearch()">기간 검색</button>
+    <button id="searchButton" class="btn btn-dark-info">기간 검색</button>
 </div>
 <div id="search-test-detail">
     공정 : <input type="text" readonly id="searched-processName">
@@ -42,6 +42,7 @@
 </body>
 <script src="/static/js/ProcessWorkerSearch.js"></script>
 <script>
+
     const selectedProcessName = document.getElementById("search-processName");
     const equipmentNameSelect = document.getElementById("search-equipmentName");
     const workerNameSelect = document.getElementById("search-workerName");
@@ -129,8 +130,22 @@
     }
     selectedProcessName.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
-        equipmentNameSelect.value = '';
-        fetchProcessNameAndWorkerName();
+        if(equipmentNameSelect.value){
+            fetchProcessNameAndWorkerName();
+        }
     });
+    equipmentNameSelect.addEventListener('change', function() {
+        // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
+        if (selectedProcessName.value) {
+            fetchProcessNameAndEquipmentName();
+        }
+    });
+
+
+    document.getElementById('searchButton').addEventListener('click', performSearchForTest);
+
+
+
+
 </script>
 </html>

@@ -45,11 +45,9 @@ function fetchProcessNameAndWorkerName() {
     }
 }
 // 공정명과 호기가 둘다 있을 경우 공정원 불러오는 함수
-function fetchProcessNameAndEquipmentName(){
-    // 공정명과 호기 가 둘다 있을 경우
-    if(selectedProcessName.value && equipmentNameSelect.value){
-        console.log("공정명, 호기가 선택된 경우");
-        // workerName을 가져오는 fetch 요청을 select option이 변경되었을 때 실행
+function fetchProcessNameAndEquipmentName() {
+    // 공정명과 호기가 둘 다 있을 경우의 로직
+    if(selectedProcessName.value && equipmentNameSelect.value) {
         fetch(`/api/worker/getWorkerName?processName=${selectedProcessName.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
             .then(workerInfos => {
@@ -60,12 +58,12 @@ function fetchProcessNameAndEquipmentName(){
                     option.value = workerInfo;
                     workerNameSelect.appendChild(option);
                 });
+                // fetch가 완료된 후에 콘솔 로그 출력
+                console.log("workerNameSelect 확인 용 : ", workerNameSelect.value);
             })
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-        console.log("공정명,호기가 선택된 경우",selectedProcessName.value,equipmentNameSelect.value);
-
     }
 }
 // 공정명이 선택되지 않은 경우 호기와 전체 공정원(AllWorkerName) 불러오는 함수
@@ -110,13 +108,13 @@ function workerSearch() {
     const equipmentNameSelected = equipmentNameSelect.value;
     // const workerNameQuery = document.getElementById('search-workerName').value.trim().toLowerCase();
     const workerNameElement = document.getElementById('search-workerName');
-    const workerNameQuery = workerNameElement && workerNameElement.value ? workerNameElement.value.trim().toLowerCase() : '';
+    const workerNameQuery = workerNameElement && workerNameElement.value ? workerNameElement.value.trim(): '';
 
 
     const filteredData = originalData.filter(item => {
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
         const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
-        const matchesWorkerName = !workerNameQuery || item.workerName.toLowerCase().includes(workerNameQuery);
+        const matchesWorkerName = !workerNameQuery || item.processWorker.toLowerCase().includes(workerNameQuery);
         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 
@@ -130,7 +128,50 @@ function workerSearch() {
         console.log('검색 결과가 없습니다.');
     }
 }
+function performSearchForTest() {
+    const startDateElement = document.getElementById("startDate");
+    const endDateElement = document.getElementById("endDate");
+    const processNameSelected = selectedProcessName.value;
+    const equipmentNameSelected = equipmentNameSelect.value;
+    const workerNameSelect = document.getElementById('search-workerName');
+    const workerNameQuery = workerNameSelect.value.trim();
+
+    const filteredData = originalData.filter(item => {
+        // productionDate 문자열을 Date 객체로 변환
+        const itemDate = new Date(item.productionDate);
+
+        // startDate를 해당 날짜의 시작 시간으로 설정
+        const startDate = startDateElement.value ? new Date(startDateElement.value) : null;
+        if (startDate) {
+            startDate.setHours(0, 0, 0, 0); // 시작 날짜를 그 날의 자정으로 설정
+        }
+
+        // endDate를 해당 날짜의 마지막 시간으로 설정
+        const endDate = endDateElement.value ? new Date(endDateElement.value) : null;
+        if (endDate) {
+            endDate.setHours(23, 59, 59, 999); // 종료 날짜를 그 날의 마지막 시각으로 설정
+        }
+
+        const matchesDate = (!startDate || itemDate >= startDate) && (!endDate || itemDate <= endDate);
+        const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
+        const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
+        const matchesWorkerName = !workerNameQuery || item.processWorker.includes(workerNameQuery);
+
+        return matchesDate && matchesProcessName && matchesEquipmentName && matchesWorkerName;
+    });
+
+    if (filteredData.length > 0) {
+        hot.loadData(filteredData);
+        console.log('검색된 데이터를 표시합니다.');
+    } else {
+        hot.loadData([]);
+        console.log('검색 결과가 없습니다.');
+    }
+}
+
+
 // 전체 공정명(생산설비)을 불러오는 함수
+
 function fetchProcessNames(selectedProcessName) {
     console.log("전체 공정명 가져오기");
     fetch('/api/worker/getProcessName')

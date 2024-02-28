@@ -49,11 +49,14 @@ selectedProcessName.addEventListener('change', () => {
     equipmentNameSelect.value = '';
     fetchProcessNameAndWorkerName();
 });
-
+// 공정명 변경 시 호기 불러오기 및 호기 선택시 공정원 불러오기
 function fetchProcessNameAndWorkerName() {
+    console.log("공정원 이름 불러오는 시스템 ")
     // 호기 선택란 초기화
     equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+    // 공정명이 있을경우
     if (selectedProcessName.value) {
+        console.log("공정명이 선택된 경우");
         // 공정명이 선택된 경우, 해당하는 호기만 가져오기
         fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
@@ -68,11 +71,11 @@ function fetchProcessNameAndWorkerName() {
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-        // 공정명이 선택된 경우 해당하는 성명만 가져오기
+        console.log("공정명이 선택된 경우 processName:",selectedProcessName.value);
+        // 공정명으로 공정원 가져오기
         fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
             .then(workerNames => {
-                const workerNameSelect = document.getElementById('search-workerName');
                 workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
                 workerNames.forEach(workerName => {
                     const option = document.createElement('option');
@@ -84,32 +87,64 @@ function fetchProcessNameAndWorkerName() {
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-    } else {
-        // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
-        fetch(`/api/worker/getAllEquipmentName`)
+        equipmentNameSelect.addEventListener('change',()=>{
+            console.log("공정명 값이 있고 호기 변경이 있을 경우 ")
+            workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+            fetchProcessNameAndEquipmentName();
+        });
+    }
+}
+// 공정명과 호기가 둘다 있을 경우 공정원 불러오는 함수
+function fetchProcessNameAndEquipmentName(){
+    // 공정명과 호기 가 둘다 있을 경우
+    if(selectedProcessName.value && equipmentNameSelect.value){
+        console.log("공정명, 호기가 선택된 경우");
+        // workerName을 가져오는 fetch 요청을 select option이 변경되었을 때 실행
+        fetch(`/api/worker/getWorkerName?processName=${selectedProcessName.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
-            .then(equipmentNames => {
-                equipmentNames.forEach(equipmentName => {
+            .then(workerInfos => {
+                workerNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
+                workerInfos.forEach(workerInfo => {
                     const option = document.createElement('option');
-                    option.text = equipmentName;
-                    option.value = equipmentName;
-                    equipmentNameSelect.appendChild(option);
+                    option.text = workerInfo;
+                    option.value = workerInfo;
+                    workerNameSelect.appendChild(option);
                 });
             })
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-        AllWorkerName();
-
+        console.log("공정명,호기가 선택된 경우",selectedProcessName.value,equipmentNameSelect.value);
 
     }
+}
+// 공정명이 선택되지 않은 경우 호기와 전체 공정원(AllWorkerName) 불러오는 함수
+function fetchEquipmentName(){
+    console.log("공정명이 선택되지 않은 경우");
+    equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+    workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+    // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
+    fetch(`/api/worker/getAllEquipmentName`)
+        .then(response => response.json())
+        .then(equipmentNames => {
+            equipmentNames.forEach(equipmentName => {
+                const option = document.createElement('option');
+                option.text = equipmentName;
+                option.value = equipmentName;
+                equipmentNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+    AllWorkerName();
 
 }
+// 전체 공정원을 불러오는 함수
 function AllWorkerName() {
     fetch('/api/worker/getAllWorkerName')
         .then(response => response.json()
             .then(data => {
-                const workerNameSelect = document.getElementById('search-workerName');
                 workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
                 data.forEach(workerName => {
                     const option = document.createElement('option');
@@ -118,5 +153,4 @@ function AllWorkerName() {
                     workerNameSelect.appendChild(option);
                 });
             }));
-
 }

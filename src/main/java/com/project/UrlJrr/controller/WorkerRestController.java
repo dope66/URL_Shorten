@@ -148,6 +148,7 @@ public class WorkerRestController {
         List<String> equipmentNames = workerService.getAllEquipmentNames();
         return new ResponseEntity<>(equipmentNames, HttpStatus.OK);
     }
+
     @GetMapping("/getAllWorkerName")
     public ResponseEntity<?> getAllWorkerName() {
         List<String> workerNames = workerService.getAllWorkerNames();
@@ -160,6 +161,7 @@ public class WorkerRestController {
         List<String> workerNames = workerService.getWorkerNamesByProcessAndEquipment(processName, equipmentName);
         return new ResponseEntity<>(workerNames, HttpStatus.OK);
     }
+
     @GetMapping("/getWorkerNameWithProcessName")
     public ResponseEntity<?> getWorkerNameByProcessName(@RequestParam(name = "processName") String processName) {
         List<String> workerNames = workerService.getWorkerNamesByProcessName(processName);
@@ -174,17 +176,19 @@ public class WorkerRestController {
         return new ResponseEntity<>(workerIds, HttpStatus.OK);
 
     }
+
     @GetMapping("/getWorkerIdWithProcessNameAndWorkerName")
     public ResponseEntity<?> getWorkerIdWithProcessNameAndWorkerName(@RequestParam(name = "processName") String processName,
-                                           @RequestParam(name = "workerName") String workerName) {
+                                                                     @RequestParam(name = "workerName") String workerName) {
         List<String> workerIds = workerService.getIdByProcessNameAndWorkerName(processName, workerName);
         return new ResponseEntity<>(workerIds, HttpStatus.OK);
 
     }
+
     @GetMapping("/testList")
     public ResponseEntity<?> getTestList() {
         List<ProductionTest> productionTests;
-        productionTests =productionTestService.findAll();
+        productionTests = productionTestService.findAll();
         return new ResponseEntity<>(productionTests, HttpStatus.OK);
     }
 }

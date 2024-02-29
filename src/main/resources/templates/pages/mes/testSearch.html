@@ -37,6 +37,8 @@
     공정 : <input type="text" readonly id="searched-processName">
     호기 : <input type="text" readonly id="searched-equipmentName">
     공정원 : <input type="text" readonly id="searched-workerName">
+    생산량 : <input type="text" readonly id="searched-production">
+    불량수 : <input type="text" readonly id="searched-defeatCount">
 
 </div>
 <div id="test-list"></div>
@@ -48,9 +50,7 @@
     const equipmentNameSelect = document.getElementById("search-equipmentName");
     const workerNameSelect = document.getElementById("search-workerName");
     selectedProcessName.innerHTML = '<option value="" disabled selected>공정명 선택</option>';
-    fetchTestList();
-    fetchProcessNames();
-    fetchEquipmentName();
+
 
     // 전체 테스트 리스트 불러오기
     function fetchTestList() {
@@ -61,7 +61,9 @@
                 createHandsontable(originalData);
             });
     }
-
+    fetchTestList();
+    fetchProcessNames();
+    fetchEquipmentName();
     // handsonTable 생성
     function createHandsontable(data) {
         const container = document.getElementById('test-list');
@@ -135,10 +137,11 @@
 
     selectedProcessName.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
-        if (equipmentNameSelect.value) {
-            fetchProcessNameAndWorkerName();
-        }
+        equipmentNameSelect.value = '';
+        workerNameSelect.value = '';
+        fetchProcessNameAndWorkerName();
     });
+
     equipmentNameSelect.addEventListener('change', function () {
         // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
         if (selectedProcessName.value) {
@@ -154,6 +157,8 @@
         setSelectedValue('searched-processName', rowData.processName);
         setSelectedValue('searched-equipmentName', rowData.equipmentName);
         setSelectedValue('searched-workerName', rowData.processWorker);
+        setSelectedValue('searched-production',rowData.productionCount);
+        setSelectedValue('searched-defeatCount',rowData.defectCount);
     }
     function setSelectedValue(selectId, value) {
         let selectElement = document.getElementById(selectId);

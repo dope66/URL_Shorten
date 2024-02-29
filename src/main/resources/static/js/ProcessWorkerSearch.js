@@ -47,7 +47,6 @@ function fetchProcessNameAndWorkerName() {
 // 공정명과 호기가 둘다 있을 경우 공정원 불러오는 함수
 function fetchProcessNameAndEquipmentName() {
     // 공정명과 호기가 둘 다 있을 경우의 로직
-    if(selectedProcessName.value && equipmentNameSelect.value) {
         fetch(`/api/worker/getWorkerName?processName=${selectedProcessName.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
             .then(workerInfos => {
@@ -64,7 +63,7 @@ function fetchProcessNameAndEquipmentName() {
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-    }
+
 }
 // 공정명이 선택되지 않은 경우 호기와 전체 공정원(AllWorkerName) 불러오는 함수
 function fetchEquipmentName(){
@@ -106,15 +105,16 @@ function AllWorkerName() {
 function workerSearch() {
     const processNameSelected = selectedProcessName.value;
     const equipmentNameSelected = equipmentNameSelect.value;
-    // const workerNameQuery = document.getElementById('search-workerName').value.trim().toLowerCase();
     const workerNameElement = document.getElementById('search-workerName');
-    const workerNameQuery = workerNameElement && workerNameElement.value ? workerNameElement.value.trim(): '';
-
+    const workerNameQuery = workerNameElement.value.trim();
+    console.log("workerNameQuery value : ",workerNameQuery);
 
     const filteredData = originalData.filter(item => {
+        console.log("filterData",originalData);
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
         const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
-        const matchesWorkerName = !workerNameQuery || item.processWorker.toLowerCase().includes(workerNameQuery);
+        const matchesWorkerName = !workerNameQuery || item.workerName.includes(workerNameQuery);
+        console.log("matchesWorkerName :",matchesWorkerName);
         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 
@@ -137,6 +137,7 @@ function performSearchForTest() {
     const workerNameQuery = workerNameSelect.value.trim();
 
     const filteredData = originalData.filter(item => {
+        console.log("filterData",originalData);
         // productionDate 문자열을 Date 객체로 변환
         const itemDate = new Date(item.productionDate);
 
@@ -156,7 +157,7 @@ function performSearchForTest() {
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
         const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
         const matchesWorkerName = !workerNameQuery || item.processWorker.includes(workerNameQuery);
-
+        console.log("matchesWorkerName :",matchesWorkerName);
         return matchesDate && matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 

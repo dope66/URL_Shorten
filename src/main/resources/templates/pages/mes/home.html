@@ -3,14 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        #container {
+            display: flex;
+            /*flex-direction: column;*/
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            /*height: 100vh;*/
+            margin: 10px;
+        }
+        #container a {
+            margin: 10px;
+            background-color: #7d8686;
+            color: #FFFFFF;
+            padding: 50px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-
- <a href="/mes/worker">공정원 페이지 </a> <br>
- <a href="/mes/firstProduction">초중종물 검사</a><br>
-<a href="/mes/productLog">생산일지 </a><br>
- <a href="/mes/admin">관리자 </a><br>
-
+<div id="container">
+<a href="/mes/worker">공정원 페이지 </a>
+<a href="/mes/firstProduction">초중종물 검사</a>
+<a href="/mes/testSearch">조회 검색</a>
+<a href="/mes/productLog">생산일지 </a>
+<a href="/mes/admin">관리자 </a>
+</div>
 
 </body>
 </html>

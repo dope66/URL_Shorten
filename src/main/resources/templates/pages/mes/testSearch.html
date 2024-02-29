@@ -32,7 +32,9 @@
     공정명 검색 : <select type="text" id="search-processName"></select>
     호기 검색 : <select type="text" id="search-equipmentName"></select>
     공정원 검색 : <select type="text" id="search-workerName"></select>
-    <button id="searchButton" class="btn btn-dark-info">기간 검색</button>
+    <button id="searchButton" >기간 검색</button>
+    <button id="total-search">전체 검색</button>
+    <button id="moveHome">홈으로</button>
 </div>
 <div id="search-test-detail">
     공정 : <input type="text" readonly id="searched-processName">
@@ -47,6 +49,25 @@
 <script src="/static/js/ProcessWorkerSearch.js"></script>
 <script>
 
+    document.getElementById('total-search').addEventListener('click', function (event) {
+        event.preventDefault();
+        // 원본 데이터를 Handsontable에 다시 로드합니다.
+        hot.loadData(originalData);
+        console.log("전체 리스트를 불러옵니다.");
+
+        // 검색 입력란과 선택란을 초기화합니다.
+        document.getElementById('search-workerName').value = '';
+        document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
+        document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+
+
+        fetchTestList();
+    });
+
+    document.getElementById('moveHome').addEventListener('click', function (event) {
+        event.preventDefault();
+        window.location.href = "/mes/home";
+    });
     const selectedProcessName = document.getElementById("search-processName");
     const equipmentNameSelect = document.getElementById("search-equipmentName");
     const workerNameSelect = document.getElementById("search-workerName");

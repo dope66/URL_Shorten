@@ -248,6 +248,11 @@
                 <button onclick="registTest()" id="test-submit" style="width: 100%">등록</button>
             </td>
         </tr>
+        <tr>
+            <td>
+                <button style="width: 100%" id="movePage">조회 검색</button>
+            </td>
+        </tr>
         </tbody>
 
     </table>
@@ -289,6 +294,12 @@
     </div>
 </div>
 </body>
+<script>
+    document.getElementById('movePage').addEventListener('click', function (event) {
+        event.preventDefault();
+        window.location.href = "/mes/testSearch";
+    });
+</script>
 <script>
     const selectedProcessName = document.getElementById("processName");
     const equipmentNameSelect = document.getElementById("equipmentName");

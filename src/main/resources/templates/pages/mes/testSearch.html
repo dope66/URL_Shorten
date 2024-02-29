@@ -16,7 +16,8 @@
             color: #c5c5c5;
             background-color: #3d3d3d;
         }
-        #search-test-detail{
+
+        #search-test-detail {
             padding: 10px;
             color: #c5c5c5;
             background-color: #3d3d3d;
@@ -50,6 +51,7 @@
     fetchTestList();
     fetchProcessNames();
     fetchEquipmentName();
+
     // 전체 테스트 리스트 불러오기
     function fetchTestList() {
         fetch(`/api/worker/testList`)
@@ -59,6 +61,7 @@
                 createHandsontable(originalData);
             });
     }
+
     // handsonTable 생성
     function createHandsontable(data) {
         const container = document.getElementById('test-list');
@@ -69,20 +72,20 @@
                 return cellProperties;
             },
             className: "htCenter",
-            colWidths: [100, 150, 100, 100, 100, 100, 200,150,100,100], // 각 열의 너비를 픽셀 단위로 설정
+            colWidths: [100, 150, 100, 100, 100, 100, 200, 150, 100, 100], // 각 열의 너비를 픽셀 단위로 설정
             rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
             data: data,
-            colHeaders: ['ID', '생산날짜', '생산설비', '호기', '작업자', '고객사', '비고','등록시간','생산량','불량수량'],
+            colHeaders: ['ID', '생산날짜', '생산설비', '호기', '작업자', '고객사', '비고', '등록시간', '생산량', '불량수량'],
             columns: [
                 {data: 'id', readOnly: true, className: "htCenter"},
-                {data: 'productionDate', readOnly: true,  renderer: dateRenderer,className: "htCenter"},
+                {data: 'productionDate', readOnly: true, renderer: dateRenderer, className: "htCenter"},
                 {data: 'processName', readOnly: true, className: "htCenter"},
                 {data: 'equipmentName', readOnly: true, className: "htCenter"},
                 {data: 'processWorker', readOnly: true, className: "htCenter"},
                 {data: 'company', readOnly: true, className: "htCenter"},
                 {data: 'note', readOnly: true, className: "htCenter"},
-                {data: 'registerDate', readOnly: true, className: "htCenter" , renderer: dateRenderer},
+                {data: 'registerDate', readOnly: true, className: "htCenter", renderer: dateRenderer},
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
                 {data: 'defectCount', readOnly: true, className: "htCenter"},
             ],
@@ -100,14 +103,15 @@
             dropdownMenu: false, // 드롭다운 메뉴 활성화
             rowHeaders: true, // 행 번호 표시
             search: true, // 검색 기능 활성화
-            // afterOnCellMouseDown: function (event, coords) {
-            //     const rowData = hot.getSourceDataAtRow(coords.row);
-            //     // applyDataToForm(rowData);
-            //     console.log("rowData", rowData);
-            //     updateWorkerContainer(rowData);
-            // }
+            afterOnCellMouseDown: function (event, coords) {
+                const rowData = hot.getSourceDataAtRow(coords.row);
+                // applyDataToForm(rowData);
+                console.log("rowData", rowData);
+                updateTestContainer(rowData);
+            }
         });
     }
+
     // 날짜 데이터 yy-mm-dd로 변환
     function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
         const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
@@ -120,7 +124,7 @@
         const dateValue = value instanceof Date ? value : new Date(value);
         if (!isNaN(dateValue.getTime())) {
             // 날짜 형식으로 변환
-            td.textContent = dateFormatter.format(dateValue).replace(/\./g,'-').slice(0, -1);
+            td.textContent = dateFormatter.format(dateValue).replace(/\./g, '-').slice(0, -1);
         } else {
             // 유효하지 않은 날짜인 경우 기본 텍스트 설정
             td.textContent = '';
@@ -128,13 +132,14 @@
 
         return td;
     }
+
     selectedProcessName.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
-        if(equipmentNameSelect.value){
+        if (equipmentNameSelect.value) {
             fetchProcessNameAndWorkerName();
         }
     });
-    equipmentNameSelect.addEventListener('change', function() {
+    equipmentNameSelect.addEventListener('change', function () {
         // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
         if (selectedProcessName.value) {
             fetchProcessNameAndEquipmentName();
@@ -144,8 +149,17 @@
 
     document.getElementById('searchButton').addEventListener('click', performSearchForTest);
 
+    function updateTestContainer(rowData) {
 
-
+        setSelectedValue('searched-processName', rowData.processName);
+        setSelectedValue('searched-equipmentName', rowData.equipmentName);
+        setSelectedValue('searched-workerName', rowData.processWorker);
+    }
+    function setSelectedValue(selectId, value) {
+        let selectElement = document.getElementById(selectId);
+        let options = selectElement.options;
+        selectElement.value = value;
+    }
 
 </script>
 </html>

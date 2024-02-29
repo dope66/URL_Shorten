@@ -284,12 +284,7 @@
 
     </div>
 </div>
-
 </body>
-<script>
-
-
-</script>
 <script>
     const selectedProcessName = document.getElementById("processName");
     const equipmentNameSelect = document.getElementById("equipmentName");
@@ -502,9 +497,8 @@
 
 </script>
 <script>
-    // 초중물 검사 등록 기능
-    const productionTestForm = document.getElementById("production-test-form");
-
+    // // 초중물 검사 등록 기능
+    // const productionTestForm = document.getElementById("production-test-form");
     function registTest() {
         const processName = document.getElementById('processName').value;
         const equipmentName = document.getElementById("equipmentName").value;
@@ -544,6 +538,27 @@
     }
 
 
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('#test-note tbody tr');
+
+        rows.forEach(function(row) {
+            var lastTd = row.querySelector('td:last-child');
+
+            lastTd.addEventListener('click', function() {
+                if (this.textContent === 'OK') {
+                    this.textContent = 'NG';
+                    this.style.color = 'red';
+                } else {
+                    this.textContent = 'OK';
+                    this.style.color = 'green';
+                }
+                this.style.fontWeight = 'bold';
+                this.style.textAlign = 'center';
+            });
+        });
+    });
 </script>
 <script>
 

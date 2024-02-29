@@ -119,8 +119,10 @@
             <label for="productionName">생산 이름:</label>
             <input type="text" readonly id="productionName" name="productionName" required>
             <label for="production">생산량:</label>
-            <input class="input" type="text" id="production" name="production" placeholder="생산량"
-                   onclick="openKeyboardForCount('production')"><br>
+            <!-- "production"이라는 ID를 가진 input 필드에 대한 onclick 이벤트 -->
+            <input class="input" type="text" id="production" name="production" placeholder="생산량" onclick="openKeyboardForCount(this)">
+
+            <br>
             <label for="workerName">담당자:</label>
             <select name="workerName" id="workerName"></select>
             <button type="submit">등록</button>
@@ -130,6 +132,7 @@
 </div>
 <div id="keyboardModal" class="modal">
     <div class="modal-content">
+        <input type="text" id="modalInputValue" readonly style="text-align: center; margin-bottom: 10px; width: 80%;">
         <div class="keyboard-row">
             <button class="keyboard-button" onclick="pressKey(1)">1</button>
             <button class="keyboard-button" onclick="pressKey(2)">2</button>
@@ -146,10 +149,18 @@
             <button class="keyboard-button" onclick="pressKey(9)">9</button>
         </div>
         <div class="keyboard-row">
-            <button class="keyboard-button" onclick="pressKey('Cancel')">&times;</button>
+            <button class="keyboard-button" onclick="pressKey('Backspace')"><</button>
             <button class="keyboard-button" onclick="pressKey(0)">0</button>
+            <button class="keyboard-button" onclick="pressKey('.')"
+                    style="width: 62px;height: 53px;"
+            >.
+            </button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey('Cancel')">cancel</button>
             <button class="keyboard-ok-button" onclick="pressKey('OK')">OK</button>
         </div>
+
     </div>
 </div>
 

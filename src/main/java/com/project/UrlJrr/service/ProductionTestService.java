@@ -5,6 +5,7 @@ import com.project.UrlJrr.entity.ProductionTest;
 import com.project.UrlJrr.repository.ProductionTestRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class ProductionTestService {
     }
 
     public List<ProductionTest> findAll() {
-        return productionTestRepository.findAll();
+        return productionTestRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }

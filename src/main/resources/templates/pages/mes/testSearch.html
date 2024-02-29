@@ -23,6 +23,7 @@
             background-color: #3d3d3d;
         }
 
+
     </style>
 </head>
 <body>
@@ -87,7 +88,7 @@
                 {data: 'processWorker', readOnly: true, className: "htCenter"},
                 {data: 'company', readOnly: true, className: "htCenter"},
                 {data: 'note', readOnly: true, className: "htCenter"},
-                {data: 'registerDate', readOnly: true, className: "htCenter", renderer: dateRenderer},
+                {data: 'registerDate', readOnly: true, className: "htCenter", renderer: timeRenderer},
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
                 {data: 'defectCount', readOnly: true, className: "htCenter"},
             ],
@@ -131,10 +132,31 @@
             // 유효하지 않은 날짜인 경우 기본 텍스트 설정
             td.textContent = '';
         }
-
+        td.className += ' htCenter';
         return td;
     }
+    // 시간 데이터를 변환
+    // 시간 데이터를 HH:mm:ss로 변환하는 renderer 함수
+    function timeRenderer(instance, td, row, col, prop, value, cellProperties) {
+        const timeFormatter = new Intl.DateTimeFormat('ko-KR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false // 24시간 표시
+        });
 
+        // value가 유효한 날짜인지 확인
+        const timeValue = value instanceof Date ? value : new Date(value);
+        if (!isNaN(timeValue.getTime())) {
+            // 시간 형식으로 변환
+            td.textContent = timeFormatter.format(timeValue);
+        } else {
+            // 유효하지 않은 날짜인 경우 기본 텍스트 설정
+            td.textContent = '';
+        }
+        td.className += ' htCenter';
+        return td;
+    }
     selectedProcessName.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
         equipmentNameSelect.value = '';

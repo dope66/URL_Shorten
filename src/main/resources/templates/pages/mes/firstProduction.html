@@ -23,6 +23,7 @@
             background-color: #000;
             color: #00ff00;
             font-weight: bold;
+            text-align: center;
         }
 
         #workerImage {
@@ -112,6 +113,7 @@
             width: 100%;
         }
 
+
     </style>
 </head>
 <body>
@@ -156,13 +158,13 @@
     </thead>
     <tbody>
     <td style="width : 200px"><input type="text" id="company"></td>
-    <td><input type="text" id="note"></td>
+    <td><input type="text" id="note" placeholder="특이 사항을 작성 해주세요" style="text-align: center;"></td>
     <td style="width : 200px">
-        <input type="text" name="productionCount" id="productionCount" placeholder="0" style="width: 100%" required
+        <input type="text" name="productionCount" id="productionCount" placeholder="0" style="width: 100%; text-align: end;" required
                onfocus="openKeyboardForCount('productionCount')">
     </td>
     <td style="width : 200px">
-        <input type="text" name="defectCount" id="defectCount" placeholder="0" style="width: 100%" required
+        <input type="text" name="defectCount" id="defectCount" placeholder="0" style="width: 100%; text-align: end;" required
                onfocus="openKeyboardForCount('defectCount')">
     </td>
 
@@ -254,6 +256,8 @@
 <input type="hidden" id="workerId">
 <div id="keyboardModal" class="modal">
     <div class="modal-content">
+<!--        <input type="text" id="modalInputValue" readonly style="margin-bottom: 10px; text-align: center;" />-->
+        <input type="text" id="modalInputValue" readonly style="text-align: center; margin-bottom: 10px; width: 80%;">
         <div class="keyboard-row">
             <button class="keyboard-button" onclick="pressKey(1)">1</button>
             <button class="keyboard-button" onclick="pressKey(2)">2</button>

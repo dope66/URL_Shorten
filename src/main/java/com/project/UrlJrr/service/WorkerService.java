@@ -4,6 +4,7 @@ import com.project.UrlJrr.dto.ProcessWorkerDto;
 import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class WorkerService {
     }
 
     public List<ProcessWorker> findAll() {
-        return workerRepository.findAll();
+        return workerRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public long getTotalEmployeeCount() {

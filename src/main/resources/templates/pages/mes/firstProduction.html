@@ -284,7 +284,7 @@
 
 </body>
 <script>
-    const processNameSelect = document.getElementById("processName");
+    const selectedProcessName = document.getElementById("processName");
     const equipmentNameSelect = document.getElementById("equipmentName");
     const workerNameSelect = document.getElementById("processWorker");
     const worekerIdselect = document.getElementById("workerId");
@@ -300,7 +300,7 @@
                 const option = document.createElement('option');
                 option.text = processName;
                 option.value = processName;
-                processNameSelect.appendChild(option);
+                selectedProcessName.appendChild(option);
             });
         })
         .catch(error => {
@@ -309,14 +309,14 @@
 
     // 페이지 로드 시 fetchProcessNameAndWorkerName 함수 호출하여 초기화
     fetchProcessNameAndWorkerName();
+    fetchEquipmentName();
+    equipmentNameSelect.addEventListener('change',()=>{
+
+    });
     // 공정명과 호기 이름을 가져오는 함수
     function fetchProcessNameAndWorkerName() {
-        const selectedProcessName = document.getElementById("processName");
-        const equipmentNameSelect = document.getElementById("equipmentName");
-        const workerNameSelect = document.getElementById("processWorker");
-
         // equipmentNameSelect 초기화
-        equipmentNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
         //공정명값으로 호기 가져오기
         if(selectedProcessName.value){
             fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
@@ -333,7 +333,7 @@
                 .catch(error => {
                     console.error('fetch 오류 요청 ', error);
                 });
-
+            //공정 명으로 공정원 가져외기
             fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
                 .then(response => response.json())
                 .then(workerNames => {
@@ -349,28 +349,17 @@
                 .catch(error => {
                     console.error('fetch 오류 요청 ', error);
                 });
-        }else{
-            fetch(`/api/worker/getAllEquipmentName`)
-                .then(response => response.json())
-                .then(equipmentNames => {
-                    equipmentNames.forEach(equipmentName => {
-                        const option = document.createElement('option');
-                        option.text = equipmentName;
-                        option.value = equipmentName;
-                        equipmentNameSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('fetch 오류 요청 ', error);
-                });
-
-
+            equipmentNameSelect.addEventListener('change',()=>{
+                console.log("공정명 값이 있고 호기 변경이 있을 경우 ")
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                imageElement.src = "/static/image/defaultWorker.png";
+                fetchProcessNameAndEquipmentName();
+            });
         }
-
     }
 
 
-    processNameSelect.addEventListener('change', () => {
+    selectedProcessName.addEventListener('change', () => {
         // productionType 변경 시 productionName 값 초기화
         equipmentNameSelect.value = '';
         workerNameSelect.value='';
@@ -378,31 +367,65 @@
         fetchProcessNameAndWorkerName();
     });
     // 호기 변경시 공정원 이름 변경
+function fetchProcessNameAndEquipmentName(){
+    const processName = selectedProcessName.value;
+    const equipmentName = equipmentNameSelect.value;
 
-    equipmentNameSelect.addEventListener('change', () => {
-        const processName = processNameSelect.value;
-        const equipmentName = equipmentNameSelect.value;
-
-        // workerName을 가져오는 fetch 요청을 select option이 변경되었을 때 실행
-        fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`)
-            .then(response => response.json())
-            .then(workerInfos => {
-                workerNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
-                workerInfos.forEach(workerInfo => {
-                    const option = document.createElement('option');
-                    option.text = workerInfo;
-                    option.value = workerInfo;
-                    workerNameSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('fetch 오류 요청 ', error);
+    // workerName을 가져오는 fetch 요청을 select option이 변경되었을 때 실행
+    fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`)
+        .then(response => response.json())
+        .then(workerInfos => {
+            workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+            workerInfos.forEach(workerInfo => {
+                const option = document.createElement('option');
+                option.text = workerInfo;
+                option.value = workerInfo;
+                workerNameSelect.appendChild(option);
             });
-    });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+
+}
+function fetchEquipmentName(){
+    console.log("공정명이 선택되지 않은 경우");
+    equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+    // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
+    fetch(`/api/worker/getAllEquipmentName`)
+        .then(response => response.json())
+        .then(equipmentNames => {
+            equipmentNames.forEach(equipmentName => {
+                const option = document.createElement('option');
+                option.text = equipmentName;
+                option.value = equipmentName;
+                equipmentNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+    AllWorkerName();
+
+}
+    function AllWorkerName() {
+        fetch('/api/worker/getAllWorkerName')
+            .then(response => response.json()
+                .then(data => {
+                    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                    data.forEach(workerName => {
+                        const option = document.createElement('option');
+                        option.text = workerName;
+                        option.value = workerName;
+                        workerNameSelect.appendChild(option);
+                    });
+                }));
+    }
 
     // workerName을 선택한 후에 workerId를 가져오는 함수
     function fetchWorkerId() {
-        const processName = processNameSelect.value;
+        const processName = selectedProcessName.value;
         const equipmentName = equipmentNameSelect.value;
         const workerName = workerNameSelect.value;
 
@@ -443,7 +466,7 @@
             fetch(`/api/worker/getWorkerIdWithProcessNameAndWorkerName?processName=${processName}&workerName=${workerName}`)
                 .then(response => response.json())
                 .then(workerId => {
-                    console.log("workerId", workerId);
+                    console.log("공정명과 공정원 이름으로 id 가져오기 workerId : ", workerId);
                     worekerIdselect.value = workerId;
                     var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
                     fetch(imageUrl)

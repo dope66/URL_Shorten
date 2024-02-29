@@ -26,7 +26,7 @@ function fetchProcessNameAndWorkerName() {
         fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
             .then(workerNames => {
-                workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
                 workerNames.forEach(workerName => {
                     const option = document.createElement('option');
                     option.text = workerName;
@@ -39,7 +39,7 @@ function fetchProcessNameAndWorkerName() {
             });
         equipmentNameSelect.addEventListener('change',()=>{
             console.log("공정명 값이 있고 호기 변경이 있을 경우 ")
-            workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+            workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
             fetchProcessNameAndEquipmentName();
         });
     }
@@ -51,7 +51,7 @@ function fetchProcessNameAndEquipmentName() {
         fetch(`/api/worker/getWorkerName?processName=${selectedProcessName.value}&equipmentName=${equipmentNameSelect.value}`)
             .then(response => response.json())
             .then(workerInfos => {
-                workerNameSelect.innerHTML = '<option value="" disabled selected>선택하세요</option>';
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
                 workerInfos.forEach(workerInfo => {
                     const option = document.createElement('option');
                     option.text = workerInfo;
@@ -70,7 +70,7 @@ function fetchProcessNameAndEquipmentName() {
 function fetchEquipmentName(){
     console.log("공정명이 선택되지 않은 경우");
     equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
-    workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
     // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
     fetch(`/api/worker/getAllEquipmentName`)
         .then(response => response.json())
@@ -93,7 +93,7 @@ function AllWorkerName() {
     fetch('/api/worker/getAllWorkerName')
         .then(response => response.json()
             .then(data => {
-                workerNameSelect.innerHTML = '<option value="" disabled selected>성명 선택</option>';
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
                 data.forEach(workerName => {
                     const option = document.createElement('option');
                     option.text = workerName;

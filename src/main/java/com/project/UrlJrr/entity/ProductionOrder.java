@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,7 +20,7 @@ public class ProductionOrder {
     private Long id;
     private String processName;
     private Date productionDate;
-    private LocalDateTime registerDate;
+    private String registerDate;
     private String processWorker;
     private String equipmentName;
     private int productionCount;

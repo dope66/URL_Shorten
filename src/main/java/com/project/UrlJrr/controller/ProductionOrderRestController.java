@@ -22,6 +22,11 @@ public class ProductionOrderRestController {
         List<ProductionOrder> productionOrders = productionOrderService.findOrdersByProcessAndEquipment(processName, equipmentName);
         return ResponseEntity.ok(productionOrders);
     }
+    @GetMapping("/AllList")
+    public ResponseEntity<List<ProductionOrder>> getAllList(){
+        List<ProductionOrder> productionOrderList= productionOrderService.findAll();
+        return ResponseEntity.ok(productionOrderList);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> regist(@RequestBody ProductOrderDto productOrderDto){

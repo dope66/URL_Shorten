@@ -2,55 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>생산지시</title>
-    <style>
-        .start-button {
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-            align-items: center;
-            width: 100%;
-        }
-
-        /* 버튼 호버 시의 스타일 */
-        .start-button:hover {
-            background-color: #0056b3; /* 호버 시 배경색 */
-        }
-    </style>
+    <title>Title</title>
 </head>
 <!-- Handsontable CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
 <!-- Handsontable JS -->
 <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 <body>
-<div id="productionOrder-table">
-    <div id="productionOrder-list"></div>
-</div>
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const processName = urlParams.get('processName');
-        const equipmentName = urlParams.get('equipmentName');
+<h1>생산 지시 현황</h1>
 
-        // API 호출 시 공정명과 설비명을 포함시켜 전달
-        fetch(`/api/order/list?processName=${encodeURIComponent(processName)}&equipmentName=${encodeURIComponent(equipmentName)}`)
+<div id="productionOrder-list"></div>
+</body>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch(`/api/order/AllList`)
             .then(response => response.json())
             .then(data => {
                 originalData = data;
                 createHandsontable(originalData);
             });
     });
-
-    function moveTestPage(rowData) {
-        localStorage.setItem('selectedRowData', JSON.stringify(rowData));
-        window.location.href = '/mes/firstProduction';
-    }
-
     function createHandsontable(data) {
         const container = document.getElementById('productionOrder-list');
         hot = new Handsontable(container, {
@@ -60,11 +33,11 @@
                 return cellProperties;
             },
             className: "htCenter",
-            colWidths: [100, 150, 100, 100, 100, 100, 150, 200, 100], // 각 열의 너비를 픽셀 단위로 설정
+            colWidths: [100, 150, 100, 100, 100, 100, 150, 200], // 각 열의 너비를 픽셀 단위로 설정
             rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
             data: data,
-            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고', '시작'],
+            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고'],
             columns: [
                 {data: 'id', readOnly: true, className: "htCenter"},
                 {data: 'processName', readOnly: true, className: "htCenter"},
@@ -74,13 +47,11 @@
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
                 {data: 'registerDate', readOnly: true, className: "htCenter"},
                 {data: 'note', readOnly: true, className: "htCenter"},
-                {
-                    // 시작 버튼 열 추가
-                    renderer: startButtonRenderer,
-                    readOnly: true,
-                    className: "htCenter"
-                }
             ],
+            hiddenColumns: {
+                columns: [0], // 'ID' 열을 숨깁니다.
+                indicators: false // 숨겨진 열의 지시자 표시 여부
+            },
             height: 300,
             viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
             columnSorting: false, // 정렬 활성화
@@ -93,7 +64,6 @@
             search: true, // 검색 기능 활성화
         });
     }
-
     function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
         const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
             year: 'numeric', // '2-digit'에서 'numeric'으로 변경하여 연도를 4자리로 표시
@@ -113,25 +83,5 @@
         td.className += ' htCenter';
         return td;
     }
-
-    function startButtonRenderer(instance, td, row, col, prop, value, cellProperties) {
-        // 기존의 셀 내용을 초기화
-        Handsontable.dom.empty(td);
-
-        // 버튼 엘리먼트 생성
-        const button = document.createElement('button');
-        button.textContent = '시작';
-        button.className = 'start-button'; // CSS 클래스 설정 (스타일링을 위해)
-        button.onclick = function() {
-            const rowData = instance.getSourceDataAtRow(row);
-            moveTestPage(rowData); // 버튼 클릭 시 실행할 함수
-        };
-
-        // 버튼을 td에 추가
-        td.appendChild(button);
-
-        return td;
-    }
-
 </script>
 </html>

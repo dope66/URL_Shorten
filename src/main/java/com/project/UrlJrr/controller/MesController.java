@@ -93,5 +93,9 @@ public class MesController {
         model.addAttribute("processAndEquipment", processAndEquipment);
         return "pages/mes/workerProductionOrder";
     }
+    @GetMapping("/orderList")
+    public String orderList(){
+        return "pages/mes/orderList";
+    }
 
 }

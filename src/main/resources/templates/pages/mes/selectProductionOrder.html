@@ -185,25 +185,6 @@
         selectElement.value = value;
     }
 
-    // 등록 버튼에 클릭 이벤트 핸들러 추가
-    // document.getElementById('order-rigister').addEventListener('click', function() {
-    //     // 필요한 데이터 수집
-    //     const processName = document.getElementById('processName').value;
-    //     const equipmentName = document.getElementById('equipmentName').value;
-    //     const workerName = document.getElementById('workerName').value;
-    //
-    //     // 가공한 데이터를 URL 파라미터 형태로 만듭니다.
-    //     const queryParams = new URLSearchParams({
-    //         processName: processName,
-    //         equipmentName: equipmentName,
-    //         workerName: workerName
-    //     });
-    //
-    //     // 만든 URL 파라미터를 사용하여 특정 링크로 이동합니다.
-    //     window.location.href = '/mes/productionOrderRegister?' + queryParams.toString();
-    // });
-
-
     const registerForm = document.getElementById("order-register");
     document.getElementById('registerButton').addEventListener('click', function () {
         event.preventDefault();

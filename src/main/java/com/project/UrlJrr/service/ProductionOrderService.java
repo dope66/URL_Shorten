@@ -5,6 +5,7 @@ import com.project.UrlJrr.entity.ProductionOrder;
 import com.project.UrlJrr.repository.ProductionOrderRepository;
 import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -42,5 +43,9 @@ public class ProductionOrderService {
 
     public ProductionOrder register(ProductOrderDto productOrderDto) {
         return productionOrderRepository.save(productOrderDto.toEntity());
+    }
+
+    public List<ProductionOrder> findAll() {
+        return productionOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }

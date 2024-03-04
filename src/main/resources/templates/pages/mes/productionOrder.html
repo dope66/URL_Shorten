@@ -3,6 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>생산지시</title>
+    <style>
+        .start-button {
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* 버튼 호버 시의 스타일 */
+        .start-button:hover {
+            background-color: #0056b3; /* 호버 시 배경색 */
+        }
+    </style>
 </head>
 <!-- Handsontable CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
@@ -32,6 +50,25 @@
                 createHandsontable(originalData);
             });
     });
+    function startButtonRenderer(instance, td, row, col, prop, value, cellProperties) {
+        // 기존의 셀 내용을 초기화
+        Handsontable.dom.empty(td);
+
+        // 버튼 엘리먼트 생성
+        const button = document.createElement('button');
+        button.textContent = '시작';
+        button.className = 'start-button'; // CSS 클래스 설정 (스타일링을 위해)
+        button.onclick = function() {
+            const rowData = instance.getSourceDataAtRow(row);
+            console.log("rowData", rowData);
+            moveTestPage(rowData); // 버튼 클릭 시 실행할 함수
+        };
+
+        // 버튼을 td에 추가
+        td.appendChild(button);
+
+        return td;
+    }
 
     function createHandsontable(data) {
         console.log("data : ", data);
@@ -43,11 +80,11 @@
                 return cellProperties;
             },
             className: "htCenter",
-            colWidths: [100, 150, 100, 100, 100, 100, 150, 200], // 각 열의 너비를 픽셀 단위로 설정
+            colWidths: [100, 150, 100, 100, 100, 100, 150, 200,100], // 각 열의 너비를 픽셀 단위로 설정
             rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
             data: data,
-            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고'],
+            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고','시작'],
             columns: [
                 {data: 'id', readOnly: true, className: "htCenter"},
                 {data: 'processName', readOnly: true, className: "htCenter"},
@@ -56,7 +93,13 @@
                 {data: 'processWorker', readOnly: true, className: "htCenter"},
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
                 {data: 'registerDate', readOnly: true, className: "htCenter"},
-                {data: 'note', readOnly: true, className: "htCenter"}
+                {data: 'note', readOnly: true, className: "htCenter"},
+                {
+                    data: 'startButton', // 이 열에 대한 데이터 속성 (사용하지 않을 경우 임의의 값)
+                    readOnly: true,
+                    renderer: startButtonRenderer // 사용자 정의 렌더러 사용
+                }
+
             ],
             // hiddenColumns: {
             //     columns: [0], // 'ID' 열을 숨깁니다.
@@ -73,12 +116,6 @@
             dropdownMenu: false, // 드롭다운 메뉴 활성화
             rowHeaders: true, // 행 번호 표시
             search: true, // 검색 기능 활성화
-            afterOnCellMouseDown: function (event, coords) {
-                const rowData = hot.getSourceDataAtRow(coords.row);
-                // applyDataToForm(rowData);
-                console.log("rowData", rowData);
-                moveTestPage(rowData);
-            }
         });
     }
 

@@ -90,5 +90,20 @@ public class MesController {
         return "pages/mes/productionOrder";
     }
 
+    @GetMapping("/productionOrderRegister")
+    public String getProductionOrderRegister(
+            @RequestParam(name = "processName") String processName,
+            @RequestParam(name = "equipmentName") String equipmentName,
+            @RequestParam(name = "workerName") String workerName,
+            Model model) {
+        // 받은 데이터를 모델에 담거나 필요한 처리를 수행합니다.
+        // 여기에서는 간단히 로그를 출력해보겠습니다.
 
+        model.addAttribute("processName",processName);
+        model.addAttribute("equipmentName",equipmentName);
+        model.addAttribute("workerName",workerName);
+
+        // 처리한 후에 해당하는 페이지로 이동합니다.
+        return "pages/mes/productionOrderRegister";
+    }
 }

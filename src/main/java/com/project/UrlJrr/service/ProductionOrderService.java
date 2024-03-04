@@ -1,5 +1,6 @@
 package com.project.UrlJrr.service;
 
+import com.project.UrlJrr.dto.ProductOrderDto;
 import com.project.UrlJrr.entity.ProductionOrder;
 import com.project.UrlJrr.repository.ProductionOrderRepository;
 import com.project.UrlJrr.repository.WorkerRepository;
@@ -37,5 +38,9 @@ public class ProductionOrderService {
             processEquipmentMap.put(processName, equipmentNames);
         }
         return processEquipmentMap;
+    }
+
+    public ProductionOrder register(ProductOrderDto productOrderDto) {
+        return productionOrderRepository.save(productOrderDto.toEntity());
     }
 }

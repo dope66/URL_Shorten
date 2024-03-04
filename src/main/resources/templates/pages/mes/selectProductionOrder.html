@@ -4,33 +4,44 @@
     <meta charset="UTF-8">
     <title>생산 지시 선택</title>
     <style>
-        #process-equipment-links{
+        .process-equipment-section {
+            margin-bottom: 20px;
+        }
+
+        .process-title {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .equipment-links {
+            display: flex;
+            gap: 10px; /* 링크 사이의 간격 조절 */
+        }
+
+        .production-order-link {
+            padding: 40px;
+            background-color: #031657;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
+
 <body>
 <h1>생산 지시 선택</h1>
 
-    <div id="process-equipment-links">
-        <!-- 서버에서 전달받은 processAndEquipment 맵의 각 항목에 대해 반복 -->
-        <div th:each="processEntry : ${processAndEquipment}">
-            <h2 th:text="${processEntry.key}">공정명</h2>
-            <div th:each="equipmentNumber : ${processEntry.value}">
-                <button class="production-order-link" th:data-process-name="${processEntry.key}" th:data-equipment-number="${equipmentNumber}" th:text="${processEntry.key + ' ' + equipmentNumber}">링크 텍스트</button>
+<div id="process-equipment-links">
+    <div th:each="processEntry : ${processAndEquipment}" class="process-equipment-section">
+        <h2 class="process-title" th:text="${processEntry.key}"></h2>
+        <div class="equipment-links">
+            <div th:each="equipmentNumber : ${processEntry.value}" class="production-order-link" th:data-process-name="${processEntry.key}" th:data-equipment-number="${equipmentNumber}" th:text="${processEntry.key + ' ' + equipmentNumber}">
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
     </div>
-
+</div>
 </body>
 <script>
     // 링크를 클릭할 때 호출될 함수

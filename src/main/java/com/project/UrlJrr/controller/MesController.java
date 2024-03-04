@@ -97,5 +97,8 @@ public class MesController {
     public String orderList(){
         return "pages/mes/orderList";
     }
-
+    @GetMapping("/admin")
+    public String admin(){
+        return "pages/mes/admin";
+    }
 }

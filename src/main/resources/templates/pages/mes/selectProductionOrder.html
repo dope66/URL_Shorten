@@ -16,6 +16,7 @@
         .equipment-links {
             display: flex;
             gap: 10px; /* 링크 사이의 간격 조절 */
+            flex-wrap: wrap; /* 내용이 넘칠 경우 다음 줄로 넘김 */
         }
 
         .production-order-link {
@@ -25,8 +26,14 @@
             text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
+            text-align: center;
             font-weight: bold;
+
+            min-width: 120px; /* 최소 너비 설정 */
+            flex: 1; /* 유연한 너비 조정을 위해 */
+            box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
         }
+
     </style>
 </head>
 

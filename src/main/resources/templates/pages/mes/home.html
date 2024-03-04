@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>MES</title>
     <style>
-        #container {
+        #container-1{
             display: flex;
             /*flex-direction: column;*/
             flex-direction: row;
@@ -13,7 +13,15 @@
             /*height: 100vh;*/
             margin: 10px;
         }
-
+        #container-2{
+            display: flex;
+            /*flex-direction: column;*/
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            /*height: 100vh;*/
+            margin: 10px;
+        }
         #container a {
             margin: 10px;
             background-color: #7d8686;
@@ -35,11 +43,17 @@
 </head>
 <body>
 <div id="container">
-    <a href="/mes/worker">공정원 페이지 </a>
-    <a href="/mes/workerProductionOrder">작업자 생산지시 화면</a>
-    <a href="/mes/testSearch">조회 검색</a>
-    <a href="/mes/productLog">생산일지 </a>
-    <a href="/mes/admin">관리자 </a>
+    <div id="container-1">
+        <a href="/mes/worker">공정원 페이지 </a>
+        <a href="/mes/workerProductionOrder">작업자 생산지시 화면</a>
+        <a href="/mes/testSearch">조회 검색</a>
+        <a href="/mes/productLog">생산일지 </a>
+        <a href="/mes/admin">관리자 </a>
+    </div>
+    <div id="container-2">
+        <a href="/mes/selectProductionOrder">생산 지시</a>
+        <a href="/mes/orderList">생산지시 현황</a>
+    </div>
 </div>
 
 </body>

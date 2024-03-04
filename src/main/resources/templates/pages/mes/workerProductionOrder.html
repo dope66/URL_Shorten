@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>생산 지시 프로그램</title>
+    <style>
+        .process-equipment-section {
+            margin-bottom: 20px;
+        }
+
+        .process-title {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .equipment-links {
+            display: flex;
+            gap: 10px; /* 링크 사이의 간격 조절 */
+            flex-wrap: wrap; /* 내용이 넘칠 경우 다음 줄로 넘김 */
+        }
+
+        .production-order-link {
+            padding: 40px;
+            background-color: #031657;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+
+            min-width: 120px; /* 최소 너비 설정 */
+            flex: 1; /* 유연한 너비 조정을 위해 */
+            box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+        }
+
+    </style>
+</head>
+
+<body>
+<h1>생산 지시 프로그램</h1>
+
+<div id="process-equipment-links">
+    <div th:each="processEntry : ${processAndEquipment}" class="process-equipment-section">
+        <h2 class="process-title"></h2>
+        <div class="equipment-links">
+            <div th:each="equipmentNumber : ${processEntry.value}" class="production-order-link" th:data-process-name="${processEntry.key}" th:data-equipment-number="${equipmentNumber}" th:text="${processEntry.key + ' ' + equipmentNumber}">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    // 링크를 클릭할 때 호출될 함수
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('.production-order-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', function () {
+                const processName = this.getAttribute('data-process-name');
+                const equipmentNumber = this.getAttribute('data-equipment-number');
+                navigateToProductionOrder(processName, equipmentNumber);
+            });
+        });
+    });
+
+    function navigateToProductionOrder(processName, equipmentNumber) {
+        const encodedProcessName = encodeURIComponent(processName);
+        const encodedEquipmentNumber = encodeURIComponent(equipmentNumber);
+        // URL에 공정명과 설비명을 쿼리 파라미터로 포함시켜 전달
+        const url = `/mes/productionOrder?processName=${encodedProcessName}&equipmentName=${encodedEquipmentNumber}`;
+        window.location.href = url;
+    }
+
+
+</script>
+</html>
+

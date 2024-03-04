@@ -295,26 +295,19 @@
 </div>
 </body>
 <script>
-    document.getElementById('movePage').addEventListener('click', function (event) {
+    document.getElementById('movePage').addEventListener('click', function(event) {
         event.preventDefault();
         window.location.href = "/mes/testSearch";
     });
 
-</script>
-<script>
     document.addEventListener('DOMContentLoaded', async function() {
         await initializeSelectionsAndLoadWorkers();
     });
 
-    // 공정, 설비 선택을 초기화하고 해당하는 공정원을 불러오는 함수
     async function initializeSelectionsAndLoadWorkers() {
         const selectedRowData = JSON.parse(localStorage.getItem('selectedRowData') || '{}');
-
-        // 공정명 선택 요소 초기화
         await initializeProcessNameSelect(selectedRowData.processName);
-        // 설비명 선택 요소 초기화
         await initializeEquipmentNameSelect(selectedRowData.processName, selectedRowData.equipmentName);
-        // 공정원 선택 요소 초기화
         await loadProcessWorkers(selectedRowData.processName, selectedRowData.equipmentName);
     }
 
@@ -337,6 +330,7 @@
 
     async function initializeEquipmentNameSelect(processName, selectedEquipmentName) {
         const equipmentNameSelect = document.getElementById("equipmentName");
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
         if (processName) {
             try {
                 const response = await fetch(`/api/worker/getEquipmentName?processName=${processName}`);
@@ -353,38 +347,34 @@
             }
         }
     }
+
     async function loadProcessWorkers(processName, equipmentName) {
         const workerSelect = document.getElementById("processWorker");
         workerSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
-        try {
-            // API 호출 및 응답 처리
-            const response = await fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`);
-            const workers = await response.json(); // 여기서 workers는 문자열 배열이라고 가정
-
-            // 배열 각 요소에 대해 옵션 생성 및 추가
-            workers.forEach(workerName => {
-                console.log("worker : ", workerName); // 콘솔 로그 확인
-                const option = new Option(workerName, workerName); // 텍스트와 값으로 workerName 사용
-                workerSelect.add(option);
-            });
-        } catch (error) {
-            console.error('Error loading process workers:', error);
+        if (processName && equipmentName) {
+            try {
+                const response = await fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`);
+                const workers = await response.json();
+                workers.forEach(workerName => {
+                    const option = new Option(workerName, workerName);
+                    workerSelect.add(option);
+                });
+            } catch (error) {
+                console.error('Error loading process workers:', error);
+            }
         }
     }
 
-
-    // Change 이벤트 리스너 추가
-    document.getElementById("processName").addEventListener('change', function() {
+    document.getElementById("processName").addEventListener('change', async function() {
         const processName = this.value;
-        initializeEquipmentNameSelect(processName);
-        // 공정이 변경될 때 설비를 초기화하고 공정원을 다시 불러옵니다.
-        loadProcessWorkers(processName, document.getElementById("equipmentName").value);
+        await initializeEquipmentNameSelect(processName);
+        await loadProcessWorkers(processName, document.getElementById("equipmentName").value);
     });
 
-    document.getElementById("equipmentName").addEventListener('change', function() {
+    document.getElementById("equipmentName").addEventListener('change', async function() {
         const equipmentName = this.value;
         const processName = document.getElementById("processName").value;
-        loadProcessWorkers(processName, equipmentName);
+        await loadProcessWorkers(processName, equipmentName);
     });
 </script>
 <script>
@@ -395,27 +385,6 @@
     var imageElement = document.querySelector("#workerImage");
 
     workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
-    // 페이지 로드 시 processNameSelect 요소 초기화
-    function getProcessNameSelect(){
-        fetch('/api/worker/getProcessName')
-            .then(response => response.json())
-            .then(data => {
-                console.log("processname: ", data);
-                data.forEach(processName => {
-                    const option = document.createElement('option');
-                    option.text = processName;
-                    option.value = processName;
-                    selectedProcessName.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('fetch 오류 요청 ', error);
-            });
-    }
-
-
-
-
     fetchProcessNameAndWorkerName();
     fetchEquipmentName();
     /*

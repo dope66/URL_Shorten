@@ -13,12 +13,18 @@
             cursor: pointer;
             border-radius: 5px;
             align-items: center;
-            width: 100%;
+            position: absolute;
+            right: 270px;
+            top: 20px;
         }
 
         /* 버튼 호버 시의 스타일 */
         .start-button:hover {
             background-color: #0056b3; /* 호버 시 배경색 */
+        }
+
+        #productionOrder-table {
+            margin-top: 50px; /* 시작 버튼 아래로 내림 */
         }
     </style>
 </head>
@@ -27,6 +33,9 @@
 <!-- Handsontable JS -->
 <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 <body>
+<div id="startButtonContainer">
+    <button id="startButton" class="start-button">초중종물 검사실행</button>
+</div>
 <div id="productionOrder-table">
     <div id="productionOrder-list"></div>
 </div>
@@ -37,6 +46,11 @@
         const processName = urlParams.get('processName');
         const equipmentName = urlParams.get('equipmentName');
 
+        // 시작 버튼 클릭 이벤트 핸들러
+        document.getElementById('startButton').addEventListener('click', function() {
+            startButtonClicked(processName, equipmentName);
+        });
+
         // API 호출 시 공정명과 설비명을 포함시켜 전달
         fetch(`/api/order/list?processName=${encodeURIComponent(processName)}&equipmentName=${encodeURIComponent(equipmentName)}`)
             .then(response => response.json())
@@ -46,9 +60,23 @@
             });
     });
 
-    function moveTestPage(rowData) {
-        localStorage.setItem('selectedRowData', JSON.stringify(rowData));
-        window.location.href = '/mes/firstProduction';
+    function startButtonClicked(processName, equipmentName) {
+        if (!processName || !equipmentName) {
+            alert('공정명과 설비명이 필요합니다.');
+            return;
+        }
+        // 여기서 processName과 equipmentName을 사용하여 원하는 작업 수행
+        console.log('processName:', processName);
+        console.log('equipmentName:', equipmentName);
+        // 예시로 페이지 이동
+        moveTestPage(processName, equipmentName);
+    }
+
+    function moveTestPage(processName, equipmentName) {
+        // 이동할 페이지의 URL 구성
+        const url = `/mes/firstProduction?processName=${encodeURIComponent(processName)}&equipmentName=${encodeURIComponent(equipmentName)}`;
+        // 페이지 이동
+        window.location.href = url;
     }
 
     function createHandsontable(data) {
@@ -74,12 +102,6 @@
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
                 {data: 'registerDate', readOnly: true, className: "htCenter"},
                 {data: 'note', readOnly: true, className: "htCenter"},
-                {
-                    // 시작 버튼 열 추가
-                    renderer: startButtonRenderer,
-                    readOnly: true,
-                    className: "htCenter"
-                }
             ],
             height: 300,
             viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
@@ -113,25 +135,5 @@
         td.className += ' htCenter';
         return td;
     }
-
-    function startButtonRenderer(instance, td, row, col, prop, value, cellProperties) {
-        // 기존의 셀 내용을 초기화
-        Handsontable.dom.empty(td);
-
-        // 버튼 엘리먼트 생성
-        const button = document.createElement('button');
-        button.textContent = '시작';
-        button.className = 'start-button'; // CSS 클래스 설정 (스타일링을 위해)
-        button.onclick = function() {
-            const rowData = instance.getSourceDataAtRow(row);
-            moveTestPage(rowData); // 버튼 클릭 시 실행할 함수
-        };
-
-        // 버튼을 td에 추가
-        td.appendChild(button);
-
-        return td;
-    }
-
 </script>
 </html>

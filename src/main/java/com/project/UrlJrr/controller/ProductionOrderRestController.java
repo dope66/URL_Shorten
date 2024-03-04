@@ -29,8 +29,10 @@ public class ProductionOrderRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> regist(@RequestBody ProductOrderDto productOrderDto){
+    public ResponseEntity<?> register(@RequestBody ProductOrderDto productOrderDto){
+        System.out.println("해당하는 저장 메서드에 진입");
         ProductionOrder newProductionOrder = productionOrderService.register(productOrderDto);
+        System.out.println("저장");
         return new ResponseEntity<>(newProductionOrder, HttpStatus.CREATED);
     }
 

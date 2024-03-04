@@ -11,6 +11,9 @@ function registTest() {
     note = note.trim() ? note : "없음";
     if (!processName || !equipmentName || !processWorker) {
         alert('모든 내용을 채워주세요.ex)생산설비,호기,공정원');
+        console.log("processName : ",processName);
+        console.log("equipmentName : ",equipmentName);
+        console.log("processWorker : ",processWorker);
         return; // 필수 필드가 비어 있으면 함수 실행을 중단
     }
 

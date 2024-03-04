@@ -10,14 +10,14 @@
 <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 <body>
 <div id="productionOrder-table">
-<div id="productionOrder-list"></div>
+    <div id="productionOrder-list"></div>
 
 
 </div>
 </body>
 <script>
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const urlParams = new URLSearchParams(window.location.search);
         const processName = urlParams.get('processName');
         const equipmentName = urlParams.get('equipmentName');
@@ -27,59 +27,67 @@
             .then(response => response.json())
             .then(data => {
                 originalData = data;
-                console.log("data : ",data);
-                console.log("original : ",originalData);
+                console.log("data : ", data);
+                console.log("original : ", originalData);
                 createHandsontable(originalData);
             });
     });
 
-        function createHandsontable(data) {
-            console.log("data : ",data);
-            const container = document.getElementById('productionOrder-list');
-            hot = new Handsontable(container, {
-                cells: function (row, col, prop) {
-                    var cellProperties = {};
-                    cellProperties.className = 'htCenter';
-                    return cellProperties;
-                },
-                className: "htCenter",
-                colWidths: [100, 150, 100, 100, 100, 100, 150, 200], // 각 열의 너비를 픽셀 단위로 설정
-                rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
-                licenseKey: 'non-commercial-and-evaluation',
-                data: data,
-                colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고'],
-                columns: [
-                    {data: 'id', readOnly: true, className: "htCenter"},
-                    {data: 'processName', readOnly: true, className: "htCenter"},
-                    {data: 'productionDate', readOnly: true, renderer: dateRenderer, className: "htCenter"},
-                    {data: 'equipmentName', readOnly: true, className: "htCenter"},
-                    {data: 'processWorker', readOnly: true, className: "htCenter"},
-                    {data: 'productionCount', readOnly: true, className: "htCenter"},
-                    {data: 'registerDate', readOnly: true, className: "htCenter", renderer: timeRenderer},
-                    {data: 'note', readOnly: true, className: "htCenter"}
-                ],
-                // hiddenColumns: {
-                //     columns: [0], // 'ID' 열을 숨깁니다.
-                //     indicators: false // 숨겨진 열의 지시자 표시 여부
-                // },
+    function createHandsontable(data) {
+        console.log("data : ", data);
+        const container = document.getElementById('productionOrder-list');
+        hot = new Handsontable(container, {
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter';
+                return cellProperties;
+            },
+            className: "htCenter",
+            colWidths: [100, 150, 100, 100, 100, 100, 150, 200], // 각 열의 너비를 픽셀 단위로 설정
+            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
+            licenseKey: 'non-commercial-and-evaluation',
+            data: data,
+            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고'],
+            columns: [
+                {data: 'id', readOnly: true, className: "htCenter"},
+                {data: 'processName', readOnly: true, className: "htCenter"},
+                {data: 'productionDate', readOnly: true, renderer: dateRenderer, className: "htCenter"},
+                {data: 'equipmentName', readOnly: true, className: "htCenter"},
+                {data: 'processWorker', readOnly: true, className: "htCenter"},
+                {data: 'productionCount', readOnly: true, className: "htCenter"},
+                {data: 'registerDate', readOnly: true, className: "htCenter", renderer: timeRenderer},
+                {data: 'note', readOnly: true, className: "htCenter"}
+            ],
+            // hiddenColumns: {
+            //     columns: [0], // 'ID' 열을 숨깁니다.
+            //     indicators: false // 숨겨진 열의 지시자 표시 여부
+            // },
 
-                height: 300,
-                viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
-                columnSorting: false, // 정렬 활성화
-                contextMenu: false, // 우클릭 메뉴 활성화
-                manualRowMove: true, // 행 이동 활성화
-                manualColumnMove: true, // 열 이동 활성화
-                filters: true, // 필터링 활성화
-                dropdownMenu: false, // 드롭다운 메뉴 활성화
-                rowHeaders: true, // 행 번호 표시
-                search: true, // 검색 기능 활성화
-                afterOnCellMouseDown: function (event, coords) {
-                    const rowData = hot.getSourceDataAtRow(coords.row);
-                    // applyDataToForm(rowData);
-                    console.log("rowData", rowData);
-                }
-            });
-        }
+            height: 300,
+            viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
+            columnSorting: false, // 정렬 활성화
+            contextMenu: false, // 우클릭 메뉴 활성화
+            manualRowMove: true, // 행 이동 활성화
+            manualColumnMove: true, // 열 이동 활성화
+            filters: true, // 필터링 활성화
+            dropdownMenu: false, // 드롭다운 메뉴 활성화
+            rowHeaders: true, // 행 번호 표시
+            search: true, // 검색 기능 활성화
+            afterOnCellMouseDown: function (event, coords) {
+                const rowData = hot.getSourceDataAtRow(coords.row);
+                // applyDataToForm(rowData);
+                console.log("rowData", rowData);
+                moveTestPage(rowData);
+            }
+        });
+    }
+
+    function moveTestPage(rowData) {
+        localStorage.setItem('selectedRowData', JSON.stringify(rowData));
+        window.location.href = '/mes/firstProduction';
+    }
+
+
     function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
         const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
             year: 'numeric', // '2-digit'에서 'numeric'으로 변경하여 연도를 4자리로 표시
@@ -99,6 +107,7 @@
         td.className += ' htCenter';
         return td;
     }
+
     // 시간 데이터를 변환
     // 시간 데이터를 HH:mm:ss로 변환하는 renderer 함수
     function timeRenderer(instance, td, row, col, prop, value, cellProperties) {

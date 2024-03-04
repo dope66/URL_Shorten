@@ -35,7 +35,7 @@
 
 <div id="process-equipment-links">
     <div th:each="processEntry : ${processAndEquipment}" class="process-equipment-section">
-        <h2 class="process-title" th:text="${processEntry.key}"></h2>
+        <h2 class="process-title"></h2>
         <div class="equipment-links">
             <div th:each="equipmentNumber : ${processEntry.value}" class="production-order-link" th:data-process-name="${processEntry.key}" th:data-equipment-number="${equipmentNumber}" th:text="${processEntry.key + ' ' + equipmentNumber}">
             </div>

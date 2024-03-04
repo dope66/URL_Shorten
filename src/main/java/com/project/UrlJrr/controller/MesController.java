@@ -2,7 +2,9 @@ package com.project.UrlJrr.controller;
 
 import com.project.UrlJrr.entity.ProcessWorker;
 import com.project.UrlJrr.entity.ProductLog;
+import com.project.UrlJrr.entity.ProductionOrder;
 import com.project.UrlJrr.service.ProductLogService;
+import com.project.UrlJrr.service.ProductionOrderService;
 import com.project.UrlJrr.service.WorkerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,16 +23,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MesController {
     private final ProductLogService productLogService;
     private final WorkerService workerService;
+    private final ProductionOrderService productionOrderService;
+
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "pages/mes/home";
     }
+
     @GetMapping("/productLog")
-    public String MesHome(){
+    public String MesHome() {
         return "pages/mes/productLog";
     }
+
     @GetMapping("/worker")
-    public String mesWorker(){
+    public String mesWorker() {
         return "pages/mes/workerRegister";
     }
 
@@ -36,14 +46,15 @@ public class MesController {
         model.addAttribute("processWorker", processWorkerDto);
         return "pages/mes/workerDetail";
     }
+
     @GetMapping("/testSearch")
-    public String testSearch(){
+    public String testSearch() {
         return "pages/mes/testSearch";
     }
 
 
     @GetMapping("/popUp")
-    public String popUp(){
+    public String popUp() {
         return "pages/mes/popUp";
     }
 
@@ -54,9 +65,29 @@ public class MesController {
         model.addAttribute("productLog", productLogDto);
         return "pages/mes/productModify";
     }
+
     @GetMapping("/firstProduction")
-    public String firstProductionTest(){
+    public String firstProductionTest() {
         return "pages/mes/firstProduction";
+    }
+
+    @GetMapping("/selectProductionOrder")
+    public String getProductionOrder(Model model) {
+        Map<String, List<String>> processAndEquipment = productionOrderService.findAllProcessAndEquipment();
+        model.addAttribute("processAndEquipment", processAndEquipment);
+
+        return "pages/mes/selectProductionOrder";
+    }
+
+    @GetMapping("/productionOrder")
+    public String getProductionOrder(@RequestParam String processName,
+                                     @RequestParam String equipmentName,
+                                     Model model) {
+        System.out.println("Process Name: " + processName);
+        System.out.println("Equipment Name: " + equipmentName);
+        List<ProductionOrder> productionOrders = productionOrderService.findOrdersByProcessAndEquipment(processName, equipmentName);
+        model.addAttribute("productionOrders", productionOrders);
+        return "pages/mes/productionOrder";
     }
 
 

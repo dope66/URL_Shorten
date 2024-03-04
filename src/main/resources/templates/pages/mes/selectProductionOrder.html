@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>생산 지시 선택</title>
+    <style>
+        #process-equipment-links{
+        }
+    </style>
+</head>
+<body>
+<h1>생산 지시 선택</h1>
+
+    <div id="process-equipment-links">
+        <!-- 서버에서 전달받은 processAndEquipment 맵의 각 항목에 대해 반복 -->
+        <div th:each="processEntry : ${processAndEquipment}">
+            <h2 th:text="${processEntry.key}">공정명</h2>
+            <div th:each="equipmentNumber : ${processEntry.value}">
+                <button class="production-order-link" th:data-process-name="${processEntry.key}" th:data-equipment-number="${equipmentNumber}" th:text="${processEntry.key + ' ' + equipmentNumber}">링크 텍스트</button>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+</body>
+<script>
+    // 링크를 클릭할 때 호출될 함수
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('.production-order-link');
+
+        links.forEach(link => {
+            link.addEventListener('click', function () {
+                const processName = this.getAttribute('data-process-name');
+                const equipmentNumber = this.getAttribute('data-equipment-number');
+                navigateToProductionOrder(processName, equipmentNumber);
+            });
+        });
+    });
+
+    function navigateToProductionOrder(processName, equipmentNumber) {
+        const encodedProcessName = encodeURIComponent(processName);
+        const encodedEquipmentNumber = encodeURIComponent(equipmentNumber);
+        // URL에 공정명과 설비명을 쿼리 파라미터로 포함시켜 전달
+        const url = `/mes/productionOrder?processName=${encodedProcessName}&equipmentName=${encodedEquipmentNumber}`;
+        window.location.href = url;
+    }
+
+
+</script>
+</html>

@@ -55,7 +55,11 @@
     });
 
     function moveTestPage(rowData) {
-        localStorage.setItem('selectedRowData', JSON.stringify(rowData));
+        localStorage.setItem('selectedRowData', JSON.stringify({
+            processName: rowData.processName,
+            equipmentName: rowData.equipmentName,
+            processWorker: rowData.processWorker // 이 부분 추가
+        }));
         window.location.href = '/mes/firstProduction';
     }
     // 전역 변수로 선택된 행 데이터를 저장

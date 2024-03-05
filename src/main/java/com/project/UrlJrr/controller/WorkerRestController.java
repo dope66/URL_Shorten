@@ -191,4 +191,9 @@ public class WorkerRestController {
         productionTests = productionTestService.findAll();
         return new ResponseEntity<>(productionTests, HttpStatus.OK);
     }
+    @GetMapping("/getProcessAndEquipment")
+    public ResponseEntity<List<String>> getProcessAndEquipmentNames() {
+        List<String> processAndEquipmentNames = workerService.getProcessAndEquipmentNames();
+        return ResponseEntity.ok(processAndEquipmentNames);
+    }
 }

@@ -26,7 +26,9 @@ public class MesController {
     private final ProductionOrderService productionOrderService;
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model) {
+        Map<String, List<String>> processAndEquipment = productionOrderService.findAllProcessAndEquipment();
+        model.addAttribute("processAndEquipment", processAndEquipment);
         return "pages/mes/home";
     }
 

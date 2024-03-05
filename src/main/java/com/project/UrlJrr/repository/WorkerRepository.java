@@ -32,4 +32,8 @@ public interface WorkerRepository extends JpaRepository<ProcessWorker, Long> {
     List<String> findWorkerNamesByProcessName(@Param("processName") String processName);
     @Query("SELECT worker.id FROM ProcessWorker worker WHERE worker.processName = :processName AND worker.workerName =:workerName")
     List<String> findIdByProcessNameAndWorkerName(@Param ("processName")String processName,@Param("workerName") String workerName);
+
+
+    @Query("SELECT DISTINCT p.processName, p.equipmentName FROM ProcessWorker p")
+    List<Object[]> findDistinctProcessAndEquipmentNames();
 }

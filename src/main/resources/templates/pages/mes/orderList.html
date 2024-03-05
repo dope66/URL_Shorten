@@ -33,11 +33,11 @@
                 return cellProperties;
             },
             className: "htCenter",
-            colWidths: [100, 150, 100, 100, 100, 100, 150, 200], // 각 열의 너비를 픽셀 단위로 설정
+            colWidths: [100, 150, 100, 100, 100, 100, 200], // 각 열의 너비를 픽셀 단위로 설정
             rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
             licenseKey: 'non-commercial-and-evaluation',
             data: data,
-            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량', '임율시간', '비고'],
+            colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량','비고'],
             columns: [
                 {data: 'id', readOnly: true, className: "htCenter"},
                 {data: 'processName', readOnly: true, className: "htCenter"},
@@ -45,7 +45,6 @@
                 {data: 'equipmentName', readOnly: true, className: "htCenter"},
                 {data: 'processWorker', readOnly: true, className: "htCenter"},
                 {data: 'productionCount', readOnly: true, className: "htCenter"},
-                {data: 'registerDate', readOnly: true, className: "htCenter"},
                 {data: 'note', readOnly: true, className: "htCenter"},
             ],
             hiddenColumns: {

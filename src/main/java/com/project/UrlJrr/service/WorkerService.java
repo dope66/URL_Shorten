@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +87,16 @@ public class WorkerService {
 
     public List<String> getIdByProcessNameAndWorkerName(String processName, String workerName) {
         return workerRepository.findIdByProcessNameAndWorkerName(processName, workerName);
+    }
+    public List<String> getProcessAndEquipmentNames() {
+        List<Object[]> results = workerRepository.findDistinctProcessAndEquipmentNames();
+        return results.stream()
+                .map(result -> {
+                    String processName = result[0] != null ? result[0].toString() : "";
+                    String equipmentName = result[1] != null ? result[1].toString() : "";
+                    return processName + " " + equipmentName; // 공정명과 설비명을 결합
+                })
+                // "공정명+설비명" 형식으로 결합
+                .collect(Collectors.toList());
     }
 }

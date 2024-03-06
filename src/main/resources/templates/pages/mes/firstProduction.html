@@ -194,7 +194,7 @@
 
     </tbody>
 </table>
-<div id="tables-container">
+<div id="tables-container" style="height: 600px">
     <table th:border="1" id="test-note">
         <thead>
         <th>순번</th>
@@ -269,14 +269,9 @@
         </td>
         <tr>
             <td>
-                <button onclick="registTest()" id="test-submit" style="width: 100%">등록</button>
+                <button onclick="registTest()" id="test-submit" style="width: 100%;height: 100%">등록</button>
             </td>
         </tr>
-<!--        <tr>-->
-<!--            <td>-->
-<!--                <button style="width: 100%; display: block;" id="movePage">조회 검색</button>-->
-<!--            </td>-->
-<!--        </tr>-->
         </tbody>
 
     </table>
@@ -644,8 +639,6 @@
 </script>
 <script defer src="/static/js/TestRegister.js"></script>
 <script defer src="/static/js/simpleKeyboard.js"></script>
-
-
 <script  type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
         var keyboardzone = document.getElementById("keyboardzone");

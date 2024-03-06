@@ -1,4 +1,4 @@
-let currentPage = 0;
+
 let originalData = []; // 원본 데이터 배열
 let hot;
 const imageInput = document.getElementById('imageInput'); // 이미지 입력란

@@ -7,6 +7,26 @@
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="noindex,nofollow" name="robots"/>
     <title>MES</title>
+    <style>
+
+        #test-search-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px; /* 요소 사이의 간격 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+
+        #test-search-container label{
+            display: flex;
+            align-items: center; /* 세로 중앙 정렬 */
+            gap: 5px; /* 요소 사이의 간격 */
+        }
+
+        #test-search-container  button{
+            margin-left: auto; /* 버튼 그룹을 오른쪽으로 이동 */
+        }
+
+    </style>
     <link
             href="https://www.devjune.com/"
             rel="canonical"
@@ -24,6 +44,7 @@
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/pageCss.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -188,10 +209,12 @@
                     <div id="workerMenu" class="side-menu">
                         <ul>
                             <li class="sidebar-item">
-                                <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                <a aria-expanded="false" id="productionOrderLink"
+                                   class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                     <i class="mdi mdi-monitor"></i>
                                     <span class="hide-menu">작업자 생산지시</span></a>
-                                <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                <select class="custom-select" id="processEquipmentSelect"
+                                        style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
                                     <option selected>생산설비 선택</option>
                                 </select>
 
@@ -232,21 +255,51 @@
                 <div class="table-responsive">
                     <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
                     <div id="test-search-container">
-                        기간 검색 : <input type="date" id="startDate"> ~ <input type="date" id="endDate">
-                        공정명 검색 : <select type="text" id="search-processName"></select>
-                        호기 검색 : <select type="text" id="search-equipmentName"></select>
-                        공정원 검색 : <select type="text" id="search-workerName"></select>
-                        <button id="searchButton" >기간 검색</button>
-                        <button id="total-search">전체 검색</button>
-                        <button id="moveHome">홈으로</button>
-                    </div>
-                    <div id="search-test-detail">
-                        공정 : <input type="text" readonly id="searched-processName">
-                        호기 : <input type="text" readonly id="searched-equipmentName">
-                        공정원 : <input type="text" readonly id="searched-workerName">
-                        생산량 : <input type="text" readonly id="searched-production">
-                        불량수 : <input type="text" readonly id="searched-defeatCount">
+                        <label for="startDate">
+                            <input type="text" readonly th:value="기간" style="width: 100px">
+                            <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+                        </label>
+                        <label for="search-processName">
+                            <input type="text" readonly th:value="공정명" style="width: 100px">
+                            <select type="text" id="search-processName"></select></label>
+                        <label for="search-equipmentName">
+                            <input type="text" readonly th:value="호기" style="width: 100px">
+                            <select type="text" id="search-equipmentName"></select></label><br>
+                        <label for="search-workerName">
+                            <input type="text" readonly th:value="공정원" style="width: 100px">
+                            <select type="text" id="search-workerName"></select></label>
+                        <label for="searchButton">
+                            <button id="searchButton" class="search">기간 검색</button>
+                        </label>
+                        <label for="total-search">
+                        <button id="total-search" class="total-search">전체 검색</button>
+                        </label>
 
+
+                    </div>
+                    <hr>
+                    <div id="search-test-detail">
+                        <label>
+                            <input type="text" readonly th:value="공정" style="width: 100px">
+                            <input type="text" readonly id="searched-processName">
+                        </label>
+                        <label>
+                            <input type="text" readonly th:value="호기" style="width: 100px">
+                            <input type="text" readonly id="searched-equipmentName">
+                        </label>
+                        <label>
+                            <input type="text" readonly th:value="공정원" style="width: 100px">
+                            <input type="text" readonly id="searched-workerName">
+                        </label>
+                        <label>
+                            <input type="text" readonly th:value="생산량" style="width: 100px">
+                            <input type="text" readonly id="searched-production">
+                        </label>
+                        <label>
+                            <input type="text" readonly th:value="불량수량" style="width: 100px">
+                            <input type="text" readonly id="searched-defeatCount">
+
+                        </label>
                     </div>
                     <div id="test-list"></div>
                 </div>
@@ -266,8 +319,6 @@
 <script src="/js/sideBar.js"></script>
 <script src="/static/js/ProcessWorkerSearch.js"></script>
 <script src="/js/testSearch.js"></script>
-
-
 
 
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>

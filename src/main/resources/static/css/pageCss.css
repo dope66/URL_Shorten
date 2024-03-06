@@ -15,5 +15,16 @@ input[readonly] {
     border-radius: 5px;
 }
 .register:hover{
-    background-color: #026400; /* 호버 시 배경색 */
+    background-color: #014600; /* 호버 시 배경색 */
+}
+select{
+    height: 31px;
+}
+.total-search{
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+.total-search:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
 }

@@ -1,27 +1,34 @@
+let originalData = []; // 원본 데이터 배열
+const selectedProcessName = document.getElementById("search-processName");
+const equipmentNameSelect = document.getElementById("search-equipmentName");
+const workerNameSelect = document.getElementById("search-workerName");
+selectedProcessName.innerHTML = '<option value="" disabled selected>공정명 선택</option>';
+selectedProcessName.addEventListener('change', () => {
+    // productionType 변경 시 productionName 값 초기화
+    equipmentNameSelect.value = '';
+    workerNameSelect.value = '';
+    fetchProcessNameAndWorkerName();
+});
 
+equipmentNameSelect.addEventListener('change', function () {
+    // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
+    if (selectedProcessName.value) {
+        fetchProcessNameAndEquipmentName();
+    }
+});
 document.getElementById('total-search').addEventListener('click', function (event) {
     event.preventDefault();
     // 원본 데이터를 Handsontable에 다시 로드합니다.
     hot.loadData(originalData);
     console.log("전체 리스트를 불러옵니다.");
+    console.log("전체 데이터",originalData);
 
     // 검색 입력란과 선택란을 초기화합니다.
     document.getElementById('search-workerName').value = '';
     document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
     document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
-
-
-    fetchTestList();
+    // fetchTestList();
 });
-
-document.getElementById('moveHome').addEventListener('click', function (event) {
-    event.preventDefault();
-    window.location.href = "/mes/home";
-});
-const selectedProcessName = document.getElementById("search-processName");
-const equipmentNameSelect = document.getElementById("search-equipmentName");
-const workerNameSelect = document.getElementById("search-workerName");
-selectedProcessName.innerHTML = '<option value="" disabled selected>공정명 선택</option>';
 
 
 // 전체 테스트 리스트 불러오기
@@ -128,19 +135,6 @@ function timeRenderer(instance, td, row, col, prop, value, cellProperties) {
     td.className += ' htCenter';
     return td;
 }
-selectedProcessName.addEventListener('change', () => {
-    // productionType 변경 시 productionName 값 초기화
-    equipmentNameSelect.value = '';
-    workerNameSelect.value = '';
-    fetchProcessNameAndWorkerName();
-});
-
-equipmentNameSelect.addEventListener('change', function () {
-    // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
-    if (selectedProcessName.value) {
-        fetchProcessNameAndEquipmentName();
-    }
-});
 
 
 document.getElementById('searchButton').addEventListener('click', performSearchForTest);

@@ -9,21 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchProductLog(currentPage); // 초기 페이지 데이터 로딩
 });
 function fetchProductLog(page) {
-    fetch(`/api/mes?page=${page}`)
-        .then(response => response.json())
-        .then(data => {
-            originalData = data._embedded.productLogList; // 원본 데이터 업데이트
-            createHandsontable(originalData); // Handsontable 인스턴스 생성 및 데이터 적용
-            console.log("originalDataPagination", originalData);
-        });
-}
-
-function fetchTestList() {
-    fetch(`/api/worker/testList`)
+    fetch(`/api/mes/productLogList`)
         .then(response => response.json())
         .then(data => {
             originalData = data;
             createHandsontable(originalData);
+            console.log("originalData",originalData);
         });
 }
 function formatDate(dateString) {

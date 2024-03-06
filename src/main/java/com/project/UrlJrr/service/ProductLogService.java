@@ -19,8 +19,9 @@ public class ProductLogService {
     private final ProductLogRepository productLogRepository;
     private final WorkerRepository workerRepository;
 
-    public Page<ProductLog> findAll(Pageable pageable) {
-        return productLogRepository.findAll(pageable);
+
+    public List<ProductLog> findAll() {
+        return productLogRepository.findAll();
 
     }
 

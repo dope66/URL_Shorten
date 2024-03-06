@@ -3,23 +3,11 @@ package com.project.UrlJrr.controller;
 import com.project.UrlJrr.dto.ProductLogDto;
 import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.service.ProductLogService;
-import com.project.UrlJrr.service.ProductionTestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -29,33 +17,12 @@ import java.util.List;
 public class ProductLogRestController {
 
     private final ProductLogService productLogService;
-    private final ProductionTestService productionTestService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> productLogList(
-            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-            @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-            @RequestParam(name = "search", required = false) String search,
-            @PageableDefault(sort = "workDate", direction = Sort.Direction.DESC) Pageable pageable,
-            PagedResourcesAssembler<ProductLog> assembler
-    ) {
-        Page<ProductLog> productLogs;
-        if (startDate != null && endDate != null) {
-            if (StringUtils.hasText(search)) {
-                // 검색 단어가 있을때
-                productLogs = productLogService.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, search, pageable);
-            } else {
-                productLogs = productLogService.findByWorkDateBetween(startDate, endDate, pageable);
-            }
-        } else if (StringUtils.hasText(search)) {
-            // 날자가 없을때
-            productLogs = productLogService.findByWorkerNameContaining(search, pageable);
-        } else {
-            // 기본 리스트 열기
-            productLogs = productLogService.findAll(pageable);
-        }
-        PagedModel<EntityModel<ProductLog>> model = assembler.toModel(productLogs);
-        return new ResponseEntity<>(model, HttpStatus.OK);
+    @GetMapping("/productLogList")
+    public ResponseEntity<?> getTestList() {
+        List<ProductLog> ProductLogs;
+        ProductLogs = productLogService.findAll();
+        return new ResponseEntity<>(ProductLogs, HttpStatus.OK);
     }
 
     @GetMapping("/totalProductLogCount")

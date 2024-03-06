@@ -1,194 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="noindex,nofollow" name="robots"/>
     <title>MES</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        #sidebar{
-            color: #FFFFFF;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            overflow: auto;
-        }
-        /* 사이드바 헤더 및 링크 스타일 */
-        .sidebar-header {
-            padding: 10px;
-            background: #27282a;
-            color: #FFFFFF;
-        }
+    <link
+            href="https://www.devjune.com/"
+            rel="canonical"
+    />
+    <!-- Favicon icon -->
+    <link
+            href="/static/assets/images/favicon.png"
+            rel="icon"
+            sizes="16x16"
+            type="image/png"
+    />
+    <!-- This page plugin CSS -->
+    <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/workerRegister.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
-        .side-menu {
-            display: none;
-            position: fixed;
-            left: 250px; /* 기본 사이드바의 너비에 맞춤 */
-            top: 0;
-            width: 200px; /* 추가 사이드 메뉴의 너비 */
-            height: 100%;
-            background-color: #f8f9fa; /* 밝은 배경색 */
-            overflow-y: auto;
-            color: #27282a;
-=
-        }
-        .sidebar, .side-menu ul {
-            list-style-type: none; /* UL 요소 내부의 모든 리스트 아이템의 점을 제거 */
-            padding-left: 0; /* 왼쪽 패딩 제거 */
-        }
 
-        .nav-link {
-            text-decoration: none; /* 링크의 밑줄 제거 */
-            color: #27282a; /* 링크의 텍스트 색상 설정 */
-        }
-        .nav-item a{
-            color:white;
-        }
-        #adminMenu,#workerMenu{
-            background-color:#27282a ;
-        }
-
-    </style>
+    <![endif]-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 
 </head>
 <body>
+<div class="preloader">
+    <svg
+            class="tea lds-ripple"
+            fill="none"
+            height="48"
+            viewbox="0 0 37 48"
+            width="37"
+            xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+                d="M27.0819 17H3.02508C1.91076 17 1.01376 17.9059 1.0485 19.0197C1.15761 22.5177 1.49703 29.7374 2.5 34C4.07125 40.6778 7.18553 44.8868 8.44856 46.3845C8.79051 46.79 9.29799 47 9.82843 47H20.0218C20.639 47 21.2193 46.7159 21.5659 46.2052C22.6765 44.5687 25.2312 40.4282 27.5 34C28.9757 29.8188 29.084 22.4043 29.0441 18.9156C29.0319 17.8436 28.1539 17 27.0819 17Z"
+                stroke="#1e88e5"
+                stroke-width="2"
+        ></path>
+        <path
+                d="M29 23.5C29 23.5 34.5 20.5 35.5 25.4999C36.0986 28.4926 34.2033 31.5383 32 32.8713C29.4555 34.4108 28 34 28 34"
+                stroke="#1e88e5"
+                stroke-width="2"
+        ></path>
+        <path
+                clip-rule="evenodd"
+                d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
+                fill="#1e88e5"
+                fill-rule="evenodd"
+                id="teabag"
+        ></path>
+        <path
+                d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12"
+                id="steamL"
+                stroke="#1e88e5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+        ></path>
+        <path
+                d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13"
+                id="steamR"
+                stroke="#1e88e5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+        ></path>
+    </svg>
+</div>
+<div id="main-wrapper">
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <div class="navbar-header">
+                <a
+                        class="nav-toggler waves-effect waves-light d-block d-md-none"
+                        href="javascript:void(0)"
+                ><i class="ti-menu ti-close"></i
+                ></a>
+                <a class="navbar-brand" href="/mes/home">
+                    <span class="logo-text">
 
-<div id="sidebar" class="sidebar bg-dark">
-    <div class="sidebar-header">
-        <a href="/mes/home" class="navbar-brand" style="color: #FFFFFF">MES 시스템</a>
+                        MES 시스템
+              </span>
+                </a>
+
+                <a
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                        class="topbartoggler d-block d-md-none waves-effect waves-light"
+                        data-bs-target="#navbarSupportedContent"
+                        data-bs-toggle="collapse"
+                        href="javascript:void(0)"
+                ><i class="ti-more"></i
+                ></a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            </div>
+        </nav>
+    </header>
+    <aside class="left-sidebar">
+        <div class="scroll-sidebar">
+            <!-- User profile -->
+            <div class="user-profile position-relative"
+                 style="
+              background: url(/static/assets/images/background/user-info.jpg)
+                no-repeat;
+            "
+            >
+
+            </div>
+            <!-- End User profile text-->
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">Mes</span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
+                           href="#" data-target="adminMenu"><i class="mdi mdi-account-box"></i>
+                            <span class="hide-menu">관리자</span></a>
+                    </li>
+                    <hr>
+                    <li class="nav-item">
+                        <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
+                           href="#" data-target="workerMenu"><i class="mdi mdi-account-box"></i>
+                            <span class="hide-menu">작업자</span></a>
+                    </li>
+                    <div id="adminMenu" class="side-menu">
+                        <ul>
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/mes/worker">
+                                    <i class="mdi mdi-account-box"></i>
+                                    <span class="hide-menu">공정원 페이지</span></a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/mes/testSearch">
+                                    <i class="mdi mdi-file-document-box"></i>
+                                    <span class="hide-menu">조회 검색</span></a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/mes/selectProductionOrder">
+                                    <i class="mdi mdi-access-point"></i>
+                                    <span class="hide-menu">생산 지시</span></a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/mes/orderList">
+                                    <i class="mdi mdi-file-document"></i>
+                                    <span class="hide-menu">생산지시 현황</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="workerMenu" class="side-menu">
+                        <ul>
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                    <i class="mdi mdi-monitor"></i>
+                                    <span class="hide-menu">작업자 생산지시</span></a>
+                                <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                    <option selected>생산설비 선택</option>
+                                </select>
+
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   href="/mes/productLog">
+                                    <i class="mdi mdi-file-document-box"></i>
+                                    <span class="hide-menu">생산일지</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <hr>
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">개발 예정</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                           href="#"><i class="mdi mdi-monitor-multiple"></i>
+                            <span class="hide-menu">모니터링</span></a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                           href="#"><i class="mdi mdi-chart-bar"></i>
+                            <span class="hide-menu">통계분석</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="page-wrapper">
+        <div class="row page-titles">
+            <div class="col-md-5 col-12 align-self-center">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <h2><a href="/mes/home" style="text-decoration: none; color: #FFFFFF;">MES 시스템</a></h2>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- -------------------------------------------------------------- -->
+            <!-- Start Page Content -->
+            <!-- -------------------------------------------------------------- -->
+            <div class="widget-content searchable-container list">
+            </div>
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
+                </div>
+            </div>
+        </div>
+
     </div>
-    <ul class="nav flex-column">
-        <li class="nav-item"><a href="#" class="nav-link toggle-menu" data-target="adminMenu">관리자</a></li>
-        <li class="nav-item"><a href="#" class="nav-link toggle-menu" data-target="workerMenu">작업자</a></li>
-    </ul>
-</div>
-<!-- 관리자 하위 메뉴 -->
-<div id="adminMenu" class="side-menu">
-    <ul>
-        <li class="nav-item"><a href="/mes/worker" id="loadWorkerPage" class="nav-link">공정원 페이지</a></li>
-        <li class="nav-item"><a href="/mes/testSearch" class="nav-link">조회 검색</a></li>
-        <li class="nav-item"><a class="nav-link" href="/mes/selectProductionOrder">생산 지시</a></li>
-        <li class="nav-item"><a class="nav-link" href="/mes/orderList">생산지시 현황</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">모니터링</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">통계분석</a></li>
-    </ul>
-</div>
-<!-- 작업자 하위 메뉴 -->
-<div id="workerMenu" class="side-menu">
-    <ul>
-        <li class="nav-item"><a href="#" class="nav-link" id="productionOrderLink">작업자 생산지시 화면</a>
-            <select class="custom-select" id="processEquipmentSelect" style="background-color: #c7c7c7">
-                <option selected>생산설비 선택</option>
-            </select>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="/mes/productLog">생산일지</a></li>
-    </ul>
+
+    <footer class="footer text-center">
+        All Rights Reserved by 김현우
+    </footer>
+
 </div>
 
-<div id="change-page-body">
-    <!--여기에 페이지 이동한 내용이 오도록 -->
 </div>
+<!--개인-->
+<script src="/js/sideBar.js"></script>
+<script src="/static/js/ProcessWorkerSearch.js"></script>
+<script src="/static/js/workerRegisterEnum.js"></script>
+<script src="/js/workerRegister.js"></script>
+
+
+
+
+<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- apps -->
+<script src="/static/dist/js/app.min.js"></script>
+<script src="/static/dist/js/app.init.dark.js"></script>
+<script src="/static/dist/js/app-style-switcher.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="/static/dist/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.js"></script>
+<script src="/static/dist/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+<!--Wave Effects -->
+<script src="/static/dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="/static/dist/js/sidebarmenu.js"></script>
+<!--Custom JavaScript -->
+<script src="/static/dist/js/feather.min.js"></script>
+<script src="/static/dist/js/custom.min.js"></script>
+<!--This page plugins -->
+<script src="/static/dist/js/pages/contact/contact.js"></script>
+
+
 </body>
-<!--<script>-->
-<!--    $("#loadWorkerPage").click(function(){-->
-<!--        console.log("Load Worker Page clicked");-->
-<!--        $("#change-page-body").load("/mes/worker #register-all", function(response, status, xhr) {-->
-<!--            if (status == "error") {-->
-<!--                console.log("Error loading the page: ", xhr.status, xhr.statusText);-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-
-<!--</script>-->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    document.getElementById('adminMenu').addEventListener('click', function() {
-        document.getElementById('adminSidebar').style.display = 'block';
-        document.getElementById('workerSidebar').style.display = 'none';
-    });
-
-    document.getElementById('workerMenu').addEventListener('click', function() {
-        document.getElementById('workerSidebar').style.display = 'block';
-        document.getElementById('adminSidebar').style.display = 'none';
-    });
-    // document.getElementById('adminMenu').addEventListener('click', function() {
-    //     var adminMenu = document.getElementById('adminMenu');
-    //     var workerMenu = document.getElementById('workerMenu');
-    //     if (adminMenu.style.display === "block") {
-    //         adminMenu.style.display = "none";
-    //     } else {
-    //         adminMenu.style.display = "block";
-    //         workerMenu.style.display = "none";
-    //     }
-    // });
-    //
-    // document.getElementById('workerMenu').addEventListener('click', function() {
-    //     var workerMenu = document.getElementById('workerMenu');
-    //     var adminMenu = document.getElementById('adminMenu');
-    //     if (workerMenu.style.display === "block") {
-    //         workerMenu.style.display = "none";
-    //     } else {
-    //         workerMenu.style.display = "block";
-    //         adminMenu.style.display = "none";
-    //     }
-    // });
-
-    document.querySelectorAll('.toggle-menu').forEach(function(menu) {
-        menu.addEventListener('click', function(e) {
-            e.preventDefault();
-            var targetMenu = document.getElementById(e.target.dataset.target);
-            if (targetMenu.style.display === "block") {
-                targetMenu.style.display = "none";
-            } else {
-                // 모든 사이드 메뉴 숨기기
-                document.querySelectorAll('.side-menu').forEach(function(menu) {
-                    menu.style.display = "none";
-                });
-                // 선택된 메뉴 보이기
-                targetMenu.style.display = "block";
-            }
-        });
-    });
-
-
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const processEquipmentSelect = document.getElementById('processEquipmentSelect');
-        const productionOrderLink = document.getElementById('productionOrderLink');
-        let selectedProcessName = '';
-        let selectedEquipmentName = '';
-
-        fetch(`/api/worker/getProcessAndEquipment`)
-            .then(response => response.json())
-            .then(processAndEquipment => {
-                processAndEquipment.forEach(item => {
-                    const value = item.replace(' ', '-');
-                    const option = new Option(item, value);
-                    processEquipmentSelect.add(option);
-                });
-            });
-
-        processEquipmentSelect.addEventListener('change', function () {
-            const selectedValue = this.value.split('-');
-            selectedProcessName = encodeURIComponent(selectedValue[0]);
-            selectedEquipmentName = encodeURIComponent(selectedValue[1] || '');
-        });
-
-        productionOrderLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            if (!selectedProcessName || !selectedEquipmentName) {
-                alert('공정과 설비를 선택해주세요.');
-                return;
-            }
-            window.location.href = `/mes/productionOrder?processName=${selectedProcessName}&equipmentName=${selectedEquipmentName}`;
-        });
-    });
-</script>
 </html>

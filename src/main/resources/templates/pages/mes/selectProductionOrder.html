@@ -10,229 +10,124 @@
             height: 25px;
             background-color: #7e7e7e;
         }
-
+#mainContainer{
+    left: 250px;
+}
     </style>
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/pageCss.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <!-- Handsontable CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
 <!-- Handsontable JS -->
 <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-<body>
-<h1>생산 지시 프로그램</h1>
-
-<form id="order-register">
-    <div>
-        <label for="processName">
-            <input type="text" readonly value="공정명" class="form-Name">
-            <input type="text" readonly id="processName">
-        </label>
-        <label for="equipmentName">
-            <input type="text" readonly value="호기" class="form-Name">
-            <input type="text" readonly id="equipmentName">
-        </label>
-        <label for="workerName">
-            <input type="text" readonly value="공정원" class="form-Name">
-            <input type="text" readonly id="workerName">
-        </label>
+<body class="bg-dark text-white">
+<div id="sidebar" class="sidebar bg-dark">
+    <div class="sidebar-header">
+        <a href="/mes/home" class="navbar-brand" style="color: #FFFFFF">MES 시스템</a>
     </div>
-    <div>
-        <label>
-            <input type="text" readonly value="국적" class="form-Name">
-            <input type="text" readonly id="nation">
-        </label>
-        <label>
-            <input type="text" readonly value="직책" class="form-Name">
-            <input type="text" readonly id="position">
-        </label>
-        <label>
-            <input type="text" readonly value="주야간조" class="form-Name">
-            <input type="text" readonly id="workShift">
-        </label>
-    </div>
-    <div>
-        <label for="note">
-            <input type="text" readonly value="비고" class="form-Name">
-            <input type="text" id="note">
-        </label>
-        <label for="productionCount">
-            <input type="text" readonly value="목표량" class="form-Name">
-            <input type="text" id="productionCount">
-        </label>
-
-        <label for="productionDate">
-            <input type="text" readonly value="날짜" class="form-Name">
-            <input type="date" id="productionDate" name="productionDate" style="width: 220px;background-color: #b6b4b4" required>
-        </label>
-
-    </div>
-
-    <div id="navigation-container">
-
-    </div>
-</form>
-<div id="employee-Table-container">
-    <div id="employee-search">
-        <select name="search-processName" id="search-processName" style="width: 150px">
-            <option value="" disabled selected>공정명 선택</option>
-        </select>
-        <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
-        </select>
-        <select id="search-workerName"></select>
-        <button id="searchWorkerButton">검색</button>
-        <button onclick="wholeWorker()">전체검색</button>
-        <button id="registerButton" class="btn btn-dark-info">등록</button>
-    </div>
-    <div id="employee-Table"></div>
+    <ul class="nav flex-column">
+        <li class="nav-item"><a href="#" class="nav-link toggle-menu" data-target="adminMenu">관리자</a></li>
+        <li class="nav-item"><a href="#" class="nav-link toggle-menu" data-target="workerMenu">작업자</a></li>
+    </ul>
 </div>
+<!-- 관리자 하위 메뉴 -->
+<div id="adminMenu" class="side-menu">
+    <ul>
+        <li class="nav-item"><a href="/mes/worker" id="loadWorkerPage" class="nav-link">공정원 페이지</a></li>
+        <li class="nav-item"><a href="/mes/testSearch" class="nav-link">조회 검색</a></li>
+        <li class="nav-item"><a class="nav-link" href="/mes/selectProductionOrder">생산 지시</a></li>
+        <li class="nav-item"><a class="nav-link" href="/mes/orderList">생산지시 현황</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">모니터링</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">통계분석</a></li>
+    </ul>
+</div>
+<!-- 작업자 하위 메뉴 -->
+<div id="workerMenu" class="side-menu">
+    <ul>
+        <li class="nav-item"><a href="#" class="nav-link" id="productionOrderLink">작업자 생산지시 화면</a>
+            <select class="custom-select" id="processEquipmentSelect" style="background-color: #c7c7c7">
+                <option selected>생산설비 선택</option>
+            </select>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/mes/productLog">생산일지</a></li>
+    </ul>
+</div>
+<div id="mainContainer">
+    <h1>생산 지시 프로그램</h1>
 
+    <form id="order-register">
+        <div>
+            <label for="processName">
+                <input type="text" readonly value="공정명" class="form-Name">
+                <input type="text" readonly id="processName">
+            </label>
+            <label for="equipmentName">
+                <input type="text" readonly value="호기" class="form-Name">
+                <input type="text" readonly id="equipmentName">
+            </label>
+            <label for="workerName">
+                <input type="text" readonly value="공정원" class="form-Name">
+                <input type="text" readonly id="workerName">
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="text" readonly value="국적" class="form-Name">
+                <input type="text" readonly id="nation">
+            </label>
+            <label>
+                <input type="text" readonly value="직책" class="form-Name">
+                <input type="text" readonly id="position">
+            </label>
+            <label>
+                <input type="text" readonly value="주야간조" class="form-Name">
+                <input type="text" readonly id="workShift">
+            </label>
+        </div>
+        <div>
+            <label for="note">
+                <input type="text" readonly value="비고" class="form-Name">
+                <input type="text" id="note">
+            </label>
+            <label for="productionCount">
+                <input type="text" readonly value="목표량" class="form-Name">
+                <input type="text" id="productionCount">
+            </label>
 
+            <label for="productionDate">
+                <input type="text" readonly value="날짜" class="form-Name">
+                <input type="date" id="productionDate" name="productionDate"
+                       style="width: 220px;background-color: #b6b4b4" required>
+            </label>
+
+        </div>
+
+        <div id="navigation-container">
+
+        </div>
+    </form>
+    <div id="employee-Table-container">
+        <div id="employee-search">
+            <select name="search-processName" id="search-processName" style="width: 150px">
+                <option value="" disabled selected>공정명 선택</option>
+            </select>
+            <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
+            </select>
+            <select id="search-workerName"></select>
+            <button id="searchWorkerButton" class="search">검색</button>
+            <button onclick="wholeWorker()" class="search">전체검색</button>
+            <button id="registerButton" class="search">등록</button>
+        </div>
+        <div id="employee-Table"></div>
+    </div>
+</div>
 </body>
 
 <!--</script>-->
+<script src="/js/sideBar.js"></script>
 <script src="/static/js/ProcessWorkerSearch.js"></script>
-<script>
-    const selectedProcessName = document.getElementById("search-processName");
-    const equipmentNameSelect = document.getElementById("search-equipmentName");
-    const workerNameSelect = document.getElementById("search-workerName");
-    selectedProcessName.addEventListener('change', () => {
-        // productionType 변경 시 productionName 값 초기화
-        equipmentNameSelect.value = '';
-        workerNameSelect.value = '';
-        fetchProcessNameAndWorkerName();
-    });
-    equipmentNameSelect.addEventListener('change', function () {
-        // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
-        if (selectedProcessName.value) {
-            fetchProcessNameAndEquipmentName();
-        }
-    });
-    fetchProcessNames();
-    fetchProcessWorkerList();
-    fetchProcessNameAndWorkerName();
-    fetchEquipmentName();
-
-    function fetchProcessWorkerList() {
-        fetch(`/api/worker/list`)
-            .then(response => response.json())
-            .then(data => {
-                originalData = data;
-                createHandsontable(originalData);
-            });
-    }
-
-    function createHandsontable(data) {
-        const container = document.getElementById('employee-Table');
-        hot = new Handsontable(container, {
-            cells: function (row, col, prop) {
-                var cellProperties = {};
-                cellProperties.className = 'htCenter';
-                return cellProperties;
-            },
-            className: "htCenter",
-            colWidths: [100, 100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
-            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
-            licenseKey: 'non-commercial-and-evaluation',
-            data: data,
-            colHeaders: ['ID', '공정명', '호기', '성명', '국적', '직책', '주야간조'],
-            columns: [
-                {data: 'id', readOnly: true, className: "htCenter"},
-                {data: 'processName', readOnly: true, className: "htCenter"},
-                {data: 'equipmentName', readOnly: true, className: "htCenter"},
-                {data: 'workerName', readOnly: true, className: "htCenter"},
-                {data: 'nation', readOnly: true, className: "htCenter"},
-                {data: 'position', readOnly: true, className: "htCenter"},
-                {data: 'workShift', readOnly: true, className: "htCenter"},
-            ],
-            hiddenColumns: {
-                columns: [0], // 'ID' 열을 숨깁니다.
-                indicators: false // 숨겨진 열의 지시자 표시 여부
-            },
-            height: 300,
-            viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
-            columnSorting: false, // 정렬 활성화
-            contextMenu: false, // 우클릭 메뉴 활성화
-            manualRowMove: true, // 행 이동 활성화
-            manualColumnMove: true, // 열 이동 활성화
-            filters: true, // 필터링 활성화
-            dropdownMenu: false, // 드롭다운 메뉴 활성화
-            rowHeaders: true, // 행 번호 표시
-            search: true, // 검색 기능 활성화
-            afterOnCellMouseDown: function (event, coords) {
-                const rowData = hot.getSourceDataAtRow(coords.row);
-                // applyDataToForm(rowData);
-                console.log("rowData", rowData);
-                updateWorkerContainer(rowData);
-            }
-        });
-    }
-
-    function updateWorkerContainer(rowData) {
-        // Select 태그의 값 설정
-        setSelectedValue('workerName', rowData.workerName);
-        setSelectedValue('nation', rowData.nation);
-        setSelectedValue('processName', rowData.processName);
-        setSelectedValue('equipmentName', rowData.equipmentName);
-        setSelectedValue('position', rowData.position);
-        setSelectedValue('workShift', rowData.workShift);
-
-    }
-
-    document.getElementById('searchWorkerButton').addEventListener('click', workerSearch);
-
-    function setSelectedValue(selectId, value) {
-        let selectElement = document.getElementById(selectId);
-        let options = selectElement.options;
-        selectElement.value = value;
-    }
-
-    const registerForm = document.getElementById("order-register");
-    document.getElementById('registerButton').addEventListener('click', function () {
-        event.preventDefault();
-        const processName = document.getElementById('processName').value;
-        const equipmentName = document.getElementById('equipmentName').value;
-        const processWorker = document.getElementById('workerName').value;
-        const note = document.getElementById('note').value;
-        const productionCount = document.getElementById('productionCount').value;
-        const productionDate = document.getElementById('productionDate').value;
-
-        // 사용자가 productionDate를 입력하지 않은 경우에만 현재 날짜와 시간을 할당
-        const currentDate = new Date();
-        const currentDateTime = currentDate.toISOString(); // ISO 형식으로 변환
-
-        const data = {
-            processName: processName,
-            equipmentName: equipmentName,
-            processWorker: processWorker,
-            productionDate: productionDate ? productionDate : currentDateTime, // productionDate가 비어있을 때만 현재 날짜와 시간 추가
-            note: note,
-            productionCount: productionCount,
-        };
-        console.log("data",data);
-
-        const confirmed = window.confirm('생산지시를 등록하시겠습니까?');
-        if (confirmed) {
-            fetch('/api/order/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data) // JSON 데이터 전송
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('생산지시 등록 완료');
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('fetch 오류 요청 ', error);
-                });
-        }
-
-    });
-
-
-
-</script>
-
+<script src="/js/selectProductionOrder.js"></script>
 </html>

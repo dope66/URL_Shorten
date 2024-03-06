@@ -1,0 +1,13 @@
+input[readonly] {
+    background-color: #CCCCCC; /* 변경하고자 하는 배경색 지정 */
+    height: 31px;
+}
+.search{
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+.register{
+    background-color: #028800; border-color: #3cc430; color: #FFFFFF;
+    border-radius: 5px;
+}

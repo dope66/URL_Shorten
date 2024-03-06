@@ -1,27 +1,53 @@
+fetchProductLog(); // 초기 페이지 데이터 로딩
+
 function openPopup() {
     const popupWindow = window.open("popUp", "Popup", "width=700,height=900");
 }
-let currentPage = 0;
-let originalData = []; // 원본 데이터 배열
-let hot;
-document.addEventListener("DOMContentLoaded", function () {
-    // 페이지 로드 시 실행되는 코드
-    fetchProductLog(currentPage); // 초기 페이지 데이터 로딩
-});
-function fetchProductLog(page) {
+
+function fetchProductLog() {
     fetch(`/api/mes/productLogList`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             originalData = data;
-            createHandsontable(originalData);
-            console.log("originalData",originalData);
+            console.log("data? ",data);
+            // 데이터가 비어있지 않은지 확인
+            if (originalData && originalData.length > 0) {
+                createHandsontable(originalData);
+            } else {
+                console.error('No data received');
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
         });
 }
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ko-KR");
+function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
+    const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric', // '2-digit'에서 'numeric'으로 변경하여 연도를 4자리로 표시
+        month: '2-digit',
+        day: '2-digit'
+    });
+
+    // value가 유효한 날짜인지 확인
+    const dateValue = value instanceof Date ? value : new Date(value);
+    if (!isNaN(dateValue.getTime())) {
+        // 날짜 형식으로 변환
+        td.textContent = dateFormatter.format(dateValue).replace(/\./g, '-').slice(0, -1);
+    } else {
+        // 유효하지 않은 날짜인 경우 기본 텍스트 설정
+        td.textContent = '';
+    }
+    td.className += ' htCenter';
+    return td;
 }
 function createHandsontable(data) {
+    console.log("handsontable 실행?")
+    console.log("handsontable 실행? 그러면 data? ",data);
     const container = document.getElementById('product-log');
     hot  =new Handsontable(container, {
         cells: function(row, col, prop) {
@@ -33,24 +59,17 @@ function createHandsontable(data) {
         colWidths: [100, 100, 180, 200, 100, 80], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
-        data: data.map(productLog => [
-            productLog.productionType,
-            formatDate(productLog.workDate),
-            productLog.productionNumber,
-            productLog.productionName,
-            productLog.production,
-            productLog.workerName
-
-        ]),
+        data:data,
         colHeaders: [ '차종', '작업날짜', '품번', '품명', '생산량', '생산자'],
         columns: [
-            {data: 0, readOnly: true, className: "htCenter"},
-            {data: 1, readOnly: true , className: "htCenter"},
-            {data: 2, readOnly: true, className: "htCenter"},
-            {data: 3, readOnly: true, className: "htCenter"},
-            {data: 4, readOnly: true, className: "htCenter"},
-            {data: 5, readOnly: true, className: "htCenter"}
+            {data: 'productionType', readOnly: true, className: "htCenter"},
+            {data: 'workDate', readOnly: true ,renderer: dateRenderer, className: "htCenter"},
+            {data: 'productionNumber', readOnly: true, className: "htCenter"},
+            {data: 'productionName', readOnly: true, className: "htCenter"},
+            {data: 'production', readOnly: true, className: "htCenter"},
+            {data: 'workerName', readOnly: true, className: "htCenter"}
         ],
+        height: 300,
         columnSorting: true, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
         manualRowMove: true, // 행 이동 활성화

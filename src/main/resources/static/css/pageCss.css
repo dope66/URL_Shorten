@@ -7,7 +7,13 @@ input[readonly] {
     background-color: #0069d9;
     border-color: #0062cc;
 }
+.search:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+}
 .register{
     background-color: #028800; border-color: #3cc430; color: #FFFFFF;
     border-radius: 5px;
+}
+.register:hover{
+    background-color: #026400; /* 호버 시 배경색 */
 }

@@ -1,52 +1,37 @@
 <!DOCTYPE html>
-<html lang="en"
-      layout:fragment="Content"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>생산 일지 목록</title>
-
-    <!-- Handsontable CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
-
-    <!-- Handsontable JS -->
-    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <title>생산지시</title>
     <style>
-        #product-log {
-            width: 100%;
-            align-content: center;
-            margin: auto;
-        }
-        .htCenter {
+        .start-button {
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
             text-align: center;
-            vertical-align: middle;
+            cursor: pointer;
+            border-radius: 5px;
+            align-items: center;
+            right: auto;
+            width: 270px;
         }
 
-
+        /* 버튼 호버 시의 스타일 */
+        .start-button:hover {
+            background-color: #0056b3; /* 호버 시 배경색 */
+        }
     </style>
 </head>
-
+<!-- Handsontable CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+<!-- Handsontable JS -->
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 <body>
-<div id="search-header">
-    <input type="date" id="start-date" placeholder="시작일">
-    <input type="date" id="end-date" placeholder="종료일">
-    <input type="text" id="search-input" placeholder="검색어 입력">
-    <button onclick="performSearch()">검색</button><button onclick="openPopup()">일지 등록</button>   <a href="/mes/home"><button>홈으로</button></a>
+<div id="productionOrder-table">
+    <button id="movePageButton" class="search">초중종물 검사 실행</button>
+    <div id="productionOrder-list"></div>
 </div>
-<div id="product-log"></div> <!-- Handsontable 컨테이너 -->
-
 </body>
-<div id="pagination">
-
-    <input type="hidden" readonly id="page-number" th:value="1">
-    <span id="page-list"></span>
-</div>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-<script src="/js/productLog.js"></script>
-
+<script src="/js/productionOrder.js"></script>
 </html>

@@ -5,11 +5,8 @@ import com.project.UrlJrr.entity.ProductLog;
 import com.project.UrlJrr.repository.ProductLogRepository;
 import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,27 +16,15 @@ public class ProductLogService {
     private final ProductLogRepository productLogRepository;
     private final WorkerRepository workerRepository;
 
-
     public List<ProductLog> findAll() {
         return productLogRepository.findAll();
 
-    }
-
-    public Page<ProductLog> findByWorkerNameContaining(String workerName, Pageable pageable) {
-        return productLogRepository.findByWorkerNameContaining(workerName, pageable);
     }
 
     public long getTotalLogCount() {
         return productLogRepository.count();
     }
 
-    public Page<ProductLog> findByWorkDateBetweenAndWorkerNameContaining(Date startDate, Date endDate, String workerName, Pageable pageable) {
-        return productLogRepository.findByWorkDateBetweenAndWorkerNameContaining(startDate, endDate, workerName, pageable);
-    }
-
-    public Page<ProductLog> findByWorkDateBetween(Date startDate, Date endDate, Pageable pageable) {
-        return productLogRepository.findByWorkDateBetween(startDate, endDate, pageable);
-    }
     public ProductLog register(ProductLogDto productLogDto){
         return productLogRepository.save(productLogDto.toEntity());
     }

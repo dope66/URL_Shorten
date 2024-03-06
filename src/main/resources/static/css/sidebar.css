@@ -2,11 +2,12 @@
 .side-menu {
     display: none;
     position: fixed;
-    left: 250px; /* 기본 사이드바의 너비에 맞춤 */
+    left: 240px; /* 기본 사이드바의 너비에 맞춤 */
     width: 200px; /* 추가 사이드 메뉴의 너비 */
     top: 0;
     height: 100%;
     margin: 71px 0px 0px 0px;
+    z-index: 1000;
     overflow-y: auto; /* 필요한 경우 스크롤 가능 */
     /*background-color: #f8f9fa; !* 밝은 배경색 *!*/
     transition: all 0.5s; /* 부드러운 효과를 위한 transition 추가 */

@@ -6,6 +6,8 @@ input[readonly] {
     color: #fff;
     background-color: #0069d9;
     border-color: #0062cc;
+    border-radius: 5px;
+    margin-right: 2px;
 }
 .search:hover {
     background-color: #0056b3; /* 호버 시 배경색 */
@@ -24,6 +26,7 @@ select{
     color: #fff;
     background-color: #0069d9;
     border-color: #0062cc;
+    border-radius: 5px;
 }
 .total-search:hover {
     background-color: #0056b3; /* 호버 시 배경색 */

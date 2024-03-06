@@ -26,6 +26,11 @@ function fetchProductLog() {
             console.error('There has been a problem with your fetch operation:', error);
         });
 }
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR");
+}
+
 function dateRenderer(instance, td, row, col, prop, value, cellProperties) {
     const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
         year: 'numeric', // '2-digit'에서 'numeric'으로 변경하여 연도를 4자리로 표시
@@ -83,68 +88,38 @@ function createHandsontable(data) {
 
     console.log("hot : ", hot);
 }
+
 function performSearch() {
-    if (!hot || !hot.getPlugin('search')) {
-        console.error('Handsontable 인스턴스가 초기화되지 않았거나, 검색 플러그인을 사용할 수 없습니다.');
-        return;
-    }
+    const startDateElement = document.getElementById("start-date");
+    const endDateElement = document.getElementById("end-date");
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
 
-    const query = document.getElementById('search-input').value.trim();
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-
-    // 원본 데이터에서 날짜 조건에 맞는 데이터를 필터링
-    let dateFilteredData = originalData.filter(item => {
+    const filteredData = originalData.filter(item => {
+        // 날짜 필터링
         const itemDate = new Date(item.workDate);
-        // 시작 날짜 조건
-        const startCondition = startDate ? new Date(startDate) <= itemDate : true;
-
-        // 종료 날짜 조건 - 당일 포함 (endDate의 23:59:59까지 포함)
-        let endCondition = true;
-        if (endDate) {
-            let endDateObj = new Date(endDate);
-            endDateObj.setHours(23, 59, 59); // 종료 날짜를 당일의 마지막 시각으로 설정
-            endCondition = itemDate <= endDateObj;
+        const startDate = startDateElement.value ? new Date(startDateElement.value) : null;
+        if (startDate) {
+            startDate.setHours(0, 0, 0, 0); // 시작 날짜를 그 날의 자정으로 설정
         }
+        const endDate = endDateElement.value ? new Date(endDateElement.value) : null;
+        if (endDate) {
+            endDate.setHours(23, 59, 59, 999); // 종료 날짜를 그 날의 마지막 시각으로 설정
+        }
+        const matchesDate = (!startDate || itemDate >= startDate) && (!endDate || itemDate <= endDate);
 
-        return startCondition && endCondition;
+        // 검색어 필터링
+        const matchesQuery = !query || Object.values(item).some(value =>
+            String(value).toLowerCase().includes(query)
+        );
+
+        return matchesDate && matchesQuery;
     });
 
-    let filteredData = [];
-    if (query) {
-        // 임시로 날짜 필터링된 데이터를 Handsontable에 로드하여 검색 수행
-        hot.loadData(dateFilteredData.map(item => [
-            item.productionType,
-            formatDate(item.workDate),
-            item.productionNumber,
-            item.productionName,
-            item.production,
-            item.workerName
-        ]));
-
-        // 검색 플러그인으로 검색 수행
-        const searchPlugin = hot.getPlugin('search');
-        const searchResult = searchPlugin.query(query);
-        let resultRowsIndexes = Array.from(new Set(searchResult.map(result => result.row)));
-        filteredData = resultRowsIndexes.map(index => dateFilteredData[index]);
-    } else {
-        // 검색어가 없는 경우, 날짜 필터링 결과를 그대로 사용
-        filteredData = dateFilteredData;
-    }
-
-    // 필터링된 데이터 로드
     if (filteredData.length > 0) {
-        hot.loadData(filteredData.map(item => [
-            item.productionType,
-            formatDate(item.workDate),
-            item.productionNumber,
-            item.productionName,
-            item.production,
-            item.workerName
-        ]));
-        console.log('검색 및 날짜 필터링된 데이터를 표시합니다.');
+        hot.loadData(filteredData);
+        console.log('검색된 데이터를 표시합니다.');
     } else {
-        console.log('조건에 맞는 데이터가 없습니다.');
         hot.loadData([]);
+        console.log('검색 결과가 없습니다.');
     }
 }

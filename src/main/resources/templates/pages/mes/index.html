@@ -1,345 +1,52 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <meta content="noindex,nofollow" name="robots"/>
-    <title>MES</title>
-    <link
-            href="https://www.devjune.com/"
-            rel="canonical"
-    />
-    <!-- Favicon icon -->
-    <link
-            href="/static/assets/images/favicon.png"
-            rel="icon"
-            sizes="16x16"
-            type="image/png"
-    />
-    <!-- This page plugin CSS -->
-    <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/workerRegister.css">
-    <link rel="stylesheet" href="/css/sidebar.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <meta charset="UTF-8">
+    <title>생산 일지 목록</title>
 
-
-    <![endif]-->
+    <!-- Handsontable CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+
+    <!-- Handsontable JS -->
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <style>
+        #product-log {
+            width: 100%;
+            align-content: center;
+            margin: auto;
+        }
+        .htCenter {
+            text-align: center;
+            vertical-align: middle;
+        }
 
+
+    </style>
 </head>
+
 <body>
-<div class="preloader">
-    <svg
-            class="tea lds-ripple"
-            fill="none"
-            height="48"
-            viewbox="0 0 37 48"
-            width="37"
-            xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-                d="M27.0819 17H3.02508C1.91076 17 1.01376 17.9059 1.0485 19.0197C1.15761 22.5177 1.49703 29.7374 2.5 34C4.07125 40.6778 7.18553 44.8868 8.44856 46.3845C8.79051 46.79 9.29799 47 9.82843 47H20.0218C20.639 47 21.2193 46.7159 21.5659 46.2052C22.6765 44.5687 25.2312 40.4282 27.5 34C28.9757 29.8188 29.084 22.4043 29.0441 18.9156C29.0319 17.8436 28.1539 17 27.0819 17Z"
-                stroke="#1e88e5"
-                stroke-width="2"
-        ></path>
-        <path
-                d="M29 23.5C29 23.5 34.5 20.5 35.5 25.4999C36.0986 28.4926 34.2033 31.5383 32 32.8713C29.4555 34.4108 28 34 28 34"
-                stroke="#1e88e5"
-                stroke-width="2"
-        ></path>
-        <path
-                clip-rule="evenodd"
-                d="M16 25V17H14V25H12C10.3431 25 9 26.3431 9 28V34C9 35.6569 10.3431 37 12 37H18C19.6569 37 21 35.6569 21 34V28C21 26.3431 19.6569 25 18 25H16ZM11 28C11 27.4477 11.4477 27 12 27H18C18.5523 27 19 27.4477 19 28V34C19 34.5523 18.5523 35 18 35H12C11.4477 35 11 34.5523 11 34V28Z"
-                fill="#1e88e5"
-                fill-rule="evenodd"
-                id="teabag"
-        ></path>
-        <path
-                d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12"
-                id="steamL"
-                stroke="#1e88e5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-        ></path>
-        <path
-                d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13"
-                id="steamR"
-                stroke="#1e88e5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-        ></path>
-    </svg>
+<div id="search-header">
+    <input type="date" id="start-date" placeholder="시작일">
+    <input type="date" id="end-date" placeholder="종료일">
+    <input type="text" id="search-input" placeholder="검색어 입력">
+    <button onclick="performSearch()">검색</button><button onclick="openPopup()">일지 등록</button>   <a href="/mes/home"><button>홈으로</button></a>
 </div>
-<div id="main-wrapper">
-    <header class="topbar">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-            <div class="navbar-header">
-                <a
-                        class="nav-toggler waves-effect waves-light d-block d-md-none"
-                        href="javascript:void(0)"
-                ><i class="ti-menu ti-close"></i
-                ></a>
-                <a class="navbar-brand" href="/">
-                    <span class="logo-text">
-
-                        MES 시스템
-              </span>
-                </a>
-
-                <a
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                        class="topbartoggler d-block d-md-none waves-effect waves-light"
-                        data-bs-target="#navbarSupportedContent"
-                        data-bs-toggle="collapse"
-                        href="javascript:void(0)"
-                ><i class="ti-more"></i
-                ></a>
-            </div>
-            <div class="navbar-collapse collapse" id="navbarSupportedContent">
-            </div>
-        </nav>
-    </header>
-    <aside class="left-sidebar">
-        <div class="scroll-sidebar">
-            <!-- User profile -->
-            <div class="user-profile position-relative"
-                 style="
-              background: url(/static/assets/images/background/user-info.jpg)
-                no-repeat;
-            "
-            >
-
-            </div>
-            <!-- End User profile text-->
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav">
-                <ul id="sidebarnav">
-
-                    <li class="nav-small-cap">
-                        <i class="mdi mdi-dots-horizontal"></i>
-                        <span class="hide-menu">Mes</span>
-                    </li>
-
-                    <li class="nav-item">
-                        <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
-                           href="#" data-target="adminMenu"><i class="mdi mdi-account-box"></i>
-                            <span class="hide-menu">관리자</span></a>
-                    </li>
-                    <hr>
-                    <li class="nav-item">
-                        <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
-                           href="#" data-target="workerMenu"><i class="mdi mdi-account-box"></i>
-                            <span class="hide-menu">작업자</span></a>
-                    </li>
-                    <div id="adminMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/worker">
-                                    <i class="mdi mdi-account-box"></i>
-                                    <span class="hide-menu">공정원 페이지</span></a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/testSearch">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">조회 검색</span></a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/selectProductionOrder">
-                                    <i class="mdi mdi-access-point"></i>
-                                    <span class="hide-menu">생산 지시</span></a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/orderList">
-                                    <i class="mdi mdi-file-document"></i>
-                                    <span class="hide-menu">생산지시 현황</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="workerMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
-                                    <i class="mdi mdi-monitor"></i>
-                                    <span class="hide-menu">작업자 생산지시 화면</span></a>
-                                <select class="custom-select" id="processEquipmentSelect" style="background-color: #c7c7c7">
-                                    <option selected>생산설비 선택</option>
-                                </select>
-
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/productLog">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">생산일지</span></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <hr>
-                    <li class="nav-small-cap">
-                        <i class="mdi mdi-dots-horizontal"></i>
-                        <span class="hide-menu">개발 예정</span>
-                    </li>
-
-                    <li class="sidebar-item">
-                        <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                           href="#"><i class="mdi mdi-monitor-multiple"></i>
-                            <span class="hide-menu">모니터링</span></a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                           href="#"><i class="mdi mdi-chart-bar"></i>
-                            <span class="hide-menu">통계분석</span></a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
-    <div class="page-wrapper">
-        <div class="row page-titles">
-            <div class="col-md-5 col-12 align-self-center">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <h2><a href="/mes/worker" style="text-decoration: none; color: #FFFFFF;">공정원 등록</a></h2>
-                    </li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="container-fluid">
-            <!-- -------------------------------------------------------------- -->
-            <!-- Start Page Content -->
-            <!-- -------------------------------------------------------------- -->
-            <div class="widget-content searchable-container list">
-            </div>
-            <div class="card card-body">
-                <div class="table-responsive">
-                    <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-                    <div id="mainContainer">
-                        <div id="worker-container">
-                            <div id="image-container">
-                                <!-- 이미지 미리 보기를 위한 요소 -->
-                                <img id="preview-image" src="/static/image/defaultWorker.png" alt="미리 보기">
-
-                            </div>
-                            <div id="form-container">
-                                <form id="worker-register-form">
-                                    <input type="hidden" id="workerId">
-                                    <input type="file" id="imageInput" accept="image/*" required="" style="margin: 0px 0px 10px 0px; height: 40px; width: 300px;">
-                                    <label for="processName">
-                                        <input type="text" value="공정명" readonly class="form-Name">
-                                        <select name="processName" id="processName" required></select>
-                                    </label>
-                                    <label for="equipmentName">
-                                        <input type="text" value="호기" readonly class="form-Name">
-                                        <select name="equipmentName" id="equipmentName">
-                                            <option value="1호기">1호기</option>
-                                            <option value="2호기">2호기</option>
-                                            <option value="3호기">3호기</option>
-                                        </select></label>
-                                    <label for="workerName"><input type="text" value="성명" readonly class="form-Name">
-                                        <input type="text" id="workerName" name="workerName" required></label>
-                                    <label for="nation">
-                                        <input type="text" value="국적" readonly class="form-Name">
-                                        <input type="text" id="nation" name="nation" required>
-                                    </label>
-                                    <label for="position">
-                                        <input type="text" readonly value="직책" class="form-Name">
-                                        <select name="position" id="position" required></select>
-                                    </label>
-                                    <label for="workShift">
-                                        <input type="text" value="주야간조" readonly class="form-Name">
-                                        <select name="workShift" id="workShift" required></select>
-                                    </label>
-                                    <div id="navigation-container">
-                                        <button id="registerButton" class="btn btn-dark-info">등록</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div id="employee-Table-container">
-                            <div id="employee-search">
-                                <select name="search-processName" id="search-processName" style="width: 150px">
-                                    <option value="" disabled selected>공정명 선택</option>
-                                </select>
-                                <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
-                                    <!--        <option value="" disabled selected></option>-->
-                                </select>
-                                <select id="search-workerName"></select>
-                                <button id="searchWorkerButton" class="search">검색</button>
-                                <button onclick="wholeWorker()" id="wholeSearchWorkerButton" class="search">전체검색
-                                </button>
-                            </div>
-                            <div id="employee-Table"></div>
-                        </div>
-                        <div id="pagination">
-                            <input type="hidden" readonly id="page-number" th:value="1">
-                            <span id="page-list"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <footer class="footer text-center">
-        All Rights Reserved by 김현우
-    </footer>
-
-</div>
-
-</div>
-<!--개인-->
-<script src="/js/sideBar.js"></script>
-<script src="/static/js/ProcessWorkerSearch.js"></script>
-<script src="/static/js/workerRegisterEnum.js"></script>
-<script src="/js/workerRegister.js"></script>
-
-
-
-
-<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<!-- apps -->
-<script src="/static/dist/js/app.min.js"></script>
-<script src="/static/dist/js/app.init.dark.js"></script>
-<script src="/static/dist/js/app-style-switcher.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
-<script src="/static/dist/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.js"></script>
-<script src="/static/dist/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
-<!--Wave Effects -->
-<script src="/static/dist/js/waves.js"></script>
-<!--Menu sidebar -->
-<script src="/static/dist/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
-<script src="/static/dist/js/feather.min.js"></script>
-<script src="/static/dist/js/custom.min.js"></script>
-<!--This page plugins -->
-<script src="/static/dist/js/pages/contact/contact.js"></script>
-
+<div id="product-log"></div> <!-- Handsontable 컨테이너 -->
 
 </body>
+<div id="pagination">
+
+    <input type="hidden" readonly id="page-number" th:value="1">
+    <span id="page-list"></span>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/js/productLog.js"></script>
+
 </html>

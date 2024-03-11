@@ -1,0 +1,54 @@
+<!-- Your HTML File -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+</head>
+<body>
+<h2>기초 데이터 업로드</h2>
+<form id="upload-form" enctype="multipart/form-data">
+    <div>
+        <label>기초 데이터 업로드 : </label>
+        <input type="file" name="file" required>
+    </div>
+    <div>
+        <label>업로드 파일 선택</label>
+        <label>
+            <select name="type">
+                <option value="type1">작업 표준서</option>
+                <option value="type2">기초 데이터</option>
+            </select>
+        </label>
+    </div>
+    <button type="submit">업로드</button>
+</form>
+
+<script>
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        fetch('/api/excel/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if(response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('파일 업로드 실패');
+                }
+            })
+            .then(data => {
+                alert('파일 업로드 성공.');
+                // Redirect to another page if needed
+                window.location.href = '/mes/home';
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+</script>
+
+</body>
+</html>

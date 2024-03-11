@@ -103,4 +103,18 @@ public class MesController {
     public String admin(){
         return "pages/mes/admin";
     }
+    @GetMapping("/upload")
+    public String upload(){
+        return "pages/mes/fileupload";
+    }
+    @GetMapping("/excel/list")
+    public String excelList(){
+        return "pages/mes/excelList";
+    }
+
+    @GetMapping("/basic/list")
+    public String basicDataList(){
+        return "pages/mes/basicList";
+    }
+
 }

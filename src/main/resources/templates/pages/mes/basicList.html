@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>기초데이터 리스트</title>
+
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
+    <!-- ExcelJS 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <!-- FileSaver.js 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+</head>
+</head>
+
+<body>
+<div id="gridContainer"></div>
+
+<script>
+    $(function(){
+        DevExpress.config({
+            forceIsoDateParsing: true,
+        });
+
+        $("#gridContainer").dxDataGrid({
+            dataSource: '/api/excel/basic/list',
+            loadPanel: {
+                enabled: true
+            },
+            columns: [
+                // Column configuration based on your data structure
+                { dataField: 'number', caption: '순' },
+                { dataField: 'vehicleType', caption: '차종',
+                    lookup: {
+                        dataSource: [ 'IG', 'UF', 'UT' ], // 차종 목록
+                    } },
+                { dataField: 'partNumber', caption: '품번' },
+                { dataField: 'partName', caption: '품명' },
+
+                { dataField: 'inspectionItem1', caption: '검사항목1' },
+                { dataField: 'standard1', caption: '검사규격1' },
+                { dataField: 'method1', caption: '확인방법1' },
+                { dataField: 'specification1', caption: '규격1' },
+                { dataField: 'tolerance1', caption: '공차1' },
+
+                { dataField: 'inspectionItem2', caption: '검사항목2' },
+                { dataField: 'standard2', caption: '검사규격2' },
+                { dataField: 'method2', caption: '확인방법2' },
+                { dataField: 'specification2', caption: '규격2' },
+                { dataField: 'tolerance2', caption: '공차2' },
+
+                { dataField: 'inspectionItem3', caption: '검사항목3' },
+                { dataField: 'standard3', caption: '검사규격3' },
+                { dataField: 'method3', caption: '확인방법3' },
+                { dataField: 'specification3', caption: '규격3' },
+                { dataField: 'tolerance3', caption: '공차3' },
+            ],
+            export: {
+                enabled: true,
+                fileName: "exported_data",
+                allowExportSelectedData: true
+            },
+            onExporting: function(e) {
+                var workbook = new ExcelJS.Workbook();
+                var worksheet = workbook.addWorksheet('Main sheet');
+
+                DevExpress.excelExporter.exportDataGrid({
+                    component: e.component,
+                    worksheet: worksheet,
+                    autoFilterEnabled: true
+                }).then(function() {
+                    workbook.xlsx.writeBuffer().then(function(buffer) {
+                        saveAs(new Blob([buffer], { type: "application/octet-stream" }), "DataGrid.xlsx");
+                    });
+                });
+                e.cancel = true;
+            },
+            paging: {
+                pageSize: 10
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [5, 10, 20],
+                showInfo: true
+            },
+            filterRow: { visible: true },
+            groupPanel: { visible: true },
+            grouping: {
+                autoExpandAll: true,
+            },
+            allowColumnReordering: true,
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            columnChooser: {
+                enabled: true
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "검색"
+            },
+        });
+    });
+</script>
+</body>
+</html>

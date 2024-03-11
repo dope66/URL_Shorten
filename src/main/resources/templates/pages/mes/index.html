@@ -1,37 +1,54 @@
+<!-- Your HTML File -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>생산지시</title>
-    <style>
-        .start-button {
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-            align-items: center;
-            right: auto;
-            width: 270px;
-        }
-
-        /* 버튼 호버 시의 스타일 */
-        .start-button:hover {
-            background-color: #0056b3; /* 호버 시 배경색 */
-        }
-    </style>
+    <title>File Upload</title>
 </head>
-<!-- Handsontable CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
-<!-- Handsontable JS -->
-<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 <body>
-<div id="productionOrder-table">
-    <button id="movePageButton" class="search">초중종물 검사 실행</button>
-    <div id="productionOrder-list"></div>
-</div>
+<h2>기초 데이터 업로드</h2>
+<form id="upload-form" enctype="multipart/form-data">
+    <div>
+        <label>기초 데이터 업로드 : </label>
+        <input type="file" name="file" required>
+    </div>
+    <div>
+        <label>업로드 파일 선택</label>
+        <label>
+            <select name="type">
+                <option value="type1">작업 표준서</option>
+                <option value="type2">기초 데이터</option>
+            </select>
+        </label>
+    </div>
+    <button type="submit">업로드</button>
+</form>
+
+<script>
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        fetch('/api/excel/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if(response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('파일 업로드 실패');
+                }
+            })
+            .then(data => {
+                alert('파일 업로드 성공.');
+                // Redirect to another page if needed
+                window.location.href = '/mes/home';
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+</script>
+
 </body>
-<script src="/js/productionOrder.js"></script>
 </html>

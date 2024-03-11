@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class ProcessWorkerDto {
+    private Long id;
     private String processName; // 공정명
     private String nation; // 국적
     private String position; // 직책

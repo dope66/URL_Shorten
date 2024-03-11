@@ -317,7 +317,7 @@
                     autoFilterEnabled: true
                 }).then(function() {
                     workbook.xlsx.writeBuffer().then(function(buffer) {
-                        saveAs(new Blob([buffer], { type: "application/octet-stream" }), "DataGrid.xlsx");
+                        saveAs(new Blob([buffer], { type: "application/octet-stream" }), "기초데이터.xlsx");
                     });
                 });
                 e.cancel = true;

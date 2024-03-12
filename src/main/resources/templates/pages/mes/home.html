@@ -84,17 +84,21 @@
 <div id="main-wrapper">
     <header class="topbar">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-            <div class="navbar-header">
+            <div class="navbar-header" style="height: 70px; left:40px;">
                 <a
                         class="nav-toggler waves-effect waves-light d-block d-md-none"
                         href="javascript:void(0)"
                 ><i class="ti-menu ti-close"></i
                 ></a>
-                <a class="navbar-brand" href="/mes/home">
-                    <span class="logo-text">
+                <a class="navbar-brand" href="/mes/home" style="height: 70px;">
 
-                        MES 시스템
-              </span>
+                    <span class="logo-text">
+                                <b class="logo-icon">
+                        <img src="/static/image/p-01.png" style="width: 50px;height: 50px;"/>
+                                    <!-- Light Logo icon -->
+                        <img src="/static/image/Lazer.png" style="width: 100px;height: 100px"/>
+                    </b>
+                        MES 시스템</span>
                 </a>
 
                 <a
@@ -197,10 +201,12 @@
                         <ul id="workerMenu" class="side-menu">
                             <ul>
                                 <li class="sidebar-item">
-                                    <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                    <a aria-expanded="false" id="productionOrderLink"
+                                       class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="mdi mdi-monitor"></i>
                                         <span class="hide-menu">작업자 생산지시</span></a>
-                                    <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                    <select class="custom-select" id="processEquipmentSelect"
+                                            style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
                                         <option selected>생산설비 선택</option>
                                     </select>
 
@@ -215,7 +221,6 @@
                             </ul>
                         </ul>
                     </li>
-
 
 
                     <hr>
@@ -260,7 +265,6 @@
 </div>
 <!--개인-->
 <script src="/js/sideBar.js"></script>
-
 
 
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>

@@ -24,8 +24,6 @@
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -34,10 +32,10 @@
     <![endif]-->
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://handsontable.com/static/css/handsontable.full.min.css">
-    <script src="https://handsontable.com/static/js/handsontable.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
-    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+<!--    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">-->
+<!--    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>-->
     <!-- ExcelJS 라이브러리 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
     <!-- FileSaver.js 라이브러리 추가 -->
@@ -273,8 +271,9 @@
             <div class="card card-body">
                 <div class="table-responsive">
                     <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
+                    <button id="export-to-excel" onclick="exportToExcel()">Export to Excel</button>
 
-                    <div id="gridContainer"></div>
+                    <div id="listContainer"></div>
                 </div>
             </div>
         </div>
@@ -290,75 +289,121 @@
 <!--개인-->
 <script src="/js/sideBar.js"></script>
 <script>
-    $(function () {
-        // Handsontable 초기화
-        var container = document.getElementById('gridContainer');
-        console.log(container);
-        var hot = new Handsontable(container, {
-            data: [], // 데이터는 비어있는 배열로 초기화
-            columns: [
-                { data: 'vehicleType', title: '차종' },
-                { data: 'partNumber', title: '품번' },
-                { data: 'partName', title: '품명' },
+    function exportToExcel() {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('My Sheet');
 
-                { data: 'inspectionItem1', title: '검사항목1' },
-                { data: 'standard1', title: '검사규격1' },
-                { data: 'method1', title: '확인방법1' },
-                { data: 'specification1', title: '규격1' },
-                { data: 'tolerance1', title: '공차1' },
+        // 컬럼 헤더 추가
+        worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
 
-                { data: 'inspectionItem2', title: '검사항목2' },
-                { data: 'standard2', title: '검사규격2' },
-                { data: 'method2', title: '확인방법2' },
-                { data: 'specification2', title: '규격2' },
-                { data: 'tolerance2', title: '공차2' },
-
-                { data: 'inspectionItem3', title: '검사항목3' },
-                { data: 'standard3', title: '검사규격3' },
-                { data: 'method3', title: '확인방법3' },
-                { data: 'specification3', title: '규격3' },
-                { data: 'tolerance3', title: '공차3' },
-            ],
-            stretchH: 'all',
-            rowHeaders: true,
-            colHeaders: true,
-            manualColumnResize: true,
-            manualRowResize: true,
-            dropdownMenu: true,
-            contextMenu: true,
-            filters: true,
-            licenseKey: 'non-commercial-and-evaluation',
-            // Handsontable의 다양한 설정을 추가할 수 있습니다.
+        // 데이터 추가
+        hot.getData().forEach(row => {
+            worksheet.addRow(row);
         });
 
-        // 데이터를 불러와서 Handsontable에 설정
-        $.ajax({
-            url: '/api/excel/basic/list',
-            method: 'GET',
-            success: function (data) {
-                hot.loadData(data);
+        // 엑셀 파일 생성 및 저장
+        workbook.xlsx.writeBuffer().then(function(buffer) {
+            saveAs(new Blob([buffer]), 'HandsontableData.xlsx');
+        });
+    }
+
+    fetchBasicDataList();
+    function fetchBasicDataList() {
+        fetch('/api/excel/basic/list')
+            .then(response => response.json())
+            .then(data => {
+                originalData = data;
+                createHandsontable(originalData);
+            });
+    }
+    function createHandsontable(data) {
+        const container = document.getElementById('listContainer');
+        hot = new Handsontable(container, {
+            cells: function (row, col, prop) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter';
+                return cellProperties;
             },
-            error: function (error) {
-                console.error('Error loading data:', error);
+            className: "htCenter",
+            colWidths: [50,150,150,150,100,200,100,100,100,100,200,100,100,100,100,200,100,100,100], // 각 열의 너비를 픽셀 단위로 설정
+            rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
+            licenseKey: 'non-commercial-and-evaluation',
+            data: data,
+            colHeaders: ['순', '차종', '품번', '품명', '검사항목1', '검사규격1', '공차1', '확인방법1', '규격1', '검사항목2', '검사규격2', '공차2', '확인방법2', '규격2', '검사항목3', '검사규격3', '공차3', '확인방법3', '규격3'],
+            columns: [
+                {data: 'number', readOnly: true, className: "htCenter"},
+                {data: 'vehicleType', className: "htCenter"},
+                {data: 'partNumber', className: "htCenter"},
+                {data: 'partName', className: "htCenter"},
+                {data: 'inspectionItem1', className: "htCenter"},
+                {data: 'standard1', className: "htCenter"},
+                {data: 'tolerance1', className: "htCenter"},
+                {data: 'method1', className: "htCenter"},
+                {data: 'specification1', className: "htCenter"},
+                {data: 'inspectionItem2', className: "htCenter"},
+                {data: 'standard2', className: "htCenter"},
+                {data: 'tolerance2', className: "htCenter"},
+                {data: 'method2', className: "htCenter"},
+                {data: 'specification2', className: "htCenter"},
+                {data: 'inspectionItem3', className: "htCenter"},
+                {data: 'standard3', className: "htCenter"},
+                {data: 'tolerance3', className: "htCenter"},
+                {data: 'method3', className: "htCenter"},
+                {data: 'specification3', className: "htCenter"},
+            ],
+            hiddenColumns: {
+                columns: [0], // 'ID' 열을 숨깁니다.
+                indicators: false // 숨겨진 열의 지시자 표시 여부
+            },
+            height: 300,
+            viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
+            columnSorting: false, // 정렬 활성화
+            contextMenu: false, // 우클릭 메뉴 활성화
+            manualRowMove: true, // 행 이동 활성화
+            manualColumnMove: true, // 열 이동 활성화
+            filters: true, // 필터링 활성화
+            dropdownMenu: false, // 드롭다운 메뉴 활성화
+            rowHeaders: true, // 행 번호 표시
+            search: true, // 검색 기능 활성화
+            afterOnCellMouseDown: function (event, coords) {
+                const rowData = hot.getSourceDataAtRow(coords.row);
+                // applyDataToForm(rowData);
+                console.log("rowData", rowData);
+                // updateWorkerContainer(rowData);
             }
         });
+    }
 
-        // Handsontable 내보내기 설정
-        hot.addHook('beforeExport', function (exportFile, options) {
-            var workbook = new ExcelJS.Workbook();
-            var worksheet = workbook.addWorksheet('Main sheet');
+    // $(document).ready(function() {
+    //     // 데이터를 로드하고 handsontable을 초기화하는 함수
+    //     function initializeHandsontable() {
+    //         $.ajax({
+    //             url: '/api/excel/basic/list', // 서버의 데이터 제공 API 엔드포인트
+    //             type: 'GET',
+    //             dataType: 'json', // 데이터 타입 지정
+    //             success: function(data) {
+    //                 // 서버로부터 데이터 로드 성공
+    //                 var container = document.getElementById('listContainer');
+    //                 var hot = new Handsontable(container, {
+    //                     data: data, // 로드한 데이터를 handsontable에 설정
+    //                     rowHeaders: true, // 행 헤더 표시
+    //                     colHeaders: true, // 열 헤더 표시
+    //                     filters: true, // 필터 기능 활성화
+    //                     dropdownMenu: true, // 드롭다운 메뉴 활성화
+    //                     // 다른 handsontable 옵션을 여기에 추가
+    //                 });
+    //             },
+    //             error: function(xhr, status, error) {
+    //                 // 데이터 로드 실패 처리
+    //                 console.error("Data load failed:", status, error);
+    //             }
+    //         });
+    //     }
+    //
+    //     // 페이지 로드 시 함수 실행
+    //     initializeHandsontable();
+    // });
 
-            Handsontable.helper.to2DArray(hot.getSourceData()).forEach(function (rowData) {
-                worksheet.addRow(rowData);
-            });
-
-            workbook.xlsx.writeBuffer().then(function (buffer) {
-                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), '기초데이터.xlsx');
-            });
-
-            return false;
-        });
-    });
 </script>
 
 

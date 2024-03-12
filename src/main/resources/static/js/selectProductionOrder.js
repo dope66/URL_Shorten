@@ -36,7 +36,7 @@ function createHandsontable(data) {
             return cellProperties;
         },
         className: "htCenter",
-        colWidths: [100, 100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
+        colWidths: [100, 100, 100, 150, 150, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data: data,
@@ -54,7 +54,7 @@ function createHandsontable(data) {
             columns: [0], // 'ID' 열을 숨깁니다.
             indicators: false // 숨겨진 열의 지시자 표시 여부
         },
-        height: 300,
+        height: 250,
         viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
         columnSorting: false, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
@@ -71,6 +71,7 @@ function createHandsontable(data) {
             updateWorkerContainer(rowData);
         }
     });
+    console.log("hot이란 무엇인가",hot);
 }
 
 function updateWorkerContainer(rowData) {

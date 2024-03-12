@@ -39,33 +39,6 @@ public class ExcelService {
         // 파일 처리 후 추가적인 로직을 여기에 구현할 수 있습니다.
         return isProcessed;
     }
-//    public boolean uploadExcelFile(MultipartFile file) {
-//        List<CompletableFuture<ProductionItem>> futures = new ArrayList<>();
-//        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
-//            XSSFSheet sheet = workbook.getSheetAt(0);
-//
-//            for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-//                Row row = sheet.getRow(rowIndex);
-//                if (row == null) continue; // 빈 행은 건너뜁니다.
-//
-//                CompletableFuture<ProductionItem> future = processRowAsync(row);
-//                futures.add(future);
-//            }
-//
-//            // 모든 비동기 작업이 완료될 때까지 기다립니다.
-//            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-//
-//            return true; // 파일이 성공적으로 처리되었습니다.
-//        } catch (IOException e) {
-//            log.error("엑셀 파일 처리 중 오류 발생", e);
-//            return false; // 파일 처리에 실패했습니다.
-//        }
-//    }
-
-
-    //    public ProductionItem getProductionItemWithManagementItems(Long id) {
-//        return productionItemRepository.findByIdWithManagementItems(id);
-//    }
     private static final int MANAGEMENT_ITEM_START_INDEX = 10; // 셀 인덱스는 0부터 시작합니다.
     private static final int MANAGEMENT_ITEM_CELL_COUNT = 8; // 관리 항목 세트당 셀 수
 
@@ -193,6 +166,30 @@ public class ExcelService {
         return dto;
     }
 
+
+
+    public boolean processType1ExcelFile(MultipartFile file) {
+        List<CompletableFuture<ProductionItem>> futures = new ArrayList<>();
+        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) continue; // 빈 행은 건너뜁니다.
+
+                CompletableFuture<ProductionItem> future = processRowAsync(row);
+                futures.add(future);
+            }
+
+            // 모든 비동기 작업이 완료될 때까지 기다립니다.
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+            return true; // 파일이 성공적으로 처리되었습니다.
+        } catch (IOException e) {
+            log.error("엑셀 파일 처리 중 오류 발생", e);
+            return false; // 파일 처리에 실패했습니다.
+        }
+    }
     public BasicDataDTO convertToDTO(BasicData basicData) {
         BasicDataDTO dto = new BasicDataDTO();
         dto.setNumber(basicData.getNumber());
@@ -224,30 +221,6 @@ public class ExcelService {
         }
         return dto;
     }
-
-    public boolean processType1ExcelFile(MultipartFile file) {
-        List<CompletableFuture<ProductionItem>> futures = new ArrayList<>();
-        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
-            XSSFSheet sheet = workbook.getSheetAt(0);
-
-            for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-                Row row = sheet.getRow(rowIndex);
-                if (row == null) continue; // 빈 행은 건너뜁니다.
-
-                CompletableFuture<ProductionItem> future = processRowAsync(row);
-                futures.add(future);
-            }
-
-            // 모든 비동기 작업이 완료될 때까지 기다립니다.
-            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
-            return true; // 파일이 성공적으로 처리되었습니다.
-        } catch (IOException e) {
-            log.error("엑셀 파일 처리 중 오류 발생", e);
-            return false; // 파일 처리에 실패했습니다.
-        }
-    }
-
     public boolean processType2ExcelFile(MultipartFile file) {
         List<CompletableFuture<BasicData>> futures = new ArrayList<>();
         try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {

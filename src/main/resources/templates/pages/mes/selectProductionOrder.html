@@ -143,86 +143,90 @@
                         <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
                            href="#" data-target="adminMenu"><i class="mdi mdi-account-box"></i>
                             <span class="hide-menu">관리자</span></a>
+                        <ul id="adminMenu" class="side-menu">
+                            <ul>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/basic/list"><i class="mdi mdi-database"></i>
+                                        <span class="hide-menu">기초 정보</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/worker">
+                                        <i class="mdi mdi-account-box"></i>
+                                        <span class="hide-menu">공정원 등록</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/selectProductionOrder">
+                                        <i class="mdi mdi-access-point"></i>
+                                        <span class="hide-menu">생산 지시</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="#"><i class="mdi mdi-monitor-multiple"></i>
+                                        <span class="hide-menu">모니터링</span></a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="#"><i class="mdi mdi-chart-bar"></i>
+                                        <span class="hide-menu">통계분석</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/testSearch">
+                                        <i class="mdi mdi-file-document-box"></i>
+                                        <span class="hide-menu">조회 검색</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/upload"><i class="mdi mdi-upload"></i>
+                                        <span class="hide-menu">파일 업로드</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/orderList">
+                                        <i class="mdi mdi-file-document"></i>
+                                        <span class="hide-menu">생산지시 현황</span></a>
+                                </li>
+
+                            </ul>
+                        </ul>
                     </li>
                     <hr>
                     <li class="nav-item">
                         <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
                            href="#" data-target="workerMenu"><i class="mdi mdi-account-box"></i>
                             <span class="hide-menu">작업자</span></a>
+                        <ul id="workerMenu" class="side-menu">
+                            <ul>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                        <i class="mdi mdi-monitor"></i>
+                                        <span class="hide-menu">작업자 생산지시</span></a>
+                                    <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                        <option selected>생산설비 선택</option>
+                                    </select>
+
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/productLog">
+                                        <i class="mdi mdi-file-document-box"></i>
+                                        <span class="hide-menu">생산일지</span></a>
+                                </li>
+                            </ul>
+                        </ul>
                     </li>
-                    <div id="adminMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/worker">
-                                    <i class="mdi mdi-account-box"></i>
-                                    <span class="hide-menu">공정원 페이지</span></a>
-                            </li>
 
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/testSearch">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">조회 검색</span></a>
-                            </li>
 
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/selectProductionOrder">
-                                    <i class="mdi mdi-access-point"></i>
-                                    <span class="hide-menu">생산 지시</span></a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/orderList">
-                                    <i class="mdi mdi-file-document"></i>
-                                    <span class="hide-menu">생산지시 현황</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/upload"><i class="mdi mdi-upload"></i>
-                                    <span class="hide-menu">파일 업로드</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/basic/list"><i class="mdi mdi-database"></i>
-                                    <span class="hide-menu">기초 정보</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="#"><i class="mdi mdi-monitor-multiple"></i>
-                                    <span class="hide-menu">모니터링</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="#"><i class="mdi mdi-chart-bar"></i>
-                                    <span class="hide-menu">통계분석</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="workerMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
-                                    <i class="mdi mdi-monitor"></i>
-                                    <span class="hide-menu">작업자 생산지시</span></a>
-                                <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
-                                    <option selected>생산설비 선택</option>
-                                </select>
-
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/productLog">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">생산일지</span></a>
-                            </li>
-                        </ul>
-                    </div>
 
                     <hr>
+
+
                 </ul>
             </nav>
         </div>

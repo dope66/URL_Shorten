@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    console.log('DOMContentLoaded event fired!');
     // 기존 코드 유지
     const processEquipmentSelect = document.getElementById('processEquipmentSelect');
     const productionOrderLink = document.getElementById('productionOrderLink');
@@ -34,22 +36,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.toggle-menu').forEach(function(menu) {
         menu.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetMenuId = e.target.getAttribute('data-target') || e.target.parentElement.getAttribute('data-target'); // 대상 메뉴 ID를 얻음
-            const targetMenu = document.getElementById(targetMenuId); // 해당 ID로 요소를 찾음
+            let targetMenu = e.currentTarget.nextElementSibling; // 현재 클릭된 요소의 바로 다음 요소 선택
 
-            // 모든 메뉴 숨김
+            // 모든 메뉴 숨김, 현재 메뉴는 제외
             document.querySelectorAll('.side-menu').forEach(function(menu) {
-                if(menu.id !== targetMenuId) {
-                    menu.style.display = "none";
+                if (menu !== targetMenu) {
+                    menu.style.display = 'none';
                 }
             });
 
-            // 선택된 메뉴 토글
-            if(targetMenu && targetMenu.style.display === "block") {
-                targetMenu.style.display = "none";
-            } else if(targetMenu) {
-                targetMenu.style.display = "block";
-            }
+            // 현재 메뉴 토글
+            targetMenu.style.display = targetMenu.style.display === 'block' ? 'none' : 'block';
         });
     });
+
 });

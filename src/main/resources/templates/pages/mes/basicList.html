@@ -34,12 +34,30 @@
     <![endif]-->
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://handsontable.com/static/css/handsontable.full.min.css">
+    <script src="https://handsontable.com/static/js/handsontable.full.min.js"></script>
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
     <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
     <!-- ExcelJS 라이브러리 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
     <!-- FileSaver.js 라이브러리 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+
+
+
+    <style>
+        .ht_master {
+            width: 100%;
+            height: 100%;
+        }
+
+        .handsontable th,
+        .handsontable td {
+            text-align: center;
+        }
+
+        /* 필요한 추가적인 스타일 설정 가능 */
+    </style>
 
 </head>
 <body>
@@ -143,84 +161,86 @@
                         <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
                            href="#" data-target="adminMenu"><i class="mdi mdi-account-box"></i>
                             <span class="hide-menu">관리자</span></a>
+                        <ul id="adminMenu" class="side-menu">
+                            <ul>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/basic/list"><i class="mdi mdi-database"></i>
+                                        <span class="hide-menu">기초 정보</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/worker">
+                                        <i class="mdi mdi-account-box"></i>
+                                        <span class="hide-menu">공정원 등록</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/selectProductionOrder">
+                                        <i class="mdi mdi-access-point"></i>
+                                        <span class="hide-menu">생산 지시</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="#"><i class="mdi mdi-monitor-multiple"></i>
+                                        <span class="hide-menu">모니터링</span></a>
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="#"><i class="mdi mdi-chart-bar"></i>
+                                        <span class="hide-menu">통계분석</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/testSearch">
+                                        <i class="mdi mdi-file-document-box"></i>
+                                        <span class="hide-menu">조회 검색</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/upload"><i class="mdi mdi-upload"></i>
+                                        <span class="hide-menu">파일 업로드</span></a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/orderList">
+                                        <i class="mdi mdi-file-document"></i>
+                                        <span class="hide-menu">생산지시 현황</span></a>
+                                </li>
+
+                            </ul>
+                        </ul>
                     </li>
                     <hr>
                     <li class="nav-item">
                         <a aria-expanded="false" class="nav-link toggle-menu waves-effect waves-dark nav-link"
                            href="#" data-target="workerMenu"><i class="mdi mdi-account-box"></i>
                             <span class="hide-menu">작업자</span></a>
+                        <ul id="workerMenu" class="side-menu">
+                            <ul>
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                        <i class="mdi mdi-monitor"></i>
+                                        <span class="hide-menu">작업자 생산지시</span></a>
+                                    <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                        <option selected>생산설비 선택</option>
+                                    </select>
+
+                                </li>
+
+                                <li class="sidebar-item">
+                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
+                                       href="/mes/productLog">
+                                        <i class="mdi mdi-file-document-box"></i>
+                                        <span class="hide-menu">생산일지</span></a>
+                                </li>
+                            </ul>
+                        </ul>
                     </li>
-                    <div id="adminMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/worker">
-                                    <i class="mdi mdi-account-box"></i>
-                                    <span class="hide-menu">공정원 페이지</span></a>
-                            </li>
 
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/testSearch">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">조회 검색</span></a>
-                            </li>
 
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/selectProductionOrder">
-                                    <i class="mdi mdi-access-point"></i>
-                                    <span class="hide-menu">생산 지시</span></a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/orderList">
-                                    <i class="mdi mdi-file-document"></i>
-                                    <span class="hide-menu">생산지시 현황</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/upload"><i class="mdi mdi-upload"></i>
-                                    <span class="hide-menu">파일 업로드</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/basic/list"><i class="mdi mdi-database"></i>
-                                    <span class="hide-menu">기초 정보</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="#"><i class="mdi mdi-monitor-multiple"></i>
-                                    <span class="hide-menu">모니터링</span></a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="#"><i class="mdi mdi-chart-bar"></i>
-                                    <span class="hide-menu">통계분석</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="workerMenu" class="side-menu">
-                        <ul>
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
-                                    <i class="mdi mdi-monitor"></i>
-                                    <span class="hide-menu">작업자 생산지시</span></a>
-                                <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
-                                    <option selected>생산설비 선택</option>
-                                </select>
-
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                   href="/mes/productLog">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="hide-menu">생산일지</span></a>
-                            </li>
-                        </ul>
-                    </div>
 
                     <hr>
 
@@ -263,92 +283,80 @@
 
 </div>
 
-</div>
 <!--개인-->
 <script src="/js/sideBar.js"></script>
 <script>
-    $(function(){
-        DevExpress.config({
-            forceIsoDateParsing: true,
+    $(function () {
+        // Handsontable 초기화
+        var container = document.getElementById('gridContainer');
+        console.log(container);
+        var hot = new Handsontable(container, {
+            data: [], // 데이터는 비어있는 배열로 초기화
+            columns: [
+                { data: 'vehicleType', title: '차종' },
+                { data: 'partNumber', title: '품번' },
+                { data: 'partName', title: '품명' },
+
+                { data: 'inspectionItem1', title: '검사항목1' },
+                { data: 'standard1', title: '검사규격1' },
+                { data: 'method1', title: '확인방법1' },
+                { data: 'specification1', title: '규격1' },
+                { data: 'tolerance1', title: '공차1' },
+
+                { data: 'inspectionItem2', title: '검사항목2' },
+                { data: 'standard2', title: '검사규격2' },
+                { data: 'method2', title: '확인방법2' },
+                { data: 'specification2', title: '규격2' },
+                { data: 'tolerance2', title: '공차2' },
+
+                { data: 'inspectionItem3', title: '검사항목3' },
+                { data: 'standard3', title: '검사규격3' },
+                { data: 'method3', title: '확인방법3' },
+                { data: 'specification3', title: '규격3' },
+                { data: 'tolerance3', title: '공차3' },
+            ],
+            stretchH: 'all',
+            rowHeaders: true,
+            colHeaders: true,
+            manualColumnResize: true,
+            manualRowResize: true,
+            dropdownMenu: true,
+            contextMenu: true,
+            filters: true,
+            licenseKey: 'non-commercial-and-evaluation',
+            // Handsontable의 다양한 설정을 추가할 수 있습니다.
         });
 
-        $("#gridContainer").dxDataGrid({
-            dataSource: '/api/excel/basic/list',
-            loadPanel: {
-                enabled: true
+        // 데이터를 불러와서 Handsontable에 설정
+        $.ajax({
+            url: '/api/excel/basic/list',
+            method: 'GET',
+            success: function (data) {
+                hot.loadData(data);
             },
-            columns: [
-                // Column configuration based on your data structure
-                { dataField: 'number', caption: '순' },
-                { dataField: 'vehicleType', caption: '차종'},
-                { dataField: 'partNumber', caption: '품번' },
-                { dataField: 'partName', caption: '품명' },
+            error: function (error) {
+                console.error('Error loading data:', error);
+            }
+        });
 
-                { dataField: 'inspectionItem1', caption: '검사항목1' },
-                { dataField: 'standard1', caption: '검사규격1' },
-                { dataField: 'method1', caption: '확인방법1' },
-                { dataField: 'specification1', caption: '규격1' },
-                { dataField: 'tolerance1', caption: '공차1' },
+        // Handsontable 내보내기 설정
+        hot.addHook('beforeExport', function (exportFile, options) {
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet('Main sheet');
 
-                { dataField: 'inspectionItem2', caption: '검사항목2' },
-                { dataField: 'standard2', caption: '검사규격2' },
-                { dataField: 'method2', caption: '확인방법2' },
-                { dataField: 'specification2', caption: '규격2' },
-                { dataField: 'tolerance2', caption: '공차2' },
+            Handsontable.helper.to2DArray(hot.getSourceData()).forEach(function (rowData) {
+                worksheet.addRow(rowData);
+            });
 
-                { dataField: 'inspectionItem3', caption: '검사항목3' },
-                { dataField: 'standard3', caption: '검사규격3' },
-                { dataField: 'method3', caption: '확인방법3' },
-                { dataField: 'specification3', caption: '규격3' },
-                { dataField: 'tolerance3', caption: '공차3' },
-            ],
-            export: {
-                enabled: true,
-                fileName: "exported_data",
-                allowExportSelectedData: true
-            },
-            onExporting: function(e) {
-                var workbook = new ExcelJS.Workbook();
-                var worksheet = workbook.addWorksheet('Main sheet');
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), '기초데이터.xlsx');
+            });
 
-                DevExpress.excelExporter.exportDataGrid({
-                    component: e.component,
-                    worksheet: worksheet,
-                    autoFilterEnabled: true
-                }).then(function() {
-                    workbook.xlsx.writeBuffer().then(function(buffer) {
-                        saveAs(new Blob([buffer], { type: "application/octet-stream" }), "기초데이터.xlsx");
-                    });
-                });
-                e.cancel = true;
-            },
-            paging: {
-                pageSize: 10
-            },
-            pager: {
-                showPageSizeSelector: true,
-                allowedPageSizes: [5, 10, 20],
-                showInfo: true
-            },
-            filterRow: { visible: true },
-            groupPanel: { visible: true },
-            grouping: {
-                autoExpandAll: true,
-            },
-            allowColumnReordering: true,
-            allowColumnResizing: true,
-            columnAutoWidth: true,
-            columnChooser: {
-                enabled: true
-            },
-            searchPanel: {
-                visible: true,
-                width: 240,
-                placeholder: "검색"
-            },
+            return false;
         });
     });
 </script>
+
 
 
 

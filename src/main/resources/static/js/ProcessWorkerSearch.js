@@ -137,16 +137,13 @@ function performSearchForTest() {
     const workerNameQuery = workerNameSelect.value.trim();
 
     const filteredData = originalData.filter(item => {
-        console.log("filterData",originalData);
         // productionDate 문자열을 Date 객체로 변환
         const itemDate = new Date(item.productionDate);
-
         // startDate를 해당 날짜의 시작 시간으로 설정
         const startDate = startDateElement.value ? new Date(startDateElement.value) : null;
         if (startDate) {
             startDate.setHours(0, 0, 0, 0); // 시작 날짜를 그 날의 자정으로 설정
         }
-
         // endDate를 해당 날짜의 마지막 시간으로 설정
         const endDate = endDateElement.value ? new Date(endDateElement.value) : null;
         if (endDate) {
@@ -168,6 +165,20 @@ function performSearchForTest() {
         hot.loadData([]);
         console.log('검색 결과가 없습니다.');
     }
+
+
+    // function filterData(data, { processName, equipmentName, workerName }) {
+    //     return data.filter(item => {
+    //         const matchesProcessName = !processName || item.processName === processName;
+    //         const matchesEquipmentName = !equipmentName || item.equipmentName === equipmentName;
+    //         const matchesWorkerName = !workerName || item.workerName === workerName;
+    //         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
+    //     });
+    // }
+    const aggregatedData = aggregateDataByMonth(filteredData);
+
+    // 차트 생성
+    createDevExpressChart(aggregatedData);
 }
 
 

@@ -34,12 +34,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-<!--    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">-->
-<!--    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>-->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
     <!-- ExcelJS 라이브러리 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
     <!-- FileSaver.js 라이브러리 추가 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 
 
 
@@ -271,9 +272,23 @@
             <div class="card card-body">
                 <div class="table-responsive">
                     <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-                    <button id="export-to-excel" onclick="exportToExcel()">Export to Excel</button>
+                    <button id="exportButton" class="exportButton" onclick="exportToExcel()"></button>
+                    <select id="categorySelector">
+                        <option value="col1">열 1</option>
+                        <option value="col2">열 2</option>
+                        <!-- 열 목록 추가 -->
+                    </select>
 
+                    <select id="valueSelector">
+                        <option value="col3">열 3</option>
+                        <option value="col4">열 4</option>
+                        <!-- 열 목록 추가 -->
+                    </select>
+
+                    <button id="updateChartButton">차트 업데이트</button>
                     <div id="listContainer"></div>
+                    <div id="chartContainer"></div>
+
                 </div>
             </div>
         </div>
@@ -289,6 +304,14 @@
 <!--개인-->
 <script src="/js/sideBar.js"></script>
 <script>
+    // 엑셀 파일 내보내기
+    $("#exportButton").dxButton({
+        icon: "fas fa-file-excel",
+        text: "내보내기",
+        onClick: function() {
+            exportToExcel();
+        }
+    });
     function exportToExcel() {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
@@ -303,10 +326,10 @@
 
         // 엑셀 파일 생성 및 저장
         workbook.xlsx.writeBuffer().then(function(buffer) {
-            saveAs(new Blob([buffer]), 'HandsontableData.xlsx');
+            saveAs(new Blob([buffer]), '기초정보.xlsx');
         });
     }
-
+    // 데이터 부러오기
     fetchBasicDataList();
     function fetchBasicDataList() {
         fetch('/api/excel/basic/list')
@@ -314,6 +337,7 @@
             .then(data => {
                 originalData = data;
                 createHandsontable(originalData);
+                createChartFromHandsontable(); // Handsontable 데이터로 차트 생성
             });
     }
     function createHandsontable(data) {
@@ -372,37 +396,97 @@
                 // updateWorkerContainer(rowData);
             }
         });
+        createChartFromHandsontable();
+        updateSelectors();
+    }
+// 차트 열과 행 선택하기
+    function getSelectedDataForChart() {
+        const categoryColumnIndex = $("#categorySelector").val(); // 선택된 카테고리 열 인덱스
+        const valueColumnIndex = $("#valueSelector").val(); // 선택된 값 열 인덱스
+        const data = hot.getData();
+
+        return data.map(row => ({
+            category: row[categoryColumnIndex], // 카테고리 데이터
+            value: row[valueColumnIndex] // 값 데이터
+        }));
     }
 
-    // $(document).ready(function() {
-    //     // 데이터를 로드하고 handsontable을 초기화하는 함수
-    //     function initializeHandsontable() {
-    //         $.ajax({
-    //             url: '/api/excel/basic/list', // 서버의 데이터 제공 API 엔드포인트
-    //             type: 'GET',
-    //             dataType: 'json', // 데이터 타입 지정
-    //             success: function(data) {
-    //                 // 서버로부터 데이터 로드 성공
-    //                 var container = document.getElementById('listContainer');
-    //                 var hot = new Handsontable(container, {
-    //                     data: data, // 로드한 데이터를 handsontable에 설정
-    //                     rowHeaders: true, // 행 헤더 표시
-    //                     colHeaders: true, // 열 헤더 표시
-    //                     filters: true, // 필터 기능 활성화
-    //                     dropdownMenu: true, // 드롭다운 메뉴 활성화
-    //                     // 다른 handsontable 옵션을 여기에 추가
-    //                 });
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 // 데이터 로드 실패 처리
-    //                 console.error("Data load failed:", status, error);
-    //             }
-    //         });
-    //     }
-    //
-    //     // 페이지 로드 시 함수 실행
-    //     initializeHandsontable();
-    // });
+
+    function getHandsontableData() {
+        return hot.getData(); // Handsontable 인스턴스에서 데이터 배열 반환
+    }
+    function transformDataForChart(rawData) {
+        return rawData.map(function(row) {
+            return {
+                category: row[0], // 예: 첫 번째 열을 카테고리로 사용
+                value: row[1] // 예: 두 번째 열을 값으로 사용
+            };
+        });
+    }
+    function initializeChart(data) {
+        $("#chartContainer").dxChart({
+            dataSource: data,
+            series: {
+                argumentField: "category",
+                valueField: "value",
+                type: "bar", // 차트 타입 (bar, line, area 등)
+                name: "Series Name"
+            },
+            // 추가적인 차트 옵션 설정
+            title: "Chart Title",
+            legend: {
+                visible: true
+            },
+            argumentAxis: {
+                label: {
+                    displayMode: "rotate",
+                    rotationAngle: 45
+                }
+            },
+            valueAxis: {
+                // 값 축 설정
+            }
+        });
+    }
+
+    function updateSelectors() {
+        const headers = hot.getColHeader();
+        const categorySelector = $("#categorySelector");
+        const valueSelector = $("#valueSelector");
+        categorySelector.empty();
+        valueSelector.empty();
+
+        headers.forEach((header, index) => {
+            categorySelector.append($("<option>", { value: index, text: header }));
+            valueSelector.append($("<option>", { value: index, text: header }));
+        });
+    }
+
+    $("#updateChartButton").click(function() {
+        updateChart(); // 차트 업데이트
+    });
+
+    function updateChart() {
+        const chartData = getSelectedDataForChart();
+        $("#chartContainer").dxChart({
+            dataSource: chartData,
+            series: {
+                argumentField: "category",
+                valueField: "value",
+                type: "bar", // 예: 막대 차트
+                name: "Data Series"
+            },
+            // 차트 설정 추가
+        });
+    }
+
+    function createChartFromHandsontable() {
+        var rawData = getHandsontableData();
+        var chartData = transformDataForChart(rawData);
+        initializeChart(chartData);
+    }
+
+    fetchBasicDataList();
 
 </script>
 

@@ -16,13 +16,13 @@
             align-items: center; /* 세로 중앙 정렬 */
         }
 
-        #test-search-container label{
+        #test-search-container label {
             display: flex;
             align-items: center; /* 세로 중앙 정렬 */
             gap: 5px; /* 요소 사이의 간격 */
         }
 
-        #test-search-container  button{
+        #test-search-container button {
             margin-left: auto; /* 버튼 그룹을 오른쪽으로 이동 */
         }
 
@@ -53,8 +53,20 @@
 
 
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
+    <!-- ExcelJS 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <!-- FileSaver.js 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+
+
+
 
 </head>
 <body>
@@ -222,10 +234,12 @@
                         <ul id="workerMenu" class="side-menu">
                             <ul>
                                 <li class="sidebar-item">
-                                    <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                    <a aria-expanded="false" id="productionOrderLink"
+                                       class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="mdi mdi-monitor"></i>
                                         <span class="hide-menu">작업자 생산지시</span></a>
-                                    <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                    <select class="custom-select" id="processEquipmentSelect"
+                                            style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
                                         <option selected>생산설비 선택</option>
                                     </select>
 
@@ -240,7 +254,6 @@
                             </ul>
                         </ul>
                     </li>
-
 
 
                     <hr>
@@ -288,7 +301,7 @@
                             <button id="searchButton" class="search">기간 검색</button>
                         </label>
                         <label for="total-search">
-                        <button id="total-search" class="total-search">전체 검색</button>
+                            <button id="total-search" class="total-search">전체 검색</button>
                         </label>
 
 
@@ -318,6 +331,9 @@
                         </label>
                     </div>
                     <div id="test-list"></div>
+                    <hr>
+                    <div id="productionChart" style="width: 100%; height: 440px;"></div>
+
                 </div>
             </div>
         </div>
@@ -329,15 +345,73 @@
     </footer>
 
 </div>
+<script>
 
-</div>
-<!--개인-->
-<script src="/js/sideBar.js"></script>
-<script src="/static/js/ProcessWorkerSearch.js"></script>
-<script src="/js/testSearch.js"></script>
+    function aggregateDataByMonth(filteredData) {
+        const aggregatedData = {};
+        filteredData.forEach(item => {
+            const productionDate = new Date(item.productionDate);
+            const month = productionDate.getMonth() + 1; // 월 추출
+            const monthKey = `${month}월`;
+
+            if (!aggregatedData[monthKey]) {
+                aggregatedData[monthKey] = { productionCount: 0 };
+            }
+            aggregatedData[monthKey].productionCount += item.productionCount; // 생산량 집계
+        });
+        return Object.keys(aggregatedData).map(monthKey => ({
+            month: monthKey,
+            productionCount: aggregatedData[monthKey].productionCount
+        }));
+    }
+
+    function createChartWithFilteredData(data, criteria) {
+        const filteredData = filterData(data, criteria);
+        const aggregatedData = aggregateDataByMonth(filteredData);
+        console.log("aggregatedData : ",aggregatedData);
+        createDevExpressChart(aggregatedData);
+    }
+
+    function prepareChartData(filteredData) {
+        // 이 함수는 'filteredData'를 차트에 적합한 형식으로 변환해야 합니다.
+        // 예제 변환:
+        return filteredData.map(item => ({
+            argumentField: item.processName, // 예를 들어, processName으로 분류하고자 할 때
+            valueField: item.productionCount // productionCount를 시각화하고자 하는 경우
+        }));
+    }
+    function createDevExpressChart(chartData) {
+        $("#productionChart").dxChart({
+            dataSource: chartData,
+            series: [{
+                argumentField: "month", // x축을 나타내는 필드
+                valueField: "productionCount", // y축(값)을 나타내는 필드
+                type: "bar",
+                name: "생산 수량"
+            }],
+            argumentAxis: {
+                title: "기간",
+                label: {
+                    customizeText: function (info) {
+                        return info.valueText;
+                    }
+                }
+            },
+            valueAxis: {
+                title: "생산 수량"
+            },
+            legend: {
+                visible: true
+            },
+            title: "생산 개요"
+        });
+    }
 
 
-<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
+</script>
+
+
+
 <!-- Bootstrap tether Core JavaScript -->
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- apps -->
@@ -359,4 +433,9 @@
 
 
 </body>
+
+<!--개인-->
+<script src="/js/sideBar.js"></script>
+<script defer src="/static/js/ProcessWorkerSearch.js"></script>
+<script defer src="/js/testSearch.js"></script>
 </html>

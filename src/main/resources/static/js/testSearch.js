@@ -38,6 +38,12 @@ function fetchTestList() {
         .then(data => {
             originalData = data;
             createHandsontable(originalData);
+
+            const aggregatedData = aggregateDataByMonth(originalData);
+            createDevExpressChart(aggregatedData);
+        })
+        .catch(error => {
+            console.error('Data fetch error: ', error);
         });
 }
 fetchTestList();

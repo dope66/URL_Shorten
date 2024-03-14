@@ -268,7 +268,7 @@
             <div class="col-md-5 col-12 align-self-center">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
-                        <h2><a href="/mes/home" style="text-decoration: none; color: #FFFFFF;">조회 검색</a></h2>
+                        <h2><a href="/mes/testSearch" style="text-decoration: none; color: #FFFFFF;">조회 검색</a></h2>
                     </li>
                 </ol>
             </div>
@@ -347,22 +347,53 @@
 </div>
 <script>
 
+    // function aggregateDataByMonth(filteredData) {
+    //     const aggregatedData = {};
+    //     filteredData.forEach(item => {
+    //         const productionDate = new Date(item.productionDate);
+    //         const month = productionDate.getMonth() + 1; // 월 추출
+    //         const monthKey = `${month}월`;
+    //
+    //         if (!aggregatedData[monthKey]) {
+    //             aggregatedData[monthKey] = { productionCount: 0 };
+    //         }
+    //         aggregatedData[monthKey].productionCount += item.productionCount; // 생산량 집계
+    //     });
+    //     return Object.keys(aggregatedData).map(monthKey => ({
+    //         month: monthKey,
+    //         productionCount: aggregatedData[monthKey].productionCount
+    //     }));
+    // }
     function aggregateDataByMonth(filteredData) {
-        const aggregatedData = {};
+        // 1월부터 12월까지 모든 월에 대해 초기 생산량을 0으로 설정
+        const aggregatedData = {
+            '1월': { month: '1월', productionCount: 0 },
+            '2월': { month: '2월', productionCount: 0 },
+            '3월': { month: '3월', productionCount: 0 },
+            '4월': { month: '4월', productionCount: 0 },
+            '5월': { month: '5월', productionCount: 0 },
+            '6월': { month: '6월', productionCount: 0 },
+            '7월': { month: '7월', productionCount: 0 },
+            '8월': { month: '8월', productionCount: 0 },
+            '9월': { month: '9월', productionCount: 0 },
+            '10월': { month: '10월', productionCount: 0 },
+            '11월': { month: '11월', productionCount: 0 },
+            '12월': { month: '12월', productionCount: 0 },
+        };
+
+        // 필터링된 데이터를 이용하여 각 월의 생산량을 업데이트
         filteredData.forEach(item => {
             const productionDate = new Date(item.productionDate);
             const month = productionDate.getMonth() + 1; // 월 추출
             const monthKey = `${month}월`;
 
-            if (!aggregatedData[monthKey]) {
-                aggregatedData[monthKey] = { productionCount: 0 };
+            if (aggregatedData.hasOwnProperty(monthKey)) {
+                aggregatedData[monthKey].productionCount += item.productionCount; // 생산량 집계
             }
-            aggregatedData[monthKey].productionCount += item.productionCount; // 생산량 집계
         });
-        return Object.keys(aggregatedData).map(monthKey => ({
-            month: monthKey,
-            productionCount: aggregatedData[monthKey].productionCount
-        }));
+
+        // 객체를 배열로 변환하여 반환
+        return Object.values(aggregatedData);
     }
 
     function createChartWithFilteredData(data, criteria) {

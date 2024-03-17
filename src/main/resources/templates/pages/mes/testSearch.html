@@ -65,9 +65,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 
 
-
-
-
 </head>
 <body>
 <div class="preloader">
@@ -367,18 +364,18 @@
     function aggregateDataByMonth(filteredData) {
         // 1월부터 12월까지 모든 월에 대해 초기 생산량을 0으로 설정
         const aggregatedData = {
-            '1월': { month: '1월', productionCount: 0 },
-            '2월': { month: '2월', productionCount: 0 },
-            '3월': { month: '3월', productionCount: 0 },
-            '4월': { month: '4월', productionCount: 0 },
-            '5월': { month: '5월', productionCount: 0 },
-            '6월': { month: '6월', productionCount: 0 },
-            '7월': { month: '7월', productionCount: 0 },
-            '8월': { month: '8월', productionCount: 0 },
-            '9월': { month: '9월', productionCount: 0 },
-            '10월': { month: '10월', productionCount: 0 },
-            '11월': { month: '11월', productionCount: 0 },
-            '12월': { month: '12월', productionCount: 0 },
+            '1월': {month: '1월', productionCount: 0},
+            '2월': {month: '2월', productionCount: 0},
+            '3월': {month: '3월', productionCount: 0},
+            '4월': {month: '4월', productionCount: 0},
+            '5월': {month: '5월', productionCount: 0},
+            '6월': {month: '6월', productionCount: 0},
+            '7월': {month: '7월', productionCount: 0},
+            '8월': {month: '8월', productionCount: 0},
+            '9월': {month: '9월', productionCount: 0},
+            '10월': {month: '10월', productionCount: 0},
+            '11월': {month: '11월', productionCount: 0},
+            '12월': {month: '12월', productionCount: 0},
         };
 
         // 필터링된 데이터를 이용하여 각 월의 생산량을 업데이트
@@ -399,7 +396,7 @@
     function createChartWithFilteredData(data, criteria) {
         const filteredData = filterData(data, criteria);
         const aggregatedData = aggregateDataByMonth(filteredData);
-        console.log("aggregatedData : ",aggregatedData);
+        console.log("aggregatedData : ", aggregatedData);
         createDevExpressChart(aggregatedData);
     }
 
@@ -413,7 +410,7 @@
     }
 
     function createDevExpressChart(chartData) {
-        console.log('차트데이터',chartData) // 차트 데이터 출력
+        console.log('차트데이터', chartData) // 차트 데이터 출력
         $("#productionChart").dxChart({
             dataSource: chartData,
             series: [{
@@ -431,12 +428,12 @@
                     };
                     console.log("월: ", pointInfo.argument, "색상: ", monthColors[pointInfo.argument]);
                     return {
-                        color:  monthColors[pointInfo.argument],
+                        color: monthColors[pointInfo.argument],
                         label: {
                             visible: true,
                             backgroundColor: "none",
                             format: "fixedPoint",
-                            customizeText: function(e) {
+                            customizeText: function (e) {
                                 return e.valueText;
                             }
                         }
@@ -466,9 +463,7 @@
     }
 
 
-
 </script>
-
 
 
 <!-- Bootstrap tether Core JavaScript -->

@@ -16,19 +16,6 @@ equipmentNameSelect.addEventListener('change', function () {
         fetchProcessNameAndEquipmentName();
     }
 });
-document.getElementById('total-search').addEventListener('click', function (event) {
-    event.preventDefault();
-    // 원본 데이터를 Handsontable에 다시 로드합니다.
-    hot.loadData(originalData);
-    console.log("전체 리스트를 불러옵니다.");
-    console.log("전체 데이터",originalData);
-
-    // 검색 입력란과 선택란을 초기화합니다.
-    document.getElementById('search-workerName').value = '';
-    document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
-    document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
-    // fetchTestList();
-});
 
 
 // 전체 테스트 리스트 불러오기
@@ -158,3 +145,18 @@ function setSelectedValue(selectId, value) {
     let options = selectElement.options;
     selectElement.value = value;
 }
+document.getElementById('total-search').addEventListener('click', function (event) {
+    event.preventDefault();
+    // 원본 데이터를 Handsontable에 다시 로드합니다.
+    hot.loadData(originalData);
+    console.log("전체 리스트를 불러옵니다.");
+    console.log("전체 데이터",originalData);
+
+    // 검색 입력란과 선택란을 초기화합니다.
+    document.getElementById('search-workerName').value = '';
+    document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
+    document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+// 전체 데이터를 기반으로 차트 데이터를 집계하고 차트를 다시 생성합니다.
+    const aggregatedData = aggregateDataByMonth(originalData);
+    createDevExpressChart(aggregatedData);
+});

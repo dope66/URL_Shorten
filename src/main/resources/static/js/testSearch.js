@@ -156,6 +156,9 @@ document.getElementById('total-search').addEventListener('click', function (even
     document.getElementById('search-workerName').value = '';
     document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
     document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+    document.getElementById('startDate').value = ''; // startDate 입력 필드 초기화
+    document.getElementById('endDate').value = ''; // endDate 입력 필드 초기화
+
 // 전체 데이터를 기반으로 차트 데이터를 집계하고 차트를 다시 생성합니다.
     const aggregatedData = aggregateDataByMonth(originalData);
     createDevExpressChart(aggregatedData);

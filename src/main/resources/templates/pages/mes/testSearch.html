@@ -396,7 +396,6 @@
     function createChartWithFilteredData(data, criteria) {
         const filteredData = filterData(data, criteria);
         const aggregatedData = aggregateDataByMonth(filteredData);
-        console.log("aggregatedData : ", aggregatedData);
         createDevExpressChart(aggregatedData);
     }
 
@@ -410,7 +409,6 @@
     }
 
     function createDevExpressChart(chartData) {
-        console.log('차트데이터', chartData) // 차트 데이터 출력
         $("#productionChart").dxChart({
             dataSource: chartData,
             series: [{
@@ -426,7 +424,6 @@
                         '5월': '#3949AB', '6월': '#1E88E5', '7월': '#039BE5', '8월': '#00ACC1',
                         '9월': '#00897B', '10월': '#43A047', '11월': '#7CB342', '12월': '#C0CA33'
                     };
-                    console.log("월: ", pointInfo.argument, "색상: ", monthColors[pointInfo.argument]);
                     return {
                         color: monthColors[pointInfo.argument],
                         label: {

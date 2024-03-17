@@ -334,7 +334,6 @@
             .then(data => {
                 originalData = data;
                 createHandsontable(originalData);
-                createChartFromHandsontable(); // Handsontable 데이터로 차트 생성
             });
     }
     function createHandsontable(data) {
@@ -393,8 +392,6 @@
                 // updateWorkerContainer(rowData);
             }
         });
-        createChartFromHandsontable();
-        updateSelectors();
     }
 
     fetchBasicDataList();

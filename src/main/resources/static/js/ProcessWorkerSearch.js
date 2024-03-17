@@ -1,12 +1,10 @@
 
 // 공정명 변경 시 호기 불러오기 및 호기 선택시 공정원 불러오기
 function fetchProcessNameAndWorkerName() {
-    console.log("공정원 이름 불러오는 시스템 ")
     // 호기 선택란 초기화
     equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
     // 공정명이 있을경우
     if (selectedProcessName.value) {
-        console.log("공정명이 선택된 경우");
         // 공정명이 선택된 경우, 해당하는 호기만 가져오기
         fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
@@ -21,7 +19,6 @@ function fetchProcessNameAndWorkerName() {
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
             });
-        console.log("공정명이 선택된 경우 processName:",selectedProcessName.value);
         // 공정명으로 공정원 가져오기
         fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
             .then(response => response.json())
@@ -38,7 +35,6 @@ function fetchProcessNameAndWorkerName() {
                 console.error('fetch 오류 요청 ', error);
             });
         equipmentNameSelect.addEventListener('change',()=>{
-            console.log("공정명 값이 있고 호기 변경이 있을 경우 ")
             workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
             fetchProcessNameAndEquipmentName();
         });
@@ -58,7 +54,6 @@ function fetchProcessNameAndEquipmentName() {
                     workerNameSelect.appendChild(option);
                 });
                 // fetch가 완료된 후에 콘솔 로그 출력
-                console.log("workerNameSelect 확인 용 : ", workerNameSelect.value);
             })
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
@@ -67,7 +62,6 @@ function fetchProcessNameAndEquipmentName() {
 }
 // 공정명이 선택되지 않은 경우 호기와 전체 공정원(AllWorkerName) 불러오는 함수
 function fetchEquipmentName(){
-    console.log("공정명이 선택되지 않은 경우");
     equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
     workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
     // 공정명이 선택되지 않은 경우, 모든 호기 가져오기
@@ -107,14 +101,12 @@ function workerSearch() {
     const equipmentNameSelected = equipmentNameSelect.value;
     const workerNameElement = document.getElementById('search-workerName');
     const workerNameQuery = workerNameElement.value.trim();
-    console.log("workerNameQuery value : ",workerNameQuery);
+
 
     const filteredData = originalData.filter(item => {
-        console.log("filterData",originalData);
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
         const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
         const matchesWorkerName = !workerNameQuery || item.workerName.includes(workerNameQuery);
-        console.log("matchesWorkerName :",matchesWorkerName);
         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 
@@ -154,7 +146,6 @@ function performSearchForTest() {
         const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
         const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
         const matchesWorkerName = !workerNameQuery || item.processWorker.includes(workerNameQuery);
-        console.log("matchesWorkerName :",matchesWorkerName);
         return matchesDate && matchesProcessName && matchesEquipmentName && matchesWorkerName;
     });
 
@@ -185,7 +176,6 @@ function performSearchForTest() {
 // 전체 공정명(생산설비)을 불러오는 함수
 
 function fetchProcessNames(selectedProcessName) {
-    console.log("전체 공정명 가져오기");
     fetch('/api/worker/getProcessName')
         .then(response => response.json())
         .then(data => {
@@ -211,7 +201,6 @@ function fetchProcessNames(selectedProcessName) {
 function wholeWorker() {
     // 원본 데이터를 Handsontable에 다시 로드합니다.
     hot.loadData(originalData);
-    console.log("전체 리스트를 불러옵니다.");
 
     // 검색 입력란과 선택란을 초기화합니다.
     document.getElementById('search-workerName').value = '';

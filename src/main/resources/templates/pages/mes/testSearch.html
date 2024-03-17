@@ -411,22 +411,41 @@
             valueField: item.productionCount // productionCount를 시각화하고자 하는 경우
         }));
     }
+
     function createDevExpressChart(chartData) {
+        console.log('차트데이터',chartData) // 차트 데이터 출력
         $("#productionChart").dxChart({
             dataSource: chartData,
             series: [{
                 argumentField: "month", // x축을 나타내는 필드
                 valueField: "productionCount", // y축(값)을 나타내는 필드
                 type: "bar",
-                name: "생산 수량"
+                name: "생산 수량",
+                // 데이터 포인트별 스타일 및 레이블 설정
+                customizePoint: function (pointInfo) {
+
+                    var monthColors = {
+                        '1월': '#E53935', '2월': '#D81B60', '3월': '#8E24AA', '4월': '#5E35B1',
+                        '5월': '#3949AB', '6월': '#1E88E5', '7월': '#039BE5', '8월': '#00ACC1',
+                        '9월': '#00897B', '10월': '#43A047', '11월': '#7CB342', '12월': '#C0CA33'
+                    };
+                    console.log("월: ", pointInfo.argument, "색상: ", monthColors[pointInfo.argument]);
+                    return {
+                        color:  monthColors[pointInfo.argument],
+                        label: {
+                            visible: true,
+                            backgroundColor: "none",
+                            format: "fixedPoint",
+                            customizeText: function(e) {
+                                return e.valueText;
+                            }
+                        }
+                    };
+                }
             }],
+
             argumentAxis: {
                 title: "기간",
-                label: {
-                    customizeText: function (info) {
-                        return info.valueText;
-                    }
-                }
             },
             valueAxis: {
                 title: "생산 수량"
@@ -434,9 +453,18 @@
             legend: {
                 visible: true
             },
-            title: "생산 개요"
+            title: "생산 개요",
+            tooltip: {
+                enabled: true,
+                customizeTooltip: function (arg) {
+                    return {
+                        text: arg.seriesName + " : " + arg.valueText
+                    };
+                }
+            }
         });
     }
+
 
 
 </script>

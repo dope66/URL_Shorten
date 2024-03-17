@@ -273,21 +273,7 @@
                 <div class="table-responsive">
                     <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
                     <button id="exportButton" class="exportButton" onclick="exportToExcel()"></button>
-                    <select id="categorySelector">
-                        <option value="col1">열 1</option>
-                        <option value="col2">열 2</option>
-                        <!-- 열 목록 추가 -->
-                    </select>
-
-                    <select id="valueSelector">
-                        <option value="col3">열 3</option>
-                        <option value="col4">열 4</option>
-                        <!-- 열 목록 추가 -->
-                    </select>
-
-                    <button id="updateChartButton">차트 업데이트</button>
                     <div id="listContainer"></div>
-                    <div id="chartContainer"></div>
 
                 </div>
             </div>
@@ -398,92 +384,6 @@
         });
         createChartFromHandsontable();
         updateSelectors();
-    }
-// 차트 열과 행 선택하기
-    function getSelectedDataForChart() {
-        const categoryColumnIndex = $("#categorySelector").val(); // 선택된 카테고리 열 인덱스
-        const valueColumnIndex = $("#valueSelector").val(); // 선택된 값 열 인덱스
-        const data = hot.getData();
-
-        return data.map(row => ({
-            category: row[categoryColumnIndex], // 카테고리 데이터
-            value: row[valueColumnIndex] // 값 데이터
-        }));
-    }
-
-
-    function getHandsontableData() {
-        return hot.getData(); // Handsontable 인스턴스에서 데이터 배열 반환
-    }
-    function transformDataForChart(rawData) {
-        return rawData.map(function(row) {
-            return {
-                category: row[0], // 예: 첫 번째 열을 카테고리로 사용
-                value: row[1] // 예: 두 번째 열을 값으로 사용
-            };
-        });
-    }
-    function initializeChart(data) {
-        $("#chartContainer").dxChart({
-            dataSource: data,
-            series: {
-                argumentField: "category",
-                valueField: "value",
-                type: "bar", // 차트 타입 (bar, line, area 등)
-                name: "Series Name"
-            },
-            // 추가적인 차트 옵션 설정
-            title: "Chart Title",
-            legend: {
-                visible: true
-            },
-            argumentAxis: {
-                label: {
-                    displayMode: "rotate",
-                    rotationAngle: 45
-                }
-            },
-            valueAxis: {
-                // 값 축 설정
-            }
-        });
-    }
-
-    function updateSelectors() {
-        const headers = hot.getColHeader();
-        const categorySelector = $("#categorySelector");
-        const valueSelector = $("#valueSelector");
-        categorySelector.empty();
-        valueSelector.empty();
-
-        headers.forEach((header, index) => {
-            categorySelector.append($("<option>", { value: index, text: header }));
-            valueSelector.append($("<option>", { value: index, text: header }));
-        });
-    }
-
-    $("#updateChartButton").click(function() {
-        updateChart(); // 차트 업데이트
-    });
-
-    function updateChart() {
-        const chartData = getSelectedDataForChart();
-        $("#chartContainer").dxChart({
-            dataSource: chartData,
-            series: {
-                argumentField: "category",
-                valueField: "value",
-                type: "bar", // 예: 막대 차트
-                name: "Data Series"
-            },
-            // 차트 설정 추가
-        });
-    }
-
-    function createChartFromHandsontable() {
-        var rawData = getHandsontableData();
-        var chartData = transformDataForChart(rawData);
-        initializeChart(chartData);
     }
 
     fetchBasicDataList();

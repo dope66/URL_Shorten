@@ -96,6 +96,35 @@ public class ExcelService {
     }
 
     // 셀 값을 안전하게 읽어오는 헬퍼 메소드
+//    private String getCellStringValue(Row row, int cellIndex) {
+//        Cell cell = row.getCell(cellIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+//
+//        switch (cell.getCellType()) {
+//            case STRING:
+//                return cell.getStringCellValue();
+//            case NUMERIC:
+//                // 숫자 데이터를 문자열로 변환
+//                return Double.toString(cell.getNumericCellValue());
+//            case BOOLEAN:
+//                // 불리언 데이터를 문자열로 변환
+//                return Boolean.toString(cell.getBooleanCellValue());
+//            case FORMULA:
+//                // 수식이 있는 경우, 계산된 값을 문자열로 변환
+//                // 이 예제에서는 간단히 수식의 결과 타입을 기반으로 처리
+//                // 보다 복잡한 처리가 필요할 경우, FormulaEvaluator 사용 고려
+//                switch (cell.getCachedFormulaResultType()) {
+//                    case STRING:
+//                        return cell.getRichStringCellValue().getString();
+//                    case NUMERIC:
+//                        return Double.toString(cell.getNumericCellValue());
+//                    default:
+//                        return "";
+//                }
+//            default:
+//                // 다른 타입의 데이터는 필요에 따라 처리
+//                return "";
+//        }
+//    }
     private String getCellStringValue(Row row, int cellIndex) {
         Cell cell = row.getCell(cellIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
@@ -103,20 +132,31 @@ public class ExcelService {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
-                // 숫자 데이터를 문자열로 변환
-                return Double.toString(cell.getNumericCellValue());
+                double numericValue = cell.getNumericCellValue();
+                // 숫자가 정수 값인 경우 (소수점이 없는 경우)
+                if (Math.floor(numericValue) == numericValue) {
+                    // 정수 값으로 변환하여 문자열로 반환
+                    return String.valueOf((int) numericValue);
+                } else {
+                    // 소수점이 있는 경우, 그대로 문자열로 변환
+                    return String.valueOf(numericValue);
+                }
             case BOOLEAN:
-                // 불리언 데이터를 문자열로 변환
                 return Boolean.toString(cell.getBooleanCellValue());
             case FORMULA:
                 // 수식이 있는 경우, 계산된 값을 문자열로 변환
-                // 이 예제에서는 간단히 수식의 결과 타입을 기반으로 처리
-                // 보다 복잡한 처리가 필요할 경우, FormulaEvaluator 사용 고려
                 switch (cell.getCachedFormulaResultType()) {
                     case STRING:
                         return cell.getRichStringCellValue().getString();
                     case NUMERIC:
-                        return Double.toString(cell.getNumericCellValue());
+                        double formulaNumericValue = cell.getNumericCellValue();
+                        if (Math.floor(formulaNumericValue) == formulaNumericValue) {
+                            // 정수 값으로 변환하여 문자열로 반환
+                            return String.valueOf((int) formulaNumericValue);
+                        } else {
+                            // 소수점이 있는 경우, 그대로 문자열로 변환
+                            return String.valueOf(formulaNumericValue);
+                        }
                     default:
                         return "";
                 }

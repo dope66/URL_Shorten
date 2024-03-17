@@ -272,7 +272,7 @@
             <div class="card card-body">
                 <div class="table-responsive">
                     <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
-                    <button id="exportButton" class="exportButton" onclick="exportToExcel()"></button>
+                    <button id="exportButton" class="exportButton"></button>
                     <div id="listContainer"></div>
 
                 </div>
@@ -295,10 +295,17 @@
         icon: "fas fa-file-excel",
         text: "내보내기",
         onClick: function() {
-            exportToExcel();
+
+            const confirmed = window.confirm('엑셀 파일을 내보내시겠습니까?');
+
+            // 사용자가 '확인'을 눌렀을 때만 exportToExcel 함수를 실행합니다.
+            if (confirmed) {
+                exportToExcel();
+            }
         }
     });
     function exportToExcel() {
+
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
 
@@ -313,6 +320,10 @@
         // 엑셀 파일 생성 및 저장
         workbook.xlsx.writeBuffer().then(function(buffer) {
             saveAs(new Blob([buffer]), '기초정보.xlsx');
+            alert('엑셀 파일이 성공적으로 다운로드되었습니다.'); // 성공 메시지 표시
+        }).catch(function(error) {
+            console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
+            alert('엑셀 파일 내보내기에 실패했습니다.'); // 실패 메시지 표시
         });
     }
     // 데이터 부러오기

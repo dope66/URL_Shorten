@@ -150,13 +150,45 @@ document.getElementById('total-search').addEventListener('click', function (even
     // 원본 데이터를 Handsontable에 다시 로드합니다.
     hot.loadData(originalData);
     // 검색 입력란과 선택란을 초기화합니다.
-    document.getElementById('search-workerName').value = '';
+    // document.getElementById('search-workerName').value = '';
     document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
-    document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+    // document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
     document.getElementById('startDate').value = ''; // startDate 입력 필드 초기화
     document.getElementById('endDate').value = ''; // endDate 입력 필드 초기화
 
 // 전체 데이터를 기반으로 차트 데이터를 집계하고 차트를 다시 생성합니다.
     const aggregatedData = aggregateDataByMonth(originalData);
     createDevExpressChart(aggregatedData);
+
+
+    // 공정원 데이터를 가져오는 API 호출
+    fetch('/api/worker/getAllWorkerName')
+        .then(response => response.json())
+        .then(data => {
+            const workerNameSelect = document.getElementById('search-workerName');
+            workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>'; // 공정원 선택란 초기화
+            data.forEach(workerName => {
+                const option = document.createElement('option');
+                option.text = workerName; // 옵션 텍스트에 공정원 이름 설정
+                option.value = workerName; // 옵션 값에 공정원 이름 설정
+                workerNameSelect.appendChild(option); // 공정원 선택란에 옵션 추가
+            });
+        })
+        .catch(error => console.error('공정원 이름을 불러오는 중 오류 발생:', error));
+    const equipmentNameSelect = document.getElementById('search-equipmentName');
+    equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+
+    fetch(`/api/worker/getAllEquipmentName`)
+        .then(response => response.json())
+        .then(equipmentNames => {
+            equipmentNames.forEach(equipmentName => {
+                const option = document.createElement('option');
+                option.text = equipmentName;
+                option.value = equipmentName;
+                equipmentNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
 });

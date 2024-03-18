@@ -156,6 +156,13 @@ document.getElementById('total-search').addEventListener('click', function (even
     document.getElementById('startDate').value = ''; // startDate 입력 필드 초기화
     document.getElementById('endDate').value = ''; // endDate 입력 필드 초기화
 
+    document.getElementById('searched-processName').value='';
+    document.getElementById('searched-equipmentName').value='';
+    document.getElementById('searched-workerName').value='';
+    document.getElementById('searched-production').value='';
+    document.getElementById('searched-defeatCount').value='';
+
+
 // 전체 데이터를 기반으로 차트 데이터를 집계하고 차트를 다시 생성합니다.
     const aggregatedData = aggregateDataByMonth(originalData);
     createDevExpressChart(aggregatedData);

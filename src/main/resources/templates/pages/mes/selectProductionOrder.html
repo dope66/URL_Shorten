@@ -3,15 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="noindex,nofollow" name="robots"/>
-    <title>MES</title>
+    <title>생산지시 등록</title>
     <script>
-        // 요소를 선택
         var element = document.querySelector('#employee-Table > div.ht_master.handsontable.innerBorderLeft.innerBorderInlineStart > div');
-
-        // 스타일 속성을 제거
         if (element) {
             element.removeAttribute('style');
         }
@@ -20,8 +16,8 @@
     </script>
     <style>
         #employee-Table{
-            position: relative; /* z-index는 position이 relative, absolute, fixed인 요소에만 적용됩니다. */
-            z-index: auto; /* 원하는 z-index 값으로 설정 */
+            position: relative;
+            z-index: auto;
         }
     </style>
     <link
@@ -35,14 +31,10 @@
             sizes="16x16"
             type="image/png"
     />
-    <!-- This page plugin CSS -->
     <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -112,7 +104,6 @@
                     <span class="logo-text">
                                 <b class="logo-icon">
                         <img src="/static/image/p-01.png" style="width: 50px;height: 50px;"/>
-                                    <!-- Light Logo icon -->
                         <img src="/static/image/Lazer.png" style="width: 100px;height: 100px"/>
                     </b>
                         MES 시스템</span>
@@ -144,14 +135,11 @@
             >
 
             </div>
-            <!-- End User profile text-->
-            <!-- Sidebar navigation-->
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
 
                     <li class="nav-small-cap">
                         <i class="mdi mdi-dots-horizontal"></i>
-                        <span class="hide-menu">Mes</span>
                     </li>
 
                     <li class="nav-item">
@@ -258,14 +246,10 @@
         </div>
 
         <div class="container-fluid">
-            <!-- -------------------------------------------------------------- -->
-            <!-- Start Page Content -->
-            <!-- -------------------------------------------------------------- -->
             <div class="widget-content searchable-container list">
             </div>
             <div class="card card-body">
                 <div class="table-responsive">
-                    <!--ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ-->
                     <div id="mainContainer">
                         <form id="order-register">
                             <div>
@@ -347,32 +331,11 @@
 
 </div>
 
-
-<!--개인-->
 <script src="/js/sideBar.js"></script>
 <script src="/static/js/ProcessWorkerSearch.js"></script>
 <script src="/js/selectProductionOrder.js"></script>
-
 <script>
 
-
-    // function exportToExcel() {
-    //     const workbook = new ExcelJS.Workbook();
-    //     const worksheet = workbook.addWorksheet('My Sheet');
-    //
-    //     // 컬럼 헤더 추가
-    //     worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
-    //
-    //     // 데이터 추가
-    //     hot.getData().forEach(row => {
-    //         worksheet.addRow(row);
-    //     });
-    //
-    //     // 엑셀 파일 생성 및 저장
-    //     workbook.xlsx.writeBuffer().then(function(buffer) {
-    //         saveAs(new Blob([buffer]), 'HandsontableData.xlsx');
-    //     });
-    // }
 
     fetchBasicDataList();
     function fetchBasicDataList() {
@@ -445,29 +408,17 @@
     }
 
 </script>
-
-
-
-
-
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<!-- apps -->
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/dist/js/app.init.dark.js"></script>
 <script src="/static/dist/js/app-style-switcher.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
 <script src="/static/dist/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.js"></script>
 <script src="/static/dist/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
-<!--Wave Effects -->
 <script src="/static/dist/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="/static/dist/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="/static/dist/js/feather.min.js"></script>
 <script src="/static/dist/js/custom.min.js"></script>
-<!--This page plugins -->
 <script src="/static/dist/js/pages/contact/contact.js"></script>
 
 

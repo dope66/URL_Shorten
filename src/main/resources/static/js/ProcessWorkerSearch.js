@@ -156,22 +156,11 @@ function performSearchForTest() {
         hot.loadData([]);
         console.log('검색 결과가 없습니다.');
     }
-
-
-    // function filterData(data, { processName, equipmentName, workerName }) {
-    //     return data.filter(item => {
-    //         const matchesProcessName = !processName || item.processName === processName;
-    //         const matchesEquipmentName = !equipmentName || item.equipmentName === equipmentName;
-    //         const matchesWorkerName = !workerName || item.workerName === workerName;
-    //         return matchesProcessName && matchesEquipmentName && matchesWorkerName;
-    //     });
-    // }
     const aggregatedData = aggregateDataByMonth(filteredData);
 
     // 차트 생성
     createDevExpressChart(aggregatedData);
 }
-
 
 // 전체 공정명(생산설비)을 불러오는 함수
 

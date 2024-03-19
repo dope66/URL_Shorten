@@ -36,6 +36,9 @@ public class ExcelController {
             case "type2":
                 isProcessed = excelService.processType2ExcelFile(file);
                 break;
+            case "type3":
+                isProcessed=excelService.processType3ExcelFile(file);
+                break;
             default:
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid type parameter");
         }

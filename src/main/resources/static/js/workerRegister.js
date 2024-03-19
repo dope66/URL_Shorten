@@ -1,6 +1,6 @@
 
 let originalData = []; // 원본 데이터 배열
-let hot;
+let worekerhot;
 const imageInput = document.getElementById('imageInput'); // 이미지 입력란
 const previewImage = document.getElementById('preview-image'); // 미리보기 이미지
 const registerForm = document.getElementById("worker-register-form");
@@ -47,20 +47,19 @@ fetchProcessNameDetail();
 // 근무조 목록 가져오기
 function createHandsontable(data) {
     const container = document.getElementById('employee-Table');
-    hot = new Handsontable(container, {
+    worekerhot = new Handsontable(container, {
         cells: function (row, col, prop) {
             var cellProperties = {};
             cellProperties.className = 'htCenter';
             return cellProperties;
         },
         className: "htCenter",
-        colWidths: [100, 100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
+        colWidths: [ 100, 100, 100, 100, 100, 150], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data: data,
-        colHeaders: ['ID', '공정명', '호기', '성명', '국적', '직책', '주야간조'],
+        colHeaders: ['공정명', '호기', '성명', '국적', '직책', '주야간조'],
         columns: [
-            {data: 'id', readOnly: true, className: "htCenter"},
             {data: 'processName', readOnly: true, className: "htCenter"},
             {data: 'equipmentName', readOnly: true, className: "htCenter"},
             {data: 'workerName', readOnly: true, className: "htCenter"},
@@ -68,10 +67,6 @@ function createHandsontable(data) {
             {data: 'position', readOnly: true, className: "htCenter"},
             {data: 'workShift', readOnly: true, className: "htCenter"},
         ],
-        hiddenColumns: {
-            columns: [0], // 'ID' 열을 숨깁니다.
-            indicators: false // 숨겨진 열의 지시자 표시 여부
-        },
         height: 300,
         viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
         columnSorting: false, // 정렬 활성화
@@ -83,7 +78,7 @@ function createHandsontable(data) {
         rowHeaders: true, // 행 번호 표시
         search: true, // 검색 기능 활성화
         afterOnCellMouseDown: function (event, coords) {
-            const rowData = hot.getSourceDataAtRow(coords.row);
+            const rowData = worekerhot.getSourceDataAtRow(coords.row);
             // applyDataToForm(rowData);
             console.log("rowData", rowData);
             updateWorkerContainer(rowData);
@@ -271,6 +266,7 @@ function updateWorkerContainer(rowData) {
     document.getElementById('nation').value = rowData ? rowData.nation : '';
     // Select 태그의 값 설정
     setSelectedValue('processName', rowData.processName);
+    console.log("processName",rowData.processName);
     setSelectedValue('equipmentName', rowData.equipmentName);
     setSelectedValue('position', rowData.position);
     setSelectedValue('workShift', rowData.workShift);
@@ -327,7 +323,7 @@ function createDeleteButton() {
     deleteButton.style.backgroundColor = '#f61e1e'; // 일단 숨김
     deleteButton.style.borderColor = '#f61e1e';
     deleteButton.style.color = 'white';
-    deleteButton.style.height = '47px';
+    deleteButton.style.height = '35px';
     deleteButton.style.width = '100px';
     deleteButton.style.position='absolute';
     deleteButton.style.borderRadius='5px';
@@ -390,44 +386,44 @@ function modifyWorker(workerId) {
 
 
 // Select 태그에 선택된 값을 설정하는 함수
-function setSelectedValue(selectId, value) {
+function setSelectedValue(selectId, valueToSet) {
     let selectElement = document.getElementById(selectId);
-    let options = selectElement.options;
-    for (let option of options) {
-        if (option.value == value) {
-            selectElement.value = value;
+    let optionFound = false;
+
+    for (const option of selectElement.options) {
+        if (option.value === valueToSet) {
+            selectElement.value = valueToSet;
+            optionFound = true;
             break;
         }
     }
+
+    console.log("setSelectedValue called for", selectId, "with value", valueToSet, "option found:", optionFound);
 }
 
-/// 이미지 불러오기
+
+
 function fetchImageAndUpdatePreview(workerId) {
     fetch(`/api/worker/getBase64Image?id=${workerId}`)
-        .then(response => response.text()) // 응답을 텍스트로 처리
+        .then(response => {
+            if (!response.ok) {
+                // 서버가 404 Not Found 등의 응답을 보냈을 경우
+                throw new Error('Image not found or error in server');
+            }
+            return response.text();
+        })
         .then(data => {
             const previewImage = document.getElementById('preview-image');
-            previewImage.src = data; // Base64 인코딩된 이미지 데이터를 직접 src에 할당
-            console.log('imagePathInput', previewImage.src);
-
-            // 이미지 미리보기 업데이트 후 `required` 속성 조건적 제거 로직
-            const defaultImagePath = '/static/image/defaultWorker.png'; // 기본 이미지 경로 설정
-            const imageInput = document.getElementById('imageInput');
-            if (previewImage.src !== window.location.origin + defaultImagePath) {
-                imageInput.removeAttribute('required');
-            } else {
-                // 기본 이미지일 경우 required 속성을 다시 추가
-                imageInput.setAttribute('required', '');
-            }
+            // Base64 인코딩된 이미지 데이터를 직접 src에 할당
+            previewImage.src = data;
+            previewImage.style.display = 'block';
         })
         .catch(error => {
             console.error('이미지를 불러오는 중 오류 발생:', error);
+            // 에러 발생 시 기본 이미지로 설정
             const previewImage = document.getElementById('preview-image');
-            previewImage.src = '/static/image/defaultWorker.png'; // 에러 발생 시 기본 이미지로 대체
-
-            // 에러 발생 시 required 속성을 다시 추가
-            const imageInput = document.getElementById('imageInput');
-            imageInput.setAttribute('required', '');
+            previewImage.src = '/static/image/defaultWorker.png';
+            previewImage.style.display = 'block';
         });
 }
 

@@ -20,6 +20,7 @@
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/excelInputCustom.css">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -49,8 +50,6 @@
         .handsontable td {
             text-align: center;
         }
-
-        /* 필요한 추가적인 스타일 설정 가능 */
     </style>
 
 </head>
@@ -254,10 +253,15 @@
             </div>
             <div class="card card-body">
                 <div class="table-responsive">
-                    <button id="exportButton" class="exportButton"></button>
-                    <input type="file" id="fileInput" accept=".xlsx, .xls" style="width: 250px">
-                    <div id="progressBar" style="width: 0%; height: 20px; background-color: #4CAF50;"></div>
-                    <div id="statusText"></div>
+                    <div class="file-upload-container">
+                        <input type="file" id="fileInput" accept=".xlsx, .xls">
+                        <label for="statusText"><input type="hidden" readonly id="statusText" placeholder="선택된 파일 없음" style="background-color: #FFFFFF"></label>
+                        <label for="fileInput" class="custom-excel-file-upload" style="width: auto; padding: 2px 5px; height: 36px;">
+                            <i class="far fa-file-excel"></i>올리기
+                        </label>
+                        <button id="exportButton" class="exportButton"></button>
+                    </div>
+                    <div id="progressBar"></div>
                     <div id="listContainer"></div>
                 </div>
             </div>
@@ -271,23 +275,10 @@
 
 </div>
 
-<!--개인-->
 <script src="/js/sideBar.js"></script>
 <script>
-    // 엑셀 파일 내보내기
-    // $("#exportButton").dxButton({
-    //     icon: "fas fa-file-excel",
-    //     text: "내보내기",
-    //     onClick: function() {
-    //
-    //         const confirmed = window.confirm('엑셀 파일을 내보내시겠습니까?');
-    //         if (confirmed) {
-    //             exportToExcel();
-    //         }
-    //     }
-    // });
     $("#exportButton").dxButton({
-        icon: "fas fa-file-excel",
+        icon: "far fa-file-excel",
         text: "내보내기",
         onClick: function() {
             // 파일명을 사용자에게 입력받습니다.
@@ -314,25 +305,6 @@
             alert('엑셀 파일 내보내기에 실패했습니다.');
         });
     }
-    // function exportToExcel() {
-    //
-    //     const workbook = new ExcelJS.Workbook();
-    //     const worksheet = workbook.addWorksheet('My Sheet');
-    //     worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
-    //
-    //     hot.getData().forEach(row => {
-    //         worksheet.addRow(row);
-    //     });
-    //
-    //     // 엑셀 파일 생성 및 저장
-    //     workbook.xlsx.writeBuffer().then(function(buffer) {
-    //         saveAs(new Blob([buffer]), '기초정보.xlsx');
-    //     }).catch(function(error) {
-    //         console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
-    //         alert('엑셀 파일 내보내기에 실패했습니다.'); // 실패 메시지 표시
-    //     });
-    // }
-
 
     // 데이터 부러오기
     fetchBasicDataList();
@@ -405,118 +377,13 @@
     fetchBasicDataList();
 
 </script>
-<!--<script>-->
-<!--    $("#file-uploader").dxFileUploader({-->
-<!--        url: '/api/excel/upload',-->
-<!--        name: "file",-->
-<!--        accept: ".xlsx", // 엑셀 파일만 허용-->
-<!--        allowedFileExtensions: [".xlsx"], // 엑셀 파일 확장자 제한-->
-<!--        uploadMode: "instantly", // 파일을 선택하자마자 업로드-->
-<!--        uploadCustomData: {-->
-<!--            type: "type2"-->
-<!--        },-->
-<!--        onUploaded: function(e) {-->
-<!--            // 파일 업로드 성공 시의 처리 로직-->
-<!--            var response = JSON.parse(e.request.response);-->
-<!--            alert(response.message); // 서버로부터 받은 응답 메시지를 알림-->
-<!--        },-->
-<!--        onUploadError: function(e) {-->
-<!--            // 파일 업로드 실패 시의 처리 로직-->
-<!--            console.error("업로드 실패", e);-->
-<!--            alert("업로드 실패: " + e.message);-->
-<!--        }-->
-<!--    });-->
-
-
-<!--</script>-->
+<script src="/js/uploadFile.js"></script>
 <script>
-    // document.getElementById('fileInput').addEventListener('change', function(e) {
-    //     var file = e.target.files[0]; // 사용자가 선택한 파일
-    //
-    //     if (file) {
-    //         var formData = new FormData();
-    //         formData.append('file', file); // 파일 데이터 추가
-    //         formData.append('type', 'type2'); // 파일 타입 설정
-    //
-    //         fetch('/api/excel/upload', {
-    //             method: 'POST',
-    //             body: formData
-    //         })
-    //             .then(response => {
-    //                 if(response.ok) {
-    //                     return response.text();
-    //                 } else {
-    //                     throw new Error('파일 업로드 실패');
-    //                 }
-    //             })
-    //             .then(data => {
-    //                 alert('파일 업로드 성공.');
-    //                 // Redirect to another page if needed
-    //                 window.location.href = '/mes/basic/list';
-    //             })
-    //             .catch(error => {
-    //                 alert(error.message);
-    //             });
-    //     } else {
-    //         alert('파일을 선택해주세요.');
-    //     }
-    // });
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        var file = e.target.files[0];
-
-        // 지원하지 않는 파일 형식 검사
-        if (!file.name.match(/\.(xlsx|xls)$/)) {
-            alert('지원하지 않는 파일 형식입니다. .xlsx 또는 .xls 파일만 업로드 가능합니다.');
-            return;
-        }
-
-        if (file) {
-            var formData = new FormData();
-            formData.append('file', file);
-            formData.append('type', 'type2');
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/excel/upload', true);
-
-            // 진행 상황 표시
-            xhr.upload.onprogress = function(e) {
-                if (e.lengthComputable) {
-                    var percentComplete = (e.loaded / e.total) * 100;
-                    document.getElementById('progressBar').style.width = percentComplete + '%';
-                    document.getElementById('statusText').innerText = '업로드 중... ' + Math.round(percentComplete) + '%';
-                }
-            };
-
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    alert('파일 업로드 성공.');
-                    document.getElementById('statusText').innerText = '업로드 성공!';
-                    console.log("업로드 성공, 페이지를 새로 고침합니다.");
-                    window.location.reload();
-
-                } else {
-                    // 서버 측 에러 처리
-                    alert('파일 업로드 실패: ' + xhr.statusText);
-                    document.getElementById('statusText').innerText = '업로드 실패.';
-                }
-            };
-
-            xhr.onerror = function() {
-                // 네트워크 오류 처리
-                alert('업로드 중 네트워크 오류가 발생했습니다.');
-                document.getElementById('statusText').innerText = '업로드 실패 - 네트워크 오류.';
-            };
-
-            xhr.send(formData);
-        } else {
-            alert('파일을 선택해주세요.');
-        }
+    document.getElementById('fileInput').addEventListener('change', function() {
+        // 'fileInput'은 파일 입력 필드의 ID, 'type3'은 업로드 유형을 나타냅니다.
+        uploadFile('fileInput', 'type2');
     });
 </script>
-
-
-
-
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/dist/js/app.init.dark.js"></script>

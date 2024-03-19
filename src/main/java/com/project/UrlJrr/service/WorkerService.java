@@ -19,11 +19,11 @@ public class WorkerService {
     public ProcessWorker workerRegister(ProcessWorkerDto processWorkerDto, String imagePath) {
         ProcessWorker processWorker = new ProcessWorker();
         processWorker.setProcessName(processWorkerDto.getProcessName());
+        processWorker.setEquipmentName(processWorkerDto.getEquipmentName());
+        processWorker.setWorkerName(processWorkerDto.getWorkerName());
         processWorker.setNation(processWorkerDto.getNation());
         processWorker.setPosition(processWorkerDto.getPosition());
         processWorker.setWorkShift(processWorkerDto.getWorkShift());
-        processWorker.setWorkerName(processWorkerDto.getWorkerName());
-        processWorker.setEquipmentName(processWorkerDto.getEquipmentName());
         processWorker.setImagePath(imagePath); // 이미지 경로 설정
 
         return workerRepository.save(processWorker);

@@ -3,12 +3,10 @@ package com.project.UrlJrr.service;
 import com.project.UrlJrr.dto.BasicDataDTO;
 import com.project.UrlJrr.dto.ManagementItemDTO;
 import com.project.UrlJrr.dto.ProductionItemDTO;
-import com.project.UrlJrr.entity.BasicData;
-import com.project.UrlJrr.entity.InspectionItem;
-import com.project.UrlJrr.entity.ManagementItem;
-import com.project.UrlJrr.entity.ProductionItem;
+import com.project.UrlJrr.entity.*;
 import com.project.UrlJrr.repository.BasicDataRepository;
 import com.project.UrlJrr.repository.ProductionItemRepository;
+import com.project.UrlJrr.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,6 +30,7 @@ public class ExcelService {
     private static final Logger log = LoggerFactory.getLogger(ExcelService.class);
     private final ProductionItemRepository productionItemRepository;
     private final BasicDataRepository basicDataRepository;
+    private final WorkerRepository workerRepository;
 
     // 파일을 처리하고 성공 여부를 반환하는 메소드
     public boolean processExcelFile(MultipartFile file) {
@@ -332,6 +331,46 @@ public class ExcelService {
         return basicDataList.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public boolean processType3ExcelFile(MultipartFile file) {
+        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            XSSFSheet sheet = workbook.getSheetAt(0); // 첫 번째 시트를 읽음
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue;
+                }
+                // Row 객체에서 데이터를 읽어 ProcessWorker 객체를 생성
+                ProcessWorker processWorker = mapRowToProcessWorker(row);
+
+                // ProcessWorker 객체를 데이터베이스에 저장
+                // processWorkerRepository는 ProcessWorker 엔티티를 다루는 JPA Repository여야 함
+                workerRepository.save(processWorker);
+            }
+            return true;
+        } catch (IOException e) {
+            log.error("엑셀 파일 처리 중 오류 발생", e);
+            return false;
+        }
+    }
+
+    // Row 객체에서 데이터를 읽어 ProcessWorker 객체를 생성하는 메소드
+    private ProcessWorker mapRowToProcessWorker(Row row) {
+        ProcessWorker processWorker = new ProcessWorker();
+
+        // 예시: 첫 번째 셀에 공정명, 두 번째 셀에 국적 등이 있다고 가정
+        processWorker.setProcessName(getCellStringValue(row, 0));
+        processWorker.setEquipmentName(getCellStringValue(row, 1));
+        processWorker.setWorkerName(getCellStringValue(row, 2));
+        processWorker.setNation(getCellStringValue(row, 3));
+        processWorker.setPosition(getCellStringValue(row, 4));
+        processWorker.setWorkShift(getCellStringValue(row, 5));
+
+
+        // 이미지 경로는 이 메소드에서 설정하지 않음. 필요하다면 별도 로직 추가 필요
+
+        return processWorker;
     }
 
 }

@@ -21,15 +21,50 @@
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/pageCss.css">
+    <link rel="stylesheet" href="/css/excelInputCustom.css">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
 
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <!--    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.all.js"></script>
+    <style>
+        .file-container {
+            /*display: flex;*/
+            align-items: center;
+            gap: 8px;
+        }
+        .file-name {
+            border: 1px solid #ccc;
+            padding: 4px;
+            flex-grow: 1;
+            width: 188px;
+            margin: 0;
+            color: #000000;
+        }
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            cursor: pointer;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+        }
+        #imageInput {
+            display: none;
+        }
 
+    </style>
 </head>
 <body>
 <div class="preloader">
@@ -241,9 +276,14 @@
 
                             </div>
                             <div id="form-container">
-                                <form id="worker-register-form">
+                                <form id="worker-register-form" style="width: 700px">
                                     <input type="hidden" id="workerId">
-                                    <input type="file" id="imageInput" accept="image/*" required="" style="margin: 0px 0px 10px 0px; height: 40px; width: 300px;">
+                                    <div class="file-container" style="margin-bottom: 5px">
+                                        <input type="text" id="fileName" class="file-name" placeholder="선택된 파일 없음" readonly>
+                                        <label for="imageInput" class="custom-file-upload" style="margin-bottom: 0px; width: 100px; height: 31px">이미지 찾기</label>
+                                        <input type="file" id="imageInput" accept="image/*" required="">
+                                    </div>
+
                                     <label for="processName">
                                         <input type="text" value="공정명" readonly class="form-Name">
                                         <select name="processName" id="processName" required></select>
@@ -286,13 +326,26 @@
                                 <button id="searchWorkerButton" class="search">검색</button>
                                 <button onclick="wholeWorker()" id="wholeSearchWorkerButton" class="search">전체검색
                                 </button>
+
+
                             </div>
                             <div id="employee-Table"></div>
-                        </div>
-                        <div id="pagination">
                             <input type="hidden" readonly id="page-number" th:value="1">
-                            <span id="page-list"></span>
+                            <hr>
+                            <div class="file-upload-container">
+                                <input type="file" id="fileInput" accept=".xlsx, .xls">
+                                <label for="statusText"><input type="hidden" readonly id="statusText" placeholder="선택된 파일 없음" style="background-color: #FFFFFF"></label>
+                                <label for="fileInput" class="custom-excel-file-upload" style="width: auto; padding: 2px 5px; height: 36px;">
+                                    <i class="far fa-file-excel"></i> 업로드
+                                </label>
+                                <button id="exportButton" class="exportButton"></button>
+                            </div>
+                            <div id="progressBar"></div>
+
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -305,7 +358,54 @@
     </footer>
 
 </div>
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const fileInput = e.target;
+        const fileNameDisplay = document.getElementById('fileName');
 
+        if (fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            fileNameDisplay.value = fileName;
+        } else {
+            fileNameDisplay.value = "선택된 파일 없음";
+        }
+    });
+</script>
+<script src="/js/uploadFile.js"></script>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function() {
+        uploadFile('fileInput', 'type3');
+    });
+
+    $("#exportButton").dxButton({
+        icon: "far fa-file-excel",
+        text: "내보내기",
+        onClick: function() {
+            // 파일명을 사용자에게 입력받습니다.
+            let fileName = prompt("다운로드할 파일의 이름을 입력하세요.", "공정원.xlsx");
+            if (fileName) {
+                exportToExcel(fileName); // 사용자가 입력한 파일명으로 내보내기를 진행합니다.
+            }
+        }
+    });
+    function exportToExcel(fileName) {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('My Sheet');
+        worksheet.columns = worekerhot.getColHeader().map(header => ({header: header, key: header}));
+
+        worekerhot.getData().forEach(row => {
+            worksheet.addRow(row);
+        });
+
+        // 엑셀 파일 생성 및 저장
+        workbook.xlsx.writeBuffer().then(function(buffer) {
+            saveAs(new Blob([buffer]), fileName);
+        }).catch(function(error) {
+            console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
+            alert('엑셀 파일 내보내기에 실패했습니다.');
+        });
+    }
+</script>
 <script src="/js/sideBar.js"></script>
 <script defer src="/static/js/ProcessWorkerSearch.js"></script>
 <script src="/static/js/workerRegisterEnum.js"></script>

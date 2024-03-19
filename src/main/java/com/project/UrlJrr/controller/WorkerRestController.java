@@ -61,8 +61,14 @@ public class WorkerRestController {
     public ResponseEntity<?> getBase64Image(@RequestParam Long id) {
         try {
             String imagePath = workerService.getImagePathByWorkerId(id); // DB에서 작업자 ID에 해당하는 이미지 경로 조회
-            System.out.println("imagePath " + imagePath);
+
+            // 이미지 파일 존재 여부 확인
             File imageFile = new File(imagePath);
+            if (!imageFile.exists()) {
+                // 파일이 존재하지 않을 경우, 404 상태 코드와 함께 메시지 반환
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found");
+            }
+
             String base64Image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
             return ResponseEntity.ok("data:image/jpeg;base64," + base64Image);
         } catch (IOException e) {
@@ -70,6 +76,7 @@ public class WorkerRestController {
             return new ResponseEntity<>("Failed to convert image to Base64", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/list")
     public ResponseEntity<List<ProcessWorker>> workerList() {

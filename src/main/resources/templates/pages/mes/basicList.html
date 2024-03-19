@@ -106,13 +106,11 @@
                         href="javascript:void(0)"
                 ><i class="ti-menu ti-close"></i
                 ></a>
-                <a class="navbar-brand" href="/mes/home" style="height: 70px;">
+                <a class="navbar-brand" href="/mes/home" style="width: 130px; height: 70px;">
 
                     <span class="logo-text">
                                 <b class="logo-icon">
                         <img src="/static/image/p-01.png" style="width: 50px;height: 50px;"/>
-                                    <!-- Light Logo icon -->
-                        <img src="/static/image/Lazer.png" style="width: 100px;height: 100px"/>
                     </b>
                         MES 시스템</span>
                 </a>
@@ -260,6 +258,7 @@
             <div class="card card-body">
                 <div class="table-responsive">
                     <button id="exportButton" class="exportButton"></button>
+                    <button id="importButton" class="importButton"></button>
                     <div id="listContainer"></div>
 
                 </div>
@@ -278,19 +277,29 @@
 <script src="/js/sideBar.js"></script>
 <script>
     // 엑셀 파일 내보내기
+    // $("#exportButton").dxButton({
+    //     icon: "fas fa-file-excel",
+    //     text: "내보내기",
+    //     onClick: function() {
+    //
+    //         const confirmed = window.confirm('엑셀 파일을 내보내시겠습니까?');
+    //         if (confirmed) {
+    //             exportToExcel();
+    //         }
+    //     }
+    // });
     $("#exportButton").dxButton({
         icon: "fas fa-file-excel",
         text: "내보내기",
         onClick: function() {
-
-            const confirmed = window.confirm('엑셀 파일을 내보내시겠습니까?');
-            if (confirmed) {
-                exportToExcel();
+            // 파일명을 사용자에게 입력받습니다.
+            let fileName = prompt("다운로드할 파일의 이름을 입력하세요.", "기초정보.xlsx");
+            if (fileName) {
+                exportToExcel(fileName); // 사용자가 입력한 파일명으로 내보내기를 진행합니다.
             }
         }
     });
-    function exportToExcel() {
-
+    function exportToExcel(fileName) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
         worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
@@ -301,13 +310,32 @@
 
         // 엑셀 파일 생성 및 저장
         workbook.xlsx.writeBuffer().then(function(buffer) {
-            saveAs(new Blob([buffer]), '기초정보.xlsx');
-            alert('엑셀 파일이 성공적으로 다운로드되었습니다.'); // 성공 메시지 표시
+            saveAs(new Blob([buffer]), fileName);
         }).catch(function(error) {
             console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
-            alert('엑셀 파일 내보내기에 실패했습니다.'); // 실패 메시지 표시
+            alert('엑셀 파일 내보내기에 실패했습니다.');
         });
     }
+    // function exportToExcel() {
+    //
+    //     const workbook = new ExcelJS.Workbook();
+    //     const worksheet = workbook.addWorksheet('My Sheet');
+    //     worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
+    //
+    //     hot.getData().forEach(row => {
+    //         worksheet.addRow(row);
+    //     });
+    //
+    //     // 엑셀 파일 생성 및 저장
+    //     workbook.xlsx.writeBuffer().then(function(buffer) {
+    //         saveAs(new Blob([buffer]), '기초정보.xlsx');
+    //     }).catch(function(error) {
+    //         console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
+    //         alert('엑셀 파일 내보내기에 실패했습니다.'); // 실패 메시지 표시
+    //     });
+    // }
+
+
     // 데이터 부러오기
     fetchBasicDataList();
     function fetchBasicDataList() {

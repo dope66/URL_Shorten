@@ -119,8 +119,9 @@
             </div>
         </nav>
     </header>
-    <aside class="left-sidebar">
+    <aside class="left-sidebar" style="width: 250px">
         <div class="scroll-sidebar">
+            <!-- User profile -->
             <div class="user-profile position-relative"
                  style="
               background: url(/static/assets/images/background/user-info.jpg)
@@ -129,11 +130,12 @@
             >
 
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" style="width: 250px">
                 <ul id="sidebarnav">
 
                     <li class="nav-small-cap">
                         <i class="mdi mdi-dots-horizontal"></i>
+                        <!--                        <span class="hide-menu">Mes</span>-->
                     </li>
 
                     <li class="nav-item">
@@ -158,7 +160,7 @@
                                     <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
                                        href="/mes/selectProductionOrder">
                                         <i class="mdi mdi-access-point"></i>
-                                        <span class="hide-menu">생산 지시</span></a>
+                                        <span class="hide-menu">생산 지시 등록</span></a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -177,14 +179,12 @@
                                         <i class="mdi mdi-file-document-box"></i>
                                         <span class="hide-menu">조회 검색</span></a>
                                 </li>
-
                                 <li class="sidebar-item">
                                     <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
                                        href="/mes/orderList">
                                         <i class="mdi mdi-file-document"></i>
                                         <span class="hide-menu">생산지시 현황</span></a>
                                 </li>
-
 
                             </ul>
                         </ul>
@@ -197,10 +197,12 @@
                         <ul id="workerMenu" class="side-menu">
                             <ul>
                                 <li class="sidebar-item">
-                                    <a aria-expanded="false" id="productionOrderLink" class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                    <a aria-expanded="false" id="productionOrderLink"
+                                       class="sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="mdi mdi-monitor"></i>
                                         <span class="hide-menu">작업자 생산지시</span></a>
-                                    <select class="custom-select" id="processEquipmentSelect" style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
+                                    <select class="custom-select" id="processEquipmentSelect"
+                                            style="    background-color: #c7c7c7; margin: 0px 10px 0px;width: 180px;">
                                         <option selected>생산설비 선택</option>
                                     </select>
 
@@ -215,7 +217,6 @@
                             </ul>
                         </ul>
                     </li>
-
 
 
                     <hr>

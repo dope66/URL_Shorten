@@ -290,6 +290,23 @@
             }
         }
     });
+    // function exportToExcel(fileName) {
+    //     const workbook = new ExcelJS.Workbook();
+    //     const worksheet = workbook.addWorksheet('My Sheet');
+    //     worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
+    //
+    //     hot.getData().forEach(row => {
+    //         worksheet.addRow(row);
+    //     });
+    //
+    //     // 엑셀 파일 생성 및 저장
+    //     workbook.xlsx.writeBuffer().then(function(buffer) {
+    //         saveAs(new Blob([buffer]), fileName);
+    //     }).catch(function(error) {
+    //         console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
+    //         alert('엑셀 파일 내보내기에 실패했습니다.');
+    //     });
+    // }
     function exportToExcel(fileName) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
@@ -298,6 +315,9 @@
         hot.getData().forEach(row => {
             worksheet.addRow(row);
         });
+
+        // 파일 이름에서 확장자 제거 후 .xlsx 확장자 추가
+        fileName = fileName.replace(/\..+$/, '') + '.xlsx';
 
         // 엑셀 파일 생성 및 저장
         workbook.xlsx.writeBuffer().then(function(buffer) {

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-
+    restoreMenuStates();
     console.log('DOMContentLoaded event fired!');
     // 기존 코드 유지
     const processEquipmentSelect = document.getElementById('processEquipmentSelect');
@@ -33,21 +33,51 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 메뉴 토글 기능 개선
+    // document.querySelectorAll('.toggle-menu').forEach(function(menu) {
+    //     menu.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         let targetMenu = e.currentTarget.nextElementSibling; // 현재 클릭된 요소의 바로 다음 요소 선택
+    //
+    //         // 모든 메뉴 숨김, 현재 메뉴는 제외
+    //         document.querySelectorAll('.side-menu').forEach(function(menu) {
+    //             if (menu !== targetMenu) {
+    //                 menu.style.display = 'none';
+    //             }
+    //         });
+    //
+    //         // 현재 메뉴 토글
+    //         targetMenu.style.display = targetMenu.style.display === 'block' ? 'none' : 'block';
+    //     });
+    // });
     document.querySelectorAll('.toggle-menu').forEach(function(menu) {
         menu.addEventListener('click', function(e) {
             e.preventDefault();
-            let targetMenu = e.currentTarget.nextElementSibling; // 현재 클릭된 요소의 바로 다음 요소 선택
+            let targetMenuId = e.currentTarget.getAttribute('data-target'); // 현재 클릭된 메뉴의 대상 ID를 가져옴
+            let targetMenu = document.getElementById(targetMenuId);
 
-            // 모든 메뉴 숨김, 현재 메뉴는 제외
-            document.querySelectorAll('.side-menu').forEach(function(menu) {
-                if (menu !== targetMenu) {
-                    menu.style.display = 'none';
-                }
-            });
-
-            // 현재 메뉴 토글
+            // 메뉴 표시 상태 토글
             targetMenu.style.display = targetMenu.style.display === 'block' ? 'none' : 'block';
+
+            // 변경된 메뉴 상태 저장
+            saveMenuState(targetMenuId, targetMenu.style.display === 'block');
         });
     });
+    // 메뉴 상태를 localStorage에 저장하는 함수
 
 });
+function saveMenuState(menuId, isOpen) {
+    localStorage.setItem(menuId + '_state', isOpen ? 'open' : 'closed');
+}
+// 저장된 메뉴 상태를 복원하는 함수
+function restoreMenuStates() {
+    document.querySelectorAll('.side-menu').forEach(function(menu) {
+        let menuId = menu.getAttribute('id');
+        let state = localStorage.getItem(menuId + '_state');
+
+        if (state === 'open') {
+            menu.style.display = 'block';
+        } else if (state === 'closed') {
+            menu.style.display = 'none';
+        }
+    });
+}

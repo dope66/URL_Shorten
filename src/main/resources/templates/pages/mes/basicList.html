@@ -50,6 +50,20 @@
         .handsontable td {
             text-align: center;
         }
+        .exportButton {
+            background-color: #f44336;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .importButton {
+            background-color: #4CAF50;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -258,10 +272,11 @@
                     <div class="file-upload-container">
                         <input type="file" id="fileInput" accept=".xlsx, .xls">
                         <label for="statusText"><input type="hidden" readonly id="statusText" placeholder="선택된 파일 없음" style="background-color: #FFFFFF"></label>
-                        <label for="fileInput" class="custom-excel-file-upload" style="width: auto; padding: 2px 5px; height: 36px;">
-                            <i class="far fa-file-excel"></i> 가져오기
+                        <label for="fileInput" class="custom-excel-file-upload" style="display: none">
                         </label>
+                        <button id="importButton" class="importButton"></button>
                         <button id="exportButton" class="exportButton"></button>
+
                     </div>
                     <div id="progressBar"></div>
                     <div id="listContainer"></div>
@@ -290,6 +305,7 @@
             }
         }
     });
+
     function exportToExcel(fileName) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
@@ -384,6 +400,16 @@
 </script>
 <script src="/js/uploadFile.js"></script>
 <script>
+    $("#importButton").dxButton({
+        icon: "far fa-file-excel",
+        text: "가져오기",
+        onClick: function() {
+            var fileInput = document.getElementById('fileInput');
+
+            fileInput.click();
+        }
+    });
+
     document.getElementById('fileInput').addEventListener('change', function() {
         // 'fileInput'은 파일 입력 필드의 ID, 'type3'은 업로드 유형을 나타냅니다.
         uploadFile('fileInput', 'type2');

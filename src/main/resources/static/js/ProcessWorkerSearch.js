@@ -206,7 +206,7 @@ document.getElementById('wholeSearchWorkerButton').addEventListener('click', fun
     hot.loadData(originalData);
     // 텍스트 입력 필드 초기화
     document.getElementById('workerId').value = '';
-    document.getElementById('fileName').value = '선택된 파일 없음';
+    document.getElementById('fileName').value = '';
     document.getElementById('workerName').value = '';
     document.getElementById('nation').value = '';
 

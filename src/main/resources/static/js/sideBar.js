@@ -48,13 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 function saveMenuState(menuId, isOpen) {
-    localStorage.setItem(menuId + '_state', isOpen ? 'open' : 'closed');
+    sessionStorage.setItem(menuId + '_state', isOpen ? 'open' : 'closed');
 }
 // 저장된 메뉴 상태를 복원하는 함수
 function restoreMenuStates() {
     document.querySelectorAll('.side-menu').forEach(function(menu) {
         let menuId = menu.getAttribute('id');
-        let state = localStorage.getItem(menuId + '_state');
+        let state = sessionStorage.getItem(menuId + '_state');
 
         if (state === 'open') {
             menu.style.display = 'block';

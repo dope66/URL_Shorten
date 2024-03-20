@@ -200,3 +200,29 @@ function wholeWorker() {
 
 }
 
+document.getElementById('wholeSearchWorkerButton').addEventListener('click', function (event) {
+    event.preventDefault();
+    // 원본 데이터를 Handsontable에 다시 로드합니다.
+    hot.loadData(originalData);
+    // 텍스트 입력 필드 초기화
+    document.getElementById('workerId').value = '';
+    document.getElementById('fileName').value = '선택된 파일 없음';
+    document.getElementById('workerName').value = '';
+    document.getElementById('nation').value = '';
+
+    // 파일 입력 필드 초기화 (필요에 따라)
+    document.getElementById('imageInput').value = '';
+
+    // 선택 필드 초기화
+    // 공정명, 직책, 주야간조 선택 필드를 예시로 사용
+    document.getElementById('processName').selectedIndex = 0;
+    document.getElementById('equipmentName').selectedIndex = 0;
+    document.getElementById('position').selectedIndex = 0;
+    document.getElementById('workShift').selectedIndex = 0;
+    document.getElementById('preview-image').src = '/static/image/defaultWorker.png';
+    document.getElementById('search-workerName').value = '';
+    document.getElementById('search-processName').selectedIndex = 0; // 첫 번째 옵션(공정명 선택)으로 리셋
+    document.getElementById('search-equipmentName').selectedIndex = 0; // 첫 번째 옵션(호기 선택)으로 리셋
+
+    AllWorkerName();
+});

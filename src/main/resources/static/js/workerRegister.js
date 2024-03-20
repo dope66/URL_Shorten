@@ -1,6 +1,6 @@
 
 let originalData = []; // 원본 데이터 배열
-let worekerhot;
+let hot;
 const imageInput = document.getElementById('imageInput'); // 이미지 입력란
 const previewImage = document.getElementById('preview-image'); // 미리보기 이미지
 const registerForm = document.getElementById("worker-register-form");
@@ -47,7 +47,7 @@ fetchProcessNameDetail();
 // 근무조 목록 가져오기
 function createHandsontable(data) {
     const container = document.getElementById('employee-Table');
-    worekerhot = new Handsontable(container, {
+    hot = new Handsontable(container, {
         cells: function (row, col, prop) {
             var cellProperties = {};
             cellProperties.className = 'htCenter';
@@ -78,7 +78,7 @@ function createHandsontable(data) {
         rowHeaders: true, // 행 번호 표시
         search: true, // 검색 기능 활성화
         afterOnCellMouseDown: function (event, coords) {
-            const rowData = worekerhot.getSourceDataAtRow(coords.row);
+            const rowData = hot.getSourceDataAtRow(coords.row);
             // applyDataToForm(rowData);
             console.log("rowData", rowData);
             updateWorkerContainer(rowData);

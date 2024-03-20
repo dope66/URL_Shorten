@@ -322,7 +322,7 @@
                                 </select>
                                 <select id="search-workerName"></select>
                                 <button id="searchWorkerButton" class="search">검색</button>
-                                <button onclick="wholeWorker()" id="wholeSearchWorkerButton" class="search">전체검색
+                                <button id="wholeSearchWorkerButton" class="search">전체검색
                                 </button>
                             </div>
                             <div class="file-upload-container">
@@ -390,7 +390,7 @@
         const worksheet = workbook.addWorksheet('My Sheet');
         worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
 
-        worekerhot.getData().forEach(row => {
+        hot.getData().forEach(row => {
             worksheet.addRow(row);
         });
 

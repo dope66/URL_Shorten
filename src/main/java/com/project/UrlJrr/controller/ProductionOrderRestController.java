@@ -27,7 +27,11 @@ public class ProductionOrderRestController {
         List<ProductionOrder> productionOrderList= productionOrderService.findAll();
         return ResponseEntity.ok(productionOrderList);
     }
-
+    @GetMapping("/AllListToday")
+    public ResponseEntity<List<ProductionOrder>> getAllListToday(){
+        List<ProductionOrder> productionOrderListToday = productionOrderService.findAllProducedToday();
+        return ResponseEntity.ok(productionOrderListToday);
+    }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody ProductOrderDto productOrderDto){
         System.out.println("해당하는 저장 메서드에 진입");

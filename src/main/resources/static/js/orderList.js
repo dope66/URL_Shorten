@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch(`/api/order/AllList`)
+    fetch(`/api/order/AllListToday`)
         .then(response => response.json())
         .then(data => {
             originalData = data;
@@ -16,13 +16,12 @@ function createHandsontable(data) {
             return cellProperties;
         },
         className: "htCenter",
-        colWidths: [100, 150, 100, 100, 100, 100, 200], // 각 열의 너비를 픽셀 단위로 설정
+        colWidths: [150, 100, 100, 100, 100, 200], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data: data,
-        colHeaders: ['순', '공정명', '생산날짜', '호기', '작업자', '목표량','비고'],
+        colHeaders: ['공정명', '생산날짜', '호기', '작업자', '목표량','비고'],
         columns: [
-            {data: 'id', readOnly: true, className: "htCenter"},
             {data: 'processName', readOnly: true, className: "htCenter"},
             {data: 'productionDate', readOnly: true, renderer: dateRenderer, className: "htCenter"},
             {data: 'equipmentName', readOnly: true, className: "htCenter"},
@@ -30,10 +29,6 @@ function createHandsontable(data) {
             {data: 'productionCount', readOnly: true, className: "htCenter"},
             {data: 'note', readOnly: true, className: "htCenter"},
         ],
-        hiddenColumns: {
-            columns: [0], // 'ID' 열을 숨깁니다.
-            indicators: false // 숨겨진 열의 지시자 표시 여부
-        },
         height: 300,
         viewportRowRenderingOffset: 5, // 표시할 행의 오프셋
         columnSorting: false, // 정렬 활성화

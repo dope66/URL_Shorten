@@ -168,11 +168,6 @@
                                 </li>
                                 <li class="sidebar-item">
                                     <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
-                                       href="/mes/upload"><i class="mdi mdi-upload"></i>
-                                        <span class="hide-menu">파일 업로드</span></a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a aria-expanded="false" class="sidebar-link waves-effect waves-dark sidebar-link"
                                        href="/mes/orderList">
                                         <i class="mdi mdi-file-document"></i>
                                         <span class="hide-menu">생산지시 현황</span></a>
@@ -233,7 +228,17 @@
             </div>
             <div class="card card-body">
                 <div class="table-responsive">
-
+                    <div id="employee-search">
+                        <select name="search-processName" id="search-processName" style="width: 150px">
+                            <option value="" disabled selected>공정명 선택</option>
+                        </select>
+                        <select name="search-equipmentName" id="search-equipmentName" style="width: 130px">
+                        </select>
+                        <select id="search-workerName"></select>
+                        <button id="searchWorkerButton" class="search">검색</button>
+                        <button onclick="wholeWorker()" id="wholeSearchWorkerButton" class="search">전체검색
+                        </button>
+                    </div>
                     <div id="productionOrder-list"></div>
                 </div>
             </div>
@@ -246,13 +251,37 @@
     </footer>
 
 </div>
+<script>
+    const selectedProcessName = document.getElementById("search-processName");
+    const equipmentNameSelect = document.getElementById("search-equipmentName");
+    const workerNameSelect = document.getElementById("search-workerName");
 
+</script>
 
 <script src="/js/sideBar.js"></script>
 <script src="/js/orderList.js"></script>
+<script src="/js/ProcessWorkerSearch.js"></script>
+<script>
+    document.getElementById('searchWorkerButton').addEventListener('click', workerSearch);
+    fetchProcessNames();
+    fetchProcessNameAndWorkerName();
+    fetchProcessNameAndEquipmentName();
+    fetchEquipmentName();
+    AllWorkerName();
+    selectedProcessName.addEventListener('change', () => {
+        // productionType 변경 시 productionName 값 초기화
+        equipmentNameSelect.value = '';
+        workerNameSelect.value = '';
+        fetchProcessNameAndWorkerName();
+    });
+    equipmentNameSelect.addEventListener('change', function () {
+        // 공정명 선택이 이미 되어있는 경우에만 작업자 이름을 가져옵니다.
+        if (selectedProcessName.value) {
+            fetchProcessNameAndEquipmentName();
+        }
+    });
 
-
-
+</script>
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/dist/js/app.min.js"></script>

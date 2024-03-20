@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,6 +19,7 @@ public interface ProductionOrderRepository extends JpaRepository<ProductionOrder
     @Query("SELECT o FROM ProductionOrder o WHERE o.equipmentName = :equipmentName AND o.processName = :processName")
     List<ProductionOrder> findByProcessNameAndEquipmentName(@Param("processName") String processName, @Param("equipmentName") String equipmentName);
 
-
+    @Query("SELECT p FROM ProductionOrder p WHERE p.productionDate >= :startOfDay AND p.productionDate < :nextDay")
+    List<ProductionOrder> findAllProducedToday(@Param("startOfDay") Date startOfDay, @Param("nextDay") Date nextDay);
 
 }

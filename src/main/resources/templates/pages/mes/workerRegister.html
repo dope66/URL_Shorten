@@ -388,11 +388,14 @@
     function exportToExcel(fileName) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('My Sheet');
-        worksheet.columns = worekerhot.getColHeader().map(header => ({header: header, key: header}));
+        worksheet.columns = hot.getColHeader().map(header => ({header: header, key: header}));
 
         worekerhot.getData().forEach(row => {
             worksheet.addRow(row);
         });
+
+        // 파일 이름에서 확장자 제거 후 .xlsx 확장자 추가
+        fileName = fileName.replace(/\..+$/, '') + '.xlsx';
 
         // 엑셀 파일 생성 및 저장
         workbook.xlsx.writeBuffer().then(function(buffer) {

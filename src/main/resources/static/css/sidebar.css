@@ -41,3 +41,9 @@
 #adminMenu,#workerMenu{
     background-color:#27282a ;
 }
+.left-sidebar{
+    width: 230px;
+}
+hr{
+    width:190px;
+}

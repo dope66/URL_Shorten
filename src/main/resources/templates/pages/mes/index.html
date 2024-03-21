@@ -1,54 +1,873 @@
-<!-- Your HTML File -->
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>File Upload</title>
+    <meta charset="UTF-8">
+    <title>초중종물 검사</title>
+    <style>
+
+
+        #keyboardModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #3c3c3c;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        .keyboard-button {
+            display: flex; /* Flex 컨테이너로 설정 */
+            justify-content: center; /* 가로축 중앙 정렬 */
+            align-items: center; /* 세로축 중앙 정렬 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            color: #FFFFFF;
+            padding: 15px 25px;
+            margin: 0 5px;
+            border: 1px solid #5d5d5d;
+            border-radius: 4px;
+            background-color: #4a4a4a;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            flex: 1;
+            width: auto; /* 버튼의 너비를 자동으로 설정하여 패딩에 따라 크기가 조정되도록 함 */
+            height: auto; /* 버튼의 높이를 자동으로 설정 */
+        }
+
+        .keyboard-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .keyboard-ok-button {
+            padding: 15px 25px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .keyboard-ok-button:hover {
+            background-color: #45a049;
+        }
+
+        #info-table-1 {
+            width: 100%;
+        }
+
+        #info-table-2 {
+            width: 100%;
+
+        }
+
+        #tables-container {
+            display: flex;
+        }
+
+        #test-note {
+            width: 85%;
+        }
+
+        #test-note select {
+            width: 100%;
+        }
+        #keyboardzone {
+            display: none; /* 초기에는 키보드를 숨깁니다 */
+            position: fixed;
+            left: 40%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 20px;
+            width: 1000px;
+            height: 500px;
+
+        }
+        #keyboardzone table{
+            background-color: #ffffff;
+        }
+        #keyboardzone table th{
+            background-color: #4d4d4d;
+        }
+        #keyboardzone > div:nth-child(1){
+
+        }
+        #keyboardzone > div:nth-child(1) > table:nth-child(1) > th:nth-child(1){
+            width:100px;
+        }
+
+    </style>
+    <script src="https://unpkg.com/hangul-js" type="text/javascript"></script>
 </head>
 <body>
-<h2>기초 데이터 업로드</h2>
-<form id="upload-form" enctype="multipart/form-data">
-    <div>
-        <label>기초 데이터 업로드 : </label>
-        <input type="file" name="file" required>
+<table id="info-table-1" th:border="1">
+    <thead>
+    <th>생산설비</th>
+    <th>호기</th>
+    <th>검사 1</th>
+    <th>검사 2</th>
+    </thead>
+    <tbody>
+    <form id="production-test-form">
+        <tr>
+            <td>
+                <select name="processName" id="processName" required>
+                    <option value="" disabled selected>생산 설비</option>
+                </select>
+            </td>
+            <td>
+                <select name="equipmentName" id="equipmentName" required>
+                </select>
+            </td>
+
+            <td>
+                <input type="text" readonly value="검사 1" id="test1">
+            </td>
+            <td>
+                <input type="text" readonly value="검사 2" id="test2">
+            </td>
+
+        </tr>
+
+    </form>
+    </tbody>
+</table>
+<table id="info-table-2" th:border="1">
+    <thead>
+    <th>고객사</th>
+    <th>비고</th>
+    <th>생산수량</th>
+    <th>불량수량</th>
+    </thead>
+    <tbody>
+    <td style="width : 200px"><input type="text" id="company"></td>
+    <td><input type="text" id="note" placeholder="특이 사항을 작성 해주세요" style="text-align: center;"></td>
+    <td style="width : 200px">
+        <input type="text" name="productionCount" id="productionCount" placeholder="0" style="width: 100%; text-align: end;" required
+               onfocus="openKeyboardForCount('productionCount')">
+    </td>
+    <td style="width : 200px">
+        <input type="text" name="defectCount" id="defectCount" placeholder="0" style="width: 100%; text-align: end;" required
+               onfocus="openKeyboardForCount('defectCount')">
+    </td>
+
+    </tbody>
+</table>
+<div id="tables-container" style="height: 600px">
+    <table th:border="1" id="test-note">
+        <thead>
+        <th>순번</th>
+        <th>검사항목</th>
+        <th>검사규격</th>
+        <th>확인방법</th>
+        <th>결과</th>
+        </thead>
+        <tbody>
+        <!--현재는 그냥 넣을 것이지만 나중에는 해당하는 검사 유형을 불러와서 해야 함-->
+        <tr>
+            <td>1</td>
+            <td>외관</td>
+            <td>외관기준서에 준함</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>외관</td>
+            <td>스크래치 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>외관</td>
+            <td>이물질이 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>외관</td>
+            <td>발청이 없을 것</td>
+            <td>육안</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>기준홀</td>
+            <td>&phi; 2.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>기준홀</td>
+            <td>&phi; 4.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>기준홀</td>
+            <td>&phi; 6.0에 준함</td>
+            <td>V/C</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <table id="info-table-3" th:border="1">
+        <thead>
+        <th>공정원</th>
+        </thead>
+        <tbody>
+        <td>
+            <div id="image-container">
+                <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
+            </div>
+            <select name="processWorker" id="processWorker" style="width : 300px; " required></select>
+        </td>
+        <tr>
+            <td>
+                <button onclick="registTest()" id="test-submit" style="width: 100%;height: 100%">등록</button>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+<input type="hidden" id="workerId">
+<div id="keyboardModal" class="modal">
+    <div class="modal-content">
+        <input type="text" id="modalInputValue" readonly style="text-align: center; margin-bottom: 10px; width: 80%;">
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(1)">1</button>
+            <button class="keyboard-button" onclick="pressKey(2)">2</button>
+            <button class="keyboard-button" onclick="pressKey(3)">3</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(4)">4</button>
+            <button class="keyboard-button" onclick="pressKey(5)">5</button>
+            <button class="keyboard-button" onclick="pressKey(6)">6</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey(7)">7</button>
+            <button class="keyboard-button" onclick="pressKey(8)">8</button>
+            <button class="keyboard-button" onclick="pressKey(9)">9</button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey('Backspace')"><</button>
+            <button class="keyboard-button" onclick="pressKey(0)">0</button>
+            <button class="keyboard-button" onclick="pressKey('.')"
+                    style="width: 62px;height: 53px;"
+            >.
+            </button>
+        </div>
+        <div class="keyboard-row">
+            <button class="keyboard-button" onclick="pressKey('Cancel')">cancel</button>
+            <button class="keyboard-ok-button" onclick="pressKey('OK')">OK</button>
+        </div>
+
     </div>
-    <div>
-        <label>업로드 파일 선택</label>
-        <label>
-            <select name="type">
-                <option value="type1">작업 표준서</option>
-                <option value="type2">기초 데이터</option>
-            </select>
-        </label>
-    </div>
-    <button type="submit">업로드</button>
-</form>
+</div>
+<div id="keyboardzone"></div>
+</body>
 
 <script>
-    document.getElementById('upload-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
+    // document.getElementById('movePage').addEventListener('click', function(event) {
+    //     event.preventDefault();
+    //     window.location.href = "/mes/testSearch";
+    // });
 
-        fetch('/api/excel/upload', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if(response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('파일 업로드 실패');
+    document.addEventListener('DOMContentLoaded', async function() {
+        await initializeSelectionsAndLoadWorkers();
+    });
+
+    async function initializeSelectionsAndLoadWorkers() {
+        const selectedRowData = JSON.parse(localStorage.getItem('selectedRowData') || '{}');
+        await initializeProcessNameSelect(selectedRowData.processName);
+        await initializeEquipmentNameSelect(selectedRowData.processName, selectedRowData.equipmentName);
+        await loadProcessWorkers(selectedRowData.processName, selectedRowData.equipmentName, selectedRowData.processWorker);
+    }
+
+    async function initializeProcessNameSelect(selectedProcessName) {
+        const processNameSelect = document.getElementById("processName");
+        try {
+            const response = await fetch('/api/worker/getProcessName');
+            const processNames = await response.json();
+            processNames.forEach(processName => {
+                const option = new Option(processName, processName);
+                processNameSelect.appendChild(option);
+            });
+            if (selectedProcessName) {
+                processNameSelect.value = selectedProcessName;
+            }
+        } catch (error) {
+            console.error('Error loading process names:', error);
+        }
+    }
+
+
+    async function initializeEquipmentNameSelect(processName, selectedEquipmentName) {
+        const equipmentNameSelect = document.getElementById("equipmentName");
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+        if (processName) {
+            try {
+                const response = await fetch(`/api/worker/getEquipmentName?processName=${processName}`);
+                const equipmentNames = await response.json();
+                equipmentNames.forEach(equipmentName => {
+                    const option = new Option(equipmentName, equipmentName);
+                    equipmentNameSelect.appendChild(option);
+                });
+                if (selectedEquipmentName) {
+                    equipmentNameSelect.value = selectedEquipmentName;
                 }
+            } catch (error) {
+                console.error('Error loading equipment names:', error);
+            }
+        }
+    }
+
+
+    async function loadProcessWorkers(processName, equipmentName, selectedWorkerName) {
+        const workerSelect = document.getElementById("processWorker");
+        workerSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+        if (processName && equipmentName) {
+            try {
+                const response = await fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`);
+                const workers = await response.json();
+                workers.forEach(workerName => {
+                    const option = new Option(workerName, workerName);
+                    workerSelect.add(option);
+                });
+
+                if(selectedWorkerName) {
+                    workerSelect.value = selectedWorkerName;
+                    fetchWorkerId(selectedWorkerName); // 이미지 로드 로직 호출
+                }
+
+            } catch (error) {
+                console.error('Error loading process workers:', error);
+            }
+        }
+    }
+    function fetchWorkerId(workerName) {
+        const processName = document.getElementById("processName").value;
+        const equipmentName = document.getElementById("equipmentName").value;
+
+        if (processName && equipmentName && workerName) {
+            fetch(`/api/worker/getWorkerId?processName=${processName}&equipmentName=${equipmentName}&workerName=${workerName}`)
+                .then(response => response.json())
+                .then(workerId => {
+                    console.log("workerId", workerId);
+                    loadWorkerImage(workerId); // 이미지 로드 함수 호출
+                })
+                .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+        }
+    }
+
+    function loadWorkerImage(workerId) {
+        const imageUrl = `/api/worker/getBase64Image?id=${workerId}`;
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Image not found');
+                return response.text();
             })
             .then(data => {
-                alert('파일 업로드 성공.');
-                // Redirect to another page if needed
-                window.location.href = '/mes/home';
+                const imageElement = document.querySelector("#workerImage");
+                if (imageElement) {
+                    imageElement.src = data;
+                }
             })
             .catch(error => {
-                alert(error.message);
+                console.error('Error:', error);
+                const imageElement = document.querySelector("#workerImage");
+                if (imageElement) {
+                    imageElement.src = "/static/image/defaultWorker.png";
+                }
             });
+    }
+
+    document.getElementById("processName").addEventListener('change', async function() {
+        const processName = this.value;
+        await initializeEquipmentNameSelect(processName);
+        await loadProcessWorkers(processName, document.getElementById("equipmentName").value);
+    });
+
+    document.getElementById("equipmentName").addEventListener('change', async function() {
+        const equipmentName = this.value;
+        const processName = document.getElementById("processName").value;
+        await loadProcessWorkers(processName, equipmentName);
     });
 </script>
+<script>
+    const selectedProcessName = document.getElementById("processName");
+    const equipmentNameSelect = document.getElementById("equipmentName");
+    const workerNameSelect = document.getElementById("processWorker");
+    const worekerIdselect = document.getElementById("workerId");
+    var imageElement = document.querySelector("#workerImage");
 
-</body>
+    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+    fetchProcessNameAndWorkerName();
+    fetchEquipmentName();
+    /*
+    * 공정명을 이용한 함수
+    * */
+    // 공정명과 호기 이름을 가져오는 함수
+    function fetchProcessNameAndWorkerName() {
+        // equipmentNameSelect 초기화
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+        //공정명값으로 호기 가져오기
+        if (selectedProcessName.value) {
+            console.log("selectedProcessName: ", selectedProcessName.value);
+            fetch(`/api/worker/getEquipmentName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(equipmentNames => {
+                    console.log("equipmentName : ", equipmentNames);
+                    equipmentNames.forEach(equipmentName => {
+                        const option = document.createElement('option');
+                        option.text = equipmentName;
+                        option.value = equipmentName;
+                        equipmentNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+            //공정 명으로 공정원 가져외기
+            fetch(`/api/worker/getWorkerNameWithProcessName?processName=${selectedProcessName.value}`)
+                .then(response => response.json())
+                .then(workerNames => {
+                    const workerNameSelect = document.getElementById('processWorker');
+                    workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                    workerNames.forEach(workerName => {
+                        const option = document.createElement('option');
+                        option.text = workerName;
+                        option.value = workerName;
+                        workerNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('fetch 오류 요청 ', error);
+                });
+            equipmentNameSelect.addEventListener('change', () => {
+                console.log("공정명 값이 있고 호기 변경이 있을 경우 ")
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                imageElement.src = "/static/image/defaultWorker.png";
+                fetchProcessNameAndEquipmentName();
+            });
+        }
+    }
+
+    selectedProcessName.addEventListener('change', () => {
+        // productionType 변경 시 productionName 값 초기화
+        equipmentNameSelect.value = '';
+        workerNameSelect.value = '';
+        imageElement.src = "/static/image/defaultWorker.png";
+        fetchProcessNameAndWorkerName();
+    });
+
+    // 공정명이 존재한 상태에서 호기 변경시 공정원 이름 변경
+    function fetchProcessNameAndEquipmentName() {
+        const processName = selectedProcessName.value;
+        const equipmentName = equipmentNameSelect.value;
+
+        // workerName을 가져오는 fetch 요청을 select option이 변경되었을 때 실행
+        fetch(`/api/worker/getWorkerName?processName=${processName}&equipmentName=${equipmentName}`)
+            .then(response => response.json())
+            .then(workerInfos => {
+                workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+                workerInfos.forEach(workerInfo => {
+                    const option = document.createElement('option');
+                    option.text = workerInfo;
+                    option.value = workerInfo;
+                    workerNameSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('fetch 오류 요청 ', error);
+            });
+
+    }
+
+    /*
+    * 호기를 이용한 함수
+    * */
+
+    // 모든 호기 가져오기
+    fetch(`/api/worker/getAllEquipmentName`)
+        .then(response => response.json())
+        .then(equipmentNames => {
+            console.log("equipmentNames: ", equipmentNames);
+            equipmentNames.forEach(equipmentName => {
+                const option = document.createElement('option');
+                option.text = equipmentName;
+                option.value = equipmentName;
+                equipmentNameSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('fetch 오류 요청 ', error);
+        });
+
+    function fetchEquipmentName() {
+        console.log("공정명이 선택되지 않은 경우");
+        equipmentNameSelect.innerHTML = '<option value="" disabled selected>호기 선택</option>';
+        workerNameSelect.innerHTML = '<option value="" disabled selected>공정원 선택</option>';
+    }
+    // workerName을 선택한 후에 Id를 가져오는 함수
+    function fetchWorkerId() {
+        const processName = selectedProcessName.value;
+        const equipmentName = equipmentNameSelect.value;
+        const workerName = workerNameSelect.value;
+
+        if (processName && equipmentName && workerName) {
+            fetch(`/api/worker/getWorkerId?processName=${processName}&equipmentName=${equipmentName}&workerName=${workerName}`)
+                .then(response => response.json())
+                .then(workerId => {
+                    console.log("workerId", workerId);
+                    worekerIdselect.value = workerId;
+                    var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
+                    fetch(imageUrl)
+                        .then(function (response) {
+                            // 이미지가 성공적으로 로드되었는지 확인
+                            if (!response.ok) throw new Error('Image not found');
+                            return response.text();
+                        })
+                        .then(function (data) {
+                            // 성공적으로 이미지 데이터를 받아온 경우
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = data;
+                            }
+                        })
+                        .catch(function (error) {
+                            // 이미지 로드에 실패한 경우 기본 이미지로 대체
+                            console.error('Error:', error);
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+        } else if (processName && workerName) {
+            fetch(`/api/worker/getWorkerIdWithProcessNameAndWorkerName?processName=${processName}&workerName=${workerName}`)
+                .then(response => response.json())
+                .then(workerId => {
+                    console.log("공정명과 공정원 이름으로 id 가져오기 workerId : ", workerId);
+                    worekerIdselect.value = workerId;
+                    var imageUrl = "/api/worker/getBase64Image?id=" + workerId;
+                    fetch(imageUrl)
+                        .then(function (response) {
+                            // 이미지가 성공적으로 로드되었는지 확인
+                            if (!response.ok) throw new Error('Image not found');
+                            return response.text();
+                        })
+                        .then(function (data) {
+                            // 성공적으로 이미지 데이터를 받아온 경우
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = data;
+                            }
+                        })
+                        .catch(function (error) {
+                            // 이미지 로드에 실패한 경우 기본 이미지로 대체
+                            console.error('Error:', error);
+                            var imageElement = document.querySelector("#workerImage");
+                            if (imageElement) {
+                                imageElement.src = "/static/image/defaultWorker.png"; // 기본 이미지 경로 설정
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('아이디를 가져오는 도중 오류 발생: ', error);
+                });
+
+        }
+    }
+
+    // workerName select option이 변경될 때마다 fetchWorkerId 함수 실행
+    workerNameSelect.addEventListener('change', fetchWorkerId);
+
+
+</script>
+<script defer src="/static/js/TestRegister.js"></script>
+<script defer src="/static/js/simpleKeyboard.js"></script>
+<script  type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var keyboardzone = document.getElementById("keyboardzone");
+        var currentInput;
+
+        // 포커스 이벤트 리스너를 등록하는 함수
+        function addFocusListener(inputId) {
+            var inputElement = document.getElementById(inputId);
+            inputElement.addEventListener("focus", function() {
+                currentInput = this; // 현재 포커스된 input 태그를 저장
+                keyboardzone.style.display = "block"; // 키보드를 보이게 합니다
+                keyboard.setInput(this); // 현재 포커스된 input 태그를 커스텀 키보드의 입력 대상으로 설정
+            });
+        }
+
+        // "company"와 "note" 입력 필드에 대한 포커스 리스너 등록
+        addFocusListener("company");
+        addFocusListener("note");
+
+        // 키보드 닫기 로직 (예: ESC 키 누름, 키보드 외부 클릭)
+        document.addEventListener("keydown", function(e) {
+            if(e.key === "Escape") {
+                keyboardzone.style.display = "none"; // 키보드 숨김
+            }
+        });
+
+        document.addEventListener("click", function(e) {
+            if (!keyboardzone.contains(e.target) && !currentInput.contains(e.target)) {
+                keyboardzone.style.display = "none"; // 키보드 숨김
+            }
+        });
+        // 필요에 따라 커스텀 키보드를 숨기는 코드 추가
+    });
+
+
+    function customKeyboard(zone, input, onClick, onESC, onEnter, form) {
+        /*
+            zone : 생성될 위치
+            input : 입력할 변수
+            onClick : 키보드가 눌렸을때 동작
+            onESC : 뒤로 눌렸을때 동작
+            form : 키보드의 모습
+        */
+        function hideModal() {
+            keyboardzone.style.display = "none"; // 'keyboardzone'은 화상 키보드 모달의 ID입니다.
+        }
+
+        var nowlang = "koNormal";
+        this.setClick = function(newclick) {
+            onClick = newclick;
+        }
+        this.setEnter = function(Enterfun) {
+            onEnter = Enterfun;
+        }
+        this.setZone = function(newZone) {
+            zone = newZone;
+        };
+        var charlist = [];
+        this.setInput = function(inputtag) {
+            input = inputtag;
+            var sub = Hangul.disassemble("" + input.value);
+            charlist = sub;
+        }
+        function getText() {
+            return Hangul.assemble(charlist);
+        }
+        if(form == null) {
+            form = {
+                koNormal : [
+                    ['뒤로','1','2','3','4','5','6','7','8','9','0', 'backspace'],
+                    ['ㅂ', 'ㅈ', 'ㄷ', 'ㄱ', 'ㅅ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅐ', 'ㅔ'],
+                    ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ', 'enter'],
+                    ['shift','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','한/영'],
+                    ["space"]
+                ],
+                koShift : [
+                    ['뒤로','!','@','#','$','%','^','&','*','(',')', 'backspace'],
+                    ['ㅃ', 'ㅉ', 'ㄸ', 'ㄲ', 'ㅆ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅒ', 'ㅖ'],
+                    ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ', 'enter'],
+                    ['shift','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','한/영'],
+                    ["space"]
+                ],
+                enNormal : [
+                    ['뒤로','1','2','3','4','5','6','7','8','9','0', 'backspace'],
+                    ['q','w','e','r','t','y','u','i','o','p'],
+                    ['a','s','d','f','g','h','j','k','l','enter'],
+                    ['shift','z','x','c','v','b','n','m','한/영'],
+                    ["space"]
+                ],
+                enShift : [
+                    ['뒤로','!','@','#','$','%','^','&','*','(',')', 'backspace'],
+                    ['Q','W','E','R','T','Y','U','I','O','P'],
+                    ['A','S','D','F','G','H','J','K','L','enter'],
+                    ['shift','Z','X','C','V','B','N','M','한/영'],
+                    ["space"]
+                ]
+            }
+        }
+        var keydiv = {};
+        for (let index = 0; index < Object.keys(form).length; index++) {
+            keydiv[Object.keys(form)[index]] = document.createElement("div")
+            keydiv[Object.keys(form)[index]].style.cssText = `
+            position: absolute;
+            width : 100%;
+            height: 100%;
+            align : center;
+            visibility: hidden;
+            font-size: 25px;
+        `
+            for (let i = 0; i < form[Object.keys(form)[index]].length; i++) {
+                var keyline = document.createElement("table");
+                keyline.style.cssText = `
+                width : 100%;
+                height: calc(100% / ` + form[Object.keys(form)[index]].length + `);
+            `
+                for (let j = 0; j < form[Object.keys(form)[index]][i].length; j++) {
+                    var key = document.createElement("th")
+                    key.style.cssText = `
+                    padding-top : calc((100% / ` + form[Object.keys(form)[index]].length + `) / 5);
+                `
+                    key.innerText = form[Object.keys(form)[index]][i][j];
+                    key.addEventListener("click", keyfun)
+                    keyline.appendChild(key);
+                }
+                keydiv[Object.keys(form)[index]].appendChild(keyline);
+            }
+            zone.appendChild(keydiv[Object.keys(form)[index]])
+        }
+        keydiv[nowlang].style.visibility = "visible";
+        function keyfun() {
+            if(this.innerText == '뒤로') {
+                onESC();
+                hideModal(); // '뒤로' 버튼을 눌렀을 때 모달 숨김
+                return;
+            } else if(this.innerText == 'enter') {
+                onEnter(getText());
+                hideModal(); // '뒤로' 버튼을 눌렀을 때 모달 숨김
+                return
+            } else if(this.innerText == '한/영') {
+                keydiv[nowlang].style.visibility = "hidden";
+                if(nowlang == "koNormal") {
+                    nowlang = "enNormal"
+                }
+                else if(nowlang == "enNormal") {
+                    nowlang = "koNormal"
+                }
+                else if(nowlang == "koShift") {
+                    nowlang = "enShift"
+                }
+                else if(nowlang == "enShift") {
+                    nowlang = "koShift"
+                }
+                keydiv[nowlang].style.visibility = "visible";
+                return
+            }
+            else if(this.innerText == 'shift') {
+                keydiv[nowlang].style.visibility = "hidden";
+                if(nowlang == "koNormal") {
+                    nowlang = "koShift"
+                }
+                else if(nowlang == "enNormal") {
+                    nowlang = "enShift"
+                }
+                else if(nowlang == "koShift") {
+                    nowlang = "koNormal"
+                }
+                else if(nowlang == "enShift") {
+                    nowlang = "enNormal"
+                }
+                keydiv[nowlang].style.visibility = "visible";
+                return
+            }
+            else if(this.innerText == 'backspace') {
+                charlist.splice(charlist.length - 1, 1);
+            }
+            else if(this.innerText == 'space') {
+                charlist.push(" ");
+            }
+            else {
+                charlist.push(this.innerText);
+            }
+
+            text = Hangul.assemble(charlist)
+            input.value = text;
+            if(onClick != null) {
+                onClick(getText());
+            }
+        }
+
+
+    }
+
+</script>
+<script type="text/javascript">
+    var keyboardzone = document.getElementById("keyboardzone");
+    var input = document.getElementById("myinput");
+
+    var keyboard = new customKeyboard(
+        keyboardzone/*생성위치 태그*/,
+        input/*input을 받을 태그*/,
+        function()/*클릭 했을때*/ {
+            console.log("click : ", text);
+        },
+        function()/*esc 눌렀을때*/ {
+            console.log("esc");
+        },
+        function(e)/*앤터 눌렀을때*/ {
+            console.log("앤터 : ", text);
+        },
+        null/*키패드를 모양 값*/
+        // {
+        //     koNormal : [
+        //         ['뒤로','1','2','3','4','5','6','7','8','9','0', 'backspace'],
+        //         ['ㅂ', 'ㅈ', 'ㄷ', 'ㄱ', 'ㅅ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅐ', 'ㅔ'],
+        //         ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ', 'enter'],
+        //         ['shift','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','한/영'],
+        //         ["space"]
+        //     ],
+        //     koShift : [
+        //         ['뒤로','!','@','#','$','%','^','&','*','(',')', 'backspace'],
+        //         ['ㅃ', 'ㅉ', 'ㄸ', 'ㄲ', 'ㅆ', 'ㅛ', 'ㅕ', 'ㅑ', 'ㅒ', 'ㅖ'],
+        //         ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ', 'enter'],
+        //         ['shift','ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ','한/영'],
+        //         ["space"]
+        //     ],
+        //     enNormal : [
+        //         ['뒤로','1','2','3','4','5','6','7','8','9','0', 'backspace'],
+        //         ['q','w','e','r','t','y','u','i','o','p'],
+        //         ['a','s','d','f','g','h','j','k','l','enter'],
+        //         ['shift','z','x','c','v','b','n','m','한/영'],
+        //         ["space"]
+        //     ],
+        //     enShift : [
+        //         ['뒤로','!','@','#','$','%','^','&','*','(',')', 'backspace'],
+        //         ['Q','W','E','R','T','Y','U','I','O','P'],
+        //         ['A','S','D','F','G','H','J','K','L','enter'],
+        //         ['shift','Z','X','C','V','B','N','M','한/영'],
+        //         ["space"]
+        //     ]
+        // }
+    );
+
+    input.addEventListener("click", function() {
+        //input 태그를 자신으로 설정
+        keyboard.setInput(this);
+        //키패드 클릭 이벤트 설정
+        keyboard.setClick(function(text) {
+            console.log("input을 click한 후 : ", text);
+        })
+        //앤터 이벤트 설정
+        keyboard.setEnter(function(e) {
+            menu3searching(e)
+        });
+    })
+</script>
 </html>

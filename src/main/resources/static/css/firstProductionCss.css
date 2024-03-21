@@ -1,0 +1,136 @@
+
+.page-wrapper input,  .page-wrapper select {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #000;
+    color: #00ff00;
+    font-weight: bold;
+    text-align: center;
+    height: 36px;
+}
+
+#workerImage {
+    align-content: end;
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
+
+#keyboardModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3c3c3c;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: auto;
+    height: auto;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.keyboard-button {
+    display: flex; /* Flex 컨테이너로 설정 */
+    justify-content: center; /* 가로축 중앙 정렬 */
+    align-items: center; /* 세로축 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    color: #FFFFFF;
+    padding: 15px 25px;
+    margin: 0 5px;
+    border: 1px solid #5d5d5d;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    width: auto; /* 버튼의 너비를 자동으로 설정하여 패딩에 따라 크기가 조정되도록 함 */
+    height: auto; /* 버튼의 높이를 자동으로 설정 */
+}
+
+.keyboard-button:hover {
+    background-color: #e0e0e0;
+}
+
+.keyboard-ok-button {
+    padding: 15px 25px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.keyboard-ok-button:hover {
+    background-color: #45a049;
+}
+
+#info-table-1 {
+    width: 100%;
+}
+
+#info-table-2 {
+    width: 100%;
+
+}
+
+#tables-container {
+    display: flex;
+}
+
+#test-note {
+    width: 85%;
+}
+
+#test-note select {
+    width: 100%;
+}
+#keyboardzone {
+    display: none; /* 초기에는 키보드를 숨깁니다 */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    padding: 20px;
+    width: 1000px;
+    height: 500px;
+
+}
+#keyboardzone th{
+    background-color: #f2f2f2; border: 1px solid #ddd; padding-top: calc(4%); margin: 2px;
+
+}
+#keyboardzone table{
+    background-color: #ffffff;
+}
+#keyboardzone table th{
+    background-color: #4d4d4d;
+}
+#keyboardzone > div:nth-child(1){
+
+}
+#keyboardzone > div:nth-child(1) > table:nth-child(1) > th:nth-child(1){
+    width:100px;
+}
+tbody, td, tfoot, th, thead, tr {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+    text-align: center;
+}

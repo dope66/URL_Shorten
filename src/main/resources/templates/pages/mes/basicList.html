@@ -299,7 +299,7 @@
         text: "내보내기",
         onClick: function() {
             // 파일명을 사용자에게 입력받습니다.
-            let fileName = prompt("다운로드할 파일의 이름을 입력하세요.", "기초정보.xlsx");
+            let fileName = prompt("다운로드할 파일의 이름을 입력하세요.", "기초정보");
             if (fileName) {
                 exportToExcel(fileName); // 사용자가 입력한 파일명으로 내보내기를 진행합니다.
             }

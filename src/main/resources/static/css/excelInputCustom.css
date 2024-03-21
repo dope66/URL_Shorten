@@ -22,13 +22,7 @@
 .custom-excel-file-upload:hover{
     background-color: white; /* 호버 시 배경색 */
 }
-.exportButton {
-    background-color: #f44336;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+
 .file-upload-container {
     margin-bottom: 7px;
 }

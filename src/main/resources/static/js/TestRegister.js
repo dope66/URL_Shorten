@@ -19,6 +19,7 @@ function registTest() {
 
     const newTest = {processName, equipmentName, processWorker, note, company, productionCount, defectCount};
     console.log("new Test ;", newTest);
+    const monitorList={processName, equipmentName, processWorker,  productionCount};
     const confirmed = window.confirm('정말로 등록하시겠습니까?');
     if (confirmed) {
         // 확인을 선택한 경우에만 등록 진행
@@ -37,6 +38,18 @@ function registTest() {
             })
             .catch(error => {
                 console.error('fetch 오류 요청 ', error);
+            });
+
+        fetch('/api/monitor/Test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(monitorList)
+        }).then( r =>{
+        })
+            .catch(error=>{
+                console.error('monitorList error',error);
             });
     }
 

@@ -120,6 +120,31 @@ function workerSearch() {
         console.log('검색 결과가 없습니다.');
     }
 }
+function processWorkerSearch(){
+    const processNameSelected = selectedProcessName.value;
+    const equipmentNameSelected = equipmentNameSelect.value;
+    const workerNameElement = document.getElementById('search-workerName');
+    const workerNameQuery = workerNameElement.value.trim();
+
+
+    const filteredData = originalData.filter(item => {
+        const matchesProcessName = !processNameSelected || item.processName === processNameSelected;
+        const matchesEquipmentName = !equipmentNameSelected || item.equipmentName === equipmentNameSelected;
+        const matchesWorkerName = !workerNameQuery || item.processWorker.includes(workerNameQuery);
+        return matchesProcessName && matchesEquipmentName && matchesWorkerName;
+    });
+
+    if (filteredData.length > 0) {
+        // 검색 결과가 있는 경우, 검색된 데이터만 로드
+        hot.loadData(filteredData);
+        console.log('검색된 데이터를 표시합니다.');
+    } else {
+        // 검색 결과가 없는 경우
+        hot.loadData([]);
+        console.log('검색 결과가 없습니다.');
+    }
+}
+
 function performSearchForTest() {
     const startDateElement = document.getElementById("startDate");
     const endDateElement = document.getElementById("endDate");

@@ -117,4 +117,9 @@ public class MesController {
         return "pages/mes/basicList";
     }
 
+    @GetMapping("/monitoring")
+    public String monitoring(){
+        return "pages/mes/monitoring";
+    }
+
 }

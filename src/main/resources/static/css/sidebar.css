@@ -15,7 +15,7 @@
 /*}*/
 
 .side-menu {
-    display: none;
+    display: block;
     list-style: none;
     padding-left: 0; /* 내부 li에 대한 왼쪽 패딩 제거 */
 }

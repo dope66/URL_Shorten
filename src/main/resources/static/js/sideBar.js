@@ -50,13 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function saveMenuState(menuId, isOpen) {
     sessionStorage.setItem(menuId + '_state', isOpen ? 'open' : 'closed');
 }
-// 저장된 메뉴 상태를 복원하는 함수
+
 function restoreMenuStates() {
     document.querySelectorAll('.side-menu').forEach(function(menu) {
         let menuId = menu.getAttribute('id');
         let state = sessionStorage.getItem(menuId + '_state');
 
-        if (state === 'open') {
+        // 저장된 상태가 없는 경우 기본적으로 'open'으로 간주
+        if (state === null || state === 'open') {
             menu.style.display = 'block';
         } else if (state === 'closed') {
             menu.style.display = 'none';

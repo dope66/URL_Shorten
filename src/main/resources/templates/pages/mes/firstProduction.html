@@ -22,7 +22,7 @@
     <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
-<!--    <link rel="stylesheet" href="/css/workerRegister.css">-->
+    <!--    <link rel="stylesheet" href="/css/workerRegister.css">-->
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/firstProductionCss.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -36,11 +36,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <style>
+        #info-table-3 td {
+            max-width: 300px; /* 이 값은 원하는 <td>의 최소 너비에 맞게 조절하세요. */
+        }
         #workerImage {
             max-width: 100%;
-            max-height: 300px;
-            display: block;
-            margin: auto;
+            height: auto;
+            display: block; /* 이미지를 블록 요소로 만들어줍니다. */
         }
 
 
@@ -278,11 +280,13 @@
                 <td style="width : 200px"><input type="text" id="company"></td>
                 <td><input type="text" id="note" placeholder="특이 사항을 작성 해주세요" style="text-align: center;"></td>
                 <td style="width : 200px">
-                    <input type="text" name="productionCount" id="productionCount" placeholder="0" style="width: 100%; text-align: end;" required
+                    <input type="text" name="productionCount" id="productionCount" placeholder="0"
+                           style="width: 100%; text-align: end;" required
                            onfocus="openKeyboardForCount('productionCount')">
                 </td>
                 <td style="width : 200px">
-                    <input type="text" name="defectCount" id="defectCount" placeholder="0" style="width: 100%; text-align: end;" required
+                    <input type="text" name="defectCount" id="defectCount" placeholder="0"
+                           style="width: 100%; text-align: end;" required
                            onfocus="openKeyboardForCount('defectCount')">
                 </td>
 
@@ -350,25 +354,6 @@
                     </tr>
                     </tbody>
                 </table>
-<!--                <table id="info-table-3" th:border="1">-->
-<!--                    <thead>-->
-<!--                    <th>공정원</th>-->
-<!--                    </thead>-->
-<!--                    <tbody>-->
-<!--                    <td>-->
-<!--                        <div id="image-container" style="width: auto">-->
-<!--                            <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">-->
-<!--                        </div>-->
-<!--                        <select name="processWorker" id="processWorker" style="width : 300px; " required></select>-->
-<!--                    </td>-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <button onclick="registTest()" id="test-submit" style="width: 100%;height: 100%">등록</button>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-
-<!--                </table>-->
                 <table id="info-table-3" th:border="2">
                     <thead>
                     <tr>
@@ -381,11 +366,21 @@
                             <div id="image-container" style="text-align: center; margin-bottom: 20px;">
                                 <img id="workerImage" alt="workerImage" src="/static/image/defaultWorker.png">
                             </div>
-                            <select name="processWorker" id="processWorker" style="width: 300px; display: block; margin: 0 auto 20px auto;" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="processWorker" id="processWorker"
+                                    style="width: 300px; display: block; margin: 0 auto 20px auto;" required>
                                 <!-- 옵션은 서버로부터 동적으로 로드되거나, 정적으로 여기에 정의될 수 있음 -->
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <div style="text-align: center;">
-                                <button onclick="registTest()" id="test-submit" style="width: 300px; height: 40px;">등록</button>
+                                <button onclick="registTest()" id="test-submit" style="width: 300px; height: 40px;">등록
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -396,7 +391,8 @@
             <input type="hidden" id="workerId">
             <div id="keyboardModal" class="modal">
                 <div class="modal-content">
-                    <input type="text" id="modalInputValue" readonly style="text-align: center; margin-bottom: 10px; width: 80%;">
+                    <input type="text" id="modalInputValue" readonly
+                           style="text-align: center; margin-bottom: 10px; width: 80%;">
                     <div class="keyboard-row">
                         <button class="keyboard-button" onclick="pressKey(1)">1</button>
                         <button class="keyboard-button" onclick="pressKey(2)">2</button>
@@ -430,20 +426,19 @@
             <div id="keyboardzone"></div>
 
         </div>
-<!--        <div class="row page-titles">-->
-<!--            <div class="col-md-5 col-12 align-self-center">-->
-<!--                <ol class="breadcrumb mb-0">-->
-<!--                    <li class="breadcrumb-item">-->
-<!--                        <h2><a href="/mes/firstProduction" style="text-decoration: none; color: #FFFFFF;">초중종물 검사</a></h2>-->
-<!--                    </li>-->
-<!--                </ol>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="row page-titles">-->
+        <!--            <div class="col-md-5 col-12 align-self-center">-->
+        <!--                <ol class="breadcrumb mb-0">-->
+        <!--                    <li class="breadcrumb-item">-->
+        <!--                        <h2><a href="/mes/firstProduction" style="text-decoration: none; color: #FFFFFF;">초중종물 검사</a></h2>-->
+        <!--                    </li>-->
+        <!--                </ol>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
 
-
-<!--        <div class="container-fluid" style="background-color: #181818">-->
-<!--        </div>-->
+        <!--        <div class="container-fluid" style="background-color: #181818">-->
+        <!--        </div>-->
 
     </div>
 

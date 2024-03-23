@@ -282,13 +282,20 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
+        fetchAndUpdateData(); // 페이지 로드 시 데이터 초기 로딩
+    });
+    setInterval(fetchAndUpdateData, 30000); // 5분마다 fetchAndUpdateData 함수 실행
+
+    function fetchAndUpdateData() {
         fetch(`/api/monitor/List`)
             .then(response => response.json())
             .then(data => {
-                originalData = data;
-                createHandsontable(originalData);
-            });
-    });
+                originalData = data; // 새로 받아온 데이터로 originalData 업데이트
+                createHandsontable(originalData); // Handsontable에 새로운 데이터 로드
+            })
+            .catch(error => console.error('데이터 업데이트 중 오류 발생: ', error));
+    }
+
     function createHandsontable(data) {
         const container = document.getElementById('monitoring-table');
         hot = new Handsontable(container, {

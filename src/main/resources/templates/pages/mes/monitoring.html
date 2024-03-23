@@ -24,6 +24,7 @@
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/pageCss.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -236,6 +237,12 @@
             <button id="allSearchWorkerButton" onclick="wholeWorker()" class="search">전체검색
             </button>
         </div>
+        <hr>
+        <button id="searchButton1" class="search">용접</button>
+        <button id="searchButton2" class="search">프레스</button>
+        <button id="searchButton3" class="search">보링</button>
+        <button id="searchButton4" class="search">레이져</button>
+
         <div id="monitoring-table"></div>
     </div>
 
@@ -250,6 +257,26 @@
     const selectedProcessName = document.getElementById("search-processName");
     const equipmentNameSelect = document.getElementById("search-equipmentName");
     const workerNameSelect = document.getElementById("search-workerName");
+    document.getElementById('searchButton1').addEventListener('click', function() {
+        filterAndDisplayData('용접');
+    });
+
+    document.getElementById('searchButton2').addEventListener('click', function() {
+        filterAndDisplayData('프레스');
+    });
+
+    document.getElementById('searchButton3').addEventListener('click', function() {
+        filterAndDisplayData('보링');
+    });
+    document.getElementById('searchButton4').addEventListener('click', function() {
+        filterAndDisplayData('레이져');
+    });
+    // 데이터를 필터링하고 Handsontable에 표시하는 함수
+    function filterAndDisplayData(processName) {
+        const filteredData = originalData.filter(item => item.processName === processName);
+        hot.loadData(filteredData);
+    }
+
 </script>
 <script src="/js/sideBar.js"></script>
 <script>

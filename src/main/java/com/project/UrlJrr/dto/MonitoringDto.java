@@ -23,7 +23,7 @@ public class MonitoringDto {
     private Date productionDate;
     private LocalDateTime registerDate;
     private LocalDateTime endDate;
-    private String productState;
+    private String productState = "생산시작";
     public Monitoring toEntity() {
         // 현재 날짜의 연, 월, 일만 가져와서 자정 시간으로 설정
         LocalDate now = LocalDate.now();

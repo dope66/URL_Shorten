@@ -19,7 +19,6 @@
     />
     <link href="/static/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="/static/dist/css/style.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/pageCss.css">
 
@@ -220,37 +219,26 @@
     </aside>
     <div class="page-wrapper">
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="min-height: auto; padding: 10px 30px;">
             <div class="row page-titles">
-                <h2><a href="/mes/monitoring" style=" text-decoration: none; color: #FFFFFF;">생산공정 모니터링</a></h2>
-                <h3 id="clock">시계</h3>
-            </div>
-            <div class="widget-content searchable-container list">
-                <div id="search-type-button">
-                    <select name="search-processName" id="search-processName" style="width: 150px">
-                        <option value="" disabled selected>공정명 선택</option>
-                    </select>
-                    <select name="search-equipmentName" id="search-equipmentName" style="width: 130px"></select>
-                    <select id="search-workerName"></select>
-                    <button id="searchWorkerButton" class="search">검색</button>
-                    <button id="allSearchWorkerButton" onclick="wholeWorker()" class="search">전체검색
-                    </button>
+             <h2 style="text-align: center;"><a href="/mes/monitoring" style=" text-decoration: none;  color: #FFFFFF;">생산공정 모니터링</a></h2>
+                <div>
+                    <h3 id="date" style="margin-bottom: 0; text-align: right;">날짜</h3>
+                    <h3 id="time" style="margin-top: 0; text-align: right;">시간</h3>
                 </div>
-                <hr>
+            </div>
+            <div class="widget-content searchable-container list" style="text-align: right;">
                 <button id="searchButton1" class="search">용접</button>
                 <button id="searchButton2" class="search">프레스</button>
                 <button id="searchButton3" class="search">보링</button>
                 <button id="searchButton4" class="search">레이져</button>
-
-                <div id="monitoring-table"></div>
+                <button id="searchButton" class="search">전체</button>
             </div>
-<!--            <div class="card card-body">-->
-<!--                <div class="table-responsive">-->
-
-<!--                </div>-->
-<!--            </div>-->
         </div>
-
+        <div>
+            <div id="monitoring-table" style="left: 100px;"></div>
+        </div>
+        <hr>
     </div>
 
     <footer class="footer text-center">
@@ -259,84 +247,112 @@
 
 </div>
 
-
 <script>
-    const selectedProcessName = document.getElementById("search-processName");
-    const equipmentNameSelect = document.getElementById("search-equipmentName");
-    const workerNameSelect = document.getElementById("search-workerName");
-    document.getElementById('searchButton1').addEventListener('click', function() {
-        filterAndDisplayData('용접');
+    let hot;
+    let originalData = []; // 원본 데이터 배열
+    const processNames = ['용접', '프레스', '보링', '레이져']; // 공정명 배열
+    let currentProcessIndex = -1; // 현재 공정명의 인덱스 (-1은 모든 데이터를 의미)
+    let autoRefreshTimer = null; // 자동 최신화 타이머 ID
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchAndUpdateData(); // 데이터 초기 로드 및 Handsontable 생성
+        setupButtonHandlers(); // 버튼 이벤트 핸들러 설정
     });
+    function setupButtonHandlers() {
+        document.getElementById('searchButton1').addEventListener('click', () => filterAndDisplayData('용접', true));
+        document.getElementById('searchButton').addEventListener('click', () => filterAndDisplayData(null, true));
 
-    document.getElementById('searchButton2').addEventListener('click', function() {
-        filterAndDisplayData('프레스');
-    });
+        document.getElementById('searchButton2').addEventListener('click', () => filterAndDisplayData('프레스', true));
+        document.getElementById('searchButton3').addEventListener('click', () => filterAndDisplayData('보링', true));
+        document.getElementById('searchButton4').addEventListener('click', () => filterAndDisplayData('레이져', true));
+    }
+    function filterAndDisplayData(processName, isUserAction = false) {
+        // 사용자의 직접적인 액션인 경우에만 자동 갱신을 중지
+        if (isUserAction) {
+            clearInterval(autoRefreshTimer); // 자동 갱신 중지
+            autoRefreshTimer = null;
+        }
 
-    document.getElementById('searchButton3').addEventListener('click', function() {
-        filterAndDisplayData('보링');
-    });
-    document.getElementById('searchButton4').addEventListener('click', function() {
-        filterAndDisplayData('레이져');
-    });
+        let filteredData;
+        if (processName === null) {
+            filteredData = originalData; // 모든 데이터
+            // 자동 업데이트가 아닌 사용자 액션으로 "전체"가 선택된 경우에만 자동 갱신 재시작
+            if (isUserAction) {
+                currentProcessIndex = -1; // 자동 업데이트 순서를 초기화
+                setupAutoRefresh(); // 자동 갱신 재시작
+            }
+        } else {
+            filteredData = originalData.filter(item => item.processName === processName);
+        }
+        hot.loadData(filteredData); // Handsontable에 데이터 로드
+    }
 
-    function filterAndDisplayData(processName) {
-        const filteredData = originalData.filter(item => item.processName === processName);
-        hot.loadData(filteredData);
+    function setupAutoRefresh() {
+        if (autoRefreshTimer !== null) clearInterval(autoRefreshTimer);
+        autoRefreshTimer = setInterval(() => {
+            // 공정명 인덱스 순환을 위해 조건을 조정
+            currentProcessIndex = (currentProcessIndex + 1) % (processNames.length + 1);
+            let processName = currentProcessIndex < processNames.length ? processNames[currentProcessIndex] : null;
+            filterAndDisplayData(processName); // 데이터 필터링 및 표시
+        }, 5000); // 30초마다 실행
     }
 
 </script>
-<script src="/js/sideBar.js"></script>
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
         fetchAndUpdateData();
     });
-    setInterval(fetchAndUpdateData, 30000);
 
     function fetchAndUpdateData() {
         fetch(`/api/monitor/List`)
             .then(response => response.json())
             .then(data => {
-                originalData = data;
-                createHandsontable(originalData);
+                originalData = data; // 원본 데이터 업데이트
+                createHandsontable(originalData); // Handsontable 생성
+                setupAutoRefresh(); // 자동 갱신 설정
             })
             .catch(error => console.error('데이터 업데이트 중 오류 발생: ', error));
     }
-
     function createHandsontable(data) {
         const container = document.getElementById('monitoring-table');
-        hot = new Handsontable(container, {
-            cells: function (row, col, prop) {
-                var cellProperties = {};
-                cellProperties.className = 'htCenter';
-                return cellProperties;
-            },
-            className: "htCenter",
-            colWidths: [200, 200, 200, 200, 200, 200, 200],
-            rowHeights: 30,
-            licenseKey: 'non-commercial-and-evaluation',
-            data: data,
-            colHeaders: ['공정명', '호기', '작업자', '시작시간', '종료시간', '생산수량','상태'],
-            columns: [
-                {data: 'processName', readOnly: true, className: "htCenter"},
-                {data: 'equipmentName', readOnly: true, className: "htCenter"},
-                {data: 'processWorker', readOnly: true, className: "htCenter"},
-                {data: 'registerDate', readOnly: true, className: "htCenter", renderer: timeRenderer},
-                {data: 'endDate', readOnly: true, className: "htCenter"},
-                {data: 'productionCount', readOnly: true, className: "htCenter"},
-                {data: 'productState', readOnly: true, className: "htCenter"},
-            ],
-            height: 300,
-            viewportRowRenderingOffset: 5,
-            columnSorting: false,
-            contextMenu: false,
-            manualRowMove: true,
-            manualColumnMove: true,
-            filters: true,
-            dropdownMenu: false,
-            rowHeaders: true,
-            search: true,
-        });
+
+        if (!hot) {
+
+
+            hot = new Handsontable(container, {
+                cells: function (row, col, prop) {
+                    var cellProperties = {};
+                    cellProperties.className = 'htCenter';
+                    return cellProperties;
+                },
+                className: "htCenter",
+                colWidths: [200, 200, 200, 200, 200, 200, 200],
+                rowHeights: 30,
+                licenseKey: 'non-commercial-and-evaluation',
+                data: data,
+                colHeaders: ['공정명', '호기', '작업자', '시작시간', '종료시간', '생산수량', '상태'],
+                columns: [
+                    {data: 'processName', readOnly: true, className: "htCenter"},
+                    {data: 'equipmentName', readOnly: true, className: "htCenter"},
+                    {data: 'processWorker', readOnly: true, className: "htCenter"},
+                    {data: 'registerDate', readOnly: true, className: "htCenter", renderer: timeRenderer},
+                    {data: 'endDate', readOnly: true, className: "htCenter"},
+                    {data: 'productionCount', readOnly: true, className: "htCenter"},
+                    {data: 'productState', readOnly: true, className: "htCenter"},
+                ],
+                height: 'auto',
+                viewportRowRenderingOffset: 5,
+                columnSorting: false,
+                contextMenu: false,
+                manualRowMove: true,
+                manualColumnMove: true,
+                filters: true,
+                dropdownMenu: false,
+                rowHeaders: true,
+                search: true,
+            });
+        }
+        hot.loadData(data);
     }
 
     function timeRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -356,42 +372,23 @@
         return td;
     }
 </script>
-<script src="/static/js/ProcessWorkerSearch.js"></script>
+<script src="/js/sideBar.js"></script>
 <script>
-
-
-    document.getElementById('searchWorkerButton').addEventListener('click', processWorkerSearch);
-    fetchProcessNames();
-    fetchProcessNameAndWorkerName();
-    fetchProcessNameAndEquipmentName();
-    fetchEquipmentName();
-    AllWorkerName();
-    selectedProcessName.addEventListener('change', () => {
-        equipmentNameSelect.value = '';
-        workerNameSelect.value = '';
-        fetchProcessNameAndWorkerName();
-    });
-    equipmentNameSelect.addEventListener('change', function () {
-        if (selectedProcessName.value) {
-            fetchProcessNameAndEquipmentName();
-        }
-    });
-
-</script>
-<script>
-
     function updateClock() {
         const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        const formattedDate = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0');
+        const formattedTime = String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        document.getElementById('date').textContent = formattedDate;
+        document.getElementById('time').textContent = formattedTime;
     }
 
     setInterval(updateClock, 1000);
     updateClock();
 </script>
-
 
 
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>

@@ -5,6 +5,7 @@ import com.project.UrlJrr.entity.Monitoring;
 import com.project.UrlJrr.repository.MonitoringRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class MonitoringService {
     }
 
     public List<Monitoring> findAll() {
-        return monitoringRepository.findAll();
+        return monitoringRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }

@@ -24,8 +24,8 @@ public class MonitoringController {
     @GetMapping("/List")
     public ResponseEntity<?> getMoniotringList(){
         List<Monitoring> Monitorings;
-        Monitorings = monitoringService.findAll();
-        return  new ResponseEntity<>(Monitorings,HttpStatus.OK);
+        Monitorings = monitoringService.findAllToday();
+        return  ResponseEntity.ok(Monitorings);
     }
 
 

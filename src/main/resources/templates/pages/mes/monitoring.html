@@ -30,6 +30,9 @@
     <![endif]-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/20.2.5/js/dx.all.js"></script>
 
 </head>
 <body>
@@ -239,6 +242,7 @@
             <div id="monitoring-table" style="left: 100px;"></div>
         </div>
         <hr>
+
     </div>
 
     <footer class="footer text-center">
@@ -246,7 +250,10 @@
     </footer>
 
 </div>
+<script>
 
+
+</script>
 <script>
     let hot;
     let originalData = []; // 원본 데이터 배열
@@ -285,7 +292,7 @@
         }
         hot.loadData(filteredData); // Handsontable에 데이터 로드
     }
-    
+
     function setupAutoRefresh() {
         if (autoRefreshTimer !== null) clearInterval(autoRefreshTimer);
 
@@ -302,7 +309,7 @@
                 let processName = currentProcessIndex <= processNames.length ? processNames[currentProcessIndex - 1] : null;
                 filterAndDisplayData(processName);
             }
-        }, 5000); // 5초마다 실행
+        }, 30000); // 5초마다 실행
     }
 
 </script>

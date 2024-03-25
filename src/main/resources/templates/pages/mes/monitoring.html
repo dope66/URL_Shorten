@@ -28,11 +28,26 @@
 
 
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--handsonTable -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.common.css">
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.light.css">
-    <script src="https://cdn3.devexpress.com/jslib/20.2.5/js/dx.all.js"></script>
+    <!--dxChart-->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.all.js"></script>
+    <style>
+        .chart-container {
+            margin: 20px; /* 마진을 통한 주변 공간 추가 */
+            padding: 20px; /* 패딩을 통한 내부 공간 추가 */
+            position: relative; /* 절대 위치 지정을 위한 기준점 설정 */
+            left: 50px; /* 왼쪽으로부터의 거리 */
+            top: 30px; /* 상단으로부터의 거리 */
+            width: 1600px;
+        }
+
+
+    </style>
 
 </head>
 <body>
@@ -242,6 +257,9 @@
             <div id="monitoring-table" style="left: 100px;"></div>
         </div>
         <hr>
+        <div id="productionChart" class="chart-container"></div>
+
+
 
     </div>
 
@@ -250,10 +268,7 @@
     </footer>
 
 </div>
-<script>
 
-
-</script>
 <script>
     let hot;
     let originalData = []; // 원본 데이터 배열
@@ -263,6 +278,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         fetchAndUpdateData(); // 데이터 초기 로드 및 Handsontable 생성
         setupButtonHandlers(); // 버튼 이벤트 핸들러 설정
+
     });
     function setupButtonHandlers() {
         document.getElementById('searchButton1').addEventListener('click', () => filterAndDisplayData('용접', true));
@@ -309,7 +325,7 @@
                 let processName = currentProcessIndex <= processNames.length ? processNames[currentProcessIndex - 1] : null;
                 filterAndDisplayData(processName);
             }
-        }, 30000); // 5초마다 실행
+        }, 10000);
     }
 
 </script>
@@ -388,6 +404,129 @@
         return td;
     }
 </script>
+<script>
+    $(document).ready(function() {
+        fetchChartList();
+    });
+
+    function fetchChartList(){
+        fetch(`/api/worker/testList`)
+            .then(response => response.json())
+            .then(data => {
+                const seriesData = aggregateDataByMonthAndProcess(data);
+                console.log("seriesData",seriesData);
+                console.log(JSON.stringify(seriesData, null, 2));
+                createChart(seriesData);
+            })
+            .catch(error => {
+                console.error('Data fetch error: ', error);
+            });
+    }
+
+    function aggregateDataByMonthAndProcess(data) {
+        const result = data.reduce((acc, curr) => {
+            const date = new Date(curr.productionDate);
+            const month = date.getUTCMonth() + 1;
+            const monthKey = `${month}월`;
+            const processName = curr.processName;
+
+            if (!acc[processName]) {
+                acc[processName] = {};
+            }
+            if (!acc[processName][monthKey]) {
+                acc[processName][monthKey] = 0;
+            }
+            acc[processName][monthKey] += curr.productionCount;
+            return acc;
+        }, {});
+
+        return transformToChartData(result);
+    }
+
+    function transformToChartData(aggregatedData) {
+        const series = Object.keys(aggregatedData).map(processName => ({
+            name: processName,
+            data: Object.entries(aggregatedData[processName]).map(([month, productionCount]) => ({
+                month,
+                productionCount
+            }))
+        }));
+
+        return series;
+    }
+
+    function transformDataForChart(data) {
+        const transformedData = [];
+        data.forEach(series => {
+            series.data.forEach(point => {
+                transformedData.push({
+                    processName: series.name,
+                    month: point.month,
+                    productionCount: point.productionCount
+                });
+            });
+        });
+        return transformedData;
+    }
+    function createChart(seriesData) {
+        const transformedData = transformDataForChart(seriesData);
+        $("#productionChart").dxChart({
+            palette: "Soft Pastel",
+            dataSource: transformedData,
+            commonSeriesSettings: {
+                type: "bar",
+                argumentField: "month",
+                label: {
+                    visible: true,
+                    format: "fixedPoint"
+                }
+            },
+            seriesTemplate: {
+                nameField: "processName",
+                customizeSeries: function(valueFromNameField) {
+                    return {
+                        valueField: "productionCount"
+                    };
+                }
+            },
+            argumentAxis: {
+                // title: "월",
+                title:{
+                  text:"월",
+                    font:{
+                        color:"#FFFFFF"
+                    }
+                },
+                categories: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+
+            },
+            valueAxis: {
+                title:{
+                    text:"생산 수량",
+                    font:{
+                        color:"#FFFFFF"
+                    }
+                }
+            },
+            legend: {
+                verticalAlignment: "top",
+                horizontalAlignment: "right",
+                itemTextPosition: "right",
+                font:{
+                    color:"#FFFFFF"
+                }
+            },
+            title: {
+             text:"월별 공정명별 생산 수량",
+             font:{
+                 color:"#FFFFFF"
+             }
+            },
+
+        });
+    }
+
+</script>
 <script src="/js/sideBar.js"></script>
 <script>
     function updateClock() {
@@ -407,7 +546,6 @@
 </script>
 
 
-<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/dist/js/app.init.dark.js"></script>

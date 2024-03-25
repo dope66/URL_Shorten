@@ -30,15 +30,20 @@
 
     <![endif]-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--handsonTable -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+    <!--dxChart-->
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.common.css">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.light.css">
     <script src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.all.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
 
     <style>
 
@@ -343,6 +348,22 @@
 <script>
 
 
+
+
+    // function createChartWithFilteredData(data, criteria) {
+    //     const filteredData = filterData(data, criteria);
+    //     const aggregatedData = aggregateDataByMonth(filteredData);
+    //     createDevExpressChart(aggregatedData);
+    // }
+    //
+    // function prepareChartData(filteredData) {
+    //     // 이 함수는 'filteredData'를 차트에 적합한 형식으로 변환해야 합니다.
+    //     // 예제 변환:
+    //     return filteredData.map(item => ({
+    //         argumentField: item.processName, // 예를 들어, processName으로 분류하고자 할 때
+    //         valueField: item.productionCount // productionCount를 시각화하고자 하는 경우
+    //     }));
+    // }
     function aggregateDataByMonth(filteredData) {
         // 1월부터 12월까지 모든 월에 대해 초기 생산량을 0으로 설정
         const aggregatedData = {
@@ -374,22 +395,6 @@
         // 객체를 배열로 변환하여 반환
         return Object.values(aggregatedData);
     }
-
-    function createChartWithFilteredData(data, criteria) {
-        const filteredData = filterData(data, criteria);
-        const aggregatedData = aggregateDataByMonth(filteredData);
-        createDevExpressChart(aggregatedData);
-    }
-
-    function prepareChartData(filteredData) {
-        // 이 함수는 'filteredData'를 차트에 적합한 형식으로 변환해야 합니다.
-        // 예제 변환:
-        return filteredData.map(item => ({
-            argumentField: item.processName, // 예를 들어, processName으로 분류하고자 할 때
-            valueField: item.productionCount // productionCount를 시각화하고자 하는 경우
-        }));
-    }
-
     function createDevExpressChart(chartData) {
         $("#productionChart").dxChart({
             dataSource: chartData,
@@ -400,7 +405,6 @@
                 name: "생산 수량",
                 // 데이터 포인트별 스타일 및 레이블 설정
                 customizePoint: function (pointInfo) {
-
                     var monthColors = {
                         '1월': '#E53935', '2월': '#D81B60', '3월': '#8E24AA', '4월': '#5E35B1',
                         '5월': '#3949AB', '6월': '#1E88E5', '7월': '#039BE5', '8월': '#00ACC1',

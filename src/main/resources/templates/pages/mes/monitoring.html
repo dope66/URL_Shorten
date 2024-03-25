@@ -285,15 +285,24 @@
         }
         hot.loadData(filteredData); // Handsontable에 데이터 로드
     }
-
+    
     function setupAutoRefresh() {
         if (autoRefreshTimer !== null) clearInterval(autoRefreshTimer);
+
         autoRefreshTimer = setInterval(() => {
-            // 공정명 인덱스 순환을 위해 조건을 조정
+            // 공정명 인덱스 순환을 위한 조정
             currentProcessIndex = (currentProcessIndex + 1) % (processNames.length + 1);
-            let processName = currentProcessIndex < processNames.length ? processNames[currentProcessIndex] : null;
-            filterAndDisplayData(processName); // 데이터 필터링 및 표시
-        }, 5000); // 30초마다 실행
+
+            // "모든 데이터"를 표시하고 최신화 필요성 확인
+            if (currentProcessIndex === 0) {
+                fetchAndUpdateData(); // 서버에서 최신 데이터를 가져와서 표시
+                // 여기서는 추가적인 조정 없이 자연스럽게 "용접"으로 넘어갈 것임
+            } else {
+                // 현재 공정명 결정
+                let processName = currentProcessIndex <= processNames.length ? processNames[currentProcessIndex - 1] : null;
+                filterAndDisplayData(processName);
+            }
+        }, 5000); // 5초마다 실행
     }
 
 </script>

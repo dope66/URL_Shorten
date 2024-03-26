@@ -315,10 +315,9 @@
         updateProcessDataImmediately();
 
         autoRefreshTimer = setInterval(() => {
-            // 공정명 인덱스 순환을 위한 조정
             currentProcessIndex = (currentProcessIndex + 1) % (processNames.length + 1);
             updateProcessData();
-        }, 10000); // 10초마다 순환
+        }, 30000); // 30초마다 순환
     }
 
     // 최초 실행을 위해 공정 데이터 업데이트 로직을 별도의 함수로 분리
@@ -329,15 +328,33 @@
     }
 
     // 공정 데이터 업데이트 로직을 처리하는 함수
+    let refreshTimer = null; // 데이터 최신화 타이머
+
+    function startRefreshTimer() {
+        // 기존 타이머가 있으면 초기화
+        if (refreshTimer !== null) clearInterval(refreshTimer);
+
+        // 5초마다 실행되는 타이머
+        refreshTimer = setInterval(() => {
+            let processName = currentProcessIndex === 0 ? null : processNames[currentProcessIndex - 1];
+            // 서버로부터 최신 데이터를 가져오는 로직을 호출
+            fetchAndUpdateData(false, () => {
+                filterAndDisplayData(processName);
+            });
+        }, 5000); // 5초마다 최신화
+    }
+
     function updateProcessData() {
         let processName = currentProcessIndex === 0 ? null : processNames[currentProcessIndex - 1];
 
-        // 서버로부터 최신 데이터를 가져와 업데이트
+        // 최신화 타이머 시작
+        startRefreshTimer();
+
+        // 현재 공정 데이터에 대한 최신화 로직 (첫 로드)
         fetchAndUpdateData(false, () => {
             filterAndDisplayData(processName);
-        });
+        });git
     }
-
 
 </script>
 <script>

@@ -467,7 +467,7 @@
     function aggregateDataByMonthAndProcess(data) {
         const result = data.reduce((acc, curr) => {
             const date = new Date(curr.productionDate);
-            const month = date.getUTCMonth() + 1;
+            const month = date.getMonth() + 1;
             const monthKey = `${month}월`;
             console.log('date',date);
             console.log('monthkey',monthKey);
@@ -485,9 +485,13 @@
 
         return transformToChartData(result);
     }
+    const fixedOrder = ['용접', '프레스', '보링', '레이져'];
 
     function transformToChartData(aggregatedData) {
-        const series = Object.keys(aggregatedData).map(processName => ({
+        // fixedOrder 배열에 정의된 순서대로 시리즈 정렬
+        const orderedSeriesNames = fixedOrder.filter(name => aggregatedData.hasOwnProperty(name));
+
+        const series = orderedSeriesNames.map(processName => ({
             name: processName,
             data: Object.entries(aggregatedData[processName]).map(([month, productionCount]) => ({
                 month,

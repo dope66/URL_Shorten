@@ -308,7 +308,6 @@
         }
         hot.loadData(filteredData); // Handsontable에 데이터 로드
     }
-
     function setupAutoRefresh() {
         if (autoRefreshTimer !== null) clearInterval(autoRefreshTimer);
 
@@ -316,16 +315,13 @@
             // 공정명 인덱스 순환을 위한 조정
             currentProcessIndex = (currentProcessIndex + 1) % (processNames.length + 1);
 
-            // "모든 데이터"를 표시하고 최신화 필요성 확인
-            if (currentProcessIndex === 0) {
-                fetchAndUpdateData(); // 서버에서 최신 데이터를 가져와서 표시
-                // 여기서는 추가적인 조정 없이 자연스럽게 "용접"으로 넘어갈 것임
-            } else {
+            // 서버에서 최신 데이터를 가져와서 표시
+            fetchAndUpdateData(false, () => {
                 // 현재 공정명 결정
-                let processName = currentProcessIndex <= processNames.length ? processNames[currentProcessIndex - 1] : null;
+                let processName = currentProcessIndex === 0 ? null : processNames[currentProcessIndex - 1];
                 filterAndDisplayData(processName);
-            }
-        }, 10000);
+            });
+        }, 5000);
     }
 
 </script>
@@ -334,23 +330,23 @@
     document.addEventListener('DOMContentLoaded', function () {
         fetchAndUpdateData();
     });
-
-    function fetchAndUpdateData() {
+    function fetchAndUpdateData(isInitialLoad = true, callback = null) {
         fetch(`/api/monitor/List`)
             .then(response => response.json())
             .then(data => {
                 originalData = data; // 원본 데이터 업데이트
-                createHandsontable(originalData); // Handsontable 생성
-                setupAutoRefresh(); // 자동 갱신 설정
+                if (isInitialLoad) {
+                    createHandsontable(originalData); // Handsontable 생성
+                    setupAutoRefresh(); // 자동 갱신 설정
+                }
+                if (callback) callback(); // 콜백 함수 실행
             })
             .catch(error => console.error('데이터 업데이트 중 오류 발생: ', error));
     }
+
     function createHandsontable(data) {
         const container = document.getElementById('monitoring-table');
-
         if (!hot) {
-
-
             hot = new Handsontable(container, {
                 cells: function (row, col, prop) {
                     var cellProperties = {};
@@ -517,7 +513,7 @@
                 }
             },
             title: {
-             text:"월별 공정명별 생산 수량",
+             text:"월별 생산량",
              font:{
                  color:"#FFFFFF"
              }

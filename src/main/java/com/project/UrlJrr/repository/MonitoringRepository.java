@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface MonitoringRepository extends JpaRepository<Monitoring, Long> {
-    @Query("SELECT m FROM Monitoring m WHERE m.productionDate >= :startOfDay AND m.productionDate < :nextDay")
+    @Query("SELECT m FROM Monitoring m WHERE m.productionDate >= :startOfDay AND m.productionDate < :nextDay ORDER BY m.id DESC")
     List<Monitoring> findAllToday(@Param("startOfDay") Date startOfDay, @Param("nextDay") Date nextDay);
 
 

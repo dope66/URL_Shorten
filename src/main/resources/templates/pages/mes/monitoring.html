@@ -256,11 +256,7 @@
         <div>
             <div id="monitoring-table" style="left: 100px;"></div>
         </div>
-        <hr>
         <div id="productionChart" class="chart-container"></div>
-
-
-
     </div>
 
     <footer class="footer text-center">
@@ -280,13 +276,33 @@
         setupButtonHandlers(); // 버튼 이벤트 핸들러 설정
 
     });
+    // function setupButtonHandlers() {
+    //     document.getElementById('searchButton1').addEventListener('click', () => filterAndDisplayData('용접', true));
+    //     document.getElementById('searchButton').addEventListener('click', () => filterAndDisplayData(null, true));
+    //
+    //     document.getElementById('searchButton2').addEventListener('click', () => filterAndDisplayData('프레스', true));
+    //     document.getElementById('searchButton3').addEventListener('click', () => filterAndDisplayData('보링', true));
+    //     document.getElementById('searchButton4').addEventListener('click', () => filterAndDisplayData('레이져', true));
+    // }
     function setupButtonHandlers() {
-        document.getElementById('searchButton1').addEventListener('click', () => filterAndDisplayData('용접', true));
-        document.getElementById('searchButton').addEventListener('click', () => filterAndDisplayData(null, true));
+        document.getElementById('searchButton1').addEventListener('click', () => handleProcessButtonClick('용접'));
+        document.getElementById('searchButton2').addEventListener('click', () => handleProcessButtonClick('프레스'));
+        document.getElementById('searchButton3').addEventListener('click', () => handleProcessButtonClick('보링'));
+        document.getElementById('searchButton4').addEventListener('click', () => handleProcessButtonClick('레이져'));
+        document.getElementById('searchButton').addEventListener('click', () => handleProcessButtonClick(null)); // 모든 데이터를 위한 버튼
+    }
+    function handleProcessButtonClick(processName) {
+        clearInterval(autoRefreshTimer); // 순환 중지
+        clearInterval(refreshTimer); // 기존 최신화 타이머 중지
+        currentProcessIndex = processNames.indexOf(processName); // 현재 공정 인덱스 업데이트
 
-        document.getElementById('searchButton2').addEventListener('click', () => filterAndDisplayData('프레스', true));
-        document.getElementById('searchButton3').addEventListener('click', () => filterAndDisplayData('보링', true));
-        document.getElementById('searchButton4').addEventListener('click', () => filterAndDisplayData('레이져', true));
+        // 선택된 공정에 대한 데이터만 최신화하는 로직 시작
+        refreshTimer = setInterval(() => {
+            fetchAndUpdateData(false, () => filterAndDisplayData(processName, true));
+        }, 5000); // 5초마다 최신화
+
+        // 즉시 해당 공정 데이터 로드
+        fetchAndUpdateData(false, () => filterAndDisplayData(processName, true));
     }
     function filterAndDisplayData(processName, isUserAction = false) {
         // 사용자의 직접적인 액션인 경우에만 자동 갱신을 중지
@@ -317,7 +333,7 @@
         autoRefreshTimer = setInterval(() => {
             currentProcessIndex = (currentProcessIndex + 1) % (processNames.length + 1);
             updateProcessData();
-        }, 30000); // 30초마다 순환
+        }, 15000); // 30초마다 순환
     }
 
     // 최초 실행을 위해 공정 데이터 업데이트 로직을 별도의 함수로 분리

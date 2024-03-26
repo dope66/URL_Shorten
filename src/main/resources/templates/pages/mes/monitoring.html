@@ -453,10 +453,7 @@
         fetch(`/api/worker/testList`)
             .then(response => response.json())
             .then(data => {
-                console.log("data",data);
                 const seriesData = aggregateDataByMonthAndProcess(data);
-                console.log("seriesData",seriesData);
-                console.log(JSON.stringify(seriesData, null, 2));
                 createChart(seriesData);
             })
             .catch(error => {
@@ -469,8 +466,6 @@
             const date = new Date(curr.productionDate);
             const month = date.getMonth() + 1;
             const monthKey = `${month}월`;
-            console.log('date',date);
-            console.log('monthkey',monthKey);
             const processName = curr.processName;
 
             if (!acc[processName]) {

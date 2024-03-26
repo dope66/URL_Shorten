@@ -254,7 +254,7 @@
             </div>
         </div>
         <div>
-            <div id="monitoring-table" style="left: 100px;"></div>
+            <div id="monitoring-table" style="left: 30px;"></div>
         </div>
         <div id="productionChart" class="chart-container"></div>
     </div>
@@ -276,14 +276,7 @@
         setupButtonHandlers(); // 버튼 이벤트 핸들러 설정
 
     });
-    // function setupButtonHandlers() {
-    //     document.getElementById('searchButton1').addEventListener('click', () => filterAndDisplayData('용접', true));
-    //     document.getElementById('searchButton').addEventListener('click', () => filterAndDisplayData(null, true));
-    //
-    //     document.getElementById('searchButton2').addEventListener('click', () => filterAndDisplayData('프레스', true));
-    //     document.getElementById('searchButton3').addEventListener('click', () => filterAndDisplayData('보링', true));
-    //     document.getElementById('searchButton4').addEventListener('click', () => filterAndDisplayData('레이져', true));
-    // }
+
     function setupButtonHandlers() {
         document.getElementById('searchButton1').addEventListener('click', () => handleProcessButtonClick('용접'));
         document.getElementById('searchButton2').addEventListener('click', () => handleProcessButtonClick('프레스'));
@@ -402,7 +395,7 @@
                     return cellProperties;
                 },
                 className: "htCenter",
-                colWidths: [200, 200, 200, 200, 200, 200, 200],
+                colWidths: [220, 220, 220, 220, 210, 220, 220],
                 rowHeights: 30,
                 licenseKey: 'non-commercial-and-evaluation',
                 data: data,

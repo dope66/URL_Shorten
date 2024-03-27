@@ -447,7 +447,9 @@
 <script>
     $(document).ready(function() {
         fetchChartList();
+        setInterval(fetchChartList, 30000);
     });
+
 
     function fetchChartList(){
         fetch(`/api/worker/testList`)

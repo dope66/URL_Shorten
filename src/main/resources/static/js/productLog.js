@@ -61,7 +61,7 @@ function createHandsontable(data) {
             return cellProperties;
         },
         className: "htCenter",
-        colWidths: [100, 100, 180, 200, 100, 80], // 각 열의 너비를 픽셀 단위로 설정
+        colWidths: [270, 270, 270, 270, 270, 270], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data:data,
@@ -74,7 +74,7 @@ function createHandsontable(data) {
             {data: 'production', readOnly: true, className: "htCenter"},
             {data: 'workerName', readOnly: true, className: "htCenter"}
         ],
-        height: 300,
+        height: 700,
         columnSorting: true, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
         manualRowMove: true, // 행 이동 활성화

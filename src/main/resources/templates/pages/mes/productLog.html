@@ -35,9 +35,23 @@
             align-content: center;
             margin: auto;
         }
+
         .htCenter {
             text-align: center;
             vertical-align: middle;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* 이 부분이 변경되었습니다. */
+            width: 100%;
+        }
+
+        .left-link {
+            text-decoration: none;
+            color: #FFFFFF;
+            text-align: left;
         }
     </style>
 </head>
@@ -227,32 +241,18 @@
         </div>
     </aside>
     <div class="page-wrapper">
-        <div class="row page-titles">
-            <div class="col-md-5 col-12 align-self-center">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <h2><a href="/mes/productLog" style="text-decoration: none; color: #FFFFFF;">생산일지</a></h2>
-                    </li>
-                </ol>
+
+        <div class="flex-container">
+            <h2><a href="/mes/productLog" style="text-decoration: none; color: #FFFFFF;">생산일지</a></h2>
+            <div id="search-header">
+                <input type="date" id="start-date" placeholder="시작일">
+                <input type="date" id="end-date" placeholder="종료일">
+                <input type="text" id="search-input" placeholder="검색어 입력">
+                <button onclick="performSearch()" class="search">검색</button>
+                <button onclick="openPopup()" class="register">일지 등록</button>
             </div>
         </div>
-
-        <div class="container-fluid">
-            <div class="widget-content searchable-container list">
-            </div>
-            <div class="card card-body">
-                <div class="table-responsive">
-                    <div id="search-header">
-                        <input type="date" id="start-date" placeholder="시작일">
-                        <input type="date" id="end-date" placeholder="종료일">
-                        <input type="text" id="search-input" placeholder="검색어 입력">
-                        <button onclick="performSearch()" class="search">검색</button><button onclick="openPopup()" class="register">일지 등록</button>
-                    </div>
-                    <div id="product-log"></div>
-
-                </div>
-            </div>
-        </div>
+        <div id="product-log"></div>
 
     </div>
 
@@ -267,7 +267,6 @@
 <script src="/js/productLog.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-
 
 
 <script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>

@@ -54,7 +54,7 @@ function createHandsontable(data) {
             return cellProperties;
         },
         className: "htCenter",
-        colWidths: [270, 270, 270, 270, 270, 270], // 각 열의 너비를 픽셀 단위로 설정
+        colWidths: [270, 270, 270, 270, 270, 260], // 각 열의 너비를 픽셀 단위로 설정
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data: data,

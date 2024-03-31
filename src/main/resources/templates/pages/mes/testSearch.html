@@ -46,6 +46,10 @@
 
 
     <style>
+        input::placeholder {
+            color: #2f2f2f;
+            opacity: 1;
+        }
 
         #test-search-container {
             display: flex;
@@ -73,6 +77,31 @@
             width: auto;
             height: 34px;
         }
+
+        .left-link {
+            text-decoration: none;
+            color: #FFFFFF;
+            text-align: left;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between; /* 좌측과 우측 요소를 양 끝으로 정렬 */
+            align-items: flex-start; /* 상단 정렬 */
+            width: 100%;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto; /* 2열 그리드 */
+            gap: 10px; /* 그리드 항목 간의 간격 */
+            align-items: center; /* 항목을 세로 중앙에 정렬 */
+        }
+
+        .grid-container > div {
+            /* 선택적: 각 div 스타일링 */
+        }
+
     </style>
 </head>
 <body>
@@ -262,81 +291,96 @@
         </div>
     </aside>
     <div class="page-wrapper">
-        <div class="row page-titles">
-            <div class="col-md-5 col-12 align-self-center">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <h2><a href="/mes/testSearch" style="text-decoration: none; color: #FFFFFF;">조회 검색</a></h2>
-                    </li>
-                </ol>
-            </div>
-        </div>
+        <div class="flex-container">
+            <h2><a href="/mes/testSearch" class="left-link" style="text-decoration: none; color: #FFFFFF;">조회 검색</a>
+            </h2>
 
-        <div class="container-fluid">
-            <div class="widget-content searchable-container list">
-            </div>
-            <div class="card card-body">
-                <div class="table-responsive">
-                    <div id="test-search-container">
-                        <label for="startDate">
-                            <input type="text" readonly th:value="기간" style="width: 100px">
-                            <input type="date" id="startDate"> ~ <input type="date" id="endDate">
-                        </label>
-                        <label for="search-processName">
-                            <input type="text" readonly th:value="공정명" style="width: 100px">
-                            <select type="text" id="search-processName"></select></label>
-                        <label for="search-equipmentName">
-                            <input type="text" readonly th:value="호기" style="width: 100px">
-                            <select type="text" id="search-equipmentName"></select></label><br>
-                        <label for="search-workerName">
-                            <input type="text" readonly th:value="공정원" style="width: 100px">
-                            <select type="text" id="search-workerName"></select></label>
-                        <label for="searchButton">
-                            <button id="searchButton" class="search">검색</button>
-                        </label>
-                        <label for="total-search">
-                            <button id="total-search" class="total-search">전체 검색</button>
-                        </label>
-                        <label for="exportButton">
-                            <button id="exportButton" class="exportButton"></button>
-                        </label>
-                    </div>
-                    <hr>
-                    <div id="search-test-detail">
-                        <label>
-                            <input type="text" readonly th:value="공정" style="width: 100px">
-                            <input type="text" readonly id="searched-processName">
-                        </label>
-                        <label>
-                            <input type="text" readonly th:value="호기" style="width: 100px">
-                            <input type="text" readonly id="searched-equipmentName">
-                        </label>
-                        <label>
-                            <input type="text" readonly th:value="공정원" style="width: 100px">
-                            <input type="text" readonly id="searched-workerName">
-                        </label>
-                        <label>
-                            <input type="text" readonly th:value="생산량" style="width: 100px">
-                            <input type="text" readonly id="searched-production">
-                        </label>
-                        <label>
-                            <input type="text" readonly th:value="불량수량" style="width: 100px">
-                            <input type="text" readonly id="searched-defeatCount">
-                        </label>
-
-                    </div>
-
-
-
-                    <div id="progressBar"></div>
-                    <div id="listContainer"></div>
-                    <div id="test-list"></div>
-                    <hr>
-                    <div id="productionChart" style="width: 100%; height: 440px;"></div>
+            <div class="grid-container">
+                <div>
+                    <label for="startDate">
+                        <input type="text" readonly th:value="기간" style="width: 100px">
+                        <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+                    </label>
+                </div>
+                <div>
+                    <label for="search-processName">
+                        <input type="text" readonly th:value="공정명" style="width: 100px">
+                        <select type="text" id="search-processName"></select>
+                    </label>
+                </div>
+                <div>
+                    <label for="search-equipmentName">
+                        <input type="text" readonly th:value="호기" style="width: 100px">
+                        <select type="text" id="search-equipmentName"></select>
+                    </label>
+                    <label for="search-workerName">
+                        <input type="text" readonly th:value="공정원" style="width: 100px">
+                        <select type="text" id="search-workerName"></select>
+                    </label>
+                </div>
+                <div>
+                    <label for="searchButton">
+                        <button id="searchButton" class="search">검색</button>
+                    </label>
+                    <label for="total-search">
+                        <button id="total-search" class="total-search">전체 검색</button>
+                    </label>
 
                 </div>
+                <div>
+                    <label>
+                        <input type="text" readonly id="searched-processName" placeholder="공정">
+                    </label>
+                </div>
+                <div>
+                    <label>
+
+                        <input type="text" readonly id="searched-equipmentName" placeholder="호기">
+                    </label>
+
+                </div>
+                <div>
+                    <label>
+
+                        <input type="text" readonly id="searched-workerName" placeholder="공정원">
+                    </label>
+                </div>
+                <div>
+                    <label>
+
+                        <input type="text" readonly id="searched-production" placeholder="생산 수량">
+                    </label>
+                </div>
+                <div>
+
+                    <label>
+                        <input type="text" readonly id="searched-defeatCount" placeholder="불량수량">
+                    </label>
+
+                </div>
+
             </div>
+            <label for="exportButton">
+                <button id="exportButton" class="exportButton"></button>
+            </label>
+            <!--            <div id="test-search-container" style="text-align: right;">-->
+            <!--            </div>-->
+            <div id="search-test-detail" style="text-align: right;">
+
+
+            </div>
+
+
         </div>
+
+        <div class="table-responsive">
+            <div id="progressBar"></div>
+            <div id="listContainer"></div>
+            <div id="test-list"></div>
+            <hr>
+            <div id="productionChart" style="width: 100%;"></div>
+        </div>
+
 
     </div>
 
@@ -347,23 +391,6 @@
 </div>
 <script>
 
-
-
-
-    // function createChartWithFilteredData(data, criteria) {
-    //     const filteredData = filterData(data, criteria);
-    //     const aggregatedData = aggregateDataByMonth(filteredData);
-    //     createDevExpressChart(aggregatedData);
-    // }
-    //
-    // function prepareChartData(filteredData) {
-    //     // 이 함수는 'filteredData'를 차트에 적합한 형식으로 변환해야 합니다.
-    //     // 예제 변환:
-    //     return filteredData.map(item => ({
-    //         argumentField: item.processName, // 예를 들어, processName으로 분류하고자 할 때
-    //         valueField: item.productionCount // productionCount를 시각화하고자 하는 경우
-    //     }));
-    // }
     function aggregateDataByMonth(filteredData) {
         // 1월부터 12월까지 모든 월에 대해 초기 생산량을 0으로 설정
         const aggregatedData = {
@@ -380,7 +407,6 @@
             '11월': {month: '11월', productionCount: 0},
             '12월': {month: '12월', productionCount: 0},
         };
-
         // 필터링된 데이터를 이용하여 각 월의 생산량을 업데이트
         filteredData.forEach(item => {
             const productionDate = new Date(item.productionDate);
@@ -391,13 +417,16 @@
                 aggregatedData[monthKey].productionCount += item.productionCount; // 생산량 집계
             }
         });
-
         // 객체를 배열로 변환하여 반환
         return Object.values(aggregatedData);
     }
+
     function createDevExpressChart(chartData) {
         $("#productionChart").dxChart({
             dataSource: chartData,
+            size: {
+                height: 300
+            },
             series: [{
                 argumentField: "month", // x축을 나타내는 필드
                 valueField: "productionCount", // y축(값)을 나타내는 필드
@@ -467,7 +496,7 @@
     $("#exportButton").dxButton({
         icon: "far fa-file-excel",
         text: "조회 검색 데이터 내보내기",
-        onClick: function() {
+        onClick: function () {
             // 파일명을 사용자에게 입력받습니다.
             let fileName = prompt("다운로드할 파일의 이름을 입력하세요.", "조회검색");
             if (fileName) {
@@ -489,9 +518,9 @@
         fileName = fileName.replace(/\..+$/, '') + '.xlsx';
 
         // 엑셀 파일 생성 및 저장
-        workbook.xlsx.writeBuffer().then(function(buffer) {
+        workbook.xlsx.writeBuffer().then(function (buffer) {
             saveAs(new Blob([buffer]), fileName);
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error('엑셀 파일 내보내기 중 오류가 발생했습니다: ', error);
             alert('엑셀 파일 내보내기에 실패했습니다.');
         });

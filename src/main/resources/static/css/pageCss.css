@@ -1,7 +1,9 @@
 input[readonly] {
     background-color: #CCCCCC; /* 변경하고자 하는 배경색 지정 */
     height: 31px;
+    color: #333333; /* 텍스트 색상 변경 */
 }
+
 .search{
     color: #fff;
     background-color: #3672f4;

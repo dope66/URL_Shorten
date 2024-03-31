@@ -29,7 +29,22 @@
     <![endif]-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <style>
 
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* 이 부분이 변경되었습니다. */
+            width: 100%;
+        }
+
+        .left-link {
+            text-decoration: none;
+            color: #FFFFFF;
+            text-align: left;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="preloader">
@@ -217,28 +232,17 @@
         </div>
     </aside>
     <div class="page-wrapper">
-        <div class="row page-titles">
-            <div class="col-md-5 col-12 align-self-center">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <h2><a href="/mes/home" style="text-decoration: none; color: #FFFFFF;">작업자 생산 지시</a></h2>
-                    </li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="container-fluid">
-            <div class="widget-content searchable-container list">
-            </div>
-            <div class="card card-body">
-                <div class="table-responsive">
-                    <div id="productionOrder-table">
-                        <button id="movePageButton" class="search">초중종물 검사 실행</button>
-                        <div id="productionOrder-list"></div>
-                    </div>
+        <div class="flex-container">
+                        <h2><a href="/mes/home" class="left-link"  style="text-decoration: none; color: #FFFFFF;">작업자 생산 지시</a></h2>
+            <div class="table-responsive">
+                <div id="productionOrder-table" style="text-align: right; margin-right: 20px">
+                    <button id="movePageButton" class="search">초중종물 검사 실행</button>
                 </div>
             </div>
         </div>
+
+
+        <div id="productionOrder-list"></div>
 
     </div>
 

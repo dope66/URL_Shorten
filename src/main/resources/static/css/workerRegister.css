@@ -3,19 +3,19 @@ h2 {
 }
 #worker-container {
     display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
+    justify-content: right; /* 수평 가운데 정렬 */
     align-items: flex-start; /* 수직 상단 정렬 */
 }
 
 #form-container {
-    width: 50%;
+    width: auto;
     padding: 0 10px; /* 좌우 여백 추가 */
     box-sizing: border-box; /* padding 값이 요소의 전체 너비에 포함되도록 함 */
 }
 
 #image-container {
 
-    width: 50%; /* 화면 전체 너비를 차지하도록 변경 */
+    width: auto;
     height: 300px;
     display: flex;
     align-items: center;
@@ -83,8 +83,7 @@ a {
 }
 
 #employee-Table-container {
-    margin: 0 auto;
-    max-width: 770px; /* 최대 너비 600px로 설정 */
+    max-width: 1680px;
 
 }
 #registerButton{

@@ -240,9 +240,10 @@
         <div class="container-fluid" style="min-height: auto; padding: 10px 30px;">
             <div class="row page-titles">
 
-             <h1 style="text-align: center;"><a href="/mes/monitoring" style=" text-decoration: none;  color: #FFFFFF;">
-                 <img src="/static/image/p-01.png" loading="lazy" style="width: 50px;height: 50px;"/>
-                 생산공정 모니터링</a></h1>
+                <h1 style="text-align: center;"><a href="/mes/monitoring"
+                                                   style=" text-decoration: none;  color: #FFFFFF;">
+                    <img src="/static/image/p-01.png" loading="lazy" style="width: 50px;height: 50px;"/>
+                    생산공정 모니터링</a></h1>
                 <div>
                     <h2 id="date" style="margin-bottom: 0; text-align: right;">날짜</h2>
                     <h2 id="time" style="margin-top: 0; text-align: right;">시간</h2>
@@ -287,6 +288,7 @@
         document.getElementById('searchButton4').addEventListener('click', () => handleProcessButtonClick('레이져'));
         document.getElementById('searchButton').addEventListener('click', () => handleProcessButtonClick(null)); // 모든 데이터를 위한 버튼
     }
+
     function handleProcessButtonClick(processName) {
         clearInterval(autoRefreshTimer); // 순환 중지
         clearInterval(refreshTimer); // 기존 최신화 타이머 중지
@@ -300,6 +302,7 @@
         // 즉시 해당 공정 데이터 로드
         fetchAndUpdateData(false, () => filterAndDisplayData(processName, true));
     }
+
     function filterAndDisplayData(processName, isUserAction = false) {
         // 사용자의 직접적인 액션인 경우에만 자동 갱신을 중지
         if (isUserAction) {
@@ -320,6 +323,7 @@
         }
         hot.loadData(filteredData); // Handsontable에 데이터 로드
     }
+
     function setupAutoRefresh() {
         if (autoRefreshTimer !== null) clearInterval(autoRefreshTimer);
 
@@ -374,6 +378,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         fetchAndUpdateData();
     });
+
     function fetchAndUpdateData(isInitialLoad = true, callback = null) {
         fetch(`/api/monitor/List`)
             .then(response => response.json())
@@ -445,13 +450,13 @@
     }
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         fetchChartList();
         setInterval(fetchChartList, 30000);
     });
 
 
-    function fetchChartList(){
+    function fetchChartList() {
         fetch(`/api/worker/testList`)
             .then(response => response.json())
             .then(data => {
@@ -482,6 +487,7 @@
 
         return transformToChartData(result);
     }
+
     const fixedOrder = ['용접', '프레스', '보링', '레이져'];
 
     function transformToChartData(aggregatedData) {
@@ -512,6 +518,7 @@
         });
         return transformedData;
     }
+
     function createChart(seriesData) {
         const transformedData = transformDataForChart(seriesData);
         $("#productionChart").dxChart({
@@ -527,7 +534,7 @@
             },
             seriesTemplate: {
                 nameField: "processName",
-                customizeSeries: function(valueFromNameField) {
+                customizeSeries: function (valueFromNameField) {
                     return {
                         valueField: "productionCount"
                     };
@@ -535,20 +542,20 @@
             },
             argumentAxis: {
                 // title: "월",
-                title:{
-                  text:"월",
-                    font:{
-                        color:"#FFFFFF"
+                title: {
+                    text: "월",
+                    font: {
+                        color: "#FFFFFF"
                     }
                 },
                 categories: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
 
             },
             valueAxis: {
-                title:{
-                    text:"생산 수량",
-                    font:{
-                        color:"#FFFFFF"
+                title: {
+                    text: "생산 수량",
+                    font: {
+                        color: "#FFFFFF"
                     }
                 }
             },
@@ -556,15 +563,15 @@
                 verticalAlignment: "top",
                 horizontalAlignment: "right",
                 itemTextPosition: "right",
-                font:{
-                    color:"#FFFFFF"
+                font: {
+                    color: "#FFFFFF"
                 }
             },
             title: {
-             text:"월별 생산량",
-             font:{
-                 color:"#FFFFFF"
-             }
+                text: "월별 생산량",
+                font: {
+                    color: "#FFFFFF"
+                }
             },
 
         });

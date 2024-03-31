@@ -3,7 +3,6 @@
 .file-upload-container {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 .custom-excel-file-upload {
     cursor: pointer;

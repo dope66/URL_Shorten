@@ -296,6 +296,16 @@
 
 <script>
     // 기존에 양식이 있는 Excel 파일을 로드하고 수정하는 함수
+    function formatDateToYYYYMMDD(dateString) {
+        const date = new Date(dateString);
+        const formattedDate = date.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).replace(/\. /g, '-').replace(/\./g, '');
+
+        return formattedDate;
+    }
     async function loadAndModifyExcelTemplate(selectedRow) {
         var workbook = new ExcelJS.Workbook();
 
@@ -315,11 +325,11 @@
 
             // 첫 번째 워크시트 접근
             var worksheet = workbook.getWorksheet(1);
-
+            const formattedDate = formatDateToYYYYMMDD(selectedRow.workDate);
             worksheet.getCell('A1').value = selectedRow.productionType;
             worksheet.getCell('A11').value = selectedRow.productionNumber;
             worksheet.getCell('E5').value = selectedRow.productionName;
-            worksheet.getCell('H3').value = selectedRow.workDate;
+            worksheet.getCell('H3').value = formattedDate;
             worksheet.getCell('G11').value = selectedRow.production;
             worksheet.getCell('K9').value = selectedRow.workerName;
             // 사용자에게 수정된 Excel 파일 제공

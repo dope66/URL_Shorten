@@ -21,14 +21,23 @@
     <link rel="stylesheet" href="/css/workerRegister.css">
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/pageCss.css">
+    <link rel="stylesheet" href="/css/excelInputCustom.css">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
 
     <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
     <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.6/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.6/js/dx.all.js"></script>
+
     <style>
         #product-log {
             width: 100%;
@@ -53,6 +62,15 @@
             color: #FFFFFF;
             text-align: left;
         }
+
+        .exportButton {
+            background-color: #3672f4;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -250,6 +268,7 @@
                 <input type="text" id="search-input" placeholder="검색어 입력">
                 <button onclick="performSearch()" class="search">검색</button>
                 <button onclick="openPopup()" class="register">일지 등록</button>
+                <button id="exportButton" class="exportButton"></button>
             </div>
         </div>
         <div id="product-log"></div>
@@ -263,13 +282,64 @@
 </div>
 
 </div>
+<script>
+    $("#exportButton").dxButton({
+        icon: "far fa-file-excel",
+        text: "생산일지 내보내기",
+        onClick: function () {
+            loadAndModifyExcelTemplate(selectedRow); // 여기서 selectedRow는 사용자가 선택한 행의 데이터입니다.
+        }
+    });
+
+
+</script>
+
+<script>
+    // 기존에 양식이 있는 Excel 파일을 로드하고 수정하는 함수
+    async function loadAndModifyExcelTemplate(selectedRow) {
+        var workbook = new ExcelJS.Workbook();
+
+        try {
+            // 예시: 서버에 저장된 Excel 파일을 ArrayBuffer 형태로 가져오는 코드
+            // 실제로는 파일을 가져오는 방법에 따라 코드가 달라질 수 있습니다.
+            const response = await fetch('/static/excel/생산일지.xlsx', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                },
+            });
+            const arrayBuffer = await response.arrayBuffer();
+
+            // ArrayBuffer를 사용하여 Workbook 로드
+            await workbook.xlsx.load(arrayBuffer);
+
+            // 첫 번째 워크시트 접근
+            var worksheet = workbook.getWorksheet(1);
+
+            worksheet.getCell('A1').value = selectedRow.productionType;
+            worksheet.getCell('A11').value = selectedRow.productionNumber;
+            worksheet.getCell('E5').value = selectedRow.productionName;
+            worksheet.getCell('H3').value = selectedRow.workDate;
+            worksheet.getCell('G11').value = selectedRow.production;
+            worksheet.getCell('K9').value = selectedRow.workerName;
+            // 사용자에게 수정된 Excel 파일 제공
+            workbook.xlsx.writeBuffer().then(function(buffer) {
+                saveAs(new Blob([buffer], {type: "application/octet-stream"}), "생산일지.xlsx");
+            });
+        } catch (error) {
+            console.error('Error loading or modifying the Excel file', error);
+        }
+    }
+
+</script>
+
 <script src="/js/sideBar.js"></script>
 <script src="/js/productLog.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
 
 
-<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>
+<!--<script src="/static/dist/libs/jquery/dist/jquery.min.js"></script>-->
 <script src="/static/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/dist/js/app.init.dark.js"></script>

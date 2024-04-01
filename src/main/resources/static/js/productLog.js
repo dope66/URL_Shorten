@@ -65,16 +65,34 @@ function createHandsontable(data) {
         rowHeights: 30, // 모든 행의 높이를 픽셀 단위로 설정
         licenseKey: 'non-commercial-and-evaluation',
         data:data,
-        colHeaders: [ '차종', '작업날짜', '품번', '품명', '생산량', '생산자'],
+        colHeaders: [ '차종',  '품번', '품명', '작업날짜','생산량', '생산자'],
         columns: [
             {data: 'productionType', readOnly: true, className: "htCenter"},
-            {data: 'workDate', readOnly: true ,renderer: dateRenderer, className: "htCenter"},
             {data: 'productionNumber', readOnly: true, className: "htCenter"},
             {data: 'productionName', readOnly: true, className: "htCenter"},
+            {data: 'workDate', readOnly: true ,renderer: dateRenderer, className: "htCenter"},
             {data: 'production', readOnly: true, className: "htCenter"},
             {data: 'workerName', readOnly: true, className: "htCenter"}
         ],
         height: 700,
+        afterSelection: function(r, c, r2, c2) {
+            this.render(); // Handsontable 인스턴스를 다시 렌더링하여 스타일을 초기화합니다.
+
+            selectedRow = this.getSourceDataAtRow(r);
+            console.log("selectedRow",selectedRow);
+            this.updateSettings({
+                cells: function(row, col) {
+                    var cellProperties = {};
+                    if(row === r) {
+                        cellProperties.renderer = function(instance, td, row, col, prop, value, cellProperties) {
+                            Handsontable.renderers.TextRenderer.apply(this, arguments);
+                            td.style.backgroundColor = '#9acee3'; // 선택한 행의 배경색 변경
+                        };
+                    }
+                    return cellProperties;
+                }
+            });
+        },
         columnSorting: true, // 정렬 활성화
         contextMenu: false, // 우클릭 메뉴 활성화
         manualRowMove: true, // 행 이동 활성화

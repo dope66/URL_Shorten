@@ -292,7 +292,7 @@
             <h2><a href="/mes/testSearch" class="left-link" style="text-decoration: none; color: #FFFFFF;">조회 검색</a>
             </h2>
 
-            <div class="grid-container" style="padding:10px">
+            <div class="grid-container" style="margin-right: 10px">
                 <div>
                     <div>
                         <label for="startDate">
@@ -362,18 +362,12 @@
                             <input type="text" readonly th:value="불량수량" style="width: 100px">
                             <input type="text" readonly id="searched-defeatCount">
                         </label>
-
-
                     </div>
                 </div>
-
-
             </div>
-
         </div>
 
         <div class="table-responsive">
-            <div id="progressBar"></div>
             <div id="listContainer"></div>
             <div id="test-list"></div>
             <hr>
@@ -424,7 +418,7 @@
         $("#productionChart").dxChart({
             dataSource: chartData,
             size: {
-                height: 300,
+                height: 280,
                 width:1600
             },
             series: [{
@@ -462,7 +456,12 @@
             legend: {
                 visible: true
             },
-            title: "생산 개요",
+            title: {
+                text:"월별 생산량",
+                font:{
+                    color:"#FFFFFF"
+                }
+            },
             tooltip: {
                 enabled: true,
                 customizeTooltip: function (arg) {

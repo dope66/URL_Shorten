@@ -69,18 +69,6 @@ public class UserService {
     }
 
 
-    //모든 이메일
-    public List<String> getAllUserEmails() {
-        List<User> users = userRepository.findAll();
-        List<String> userEmails = new ArrayList<>();
-
-        for (User user : users) {
-            userEmails.add(user.getEmail());
-        }
-
-        return userEmails;
-    }
-
     // 구독한 이메일
     public List<String> getSubScribeEmail() {
         List<User> users = userRepository.findBySubScribe(true);

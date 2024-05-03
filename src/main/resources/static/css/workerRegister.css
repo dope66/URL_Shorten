@@ -1,0 +1,106 @@
+h2 {
+    text-align: center;
+}
+#worker-container {
+    display: flex;
+    justify-content: right; /* 수평 가운데 정렬 */
+    align-items: flex-start; /* 수직 상단 정렬 */
+}
+
+#form-container {
+    width: auto;
+    padding: 0 10px; /* 좌우 여백 추가 */
+    box-sizing: border-box; /* padding 값이 요소의 전체 너비에 포함되도록 함 */
+}
+
+#image-container {
+
+    width: auto;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+#preview-image {
+
+    align-content: end;
+    object-fit: contain;
+    width: 300px;
+    height: 100%;
+}
+
+#worker-register-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+select {
+    width: 190px;
+}
+input {
+    height: 31px;
+    width: 190px
+}
+input[readonly] {
+    background-color: #CCCCCC; /* 변경하고자 하는 배경색 지정 */
+    height: 31px;
+}
+
+#worker-register-form label {
+    margin-bottom: 10px;
+    width: 100%; /* 라벨의 너비를 100%로 설정하여 부모 요소에 꽉 차도록 함 */
+}
+
+#worker-register-form label:last-child {
+    margin-bottom: 0; /* 마지막 라벨의 마진을 제거하여 폼 요소들 사이의 간격을 일정하게 유지 */
+}
+
+#modify-container{
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: flex-start; /* 수직 상단 정렬 */
+}
+
+#modify-container label {
+    margin-bottom: 10px;
+    width: 100%; /* 라벨의 너비를 100%로 설정하여 부모 요소에 꽉 차도록 함 */
+}
+
+#modify-container label:last-child {
+    margin-bottom: 0; /* 마지막 라벨의 마진을 제거하여 폼 요소들 사이의 간격을 일정하게 유지 */
+}
+
+a {
+    text-decoration: none;
+}
+
+.form-Name {
+    text-align: center;
+    width: 100px;
+    height: 25px;
+}
+
+#employee-Table-container {
+    max-width: 1680px;
+
+}
+#registerButton{
+    width: 100px;
+    background-color: #028800; border-color: #3cc430; color: #FFFFFF;
+    border-radius: 5px;
+}
+
+#navigation-container{
+    height: 48px;
+}
+#employee-search{
+    padding: 10px;
+}
+/*#searchWorkerButton, #wholeSearchWorkerButton{*/
+/*    color: #fff;*/
+/*    background-color: #5595d7;*/
+/*    border-color: #9acee3;*/
+
+/*}*/

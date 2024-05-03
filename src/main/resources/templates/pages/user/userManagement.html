@@ -40,6 +40,9 @@
     <![endif]-->
 </head>
 <style>
+    .center-align{
+        text-align:center;
+    }
     /* 페이지 목록 스타일 */
     #page-list {
         display: flex;
@@ -365,9 +368,9 @@
                         <a
                                 aria-expanded="false"
                                 class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="https://velog.io/@devjuneh_66"
+                                href="/mes/productLog"
                         ><i class="mdi mdi-blogger"></i
-                        ><span class="hide-menu">블로그</span></a
+                        ><span class="hide-menu">MES 시스템</span></a
                         >
                     </li>
                     <li class="sidebar-item">
@@ -726,12 +729,16 @@
                     const userId= user.id;
                     const username = document.createElement('td');
                     username.textContent = user.username;
+                    username.classList.add('center-align')
                     const email = document.createElement('td');
                     email.textContent = user.email;
+                    email.classList.add('center-align')
                     const experience = document.createElement('td');
                     experience.textContent = user.experience;
+                    experience.classList.add('center-align')
                     const roles = document.createElement('td');
                     roles.textContent = user.roles;
+                    roles.classList.add('center-align')
                     const deleteUser = document.createElement('td');
 
                     // roles이 'ADMIN'이 아닌 경우에만 삭제 버튼 생성

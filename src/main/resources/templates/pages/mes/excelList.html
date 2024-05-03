@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DataGrid Example</title>
+
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.2.4/css/dx.light.css">
+    <script src="https://cdn3.devexpress.com/jslib/21.2.4/js/dx.all.js"></script>
+    <!-- ExcelJS 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <!-- FileSaver.js 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+</head>
+</head>
+
+<body>
+<div id="gridContainer"></div>
+
+<script>
+    $(function(){
+        DevExpress.config({
+            forceIsoDateParsing: true,
+        });
+
+        $("#gridContainer").dxDataGrid({
+            dataSource: '/api/excel/list',
+            loadPanel: {
+                enabled: true
+            },
+            columns: [
+                // Column configuration based on your data structure
+                { dataField: 'productionLine', caption: '생산라인' },
+                { dataField: 'vehicleType', caption: '차종' },
+                { dataField: 'partNumber', caption: '품번' },
+                { dataField: 'partName', caption: '품명' },
+                { dataField: 'productionFacility; ', caption: '생산설비' },
+                { dataField: 'processName; ', caption: '공정명' },
+                { dataField: 'processNumber; ', caption: '공정번호' },
+                { dataField: 'equipmentName; ', caption: '설비명' },
+                { dataField: 'equipmentNumber; ', caption: '설비번호' },
+
+            ],
+            export: {
+                enabled: true,
+                fileName: "exported_data",
+                allowExportSelectedData: true
+            },
+            onExporting: function(e) {
+                var workbook = new ExcelJS.Workbook();
+                var worksheet = workbook.addWorksheet('Main sheet');
+
+                DevExpress.excelExporter.exportDataGrid({
+                    component: e.component,
+                    worksheet: worksheet,
+                    autoFilterEnabled: true
+                }).then(function() {
+                    workbook.xlsx.writeBuffer().then(function(buffer) {
+                        saveAs(new Blob([buffer], { type: "application/octet-stream" }), "DataGrid.xlsx");
+                    });
+                });
+                e.cancel = true;
+            },
+            paging: {
+                pageSize: 10
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [5, 10, 20],
+                showInfo: true
+            },
+            filterRow: { visible: true },
+            groupPanel: { visible: true },
+            grouping: {
+                autoExpandAll: true,
+            },
+            allowColumnReordering: true,
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            columnChooser: {
+                enabled: true
+            },
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Search..."
+            },
+        });
+    });
+</script>
+</body>
+</html>

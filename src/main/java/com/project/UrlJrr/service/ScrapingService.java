@@ -247,41 +247,32 @@ public class ScrapingService{
         return scraps;
     }
 
-    public Page<Scrap> showListScrap(Pageable pageable) {
-        return scrapRepository.findAll(pageable);
-    }
+//    public List<Scrap> scrapList() {
+//        return scrapRepository.findAll();
+//    }
+//    public int calculateUnsentCount(List<Scrap> allScraps) {
+//        int unsentCount = 0;
+//        for (Scrap scrap : allScraps) {
+//            if (!scrap.isSent()) {
+//                unsentCount++;
+//            }
+//        }
+//        return unsentCount;
+//    }
 
-    public Page<Scrap> scrapSearchList(String search, Pageable pageable) {
-        return scrapRepository.findByArticleTextContainingOrCompanyContaining(search, search, pageable);
+//    public long findMaxId(List<Scrap> allScraps) {
+//        long maxId = 0;
+//        for (Scrap scrap : allScraps) {
+//            if (scrap.getId() > maxId) {
+//                maxId = scrap.getId();
+//            }
+//        }
+//        return maxId;
+//    }
 
-    }
-
-    public List<Scrap> scrapList() {
-        return scrapRepository.findAll();
-    }
-    public int calculateUnsentCount(List<Scrap> allScraps) {
-        int unsentCount = 0;
-        for (Scrap scrap : allScraps) {
-            if (!scrap.isSent()) {
-                unsentCount++;
-            }
-        }
-        return unsentCount;
-    }
-
-    public long findMaxId(List<Scrap> allScraps) {
-        long maxId = 0;
-        for (Scrap scrap : allScraps) {
-            if (scrap.getId() > maxId) {
-                maxId = scrap.getId();
-            }
-        }
-        return maxId;
-    }
-
-    public int calculateDeletedCount(long maxId, int scrapTableSize) {
-        return (int) (maxId - scrapTableSize);
-    }
+//    public int calculateDeletedCount(long maxId, int scrapTableSize) {
+//        return (int) (maxId - scrapTableSize);
+//    }
 
 >>>>>>> 51a2909ee3daae4d46c9e325020b144458a80f17
 
@@ -293,5 +284,9 @@ public class ScrapingService{
         return scrapRepository.count(); // Scrap 테이블의 총 레코드 수를 반환
     }
 
+    public Page<Scrap> findByTitleContaining(String title, Pageable pageable) {
+
+        return scrapRepository.findByArticleTextContaining(title, pageable);
+    }
 }
 

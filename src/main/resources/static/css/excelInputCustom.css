@@ -1,0 +1,42 @@
+
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+}
+.custom-excel-file-upload {
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width:119px;
+    height: 34px;
+    text-align: center;
+    font-size:17px;
+}
+.custom-excel-file-upload:hover{
+    background-color: white; /* 호버 시 배경색 */
+}
+
+.file-upload-container {
+    margin-bottom: 7px;
+}
+#progressBar {
+    width: 0%;
+    height: 20px;
+    background-color: #4CAF50;
+    text-align: center;
+    color: white;
+    border-radius: 4px;
+}
+#statusText {
+    margin-top: 10px;
+}
+#fileInput {
+    display: none;
+}
+

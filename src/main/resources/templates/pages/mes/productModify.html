@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>생산일지 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-content input,
+        .popup-content select {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .popup-content button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .popup-content button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div id="popup" class="popup">
+    <div class="popup-content">
+
+            <input type="hidden" th:value="${productLog.getId()}" id="productLogId">
+            <label for="workDate">작업 일자:</label>
+            <input type="date" id="workDate" name="workDate" th:value="${productLog.getWorkDate()}"><br>
+
+        <label for="productionType">생산 유형:        <button type="button" id="toggleProductionTypeButton" onclick="toggleProductionType()">선택</button></label>
+        <div id="productionTypeContainer">
+            <input type="text" id="productionType" name="productionType" th:value="${productLog.getProductionType()}" required>
+            <select id="productionTypeSelect" style="display: none;"></select>
+        </div>
+
+
+
+        <label for="productionNumber">생산 번호:</label>
+            <select name="productionNumber" id="productionNumber" th:value="${productLog.getProductionNumber()}"></select><br>
+
+            <label for="productionName">생산 이름:</label>
+            <select name="productionName" id="productionName" th:value="${productLog.getProductionName()}"></select><br>
+
+            <label for="production">생산량:</label>
+            <input type="text" id="production" name="production" placeholder="생산량" th:value="${productLog.getProduction()}"><br>
+
+            <label for="workerName">생산자:</label>
+            <input type="text" id="workerName" name="workerName" placeholder="생산자" th:value="${productLog.getWorkerName()}"><br>
+            <button id="modify-button">수정</button>
+            <button id="delete-button">삭제</button>
+
+
+    </div>
+</div>
+</body>
+<script>
+    document.getElementById('modify-button').addEventListener('click', function () {
+        var productId = document.getElementById('productLogId').value;
+        var workDate = document.getElementById('workDate').value;
+        var productionType = document.getElementById('productionType').value;
+        var productionNumber = document.getElementById('productionNumber').value;
+        var productionName = document.getElementById('productionName').value;
+        var production = document.getElementById('production').value;
+        var workerName = document.getElementById('workerName').value;
+
+        var data = {
+            workDate: workDate,
+            productionType: productionType,
+            productionNumber: productionNumber,
+            productionName: productionName,
+            production: production,
+            workerName: workerName
+        };
+        const confirmed = window.confirm('정말 수정 하시겠습니까?');
+        if(confirmed){
+            fetch('/api/mes/modify/' + productId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('수정이 완료되었습니다.');
+                        window.close();
+                    } else {
+                        alert('수정에 실패했습니다. 상태 코드: ' + response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('수정에 실패했습니다. 네트워크 오류가 발생했습니다.');
+                });
+        }
+
+
+    });
+
+
+    document.getElementById('delete-button').addEventListener('click', function () {
+        // 삭제할 제품 로그의 ID 가져오기
+        var productId = document.getElementById('productLogId').value;
+
+        const confirmed = window.confirm('정말 삭제 하시겠습니까?');
+        if (confirmed) {
+            fetch('/api/mes/' + productId, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // 성공적으로 삭제되었을 때
+                        alert('삭제가 완료 되었습니다.');
+                        window.close();
+                    } else {
+                        // 오류 발생 시
+                        alert('삭제에 실패했습니다. 상태 코드: ' + response.status);
+                    }
+                })
+                // .catch(error => {
+                //     console.error('Error:', error);
+                //     alert('삭제에 실패했습니다. 네트워크 오류가 발생했습니다.');
+                // });
+        }
+    });
+
+
+
+
+    // 분류 함수
+
+</script>
+<script src="/js/selectNumberAndName.js"></script>
+</html>

@@ -1,0 +1,35 @@
+input[readonly] {
+    background-color: #CCCCCC; /* 변경하고자 하는 배경색 지정 */
+    height: 31px;
+    color: #333333; /* 텍스트 색상 변경 */
+}
+
+.search{
+    color: #fff;
+    background-color: #3672f4;
+    border-color: #3672f4;
+    border-radius: 5px;
+    margin-right: 2px;
+}
+.search:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+}
+.register{
+    background-color: #028800; border-color: #3cc430; color: #FFFFFF;
+    border-radius: 5px;
+}
+.register:hover{
+    background-color: #014600; /* 호버 시 배경색 */
+}
+select{
+    height: 31px;
+}
+.total-search{
+    color: #fff;
+    background-color: #3672f4;
+    border-color: #3672f4;
+    border-radius: 5px;
+}
+.total-search:hover {
+    background-color: #0056b3; /* 호버 시 배경색 */
+}

@@ -5,11 +5,6 @@
       layout:fragment="Content"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-<!--<head th:fragment="defaultLayout">-->
-<!--    <meta content="https://www.devjune.com/static/assets/images/meta.png" property="og:image">-->
-<!--    header-->
-<!--</head>-->
 
 <style>
     /* 페이지 목록 스타일 */
@@ -65,81 +60,56 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">내용</h4>
-                    <div class="row mt-4 text-center">
-                        <!-- Column -->
+<!--                    <div class="row mt-4 text-center">-->
+<!--                        &lt;!&ndash; Column &ndash;&gt;-->
 <!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
 <!--                            <div class="card card-hover">-->
 <!--                                <div class="p-2 rounded bg-light-primary text-center">-->
-<!--                                    <h1 class="fw-light text-primary" th:text="${maxId}"></h1>-->
+<!--                                    <h1 id="totalScraps" class="fw-light text-primary"></h1>-->
 <!--                                    <h6 class="text-primary">수집한 공고</h6>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                        </div>-->
-                        <!-- Column -->
+
 <!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
 <!--                            <div class="card card-hover">-->
 <!--                                <div class="p-2 rounded bg-light-warning text-center">-->
-<!--                                    <h1 class="fw-light text-warning" th:text="${unsentCount}"></h1>-->
+<!--                                    <h1 id="pendingCountScrap" class="fw-light text-warning"></h1>-->
 <!--                                    <h6 class="text-warning">발송대기 공고</h6>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                        </div>-->
-                        <!-- Column -->
+
 <!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
 <!--                            <div class="card card-hover">-->
 <!--                                <div class="p-2 rounded bg-light-success text-center">-->
-<!--                                    <h1 class="fw-light text-success" th:text="${allScraps.size()}"></h1>-->
+<!--                                    <h1 id="inProgressCountScrap" class="fw-light text-success"></h1>-->
 <!--                                    <h6 class="text-success">진행중 공고</h6>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                        </div>-->
-                        <!-- Column -->
+
 <!--                        <div class="col-md-6 col-lg-3 col-xlg-3">-->
 <!--                            <div class="card card-hover">-->
 <!--                                <div class="p-2 rounded bg-light-danger text-center">-->
-<!--                                    <h1 class="fw-light text-danger" th:text="${deleteCount}"></h1>-->
+<!--                                    <h1 id="closedScrap" class="fw-light text-danger" ></h1>-->
 <!--                                    <h6 class="text-danger">마감된 공고</h6>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                        </div>-->
 
-                    </div>
+<!--                    </div>-->
 
                     <div class="table-responsive mt-4 mb-4 ">
 
                         <div class="row">
-                            <!-- 정렬 기준 선택 -->
-                            <div class="dropdown">
-                                <button aria-expanded="false" class="btn btn-light dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        id="sortDropdown"
-                                        type="button">
-                                    정렬하기
-                                </button>
-                                <ul aria-labelledby="sortDropdown" class="dropdown-menu">
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='id', sortOrder='asc', search=${search})}">ID
-                                        (오름차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='id', sortOrder='desc', search=${search})}">ID
-                                        (내림차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='asc', search=${search})}">마감기간
-                                        (오름차순)</a></li>
-                                    <li><a class="dropdown-item"
-                                           th:href="@{/crawling/list(sortField='deadline', sortOrder='desc', search=${search})}">마감기간
-                                        (내림차순)</a></li>
-                                </ul>
-                            </div>
-
-                            <form action="/crawling/list" class="col-4 py-2 px-3 align-self-end" method="get">
                                 <div class="input-group col-2">
                                     <input aria-label="Text input with checkbox" class="form-control" name="search"
-                                           placeholder="검색어 입력" th:value="${search}" type="text">
-                                    <button class="btn btn-light-info text-info font-weight-medium" type="submit">검색
+                                           placeholder="검색어 입력" type="text" id="search-input">
+                                    <button class="btn btn-light-info text-info font-weight-medium" id="search-button">검색
                                     </button>
                                 </div>
-                            </form>
+
 
 
                         </div>
@@ -179,120 +149,7 @@
     </div>
 </div>
 
-<script>
-    const scrapTable = document.getElementById("zero_config");
-    const tbody = scrapTable.querySelector("tbody");
-    const pageNumberSpan = document.getElementById("page-number");
-    const pageList = document.getElementById("page-list");
-    let currentPage = 0; // 현재 페이지 번호
-    let totalPages = 0; // Scrap의 총 페이지 수
-    const itemsPerPage = 10; // 페이지당 아이템 수
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-        // Scrap의 총 갯수를 가져오는 API 호출
-        fetch('/api/scrap/totalScrapCount')
-            .then(response => response.json())
-            .then(data => {
-                const totalScrapCount = data; // Scrap의 총 갯수
-                totalPages = Math.ceil(totalScrapCount / itemsPerPage); // 페이지 수를 동적으로 설정
-                // 나머지 코드와 함께 페이지 번호 업데이트
-                updatePagination();
-            })
-            .catch(error => {
-                console.error('Scrap count fetch error:', error);
-            });
-
-        // 초기 페이지 로딩
-        fetchScraps(currentPage);
-    });
-    function goToPage(page) {
-        fetchScraps(page);
-        currentPage = page;
-        updatePagination();
-    }
-
-    function updatePagination() {
-        pageNumberSpan.textContent = currentPage + 1;
-        pageList.innerHTML = ""; // 페이지 목록 초기화
-
-        // 페이지 목록을 생성하고 현재 페이지 주변의 페이지 번호를 추가
-        const numPagesToShow = 10; // 한 번에 표시할 페이지 수
-        const startPage = Math.max(0, currentPage - Math.floor(numPagesToShow / 2));
-        const endPage = Math.min(totalPages - 1, startPage + numPagesToShow - 1);
-
-        for (let i = startPage; i <= endPage; i++) {
-            const pageItem = document.createElement("span");
-            pageItem.textContent = i + 1;
-            pageItem.classList.add("page-list-item"); // 클래스 추가
-            if (i === currentPage) {
-                pageItem.classList.add("current-page");
-            }
-            pageItem.addEventListener("click", () => {
-                goToPage(i);
-            });
-            pageList.appendChild(pageItem);
-        }
-
-    }
-    // 게시물 목록 불러오기
-    function fetchScraps(page) {
-        fetch(`/api/scrap?page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                tbody.innerHTML = ""; // 이전 목록을 지웁니다.
-
-                data._embedded.scrapList.forEach(scrap => {
-                    const row = document.createElement('tr');
-
-                    const scrapId = document.createElement('td');
-                    scrapId.textContent = scrap.id;
-
-                    const scrapTitle = document.createElement('td');
-                    // scrapTitle.textContent = scrap.articleText;
-                    const maxTitleLength = 25; // 표시할 최대 길이
-                    scrapTitle.textContent = scrap.articleText.length > maxTitleLength
-                        ? scrap.articleText.slice(0, maxTitleLength) + "..." // 긴 제목은 자르고 "..." 추가
-                        : scrap.articleText; // 짧은 제목은 그대로 표시
-
-                    const scrapMatching = document.createElement('td');
-                    const link = document.createElement('a');
-                    link.href = `/matching/${scrap.id}`;
-                    link.textContent = "바로가기";
-                    link.target = "_blank";
-                    scrapMatching.appendChild(link);
-
-                    const scrapCompany = document.createElement('td');
-                    scrapCompany.textContent = scrap.company;
-
-                    const scrapSent = document.createElement('td');
-                    scrapSent.textContent = scrap.sent ? "발송완료" : "발송대기";
-
-
-                    const scrapSite = document.createElement('td');
-                    scrapSite.textContent = scrap.sourceSite;
-
-
-                    const scrapDeadLine = document.createElement('td');
-                    scrapDeadLine.textContent = scrap.deadline;
-
-
-
-                    row.appendChild(scrapId);
-                    row.appendChild(scrapTitle);
-                    row.appendChild(scrapMatching);
-                    row.appendChild(scrapCompany);
-                    row.appendChild(scrapSent);
-                    row.appendChild(scrapSite);
-                    row.appendChild(scrapDeadLine);
-                    tbody.appendChild(row);
-                });
-
-                currentPage = page;
-            });
-    }
-
-</script>
-
+<script src="/static/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/static/js/crawl.js"></script>
 
 </html>
